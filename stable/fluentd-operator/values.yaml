@@ -1,0 +1,82 @@
+# Copyright © 2018 VMware, Inc. All Rights Reserved.
+# SPDX-License-Identifier: BSD-2-Clause
+
+# Default values for fluentd-router.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rbac:
+  create: false
+
+serviceAccountName: "default"
+
+# Possible values: default|fake|fs|multimap
+datasource: default
+
+image:
+  repository: sylus/kube-fluentd-operator
+  pullPolicy: IfNotPresent
+  tag: latest
+  pullSecret: ""
+
+logLevel: debug
+interval: 45
+kubeletRoot: /var/lib/kubelet
+
+meta:
+  key: ""
+  values: {}
+
+# Use with datasource: multimap, the label selector will be used for finding ConfigMaps inside
+# the Namespaces in order to compile the Namespace fluentd configuration. The simple concatenation
+# is used and the ConfigMap is then processed for macros.
+labelSelector:
+  matchLabels: {}
+
+# extraVolumes:
+#   - name: es-certs
+#     secret:
+#       defaultMode: 420
+#       secretName: es-certs
+
+#  - name: es-certs
+#    mountPath: /certs
+#    readOnly: true
+
+
+fluentd:
+  extraEnv: {}
+  resources: {}
+# extraVolumeMounts:
+#  - name: es-certs
+#    mountPath: /certs
+#    readOnly: true
+
+reloader:
+  extraEnv: {}
+  resources: {}
+# extraVolumeMounts:
+#  - name: es-certs
+#    mountPath: /certs
+#    readOnly: true
+
+tolerations: []
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+updateStrategy: {}
+#  type: RollingUpdate
+
+## Annotations to add to the DaemonSet's Pods
+# podAnnotations:
+#  scheduler.alpha.kubernetes.io/tolerations: '[{"key": "example", "value": "foo"}]'
+
+prometheusEnabled: false

@@ -1,0 +1,11 @@
+remote: gitlab
+chart-dirs:
+  - stable
+chart-repos:
+  - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
+  - jfrog=https://charts.jfrog.io/
+  - istio=https://storage.googleapis.com/istio-release/releases/1.1.8/charts
+check-version-increment: false
+validate-maintainers: false
+excluded-charts:
+  - commmon

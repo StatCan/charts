@@ -1,0 +1,12 @@
+apiVersion: v1
+description: An extended Helm chart derived from official Prometheus Operator chart.
+name: prometheus-operator
+version: 0.0.2
+appVersion: 0.30.0
+home: https://coreos.com/operators/prometheus/docs/latest/
+sources:
+  - https://github.com/coreos/prometheus-operator
+maintainers:
+- name: sylus
+  email: william.hearn@canada.ca
+engine: gotpl
