@@ -14,7 +14,7 @@ serviceAccountName: "default"
 datasource: default
 
 image:
-  repository: sylus/kube-fluentd-operator
+  repository: statcan/base-fluentd-operator
   pullPolicy: IfNotPresent
   tag: latest
   pullSecret: ""
