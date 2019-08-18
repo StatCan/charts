@@ -1,0 +1,14 @@
+apiVersion: v1
+description: An extended Helm chart derived from official Vault chart.
+name: vault
+version: 0.0.1
+appVersion: 1.2.2
+home: https://www.vaultproject.io
+icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
+sources:
+  - https://github.com/hashicorp/vault
+  - https://github.com/hashicorp/vault-helm
+maintainers:
+  - name: William Hearn
+    email: william.hearn@canada.ca
+engine: gotpl
