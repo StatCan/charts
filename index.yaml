@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   fluentd-operator:
   - appVersion: 0.3.1
-    created: "2019-08-19T14:22:16.517488723Z"
+    created: "2019-10-29T18:37:22.415412996Z"
     description: Distribution of Fluentd as K8S daemonset
-    digest: 9c6f7b11085df62efc86fbaaaf804fbc42b3ad031fb614d62ccc313255786f42
+    digest: 6f10f9974813dcfb235d23c2320ca06e6fb2e1c06965fb92b71ff1f25c02bf03
     engine: gotpl
     home: https://github.com/vmware/kube-fluentd-operator
     keywords:
@@ -24,9 +24,9 @@ entries:
   logstash:
   - apiVersion: v1
     appVersion: 7.2.0
-    created: "2019-08-19T14:22:16.519644461Z"
+    created: "2019-10-29T18:37:22.416928397Z"
     description: Logstash is an open source, server-side data processing pipeline
-    digest: a9e931e5a3b52626cba885e9643b10bfaa16766693044a7a6691193651b47784
+    digest: 42cf2ab77c844e9d7ca7698b9ebcdee178ddd79fa117a6774816f70c679ba969
     home: https://www.elastic.co/products/logstash
     icon: https://www.elastic.co/assets/blt86e4472872eed314/logo-elastic-logstash-lt.svg
     maintainers:
@@ -42,10 +42,10 @@ entries:
   prometheus-operator:
   - apiVersion: v1
     appVersion: 0.30.0
-    created: "2019-08-19T14:22:16.536416293Z"
+    created: "2019-10-29T18:37:22.426778303Z"
     description: An extended Helm chart derived from official Prometheus Operator
       chart.
-    digest: d553d516ec1a7cba013de4dcd8ede98ac1e3903eb137a7459b35c796a6bba41c
+    digest: 70287d6d750aa4ebafb79eac02871086ed0fe1bfb7c1a31070906115118ef2bb
     engine: gotpl
     home: https://coreos.com/operators/prometheus/docs/latest/
     maintainers:
@@ -60,9 +60,9 @@ entries:
   vault:
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2019-08-19T14:22:16.538169035Z"
+    created: "2019-10-29T18:37:22.428210404Z"
     description: An extended Helm chart derived from official Vault chart.
-    digest: f35990c1378922fe28f3db77d999158a36be0bf762b510de7a2665713c5a3017
+    digest: c12ef974b64dd2714f0427d083bcd031589a1846cbd3d3fd1c578cff1a8d2ba5
     engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
@@ -79,9 +79,9 @@ entries:
   velero:
   - apiVersion: v1
     appVersion: 0.11.0
-    created: "2019-08-19T14:22:16.539910646Z"
+    created: "2019-10-29T18:37:22.429131204Z"
     description: An extended Helm chart derived from official Velero chart.
-    digest: 6370c991a94c35d5e82af8d026f28c939b1b2c6617b4cc728f7b9620d7eb39a0
+    digest: 04300b614d910adb9ff6f345f49800aabb7b9515f9d5a76f32a5b3e2be5594e2
     engine: gotpl
     home: https://heptio.com/products/#heptio-velero
     maintainers:
@@ -93,4 +93,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/velero-0.0.2.tgz
     version: 0.0.2
-generated: "2019-08-19T14:22:16.516641277Z"
+generated: "2019-10-29T18:37:22.414326595Z"
