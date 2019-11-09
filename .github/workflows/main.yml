@@ -11,4 +11,5 @@ jobs:
       with:
         args: "stable/* https://statcan.github.io/charts"
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        SCRIPT_MODE: true
