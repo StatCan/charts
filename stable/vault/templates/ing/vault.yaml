@@ -1,6 +1,6 @@
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.vault.server.ingress.enabled -}}
 {{- $fullName := include "vault.fullname" . -}}
-{{- $ingressPath := .Values.ingress.path -}}
+{{- $ingressPath := .Values.vault.server.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -11,14 +11,14 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version | quote }}
-{{- with .Values.ingress.annotations }}
+{{- with .Values.vault.server.ingress.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.vault.server.ingress.tls }}
   tls:
-  {{- range .Values.ingress.tls }}
+  {{- range .Values.vault.server.ingress.tls }}
     - hosts:
       {{- range .hosts }}
         - {{ . }}
@@ -27,7 +27,7 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
+  {{- range .Values.vault.server.ingress.hosts }}
     - host: {{ . }}
       http:
         paths:
