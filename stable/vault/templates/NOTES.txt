@@ -1,8 +1,8 @@
 
 Thank you for installing HashiCorp Vault!
 
-Now that you have deployed Vault, you should look over the docs on using 
-Vault with Kubernetes available here: 
+Now that you have deployed Vault, you should look over the docs on using
+Vault with Kubernetes available here:
 
 https://www.vaultproject.io/docs/
 
@@ -11,3 +11,4 @@ Your release is named {{ .Release.Name }}. To learn more about the release, try:
 
   $ helm status {{ .Release.Name }}
   $ helm get {{ .Release.Name }}
+

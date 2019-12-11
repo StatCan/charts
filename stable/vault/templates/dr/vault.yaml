@@ -1,4 +1,4 @@
-{{- if .Values.vault.destinationRule.enabled }}
+{{- if .Values.destinationRule.enabled }}
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
@@ -10,8 +10,8 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/version: {{ .Chart.Version | quote }}
 spec:
-  host: "{{ template "vault.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.vault.clusterDomain }}"
+  host: "{{ template "vault.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.clusterDomain }}"
   trafficPolicy:
     tls:
-      mode: "{{ default "DISABLE" .Values.vault.destinationRule.mode }}"
+      mode: "{{ default "DISABLE" .Values.destinationRule.mode }}"
 {{- end }}
