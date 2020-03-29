@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "covid.fullname" . }}
+  labels:
+    app: {{ template "covid.name" . }}
+    chart: {{ template "covid.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ template "covid.fullname" . }}
+        tier: frontend
+      annotations:
+{{ toYaml .Values.covid.annotations | indent 8 }}
+    spec:
+    {{- if .Values.covid.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.covid.imagePullSecrets | indent 8 }}
+    {{- end }}
+      containers:
+      - image: "{{ .Values.covid.image.repository }}:{{ .Values.covid.image.tag }}"
+        imagePullPolicy: {{ default "" .Values.covid.image.pullPolicy | quote }}
+        name: frontend
+{{- if .Values.covid.extraVars }}
+{{ toYaml .Values.covid.extraVars | indent 10 }}
+{{- end }}
+        ports:
+        - containerPort: 3000
+        resources:
+{{ toYaml .Values.covid.resources | indent 10 }}
+      {{- if .Values.covid.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.covid.imagePullSecrets | indent 8 }}
+      {{- end }}
+    {{- with .Values.covid.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.covid.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.covid.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      volumes:
+        - name: covid
+        {{- if .Values.covid.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "covid.fullname" . }}-covid
+        {{- else }}
+          emptyDir: {}
+        {{- end }}

@@ -1,0 +1,38 @@
+
+*************************************************************************************
+*** PLEASE BE PATIENT: Covid-19 may take a few minutes to download / install ***
+*************************************************************************************
+
+1. Get the Covid-19 URL:
+
+{{- if .Values.covid.ingress.enabled }}
+
+  You should be able to access your new Covid-19 installation through
+
+  {{- range .Values.covid.ingress.hosts }}
+    http://{{ . }}
+  {{- end }}
+
+{{- else if contains "LoadBalancer" .Values.covid.service.type }}
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace {{ .Release.Namespace }} -w {{ template "covid.fullname" . }}'
+
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "covid.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP/
+
+{{- else if contains "ClusterIP"  .Values.covid.service.type }}
+
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "covid.fullname" . }}" -o jsonpath="{.items[0].metadata.name}")
+  echo http://127.0.0.1:3000/
+  kubectl port-forward $POD_NAME 3000:80
+
+{{- end }}
+
+{{- if contains "NodePort" .Values.covid.service.type }}
+
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ template "covid.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT/
+
+{{- end }}

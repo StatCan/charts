@@ -1,0 +1,28 @@
+{{- if and .Values.covid.persistence.enabled (not .Values.covid.persistence.existingClaim) -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+{{- if .Values.covid.persistence.annotations }}
+  annotations:
+{{ toYaml .Values.covid.persistence.annotations | indent 4 }}
+{{- end }}
+  name: {{ template "covid.fullname" . }}
+  labels:
+    app: {{ template "covid.name" . }}
+    chart: {{ template "covid.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  accessModes:
+    - {{ .Values.covid.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.covid.persistence.size | quote }}
+{{- if .Values.covid.persistence.storageClass }}
+{{- if (eq "-" .Values.covid.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.covid.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,16 @@
+{{- if .Values.covid.destinationRule.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "covid.fullname" . }}
+  labels:
+    app: {{ template "covid.name" . }}
+    chart: {{ template "covid.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  host: "{{ template "covid.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.covid.clusterDomain }}"
+  trafficPolicy:
+    tls:
+      mode: "{{ default "DISABLE" .Values.covid.destinationRule.mode }}"
+{{- end }}
