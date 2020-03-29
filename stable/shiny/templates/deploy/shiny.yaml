@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "shiny.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "shiny.name" . }}
+    helm.sh/chart: {{ include "shiny.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "shiny.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "shiny.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+{{ toYaml .Values.annotations | indent 8 }}
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.16.0-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: http-proxy
+            containerPort: 80
+            protocol: TCP
+          volumeMounts:
+          - name: {{ include "shiny.fullname" . }}-nginx
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: {{ include "shiny.fullname" . }}
+              mountPath: /etc/shiny-server
+{{- if .Values.volumeMounts }}
+{{ toYaml .Values.volumeMounts | indent 12 }}
+{{- end }}
+          ports:
+            - name: http
+              containerPort: 3838
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: {{ include "shiny.fullname" . }}
+          configMap:
+            name: {{ include "shiny.fullname" . }}
+            items:
+              - key: shiny-server.conf
+                path: shiny-server.conf
+        - name: {{ include "shiny.fullname" . }}-nginx
+          configMap:
+            name: {{ include "shiny.fullname" . }}-nginx
+{{- if .Values.volumes }}
+{{ toYaml .Values.volumes | indent 8 }}
+{{- end }}

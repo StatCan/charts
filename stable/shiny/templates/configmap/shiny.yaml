@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "shiny.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "shiny.name" . }}
+    helm.sh/chart: {{ include "shiny.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  shiny-server.conf: |
+    # Instruct Shiny Server to run applications as the user "shiny"
+    run_as shiny;
+
+    # Preserve the logs so the shiny server does not automatically delete them.
+    preserve_logs true;
+
+    # Define a server that listens on port 3838
+    server {
+        # Instruct this server to listen on port 80.
+        listen 3838;
+
+        # Define a location at the base URL
+        location / {
+
+            # Host the directory of Shiny Apps stored in this directory
+            site_dir /srv/shiny-server;
+
+            # Log all Shiny output to files in this directory
+            log_dir /var/log/shiny-server;
+
+            # When a user visits the base URL rather than a particular application,
+            # an index of the applications available in this directory will be shown.
+            directory_index on;
+        }
+    }

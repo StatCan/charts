@@ -1,0 +1,12 @@
+apiVersion: v1
+description: A Helm chart for using Shiny.
+name: shiny
+version: 0.0.1
+appVersion: 3.6.0
+home: https://rstudio.com/products/shiny/shiny-server/
+sources:
+- https://github.com/statcan/shiny
+maintainers:
+- name: sylus
+  email: william.hearn@canada.ca
+engine: gotpl
