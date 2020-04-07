@@ -1,7 +1,9 @@
+name: release
 on:
-  push:
+  release:
     branches:
       - master
+    types: [published, created, edited]
 
 name: Publish Helm Chart
 jobs:
