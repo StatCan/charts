@@ -1,11 +1,9 @@
-name: release
+name: Publish Helm Charts
 on:
-  release:
+  push:
     branches:
       - master
-    types: [published, created, edited]
 
-name: Publish Helm Chart
 jobs:
   publishHelmChart:
     name: Helm gh-pages
