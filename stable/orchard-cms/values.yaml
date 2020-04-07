@@ -1,0 +1,48 @@
+global:
+  postgresql:
+    postgresqlUsername: postgres
+    postgresqlDatabase: secretpw
+
+replicaCount: 1
+
+image:
+  repository: orchard-cms
+  tag: latest
+  pullPolicy: IfNotPresent
+  environmentVariables:
+    - name: ASPNETCORE_ENVIRONMENT
+      value: production
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+volumeClaim:
+  enabled: false
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+  storageClass: default
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - orchard-cms.local
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Annotations for the statefulset
+podAnnotations: {
+
+}
