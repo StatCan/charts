@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   covid:
   - appVersion: 0.0.1
-    created: "2020-04-07T23:46:21.321429564Z"
+    created: "2020-04-10T18:46:10.485063929Z"
     description: Covid-19 nodejs app built in React.
-    digest: a64db8364dc80398518cb9b387f094bf860a49c608271bca925f0068caad2683
+    digest: 4a8255b15e8553d51bc6f2d5ccc20fc95c36159e72ab2e1a47a330b333d9fbfd
     engine: gotpl
     home: https://github.com/CSSEGISandData/COVID-19
     keywords:
@@ -26,9 +26,9 @@ entries:
   csi-vault:
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2020-04-07T23:46:21.322358067Z"
+    created: "2020-04-10T18:46:10.486164327Z"
     description: An extended Helm chart derived from official Vault CSI chart.
-    digest: 3e86eb90e58e1dad7b446447199c021fc423c47257771b66ffe5f87aa19d68c0
+    digest: b484ca89211a12cad6e1f944f7f38cd329e7f03ae2104d1ec75137cf14dd7668
     engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
@@ -44,9 +44,9 @@ entries:
     version: 0.0.1
   fluentd-operator:
   - appVersion: 0.3.1
-    created: "2020-04-07T23:46:21.322924869Z"
+    created: "2020-04-10T18:46:10.486934526Z"
     description: Distribution of Fluentd as K8S daemonset
-    digest: ed939fa1af2df2802817774a7055224e7ef0ff7339a65b2abce156e90a138961
+    digest: a3c08383a342c522c750a48b9c6e7c283c102243e0f3c2f610c2e1238cc07bed
     engine: gotpl
     home: https://github.com/vmware/kube-fluentd-operator
     keywords:
@@ -66,9 +66,9 @@ entries:
   logstash:
   - apiVersion: v1
     appVersion: 7.2.0
-    created: "2020-04-07T23:46:21.323783272Z"
+    created: "2020-04-10T18:46:10.487582225Z"
     description: Logstash is an open source, server-side data processing pipeline
-    digest: db1f13ab535e46c0b8d3ce81b846b33e78cb297e966562cc05595438180c3c3b
+    digest: 872f7c6c7025845bfe40922960fd1a567292d692038a4f97c1bd2fcfdee4493f
     home: https://www.elastic.co/products/logstash
     icon: https://www.elastic.co/assets/blt86e4472872eed314/logo-elastic-logstash-lt.svg
     maintainers:
@@ -81,12 +81,30 @@ entries:
     urls:
     - https://statcan.github.io/charts/logstash-2.1.0.tgz
     version: 2.1.0
+  mlflow:
+  - apiVersion: v1
+    appVersion: 1.7.2
+    created: "2020-04-10T18:46:10.487876624Z"
+    description: |
+      [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
+    digest: dc0a894d353a6925cc8a2e426e998d82cfc2ca73630a16bf9841b77f8f0c85c6
+    engine: gotpl
+    home: https://mlflow.org/
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    name: mlflow
+    sources:
+    - https://github.com/statcan/charts
+    urls:
+    - https://statcan.github.io/charts/mlflow-0.0.1.tgz
+    version: 0.0.1
   orchard-cms:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-04-07T23:46:21.326854082Z"
+    created: "2020-04-10T18:46:10.489200922Z"
     description: A Helm chart for using OrchardCore cms
-    digest: 9f29af58e44c352e70410a22c9dbc27f4773125ea4a535c54b006f4446c571e6
+    digest: 9a3c16b375931bb585e1f800767d15f798ee9dff7d12799fcd2a8b0395e74d6a
     home: https://www.orchardcore.net/
     maintainers:
     - email: jean-philippe.tissot@canada.ca
@@ -100,10 +118,10 @@ entries:
   prometheus-operator:
   - apiVersion: v1
     appVersion: 0.30.0
-    created: "2020-04-07T23:46:21.334880307Z"
+    created: "2020-04-10T18:46:10.498570708Z"
     description: An extended Helm chart derived from official Prometheus Operator
       chart.
-    digest: ed5963392e89a01d55052e2c1b634d4cf0d414ab8b75830f3757fdb7a3f2c376
+    digest: 1c25bb1a0e32e2a91b65c1423a6b7a3ee4bf44106434c1635bfaaeb9ae752d7d
     engine: gotpl
     home: https://coreos.com/operators/prometheus/docs/latest/
     maintainers:
@@ -118,9 +136,9 @@ entries:
   shiny:
   - apiVersion: v1
     appVersion: 3.6.0
-    created: "2020-04-07T23:46:21.335170208Z"
+    created: "2020-04-10T18:46:10.499101507Z"
     description: A Helm chart for using Shiny.
-    digest: 9019bcee07d5798ba64586ff0d96d4bc07eaba06e0ef9142683899bc24c07baa
+    digest: d9d97d13b1842d2f037ef6f95b9995210b627dd96d33e32e52b11eaf60f7a5e7
     engine: gotpl
     home: https://rstudio.com/products/shiny/shiny-server/
     maintainers:
@@ -135,9 +153,9 @@ entries:
   vault:
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-04-07T23:46:21.338326118Z"
+    created: "2020-04-10T18:46:10.502974401Z"
     description: An extended Helm chart derived from official Vault chart.
-    digest: 029fea9b34c4c019098fa5afc8f531ec4907a16e8c6c19062bdae647a3c7ba86
+    digest: 0602107bdab68a3eb5f06001820316b907508082a642385d7452d3d361c2783a
     engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
@@ -153,7 +171,7 @@ entries:
     version: 0.0.6
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-04-07T23:46:21.337236914Z"
+    created: "2020-04-10T18:46:10.501433203Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: ac5af6987e345e63d16d0485d246e8e27c3d216c3d401a45e975f452fec24a3e
     engine: gotpl
@@ -171,7 +189,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-04-07T23:46:21.336188911Z"
+    created: "2020-04-10T18:46:10.500313905Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: e943ffaa01e55a2a0986da29a69541cdec1fcc8c623c6f56f026922a135332ed
     engine: gotpl
@@ -190,9 +208,9 @@ entries:
   velero:
   - apiVersion: v1
     appVersion: 0.11.0
-    created: "2020-04-07T23:46:21.33891722Z"
+    created: "2020-04-10T18:46:10.504254699Z"
     description: An extended Helm chart derived from official Velero chart.
-    digest: 62034ef5891456d3b48de096595a59396cae93bcaf8addee9d3288161696090a
+    digest: 37545caac165aeba08f6ddb4ab7deadf678441cf965c249d3a587f771728301d
     engine: gotpl
     home: https://heptio.com/products/#heptio-velero
     maintainers:
@@ -204,4 +222,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/velero-0.0.2.tgz
     version: 0.0.2
-generated: "2020-04-07T23:46:21.320780662Z"
+generated: "2020-04-10T18:46:10.484618129Z"
