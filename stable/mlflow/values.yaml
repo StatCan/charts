@@ -58,6 +58,10 @@ service:
   type: ClusterIP
   port: 5000
 
+destinationRule:
+  enabled: true
+  mode: DISABLE
+
 ingress:
   enabled: false
   annotations: {}
@@ -66,7 +70,8 @@ ingress:
   hosts:
     - host: chart-example.local
       # ingress.hosts[0].paths -- A list of objects. Each object should contain a `path` key, and may contain a `serviceNameOverride` and a `servicePortOverride` key. If you do not specify any overrides, the Chart will use the ones for the service it creates automatically. We allow overrides to allow advanced behavior like SSL redirection on the AWS ALB Ingress Controller.
-      paths: []
+      paths:
+      - "/*"
       # - path: "/*"
       #   serviceNameOverride: chart-example
       #   servicePortOverride: 80
