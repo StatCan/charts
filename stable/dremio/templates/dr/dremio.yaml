@@ -1,0 +1,16 @@
+{{- if .Values.destinationRule.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "dremio.fullname" . }}
+  labels:
+    app: {{ template "dremio.name" . }}
+    chart: {{ template "dremio.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  host: "{{ template "dremio.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.clusterDomain }}"
+  trafficPolicy:
+    tls:
+      mode: "{{ default "DISABLE" .Values.destinationRule.mode }}"
+{{- end }}
