@@ -1,0 +1,16 @@
+{{- if .Values.destinationRule.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "mlflow.fullname" . }}
+  labels:
+    app: {{ template "mlflow.name" . }}
+    chart: {{ template "mlflow.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  host: "{{ template "mlflow.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.clusterDomain }}"
+  trafficPolicy:
+    tls:
+      mode: "{{ default "DISABLE" .Values.destinationRule.mode }}"
+{{- end }}
