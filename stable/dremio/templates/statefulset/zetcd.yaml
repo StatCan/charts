@@ -1,0 +1,157 @@
+{{ if not .Values.DremioAdmin }}
+    {{ if .Values.zetcd }}
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: etcd
+spec:
+  serviceName: etcd
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+        - name: etcd
+          image: quay.io/coreos/etcd:v3.3.13
+          command:
+            - /bin/sh
+            - -c
+            - |
+              exec etcd --name ${HOSTNAME} \
+                --listen-peer-urls http://0.0.0.0:2380 \
+                --listen-client-urls http://0.0.0.0:2379 \
+                --advertise-client-urls http://cluster-etcd:2379 \
+                --initial-advertise-peer-urls http://${HOSTNAME}.etcd:2380 \
+                --initial-cluster-token etcd-cluster-1 \
+                --initial-cluster ${PEERS} \
+                --initial-cluster-state new \
+                --data-dir /etcd-data \
+                --snapshot-count 50 \
+                --max-snapshots 5 \
+                --max-wals 5 \
+                --auto-compaction-mode revision \
+                --auto-compaction-retention 1000 \
+                --quota-backend-bytes 5368709120
+          env:
+            - name: PEERS
+              value: "etcd-0=http://etcd-0.etcd:2380,etcd-1=http://etcd-1.etcd:2380,etcd-2=http://etcd-2.etcd:2380"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 2379
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            failureThreshold: 10
+          ports:
+            - containerPort: 2379
+              protocol: TCP
+            - containerPort: 2380
+              protocol: TCP
+          resources:
+            limits:
+              memory: 2048Mi
+              cpu: 2
+            requests:
+              memory: 1024Mi
+              cpu: 1
+          volumeMounts:
+            - name: zetcd-persistent-storage
+              mountPath: /etcd-data
+      securityContext:
+        runAsUser: 100
+        runAsGroup: 101
+        fsGroup: 101
+  volumeClaimTemplates:
+    - metadata:
+        name: zetcd-persistent-storage
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 5Gi
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: zetcd
+spec:
+  serviceName: zk-hs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zetcd
+    spec:
+      containers:
+        - name: zetcd
+          image: quay.io/coreos/zetcd:v0.0.5
+          command:
+            - zetcd
+            - --zkaddr=0.0.0.0:2181
+            - --endpoints=cluster-etcd:2379
+          ports:
+            - containerPort: 2181
+              name: zetcd
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 100m
+            requests:
+              memory: 128Mi
+              cpu: 10m
+      securityContext:
+        runAsUser: 100
+        runAsGroup: 101
+        fsGroup: 101
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd
+  labels:
+    app: etcd
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 2380
+      protocol: TCP
+      targetPort: 2380
+      name: peer
+  selector:
+    app: etcd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cluster-etcd
+  labels:
+    app: etcd
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2379
+      protocol: TCP
+      targetPort: 2379
+      name: client
+  selector:
+    app: etcd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-hs
+  labels:
+    app: zetcd
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2181
+      protocol: TCP
+      targetPort: zetcd
+  selector:
+    app: zetcd
+    {{ end }}
+{{ end }}
