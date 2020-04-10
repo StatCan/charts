@@ -5,11 +5,11 @@ metadata:
   name: {{ template "dremio.fullname" . }}
   labels:
     app: {{ template "dremio.name" . }}
-    chart: {{ template "dremio.chart" . }}
+    chart: dremio
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  host: "{{ template "dremio.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.clusterDomain }}"
+  host: "dremio-client.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.clusterDomain }}"
   trafficPolicy:
     tls:
       mode: "{{ default "DISABLE" .Values.destinationRule.mode }}"
