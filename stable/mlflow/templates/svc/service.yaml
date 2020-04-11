@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: 5000
       protocol: TCP
-      name: http
+      name: mlflow
   selector:
     {{- include "mlflow.selectorLabels" . | nindent 4 }}

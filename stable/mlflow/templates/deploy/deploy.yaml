@@ -27,42 +27,43 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-            - --host=0.0.0.0
-            - --port=80
-          {{- if .Values.backendStore.filepath }}
-            - --backend-store-uri={{ .Values.backendStore.filepath }}
-          {{- else if .Values.backendStore.postgres }}
-            - --backend-store-uri=postgresql://{{ required "you must specify a username for the database" .Values.backendStore.postgres.username }}:$(SECRET_PASSWORD)@{{ required "you must specify a host for the database" .Values.backendStore.postgres.host }}:{{ required "you must specify a port for the database" .Values.backendStore.postgres.port }}/{{ required "you must specify a database name" .Values.backendStore.postgres.database }}
-          {{- end }}
-          {{- if .Values.defaultArtifactRoot }}
-            - --default-artifact-root={{ .Values.defaultArtifactRoot }}
-          {{- end }}
-          {{- range $key, $value := .Values.extraArgs }}
-            - --{{ $key }}={{ $value }}
-          {{- end }}
-          {{- if .Values.backendStore.postgres }}
-          env:
-            - name: SECRET_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "mlflow.postgresSecretName" . }}
-                  key: password
-          {{- end }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: mlflow
+              containerPort: 5000
               protocol: TCP
+          env:
+{{- if .Values.azure.enabled }}
+          - name: AZURE_STORAGE_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "mlflow.fullname" . }}
+                key: azurestorageaccountkey
+          - name: MLFLOW_SERVER_DEFAULT_ARTIFACT_ROOT
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "mlflow.fullname" . }}
+                key: azurestorageaccountartifact
+{{- end }}
+          - name: MLFLOW_SERVER_FILE_STORE
+            value: "/mnt/azfiles/mlruns"
+          - name: MLFLOW_SERVER_HOST
+            value: "0.0.0.0"
+          - name: MLFLOW_SERVER_PORT
+            value: "5000"
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: mlflow
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: mlflow
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumeMounts:
+{{- if .Values.volumeMounts }}
+{{ toYaml .Values.volumeMounts | indent 6 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -75,3 +76,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      volumes:
+{{- if .Values.volumes }}
+{{ toYaml .Values.volumes | indent 6 }}
+{{- end }}
