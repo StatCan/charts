@@ -1,0 +1,39 @@
+{{- if .Values.disableMutualTls -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "orchard-cms.fullname" . }}-ocistio
+  labels:
+    app.kubernetes.io/name: {{ include "orchard-cms.name" . }}
+    helm.sh/chart: {{ include "orchard-cms.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "orchard-cms.name" . }}
+    version: {{ .Release.Name }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  host: {{ include "orchard-cms.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "orchard-cms.fullname" . }}-pgistio
+  labels:
+    app.kubernetes.io/name: {{ include "orchard-cms.name" . }}
+    helm.sh/chart: {{ include "orchard-cms.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "orchard-cms.name" . }}
+    version: {{ .Release.Name }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  host:  {{ .Release.Name -}}-postgresql.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+{{- end }}
