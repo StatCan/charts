@@ -60,9 +60,9 @@ spec:
               port: mlflow
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      volumeMounts:
+          volumeMounts:
 {{- if .Values.volumeMounts }}
-{{ toYaml .Values.volumeMounts | indent 6 }}
+{{ toYaml .Values.volumeMounts | indent 10 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
