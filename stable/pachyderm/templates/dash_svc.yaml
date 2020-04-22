@@ -1,0 +1,29 @@
+{{- if .Values.dash.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: dash
+  labels:
+    app: {{ template "dash.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    suite: {{ template "fullname" . }}
+spec:
+  ports:
+    - name: dash-http
+      port: {{ .Values.dash.service.port.http }}
+      targetPort: 8080
+      {{- if eq .Values.dash.service.type "NodePort" }}
+      nodePort: {{ .Values.dash.service.nodePort.http }}
+      {{- end }}
+    - name: http-grpc-proxy-http
+      port: {{ .Values.dash.service.port.grpc }}
+      targetPort: 8081
+      {{- if eq .Values.dash.service.type "NodePort" }}
+      nodePort: {{ .Values.dash.service.nodePort.grpc }}
+      {{- end }}
+  selector:
+    app: {{ template "dash.fullname" . }}
+  type: {{ .Values.dash.service.type | quote }}
+{{- end }}

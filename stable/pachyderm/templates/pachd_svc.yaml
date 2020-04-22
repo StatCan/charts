@@ -1,0 +1,38 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: pachd
+  {{- if .Values.pachd.service.annotations }}
+  annotations:
+    {{ .Values.pachd.service.annotations | toYaml | indent 4 | trim  }}
+  {{- end }}
+  labels:
+    app: pachd
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    suite: {{ template "fullname" . }}
+spec:
+  ports:
+    - name: trace-port
+      port: 651
+      targetPort: 0
+    - name: api-http-port
+      port: 652
+      targetPort: 0
+    - name: api-grpc-port
+      port: 650
+      targetPort: 0
+    - name: peer-port
+      port: 653
+      targetPort: 0
+    - name: saml-port
+      port: 654
+      targetPort: 0
+    - name: api-git-port
+      port: 655
+      targetPort: 0
+  selector:
+    app: pachd
+  type: {{ .Values.pachd.service.type | quote }}
