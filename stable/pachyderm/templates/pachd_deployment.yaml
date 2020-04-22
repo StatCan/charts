@@ -54,6 +54,8 @@ spec:
           containerPort: 655
         - name: saml-port
           containerPort: 654
+        - name: s3gateway-port
+          containerPort: 600
         env:
         - name: EXPOSE_OBJECT_API
           value: {{ .Values.pachd.exposeObjApi | quote }}
@@ -183,6 +185,11 @@ spec:
               name: pachyderm-storage-secret
               key: minio-signature
               optional: true
+        - name: PACH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
         - name: PACHD_POD_NAMESPACE
           valueFrom:
             fieldRef:

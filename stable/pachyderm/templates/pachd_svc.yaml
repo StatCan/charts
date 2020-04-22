@@ -33,6 +33,9 @@ spec:
     - name: api-git-port
       port: 655
       targetPort: 0
+    - name: s3gateway-port
+      port: 600
+      targetPort: 0
   selector:
     app: pachd
   type: {{ .Values.pachd.service.type | quote }}

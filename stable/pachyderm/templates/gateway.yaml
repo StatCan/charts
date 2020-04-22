@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: pachyderm-ws
+  namespace: pachyderm
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - '*'
+    port:
+      name: https-ws
+      number: 30081
+      protocol: HTTPS
+    tls:
+      credentialName: wildcard-tls
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds

@@ -12,4 +12,8 @@ subjects:
   - kind: ServiceAccount
     name: {{ template "fullname" . }}
     namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: {{ template "fullname" . }}-worker
+    namespace: {{ .Release.Namespace }}
+
 {{- end }}

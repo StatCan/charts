@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: pachyderm-ws
+  namespace: pachyderm
+spec:
+  gateways:
+  - pachyderm-ws
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: dash.pachyderm.svc.cluster.local
+        port:
+          number: 8081
