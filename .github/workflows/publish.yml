@@ -13,6 +13,9 @@ jobs:
     - name: git actions
       run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    - name: Helm linting
+      run: |
+        ./test/lint.sh
     - name: Helm gh-pages
       uses: sylus/gh-actions/helm-gh-pages@master
       with:
