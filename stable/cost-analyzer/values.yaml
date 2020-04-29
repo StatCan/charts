@@ -2,47 +2,64 @@ cost-analyer:
   global:
     # zone: cluster.local (use only if your DNS server doesn't live in the same zone as kubecost)
     prometheus:
-      enabled: true # If false, Prometheus will not be installed -- only actively supported on paid Kubecost plans
-      fqdn: http://cost-analyzer-prometheus-server.default.svc # example fqdn. Ignored if enabled: true
+      enabled: true
+      # If false, Prometheus will not be installed -- only actively supported on paid Kubecost plans
+      fqdn: http://cost-analyzer-prometheus-server.default.svc
+      # example fqdn. Ignored if enabled: true
 
     # Durable storage option, product key required
     thanos:
       enabled: false
 
     grafana:
-      enabled: true # If false, Grafana will not be installed
-      domainName: cost-analyzer-grafana.default.svc # example grafana domain Ignored if enabled: true
-      scheme: "http" # http or https, for the domain name above.
-      proxy: true # If true, the kubecost frontend will route to your grafana through its service endpoint
+      enabled: true
+      # If false, Grafana will not be installed
+      domainName: cost-analyzer-grafana.default.svc
+      # example grafana domain Ignored if enabled: true
+      scheme: "http"
+      # http or https, for the domain name above.
+      proxy: true
+      # If true, the kubecost frontend will route to your grafana through its service endpoint
 
     notifications:
-      slack: # Write to a webhook.
-        enabled: false # Allow kubecost to write to your slackbot.
-        webhook: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX # Example Webhook
-      alertmanager: # Supply an alertmanager FQDN to receive notifications from the app.
-        enabled: false # If true, allow kubecost to write to your alertmanager
-        fqdn: http://cost-analyzer-prometheus-server.default.svc # example fqdn. Ignored if prometheus.enabled: true
+      slack:
+      # Write to a webhook.
+        enabled: false
+        # Allow kubecost to write to your slackbot.
+        webhook: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+        # Example Webhook
+      alertmanager:
+      # Supply an alertmanager FQDN to receive notifications from the app.
+        enabled: false
+        # If true, allow kubecost to write to your alertmanager
+        fqdn: http://cost-analyzer-prometheus-server.default.svc
+        # example fqdn. Ignored if prometheus.enabled: true
 
     podAnnotations: {}
       # iam.amazonaws.com/role: role-arn
 
-  saml: # enterprise key required to use
+  saml:
+  # enterprise key required to use
     enabled: false
     secretName: "kubecost-authzero"
     idpMetadataURL: "https://dev-elu2z98r.auth0.com/samlp/metadata/c6nY4M37rBP0qSO1IYIqBPPyIPxLS8v2"
-    appRootURL: "http://localhost:9090" # sample URL
+    appRootURL: "http://localhost:9090"
+    # sample URL
     rbac:
       enabled: false
       groups:
         - name: admin
-          enabled: false # if admin is disabled, all SAML users will be able to make configuration changes to the kubecost frontend
-          assertionName: "http://schemas.auth0.com/userType" # a SAML Assertion, one of whose elements has a value that matches on of the values in assertionValues
+          enabled: false
+          # if admin is disabled, all SAML users will be able to make configuration changes to the kubecost frontend
+          assertionName: "http://schemas.auth0.com/userType"
+          # a SAML Assertion, one of whose elements has a value that matches on of the values in assertionValues
           assertionValues:
             - "admin"
             - "superusers"
         - name: readonly
-          enabled: false # if readonly is disabled, all users authorized on SAML will default to readonly
-          assertionName:  "http://schemas.auth0.com/userType"
+          enabled: false
+          # if readonly is disabled, all users authorized on SAML will default to readonly
+          assertionName: "http://schemas.auth0.com/userType"
           assertionvalues:
             - "readonly"
 
@@ -99,7 +116,8 @@ cost-analyer:
     annotations:
       kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
-    paths: ["/"] # There's no need to route specifically to the pods-- we have an nginx deployed that handles routing
+    paths: ["/"]
+    # There's no need to route specifically to the pods-- we have an nginx deployed that handles routing
     hosts:
       - cost-analyzer.local
     tls: []
@@ -125,7 +143,8 @@ cost-analyer:
   # Define persistence volume for cost-analyzer
   persistentVolume:
     size: 0.2Gi
-    enabled: true # Note that setting this to false means configurations will be wiped out on pod restart.
+    enabled: true
+    # Note that setting this to false means configurations will be wiped out on pod restart.
     # storageClass: "-" #
     # existingClaim: kubecost-cost-analyzer # a claim in the same namespace as kubecost
 
@@ -143,11 +162,13 @@ cost-analyer:
       initImage: "gcr.io/kubecost1/sql-init"
       initImagePullPolicy: Always
       installLocal: true
-      remotePostgresAddress: "" # ignored if installing locally
+      remotePostgresAddress: ""
+      # ignored if installing locally
       persistentVolume:
         size: 200Gi
       auth:
-        password: admin # change me
+        password: admin
+        # change me
 
   prometheus:
     extraScrapeConfigs: |
@@ -181,7 +202,8 @@ cost-analyer:
         scrape_timeout: 10s
         evaluation_interval: 1m
         external_labels:
-          cluster_id: cluster-one # Each cluster should have a unique ID
+          cluster_id: cluster-one
+          # Each cluster should have a unique ID
       persistentVolume:
         size: 32Gi
         enabled: true
@@ -295,7 +317,8 @@ cost-analyer:
       server:
         root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
   serviceAccount:
-    create: true # Set this to false if you're bringing your own service account.
+    create: true
+    # Set this to false if you're bringing your own service account.
     annotations: {}
     # name: kc-test
 

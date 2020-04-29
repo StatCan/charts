@@ -67,28 +67,28 @@ serviceType: ClusterIP
 
 # If the loadBalancer supports sessionAffinity and
 # you have one or more coordinators, enable it
-#sessionAffinity: ClientIP
+# sessionAffinity: ClientIP
 
 # Enable the following flag if you wish to route traffic through a shared VPC
 # for the LoadBalancer's external IP.
 # The chart is setup for internal IP support for AKS, EKS, GKE.
 # For more information, see https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
-#internalLoadBalancer: true
+# internalLoadBalancer: true
 
 # To use custom storage class, uncomment and provide the value here.
 # Otherwise the default storage class configured for your K8S cluster is used.
-#storageClass: managed-premium
+# storageClass: managed-premium
 
 # For private and protected docker image repository, you should store
 # the credentials in a kubernetes secret and provide the secret name
 # here.  For more information, see
 # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-#imagePullSecrets: secretname
+# imagePullSecrets: secretname
 
 # Target pods to nodes based on labels set on the nodes.  For more
 # information, see
 # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
-#nodeSelector:
+# nodeSelector:
 #  key: value
 
 # Control where uploaded files are stored. See
@@ -98,18 +98,21 @@ distStorage:
   # Valid values are local, aws, azure or azureStorage. aws and azure
   # choice requires additional configuration data.
   type: "local"
-  aws: # S3
+  aws:
+  # S3
     bucketName: "Your_AWS_bucket_name"
     path: "/"
     accessKey: "Your_AWS_Access_Key"
     secret: "Your_AWS_Secret"
-  azure: # ADLS gen1
+  azure:
+  # ADLS gen1
     datalakeStoreName: "Your_Azure_DataLake_Storage_name"
     path: "/"
     applicationId: "Your_Azure_Application_Id"
     secret: "Your_Azure_Secret"
     oauth2EndPoint: "Azure_OAuth2_Endpoint"
-  azureStorage: # AzureStorage gen2v2
+  azureStorage:
+  # AzureStorage gen2v2
     accountName: "Azure_storage_v2_account_name"
     accessKey: "Access_key_for_the_storage_account"
     filesystem: "Filesystem_in_storage_account"

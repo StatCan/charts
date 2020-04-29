@@ -15,7 +15,8 @@ csi-vault:
     name: plugin
     registry: kubevault
     repository: csi-vault
-    tag: 0.2.0 #TODO: need to be changed
+    tag: 0.2.0
+    # TODO: need to be changed
     pullPolicy: Always
   provisioner:
     name: provisioner
