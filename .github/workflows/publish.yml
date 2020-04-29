@@ -17,7 +17,7 @@ jobs:
       run: |
         ./test/lint.sh
     - name: Helm gh-pages
-      uses: sylus/gh-actions/helm-gh-pages@master
+      uses: statcan/actions/helm-ghpages@master
       with:
         args: "stable/* https://statcan.github.io/charts"
       env:
