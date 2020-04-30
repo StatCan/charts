@@ -10,12 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+
     - name: git actions
       run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+
     - name: Helm linting
       run: |
         ./test/lint.sh
+
     - name: Helm gh-pages
       uses: statcan/actions/helm-ghpages@master
       with:
