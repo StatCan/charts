@@ -20,8 +20,8 @@ spec:
 {{ toYaml .Values.annotations | indent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.varnish.image }}:{{ .Values.varnish.tag }}"
-          imagePullPolicy: {{ .Values.varnish.pullPolicy }}
+          image: "{{ .Values.varnishd.image }}:{{ default .Chart.AppVersion .Values.varnishd.tag }}"
+          imagePullPolicy: {{ .Values.varnishd.pullPolicy }}
           volumeMounts:
             - name: varnish-config
               mountPath: /etc/varnish/default.vcl
@@ -32,7 +32,7 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-    {{- with .Values.varnish.imagePullSecrets }}
+    {{- with .Values.varnishd.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
