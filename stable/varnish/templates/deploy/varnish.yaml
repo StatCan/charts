@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "varnish.fullname" . }}
+  labels:
+{{ include "varnish.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "varnish.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "varnish.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      annotations:
+{{ toYaml .Values.annotations | indent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.varnish.image }}:{{ .Values.varnish.tag }}"
+          imagePullPolicy: {{ .Values.varnish.pullPolicy }}
+          volumeMounts:
+            - name: varnish-config
+              mountPath: /etc/varnish/default.vcl
+              subPath: default.vcl
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+    {{- with .Values.varnish.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+      - name: varnish-config
+        configMap:
+          name: "{{ include "varnish.fullname" . }}"
