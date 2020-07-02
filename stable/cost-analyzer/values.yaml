@@ -2,63 +2,57 @@ cost-analyer:
   global:
     # zone: cluster.local (use only if your DNS server doesn't live in the same zone as kubecost)
     prometheus:
-      enabled: true
-      # If false, Prometheus will not be installed -- only actively supported on paid Kubecost plans
-      fqdn: http://cost-analyzer-prometheus-server.default.svc
-      # example fqdn. Ignored if enabled: true
+      enabled: true # If false, Prometheus will not be installed -- only actively supported on paid Kubecost plans
+      fqdn: http://cost-analyzer-prometheus-server.default.svc #example fqdn. Ignored if enabled: true
 
     # Durable storage option, product key required
     thanos:
       enabled: false
+      # queryService: http://kubecost-thanos-query-http.kubecost:{{ .Values.thanos.query.http.port }} # an address of the thanos query endpoint, if different from installed thanos
 
     grafana:
-      enabled: true
-      # If false, Grafana will not be installed
-      domainName: cost-analyzer-grafana.default.svc
-      # example grafana domain Ignored if enabled: true
-      scheme: "http"
-      # http or https, for the domain name above.
-      proxy: true
-      # If true, the kubecost frontend will route to your grafana through its service endpoint
+      enabled: true # If false, Grafana will not be installed
+      domainName: cost-analyzer-grafana.default.svc #example grafana domain Ignored if enabled: true
+      scheme: "http" # http or https, for the domain name above.
+      proxy: true # If true, the kubecost frontend will route to your grafana through its service endpoint
 
     notifications:
-      slack:
-      # Write to a webhook.
-        enabled: false
-        # Allow kubecost to write to your slackbot.
-        webhook: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
-        # Example Webhook
-      alertmanager:
-      # Supply an alertmanager FQDN to receive notifications from the app.
-        enabled: false
-        # If true, allow kubecost to write to your alertmanager
-        fqdn: http://cost-analyzer-prometheus-server.default.svc
-        # example fqdn. Ignored if prometheus.enabled: true
+      slack: # Write to a webhook.
+        enabled: false # Allow kubecost to write to your slackbot.
+        webhook: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX # Example Webhook
+      alertmanager: # Supply an alertmanager FQDN to receive notifications from the app.
+        enabled: false # If true, allow kubecost to write to your alertmanager
+        fqdn: http://cost-analyzer-prometheus-server.default.svc #example fqdn. Ignored if prometheus.enabled: true
 
     podAnnotations: {}
       # iam.amazonaws.com/role: role-arn
 
-  saml:
-  # enterprise key required to use
+  pricingCsv:
+    enabled: false
+    location:
+      provider: "AWS"
+      region: "us-east-1"
+      URI: s3://kc-csv-test/pricing_schema.csv # a valid file URI
+      csvAccessCredentials: pricing-schema-access-secret
+
+  saml: # enterprise key required to use
     enabled: false
     secretName: "kubecost-authzero"
+    #metadataSecretName: "kubecost-authzero-metadata" # One of metadataSecretName or idpMetadataURL must be set. defaults to metadataURL if set
     idpMetadataURL: "https://dev-elu2z98r.auth0.com/samlp/metadata/c6nY4M37rBP0qSO1IYIqBPPyIPxLS8v2"
-    appRootURL: "http://localhost:9090"
-    # sample URL
+    appRootURL: "http://localhost:9090" # sample URL
+    # audienceURI: "http://localhost:9090" # by convention, the same as the appRootURL, but any string uniquely identifying kubecost to your samp IDP. Optional if you follow the convention
     rbac:
       enabled: false
       groups:
         - name: admin
-          enabled: false
-          # if admin is disabled, all SAML users will be able to make configuration changes to the kubecost frontend
-          assertionName: "http://schemas.auth0.com/userType"
-          # a SAML Assertion, one of whose elements has a value that matches on of the values in assertionValues
+          enabled: false # if admin is disabled, all SAML users will be able to make configuration changes to the kubecost frontend
+          assertionName: "http://schemas.auth0.com/userType" # a SAML Assertion, one of whose elements has a value that matches on of the values in assertionValues
           assertionValues:
             - "admin"
             - "superusers"
         - name: readonly
-          enabled: false
-          # if readonly is disabled, all users authorized on SAML will default to readonly
+          enabled: false # if readonly is disabled, all users authorized on SAML will default to readonly
           assertionName: "http://schemas.auth0.com/userType"
           assertionvalues:
             - "readonly"
@@ -81,9 +75,9 @@ cost-analyer:
       requests:
         cpu: "10m"
         memory: "55Mi"
-      # limits:
-      #   cpu: "100m"
-      #   memory: "256Mi"
+      #limits:
+      #  cpu: "100m"
+      #  memory: "256Mi"
 
   kubecost:
     image: "gcr.io/kubecost1/server"
@@ -91,21 +85,23 @@ cost-analyer:
       requests:
         cpu: "100m"
         memory: "55Mi"
-      # limits:
-      #   cpu: "100m"
-      #   memory: "256Mi"
+      #limits:
+      #  cpu: "100m"
+      #  memory: "256Mi"
 
   kubecostModel:
     image: "gcr.io/kubecost1/cost-model"
     imagePullPolicy: Always
     warmCache: true
+    warmSavingsCache: true
+    etl: true
     resources:
       requests:
         cpu: "200m"
         memory: "55Mi"
-      # limits:
-      #   cpu: "800m"
-      #   memory: "256Mi"
+      #limits:
+      #  cpu: "800m"
+      #  memory: "256Mi"
 
   kubecostInit:
     image: "gcr.io/kubecost1/init"
@@ -116,8 +112,7 @@ cost-analyer:
     annotations:
       kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
-    paths: ["/"]
-    # There's no need to route specifically to the pods-- we have an nginx deployed that handles routing
+    paths: ["/"] # There's no need to route specifically to the pods-- we have an nginx deployed that handles routing
     hosts:
       - cost-analyzer.local
     tls: []
@@ -140,11 +135,13 @@ cost-analyer:
   networkPolicy:
     enabled: false
 
+  podSecurityPolicy:
+    enabled: false
+
   # Define persistence volume for cost-analyzer
   persistentVolume:
     size: 0.2Gi
-    enabled: true
-    # Note that setting this to false means configurations will be wiped out on pod restart.
+    enabled: true # Note that setting this to false means configurations will be wiped out on pod restart.
     # storageClass: "-" #
     # existingClaim: kubecost-cost-analyzer # a claim in the same namespace as kubecost
 
@@ -162,13 +159,11 @@ cost-analyer:
       initImage: "gcr.io/kubecost1/sql-init"
       initImagePullPolicy: Always
       installLocal: true
-      remotePostgresAddress: ""
-      # ignored if installing locally
+      remotePostgresAddress: "" # ignored if installing locally
       persistentVolume:
         size: 200Gi
       auth:
-        password: admin
-        # change me
+        password: admin # change me
 
   prometheus:
     extraScrapeConfigs: |
@@ -202,8 +197,7 @@ cost-analyer:
         scrape_timeout: 10s
         evaluation_interval: 1m
         external_labels:
-          cluster_id: cluster-one
-          # Each cluster should have a unique ID
+          cluster_id: cluster-one # Each cluster should have a unique ID
       persistentVolume:
         size: 32Gi
         enabled: true
@@ -213,8 +207,10 @@ cost-analyer:
       # enabled: false
       persistentVolume:
         enabled: true
+    nodeExporter:
+      enabled: true
     pushgateway:
-      # enabled: false
+      enabled: false
       persistentVolume:
         enabled: true
     serverFiles:
@@ -227,8 +223,8 @@ cost-analyer:
     #              action: keep
     #          queue_config:
     #            max_samples_per_send: 1000
-          # remote_read:
-          #   - url: "http://pgprometheus-adapter:9201/read"
+          #remote_read:
+          #  - url: "http://pgprometheus-adapter:9201/read"
       rules:
         groups:
           - name: CPU
@@ -246,23 +242,40 @@ cost-analyer:
 
   networkCosts:
     enabled: false
-    image: gcr.io/kubecost1/kubecost-network-costs:v12
+    podSecurityPolicy:
+      enabled: false
+    image: gcr.io/kubecost1/kubecost-network-costs:v13.2
     imagePullPolicy: Always
     resources: {}
-      # requests:
-      #   cpu: "50m"
-      #   memory: "20Mi"
+      #requests:
+      #  cpu: "50m"
+      #  memory: "20Mi"
     config:
-      # White Listed from Egress Reporting
-      # Accepts both static IPs and CIDR block
-      whiteList:
-        - "127.0.0.1"
-        # IPv4 Link Local Address Space
-        - "169.254.0.0/16"
-        # Private Address Ranges in RFC-1918
-        - "10.0.0.0/8"
-        - "172.16.0.0/12"
-        - "192.168.0.0/16"
+      # Configuration for traffic destinations, including specific classification
+      # for IPs and CIDR blocks. This configuration will act as an override to the
+      # automatic classification provided by network-costs.
+      destinations:
+        # In Zone contains a list of address/range that will be
+        # classified as in zone.
+        in-zone:
+          # Loopback
+          - "127.0.0.1"
+          # IPv4 Link Local Address Space
+          - "169.254.0.0/16"
+          # Private Address Ranges in RFC-1918
+          - "10.0.0.0/8"
+          - "172.16.0.0/12"
+          - "192.168.0.0/16"
+
+        # In Region contains a list of address/range that will be
+        # classified as in region. This is synonymous with cross
+        # zone traffic, where the regions between source and destinations
+        # are the same, but the zone is different.
+        in-region: []
+
+        # Cross Region contains a list of address/range that will be
+        # classified as non-internet egress from one region to another.
+        cross-region: []
     ## Node tolerations for server scheduling to nodes with taints
     ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
     ##
@@ -276,16 +289,23 @@ cost-analyer:
     ## Ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
     priorityClassName: []
 
-  turndown:
+  # Kubecost Deployment Configuration
+  # Used for HA mode in Business & Enterprise tier
+  kubecostDeployment:
+    replicas: 1
+
+  # Kubecost Cluster Controller for Right Sizing and Cluster Turndown
+  clusterController:
     enabled: false
-    image: gcr.io/kubecost1/cluster-turndown:v1.0
+    image: gcr.io/kubecost1/cluster-controller:v0.0.2
     imagePullPolicy: Always
 
-  # Kubecost bug report feature
-  # Ref: http://docs.kubecost.com/bug-report
-  bugReporting:
-    # Logs access/collection limited to .Release.Namespace
+  reporting:
+    # Kubecost bug report feature: Logs access/collection limited to .Release.Namespace
+    # Ref: http://docs.kubecost.com/bug-report
     logCollection: true
+    productAnalytics: true
+    errorReporting: true
 
   serviceMonitor:
     enabled: false
@@ -296,6 +316,7 @@ cost-analyer:
     additionalLabels: {}
 
   supportNFS: true
+  initChownDataImage: "busybox" # Supports a fully qualified Docker image eg: registry.hub.docker.com/library/busybox:latest
 
   grafana:
     # namespace_datasources: kubecost # override the default namespace here
@@ -310,15 +331,14 @@ cost-analyer:
         defaultDatasourceEnabled: true
         dataSourceName: Prometheus
         # label that the configmaps with datasources are marked with
-        label: grafana_datasource
+        label: kubecost_grafana_datasource
   #  For grafana to be accessible, add the path to root_url. For example, if you run kubecost at www.foo.com:9090/kubecost
   #  set root_url to "%(protocol)s://%(domain)s:%(http_port)s/kubecost/grafana". No change is necessary here if kubecost runs at a root URL
     grafana.ini:
       server:
         root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
   serviceAccount:
-    create: true
-    # Set this to false if you're bringing your own service account.
+    create: true # Set this to false if you're bringing your own service account.
     annotations: {}
     # name: kc-test
 
@@ -365,7 +385,15 @@ cost-analyer:
   #  awsSpotDataRegion: us-east-1
   #  awsSpotDataBucket: spot-data-feed-s3-bucket
   #  awsSpotDataPrefix: dev
+  #  athenaProjectID: "530337586277"
+  #  athenaBucketName: "s3://aws-athena-query-results-530337586277-us-east-1"
+  #  athenaRegion: us-east-1
+  #  athenaDatabase: athenacurcfn_athena_test1
+  #  athenaTable: "athena_test1"
+  #  masterPayerARN: ""
   #  projectID: "123456789"
+  #  gcpSecretName: gcp-secret # Name of a secret representing the gcp service key
+  #  bigQueryBillingDataDataset: billing_data.gcp_billing_export_v1_01AC9F_74CF1D_5565A2
   #  labelMappingConfigs:  # names of k8s labels used to designate different allocation concepts
   #    enabled: true
   #    owner_label: "owner"
@@ -388,7 +416,7 @@ cost-analyer:
   #  grafanaURL: ""
   #  clusterName: "" # used for display in Kubecost UI
   #  currencyCode: "USD" # offical support for USD, EUR, and CHF
-  #  azureBillingRegion: US
+  #  azureBillingRegion: US # Represents 2-letter region code, e.g. West Europe = NL, Canada = CA. ref: https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
   #  azureSubscriptionID: 0bd50fdf-c923-4e1e-850c-196dd3dcc5d3
   #  azureClientID: f2ef6f7d-71fb-47c8-b766-8d63a19db017
   #  azureTenantID: 72faf3ff-7a3f-4597-b0d9-7b0b201bb23a
