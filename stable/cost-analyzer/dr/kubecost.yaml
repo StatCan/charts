@@ -1,0 +1,13 @@
+{{- if .Values.destinationRule.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "cost-analyzer.fullname" . }}
+  labels:
+    {{ include "cost-analyzer.commonLabels" . | nindent 4 }}
+spec:
+  host: "kubecost-cost-analyzer.{{ .Release.Namespace }}.svc.{{ default "cluster.local" .Values.clusterDomain }}"
+  trafficPolicy:
+    tls:
+      mode: "{{ default "DISABLE" .Values.destinationRule.mode }}"
+{{- end }}
