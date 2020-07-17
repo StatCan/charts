@@ -43,9 +43,12 @@ spec:
               secretKeyRef:
                 name: {{ include "mlflow.fullname" . }}
                 key: azurestorageaccountartifact
+{{- else }}
+          - name: MLFLOW_SERVER_DEFAULT_ARTIFACT_ROOT
+            value: "file:///mnt/mlruns/artifacts"
 {{- end }}
           - name: MLFLOW_SERVER_FILE_STORE
-            value: "/mnt/azfiles/mlruns"
+            value: "sqlite:///mnt/mlruns/mlflow.db"
           - name: MLFLOW_SERVER_HOST
             value: "0.0.0.0"
           - name: MLFLOW_SERVER_PORT
