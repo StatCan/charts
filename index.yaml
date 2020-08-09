@@ -2,8 +2,29 @@ apiVersion: v1
 entries:
   cost-analyzer:
   - apiVersion: v1
+    appVersion: 1.61.3
+    created: "2020-08-09T22:43:17.141306455Z"
+    description: Kubecost
+    digest: 3e5ee36f1be2211c9d56b06fdb3710350900d1dac84aa5d0de797787eef485cc
+    engine: gotpl
+    home: https://kubecost.com
+    keywords:
+    - costing
+    - kubecost
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: zachomedia
+    name: cost-analyzer
+    sources:
+    - https://github.com/kubecost
+    urls:
+    - https://statcan.github.io/charts/cost-analyzer-0.0.5.tgz
+    version: 0.0.5
+  - apiVersion: v1
     appVersion: 1.61.1
-    created: "2020-07-18T04:36:59.685619847Z"
+    created: "2020-08-09T22:43:17.134455Z"
     description: Kubecost
     digest: 6f5da04b54572de5f803ef54f8d5d3635e162955b6b707b9c888558e273550ff
     engine: gotpl
@@ -24,7 +45,7 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2020-07-18T04:36:59.679279249Z"
+    created: "2020-08-09T22:43:17.127887746Z"
     description: Kubecost
     digest: 317470afefc72c7b4afbdab14a801e3109bbe083dd967967275d6803626089e9
     engine: gotpl
@@ -45,7 +66,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2020-07-18T04:36:59.671201971Z"
+    created: "2020-08-09T22:43:17.121735096Z"
     description: Kubecost
     digest: 3926a136f6c5bd4ea1cc62f8fcaccbe96a54fdb040577683c7039f7093b8f9f0
     engine: gotpl
@@ -66,7 +87,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.57.1
-    created: "2020-07-18T04:36:59.664476055Z"
+    created: "2020-08-09T22:43:17.117046758Z"
     description: Kubecost
     digest: 8561ec756562c7f327492346ce50e991c949785b56f6ec914b5624c42183be2c
     engine: gotpl
@@ -88,9 +109,9 @@ entries:
   covid:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-07-18T04:36:59.686041966Z"
+    created: "2020-08-09T22:43:17.141633058Z"
     description: Covid-19 nodejs app built in React.
-    digest: e2ffdfd06ebc8eba78ce023ca562610e376ff1f8030b0bdaaa516beb7cdcc198
+    digest: 1b7bb9a7c579efacc0a6616d1f1089798317720757e59efdb362a8a26cf74696
     engine: gotpl
     home: https://github.com/CSSEGISandData/COVID-19
     keywords:
@@ -112,9 +133,9 @@ entries:
   csi-vault:
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2020-07-18T04:36:59.687066815Z"
+    created: "2020-08-09T22:43:17.142437065Z"
     description: An extended Helm chart derived from official Vault CSI chart.
-    digest: cd59e24b8c596a9196db9e91cba3fd4d36c90b071dad01a51dca227c6f4302f7
+    digest: d1d878605e7c549e7f2ecb4b4823ac003857560450e28b143f9698e6fe974a09
     engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
@@ -131,10 +152,10 @@ entries:
   dremio:
   - apiVersion: v1
     appVersion: 4.2.0
-    created: "2020-07-18T04:36:59.687868452Z"
+    created: "2020-08-09T22:43:17.142969669Z"
     description: |
       Dremio is an open source platform providing the missing link in modern data.
-    digest: 35b2debad2d95abbbc6795edafe88e40af8721a94efdc6e486a2e8690074cd40
+    digest: 9e08b6d1b09fd3691efdbc7fdd5ed879499665b8c7a92fc6b5a7b9f8d5812b16
     engine: gotpl
     home: https://www.dremio.com
     maintainers:
@@ -149,9 +170,9 @@ entries:
   fluentd-operator:
   - apiVersion: v1
     appVersion: 0.3.1
-    created: "2020-07-18T04:36:59.68867339Z"
+    created: "2020-08-09T22:43:17.143221371Z"
     description: Distribution of Fluentd as K8S daemonset
-    digest: a19e80dabb6d60d3de61b14a8dbc402f97f08ec6e78cdaeceb2458faa76cd51f
+    digest: 25fee2daca1bae7ad40a4361f792adcbf6cf68f9e714400b9aeb5e8c61a40ad9
     engine: gotpl
     home: https://github.com/vmware/kube-fluentd-operator
     keywords:
@@ -171,7 +192,7 @@ entries:
   gitlab-runner:
   - apiVersion: v1
     appVersion: bleeding
-    created: "2020-07-18T04:36:59.689563532Z"
+    created: "2020-08-09T22:43:17.143711975Z"
     description: GitLab Runner
     digest: a4570e085cfa92329a7615058fb09253b18bda59eaa700e15e28178b947eb2ae
     home: https://gitlab.com
@@ -193,9 +214,9 @@ entries:
   logstash:
   - apiVersion: v1
     appVersion: 7.2.0
-    created: "2020-07-18T04:36:59.690917895Z"
+    created: "2020-08-09T22:43:17.144277879Z"
     description: Logstash is an open source, server-side data processing pipeline
-    digest: 88fbe65a7795c3d3706b35c79f3df338e61e4b19b5e58d89f59b3a3eea1f761b
+    digest: 4c437c31280b8c6eafedceb9b4874126ab9aeac5ec8c966c24cea8571bf51cb3
     home: https://www.elastic.co/products/logstash
     icon: https://www.elastic.co/assets/blt86e4472872eed314/logo-elastic-logstash-lt.svg
     maintainers:
@@ -211,9 +232,9 @@ entries:
   matomo:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-07-18T04:36:59.692327861Z"
+    created: "2020-08-09T22:43:17.145764392Z"
     description: A Helm chart for using Matomo
-    digest: 39e1a34c5132c17ef88df95136c278f82e67de2ce0c61781f3c604570a43a45b
+    digest: 86ce7079ed349a276b08e0cc2d8242ce86eb4be0913a54e169a864c4421fcf0f
     home: https://matomo.org
     icon: https://bitnami.com/assets/stacks/matomo/img/matomo-stack-110x117.png
     maintainers:
@@ -228,10 +249,10 @@ entries:
   mlflow:
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2020-07-18T04:36:59.693737227Z"
+    created: "2020-08-09T22:43:17.147097902Z"
     description: |
       [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
-    digest: 0e9dee6f17125e7468d27b16b8f0fd34d34ad3e8bd07e7d8837fdd4cee03c66e
+    digest: 8e191c38fc645637c937ae76d4e2a511d920f4cbf26f470a14870d97bc83b5f0
     engine: gotpl
     home: https://mlflow.org/
     maintainers:
@@ -245,7 +266,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2020-07-18T04:36:59.693276006Z"
+    created: "2020-08-09T22:43:17.1467469Z"
     description: |
       [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
     digest: d0bcc84bfd2989660344d202e3c25110974c38d781f7b9a6c26c525703830595
@@ -262,7 +283,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2020-07-18T04:36:59.692772482Z"
+    created: "2020-08-09T22:43:17.146349896Z"
     description: |
       [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
     digest: 02253d17e7c7803a9b64fbc11b30454fa04c7744ab2143444fcf24d5f47ec856
@@ -280,9 +301,9 @@ entries:
   orchard-cms:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-07-18T04:36:59.695612815Z"
+    created: "2020-08-09T22:43:17.148457613Z"
     description: A Helm chart for using OrchardCore cms
-    digest: a8bb742dc366b23d8a6b3fa7b9c6480f252354f694243b003f8f38f6933d52e4
+    digest: bf885925e64ad024c2e26c90c67434285abfa1c25ac4349c188d9e61122efda7
     home: https://www.orchardcore.net/
     maintainers:
     - email: jean-philippe.tissot@canada.ca
@@ -296,10 +317,10 @@ entries:
   pachyderm:
   - apiVersion: v1
     appVersion: 1.8.6
-    created: "2020-07-18T04:36:59.696338449Z"
+    created: "2020-08-09T22:43:17.148972718Z"
     description: |
       Pachyderm is a large-scale container-based workflow engine that offers complete version control for data and reproducible data processing
-    digest: 4d582d0b5bc6e01fe8b6828a89571a3cf9d567ead155fad5e6cd578614800e3e
+    digest: dab411dda884f8942cc1c9aecb0558289d63207f2b3ad66b26891a55a8210c36
     home: https://pachyderm.io
     icon: https://avatars2.githubusercontent.com/u/10432478?s=200
     keywords:
@@ -324,10 +345,10 @@ entries:
   prometheus-operator:
   - apiVersion: v1
     appVersion: 0.30.0
-    created: "2020-07-18T04:36:59.706270615Z"
+    created: "2020-08-09T22:43:17.15543217Z"
     description: An extended Helm chart derived from official Prometheus Operator
       chart.
-    digest: 9bcdb0906755f1b0fe3a46a79a2b5258d379c5bee6fd3819db102ba01a214ea3
+    digest: 3c9f8d36f634845283d6a10ad2d6a7ecb53e231bc83cccd9b87b5cec86c4d236
     engine: gotpl
     home: https://coreos.com/operators/prometheus/docs/latest/
     maintainers:
@@ -342,9 +363,9 @@ entries:
   shiny:
   - apiVersion: v1
     appVersion: 3.6.0
-    created: "2020-07-18T04:36:59.706690535Z"
+    created: "2020-08-09T22:43:17.156019575Z"
     description: A Helm chart for using Shiny.
-    digest: b57ff1b96c1ed168fc4ce808e90c6962f8feb062070f31cce828a9d3f04d5137
+    digest: 68d13614bb6e726dc049eadcbe2a14ce7a2589c81f708d7fc178537ba78279f6
     engine: gotpl
     home: https://rstudio.com/products/shiny/shiny-server/
     maintainers:
@@ -359,9 +380,9 @@ entries:
   varnish:
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2020-07-18T04:36:59.707377067Z"
+    created: "2020-08-09T22:43:17.156726181Z"
     description: A Helm chart for using Varnish.
-    digest: 42925e19930c1a15ed33301d7ebc58d0741c8b4377e8eb0afd943db708005624
+    digest: ff742e463a9c7ca6f3bf717a87ae192eae144327d49de4f2737c0836e2d20fe7
     engine: gotpl
     home: https://www.varnish-software.com
     maintainers:
@@ -375,7 +396,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2020-07-18T04:36:59.707034551Z"
+    created: "2020-08-09T22:43:17.156403478Z"
     description: A Helm chart for using Varnish.
     digest: 4bb8cc91a5d83ed119180a2b0f46885d718b4c04447ebee49dff9281d77fa7b1
     engine: gotpl
@@ -392,9 +413,9 @@ entries:
   vault:
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-07-18T04:36:59.714408497Z"
+    created: "2020-08-09T22:43:17.163463035Z"
     description: An extended Helm chart derived from official Vault chart.
-    digest: e70fdcd121286aeafacc3c87aafbdc03a6b064d6e093a0cf112404f15e53f873
+    digest: 7c0b96bcafd5fe663b596194bdb63b987a101fc8c0f6177cb569ce50937ef6c3
     engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
@@ -410,7 +431,7 @@ entries:
     version: 0.0.7
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-07-18T04:36:59.712647014Z"
+    created: "2020-08-09T22:43:17.16152782Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: b371038b12818d373abb7f75f8ca6bf40ee26175d392a31dccc1ab89fe11fe09
     engine: gotpl
@@ -428,7 +449,7 @@ entries:
     version: 0.0.6
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-07-18T04:36:59.710820528Z"
+    created: "2020-08-09T22:43:17.159369802Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: ac5af6987e345e63d16d0485d246e8e27c3d216c3d401a45e975f452fec24a3e
     engine: gotpl
@@ -446,7 +467,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-07-18T04:36:59.708812334Z"
+    created: "2020-08-09T22:43:17.158058291Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: e943ffaa01e55a2a0986da29a69541cdec1fcc8c623c6f56f026922a135332ed
     engine: gotpl
@@ -465,9 +486,9 @@ entries:
   velero:
   - apiVersion: v1
     appVersion: 1.3.2
-    created: "2020-07-18T04:36:59.717332534Z"
+    created: "2020-08-09T22:43:17.165563852Z"
     description: An extended Helm chart derived from official Velero chart.
-    digest: 992b64b45aed1feedd8d52a9189390baf0d6a0623d2c0c8d8cf5e2400c3fbbbb
+    digest: fd5847b7d699b87af7a046754d371f339a18517ef012a135a471e608a98def0d
     engine: gotpl
     home: https://heptio.com/products/#heptio-velero
     maintainers:
@@ -483,7 +504,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.11.0
-    created: "2020-07-18T04:36:59.715263437Z"
+    created: "2020-08-09T22:43:17.16405824Z"
     description: An extended Helm chart derived from official Velero chart.
     digest: 959669cf7b7afa4df6d827caf436c95840e16848f6f5d7696aa114dd0394ad4a
     engine: gotpl
@@ -497,4 +518,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/velero-0.0.2.tgz
     version: 0.0.2
-generated: "2020-07-18T04:36:59.654081368Z"
+generated: "2020-08-09T22:43:17.109209095Z"
