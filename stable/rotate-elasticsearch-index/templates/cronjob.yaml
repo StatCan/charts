@@ -1,0 +1,87 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "rotate-elasticsearch-index.fullname" . }}
+  labels:
+    app: "{{ template "rotate-elasticsearch-index.fullname" . }}"
+    release: {{ .Release.Name | quote }}
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  schedule: "{{ .Values.cronJob.schedule }}"
+  {{- with .Values.cronJob.failedJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ . }}
+  {{- end }}
+  {{- with .Values.cronJob.successfulJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ . }}
+  {{- end }}
+  jobTemplate:
+    metadata:
+      labels:
+        app: "{{ template "rotate-elasticsearch-index.fullname" . }}"
+        release: {{ .Release.Name | quote }}
+    spec:
+      backoffLimit: {{ .Values.cronJob.jobTemplate.backoffLimit }}
+      activeDeadlineSeconds: {{ .Values.cronJob.jobTemplate.activeDeadlineSeconds }}
+      template:
+        metadata:
+          labels:
+            app: "{{ template "rotate-elasticsearch-index.fullname" . }}"
+            release: {{ .Release.Name | quote }}
+        spec:
+          restartPolicy: OnFailure
+{{- with .Values.nodeSelector }}
+          nodeSelector:
+{{ toYaml . | indent 12 }}
+{{- end }}
+{{- with .Values.affinity }}
+          affinity:
+{{ toYaml . | indent 12 }}
+{{- end }}
+{{- with .Values.tolerations }}
+          tolerations:
+{{ toYaml . | indent 12 }}
+{{- end }}
+{{- if .Values.imagePullSecrets }}
+          imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 12 }}
+        {{- end }}
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.container.imageRepository }}:{{ .Values.container.imageTag }}"
+            env:
+{{- if .Values.container.extraEnvs }}
+{{ toYaml .Values.container.extraEnvs | indent 14 }}
+{{- end }}
+            args:
+            - --logtostderr
+            - "-v={{ .Values.elasticsearch.logLevel }}"
+            - "--endpoints={{ .Values.elasticsearch.endpoints }}"
+            - "--days={{ .Values.elasticsearch.days }}"
+            - "--index-regex-patterns={{ .Values.elasticsearch.indexRegexPatterns }}"
+            - "--date-format={{ .Values.elasticsearch.dateFormat }}"
+            {{- if .Values.elasticsearch.basicUsername }}
+            - "--username={{ .Values.elasticsearch.basicUsername }}"
+            {{- end }}
+            {{- if .Values.elasticsearch.basicPassword }}
+            - "--password={{ .Values.elasticsearch.basicPassword }}"
+            {{- end }}
+            {{- if .Values.elasticsearch.sniffer }}
+            - "--tls.skip-host-verify={{ .Values.elasticsearch.sniffer }}"
+            {{- end }}
+            {{- if .Values.elasticsearch.tls.enable }}
+            - "--tls"
+            - "--tls.ca={{ .Values.elasticsearch.tls.ca }}"
+            - "--tls.cert={{ .Values.elasticsearch.tls.cert }}"
+            - "--tls.key={{ .Values.elasticsearch.tls.key }}"
+            {{- end }}
+            {{- if .Values.elasticsearch.tls.skipHostVerify }}
+            - "--tls.skip-host-verify={{ .Values.elasticsearch.tls.skipHostVerify }}"
+            {{- end }}
+            {{- if .Values.elasticsearch.retry }}
+            - "--retry-count={{ .Values.elasticsearch.retry }}"
+            {{- end }}
+            imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+            resources:
+{{ toYaml .Values.container.resources | indent 14 }}

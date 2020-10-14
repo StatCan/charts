@@ -1,0 +1,53 @@
+# Default values for rotate-elasticsearch-index.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+labels: []
+
+cronJob:
+  schedule: "@daily"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    backoffLimit: 3
+    activeDeadlineSeconds: 30
+
+elasticsearch:
+  logLevel: 2
+  days: 90
+  # This flag take comma-separated value as arguments
+  # and split them accordingly.
+  endpoints: http://elasticsearch-logging:9200
+  # This flag take comma-separated value as arguments
+  # and split them accordingly.
+  indexRegexPatterns: ^logstash$
+  dateFormat: 2006.1.2
+  basicUsername: ""
+  basicPassword: ""
+  sniffer: false
+  retry: 5
+  tls:
+    enable: false
+    skipHostVerify: true
+    ca: ""
+    cert: ""
+    key: ""
+
+container:
+  imageRepository: kairen/rotate-elasticsearch-index
+  imageTag: v0.1.0
+  imagePullPolicy: IfNotPresent
+  extraEnvs: []
+  imagePullSecrets: []
+  tolerations: []
+  affinity: {}
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 50m
+      memory: 32Mi
