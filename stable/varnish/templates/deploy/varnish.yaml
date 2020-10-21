@@ -15,9 +15,9 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "varnish.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-    spec:
       annotations:
 {{ toYaml .Values.annotations | indent 8 }}
+    spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.varnishd.image }}:{{ default .Chart.AppVersion .Values.varnishd.tag }}"
