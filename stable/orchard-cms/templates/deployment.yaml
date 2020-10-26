@@ -16,6 +16,7 @@ spec:
     matchLabels:
       app: {{ include "orchard-cms.name" . }}
       version: {{ .Release.Name }}
+  serviceName: {{ include "orchard-cms.fullname" . }}
   template:
     metadata:
       labels:

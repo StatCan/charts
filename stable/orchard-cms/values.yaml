@@ -5,6 +5,10 @@ global:
 
 replicaCount: 1
 
+postgresql:
+  image:
+    tag: 11.9.0-debian-10-r48
+
 image:
   repository: orchard-cms
   tag: latest
