@@ -6,18 +6,31 @@
 # Declare variables to be passed into your templates.
 
 rbac:
-  create: false
+  create: true
+  # Change false for true I.e access dendied for evrething
+  # JD
+  # create: false
 
 serviceAccountName: "default"
 
-# Possible values: default|fake|fs|multimap
+# Possible values: default|fake|fs|multimap|crd
 datasource: default
 
+# Use with datasource: default or datasource: multimap, crdMigrationMode enables also the crd datasource
+# together with the specified legacy datasource to facilitate the migration process to CRDs.
+crdMigrationMode: false
+
+defaultConfigmap: "fluentd-config"
+
 image:
-  repository: statcan/kube-fluentd-operator
+  # repository: jvassev/kube-fluentd-operator
+  repository: artifactory.cloud.statcan.ca/docker/jvassev/kube-fluentd-operator
   pullPolicy: IfNotPresent
-  tag: latest
-  pullSecret: ""
+  # tag: latest
+  # JD
+  tag: v1.11.0-3-ge92efff
+  pullSecret: artifactory-prod
+
 
 logLevel: debug
 interval: 45
@@ -72,6 +85,8 @@ tolerations: []
   #  cpu: 100m
   #  memory: 128Mi
 
+priorityClassName: ""
+
 updateStrategy: {}
 #  type: RollingUpdate
 
@@ -80,3 +95,21 @@ updateStrategy: {}
 #  scheduler.alpha.kubernetes.io/tolerations: '[{"key": "example", "value": "foo"}]'
 
 prometheusEnabled: false
+
+serviceMonitor:
+  # enable support for Prometheus Operator
+  enabled: false
+
+  # Job label for scrape target
+  jobLabel: app
+
+  # Scrape interval. If not set, the Prometheus default scrape interval is used.
+  interval: ""
+
+allowTagExpansion: false
+
+# Change the following value to define a different namespace that is treated as admin
+# namespace, i.e. its configs are not validated or processed and virtual plugins can be
+# defined to be used in all other namespaces.
+# JD
+# adminNamespace: "kube-system"

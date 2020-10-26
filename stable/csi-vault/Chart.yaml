@@ -1,7 +1,8 @@
-apiVersion: v1
+apiVersion: v2
+type: application
 description: An extended Helm chart derived from official Vault CSI chart.
 name: csi-vault
-version: 0.0.1
+version: 0.1.1
 appVersion: 0.2.0
 home: https://www.vaultproject.io
 icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
@@ -12,3 +13,7 @@ maintainers:
   - name: William Hearn
     email: william.hearn@canada.ca
 engine: gotpl
+dependencies:
+- name: csi-vault
+  repository: https://charts.appscode.com/stable/
+  version: 0.2.0

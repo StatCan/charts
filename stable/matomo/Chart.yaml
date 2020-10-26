@@ -1,7 +1,8 @@
-apiVersion: v1
+apiVersion: v2
+type: application
 description: A Helm chart for using Matomo
 name: matomo
-version: 0.0.1
+version: 0.1.1
 appVersion: 0.0.1
 home: https://matomo.org
 icon: "https://bitnami.com/assets/stacks/matomo/img/matomo-stack-110x117.png"
@@ -10,3 +11,8 @@ sources:
 maintainers:
 - name: jptissot
   email: jean-philippe.tissot@canada.ca
+dependencies:
+  - name: mariadb
+    version: 5.11.1
+    repository: https://kubernetes-charts.storage.googleapis.com
+    condition: mariadb.deployChart

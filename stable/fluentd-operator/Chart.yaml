@@ -1,7 +1,8 @@
+apiVersion: v2
+type: application
 name: fluentd-operator
-apiVersion: v1
-version: 0.0.2
-appVersion: 0.3.1
+version: 0.4.3
+appVersion: v1.11.0-3-ge92efff
 description: Distribution of Fluentd as K8S daemonset
 keywords:
 - fluentd
@@ -14,4 +15,6 @@ maintainers:
   email: william.hearn@canada.ca
 - name: Zachary Seguin
   email: zachary.seguin@canada.ca
+- name: Julie Dion
+  email: julie.dion@canada.ca
 engine: gotpl

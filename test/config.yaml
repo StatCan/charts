@@ -2,12 +2,14 @@ remote: github
 chart-dirs:
   - stable
 chart-repos:
+  - bitnami=https://charts.bitnami.com/bitnami
   - csi-vault=https://charts.appscode.com/stable/
   - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
   - jfrog=https://charts.jfrog.io/
-  - istio=https://storage.googleapis.com/istio-release/releases/1.1.8/charts
   - kubecost=https://kubecost.github.io/cost-analyzer/
+  - stable=https://kubernetes-charts.storage.googleapis.com/
   - vmware-tanzu=https://vmware-tanzu.github.io/helm-charts
+  - vault=https://helm.releases.hashicorp.com
 check-version-increment: true
 validate-maintainers: false
 excluded-charts:

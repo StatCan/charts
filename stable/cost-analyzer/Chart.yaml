@@ -1,6 +1,7 @@
 name: cost-analyzer
-apiVersion: v1
-version: 0.0.5
+type: application
+apiVersion: v2
+version: 0.1.5
 appVersion: 1.61.3
 description: Kubecost
 keywords:
@@ -15,3 +16,7 @@ maintainers:
 - name: zachomedia
   email: zachary.seguin@canada.ca
 engine: gotpl
+dependencies:
+  - name: cost-analyzer
+    version: 1.61.3
+    repository: https://kubecost.github.io/cost-analyzer/
