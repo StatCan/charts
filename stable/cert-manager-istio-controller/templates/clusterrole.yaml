@@ -1,0 +1,26 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "cert-manager-istio-controller.fullname" . }}
+  labels:
+    {{- include "cert-manager-istio-controller.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+    - 'networking.istio.io'
+  resources:
+    - 'virtualservices'
+    - 'destinationrules'
+  verbs:
+    - watch
+    - get
+    - list
+    - create
+    - update
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - get
+  - list
+  - watch
