@@ -1,0 +1,53 @@
+# Policy to restrict access to kubecost-cost-analyzer pod
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kubecost-cost-analyzer-policy
+  namespace: kubecost
+spec:
+  # labels unique to kubecost-cost-analyzer pod
+  podSelector:
+    matchLabels:
+      app: cost-analyzer
+      app.kubernetes.io/instance: kubecost
+      app.kubernetes.io/name: cost-analyzer
+      pod-template-hash: 7c9f6d6cfb
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Incoming requests from jupyter-apis pod
+  - from:
+    # TODO: add unique labels to kubeflow namespace 
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: kubeflow
+          app.kubernetes.io/part-of: kubernetes
+      # labels unique to jupyter-apis pod
+      podSelector:
+        matchLabels:
+          app: jupyter-web-app
+          app.kubernetes.io/component: jupyter-web-app
+          app.kubernetes.io/instance: jupyter-web-app-v1.0.0
+          app.kubernetes.io/managed-by: kfctl
+          app.kubernetes.io/name: jupyter-web-app
+          app.kubernetes.io/part-of: kubeflow
+          app.kubernetes.io/version: v1.0.0
+          kustomize.component: jupyter-web-app
+          pod-template-hash: 57f758fd98
+---
+# Policy to allow intercommunication between pods in the kubecost namespace
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: kubecost-pods-intercommunication
+  namespace: kubecost
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+    # TODO: add unique labels to kubecost namespace
+      - namespaceSelector:
+          matchLabels:
+            app.kubernetes.io/name: kubecost
+            app.kubernetes.io/part-of: kubernetes
