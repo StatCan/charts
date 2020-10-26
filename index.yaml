@@ -1,9 +1,20 @@
 apiVersion: v1
 entries:
   cert-manager-istio-controller:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-10-26T18:48:48.842010573Z"
+    description: Configure Istio resources for cert-manager HTTP challenges.
+    digest: 8a00d5aa0152af08cab84bac83b3a44077c54cc9c5cd17fddb8afb606193d4b3
+    home: https://github.com/StatCan/cert-manager-istio-controller
+    name: cert-manager-istio-controller
+    type: application
+    urls:
+    - https://statcan.github.io/charts/cert-manager-istio-controller-0.2.1.tgz
+    version: 0.2.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-10-26T15:46:52.983654891Z"
+    created: "2020-10-26T18:48:48.841547763Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
     digest: 068eeb6080826576e3a91e2bd50c46b679f6d81ccadd1ffb8f82d463f0f6c467
     home: https://github.com/StatCan/cert-manager-istio-controller
@@ -13,7 +24,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-10-26T15:46:52.98331608Z"
+    created: "2020-10-26T18:48:48.841090354Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
     digest: 130d152724d81b7d256ff3bb9c0593d21e3d1a671f58113678ae4d0f1faa7ab6
     home: https://github.com/StatCan/cert-manager-istio-controller
@@ -22,12 +33,40 @@ entries:
     - https://statcan.github.io/charts/cert-manager-istio-controller-0.1.0.tgz
     version: 0.1.0
   cost-analyzer:
+  - apiVersion: v2
+    appVersion: 1.61.3
+    created: "2020-10-26T18:48:48.933753837Z"
+    dependencies:
+    - name: cost-analyzer
+      repository: https://kubecost.github.io/cost-analyzer/
+      version: 1.61.3
+    description: Kubecost
+    digest: 8a70cade925c4cc1a144e42376f6c343593ed6f370ed50a7b754c3067f6d5907
+    home: https://kubecost.com
+    keywords:
+    - costing
+    - kubecost
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: zachomedia
+    name: cost-analyzer
+    sources:
+    - https://github.com/kubecost
+    type: application
+    urls:
+    - https://statcan.github.io/charts/cost-analyzer-0.1.5.tgz
+    version: 0.1.5
   - apiVersion: v1
     appVersion: 1.61.3
-    created: "2020-10-26T15:46:53.020122425Z"
+    created: "2020-10-26T18:48:48.918323723Z"
+    dependencies:
+    - name: cost-analyzer
+      repository: https://kubecost.github.io/cost-analyzer/
+      version: 1.61.3
     description: Kubecost
     digest: 3f42f2e8dec4aeb1924d9e3aedd9090c8f31ef5f29b5a3567ab873677942631d
-    engine: gotpl
     home: https://kubecost.com
     keywords:
     - costing
@@ -45,10 +84,13 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2020-10-26T15:46:53.013821529Z"
+    created: "2020-10-26T18:48:48.902710106Z"
+    dependencies:
+    - name: cost-analyzer
+      repository: https://kubecost.github.io/cost-analyzer/
+      version: 1.61.1
     description: Kubecost
     digest: 6f5da04b54572de5f803ef54f8d5d3635e162955b6b707b9c888558e273550ff
-    engine: gotpl
     home: https://kubecost.com
     keywords:
     - costing
@@ -66,10 +108,13 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2020-10-26T15:46:53.006488101Z"
+    created: "2020-10-26T18:48:48.887949206Z"
+    dependencies:
+    - name: cost-analyzer
+      repository: https://kubecost.github.io/cost-analyzer/
+      version: 1.61.1
     description: Kubecost
     digest: 317470afefc72c7b4afbdab14a801e3109bbe083dd967967275d6803626089e9
-    engine: gotpl
     home: https://kubecost.com
     keywords:
     - costing
@@ -87,10 +132,13 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2020-10-26T15:46:52.999253276Z"
+    created: "2020-10-26T18:48:48.873440611Z"
+    dependencies:
+    - name: cost-analyzer
+      repository: https://kubecost.github.io/cost-analyzer/
+      version: 1.61.1
     description: Kubecost
     digest: 3926a136f6c5bd4ea1cc62f8fcaccbe96a54fdb040577683c7039f7093b8f9f0
-    engine: gotpl
     home: https://kubecost.com
     keywords:
     - costing
@@ -108,10 +156,13 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.57.1
-    created: "2020-10-26T15:46:52.993086884Z"
+    created: "2020-10-26T18:48:48.858407706Z"
+    dependencies:
+    - name: cost-analyzer
+      repository: https://kubecost.github.io/cost-analyzer/
+      version: 1.57.1
     description: Kubecost
     digest: 8561ec756562c7f327492346ce50e991c949785b56f6ec914b5624c42183be2c
-    engine: gotpl
     home: https://kubecost.com
     keywords:
     - costing
@@ -128,12 +179,34 @@ entries:
     - https://statcan.github.io/charts/cost-analyzer-0.0.1.tgz
     version: 0.0.1
   covid:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-10-26T18:48:48.935041563Z"
+    description: Covid-19 nodejs app built in React.
+    digest: bb94edbbb9e316dc82f9ff642f66928fedc6d9e5c21f0ca18e54174175db2256
+    home: https://github.com/CSSEGISandData/COVID-19
+    keywords:
+    - covid
+    - vdl
+    - statcan
+    - .net
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: Zachary Seguin
+    name: covid
+    sources:
+    - https://github.com/StatCan/covid19
+    type: application
+    urls:
+    - https://statcan.github.io/charts/covid-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-10-26T15:46:53.020548339Z"
+    created: "2020-10-26T18:48:48.93439505Z"
     description: Covid-19 nodejs app built in React.
     digest: ca8e393dd7158ca1ac1949086a5a74b6736c590e1d6103f277b277ebdda3f0a2
-    engine: gotpl
     home: https://github.com/CSSEGISandData/COVID-19
     keywords:
     - covid
@@ -152,12 +225,37 @@ entries:
     - https://statcan.github.io/charts/covid-0.0.1.tgz
     version: 0.0.1
   csi-vault:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2020-10-26T18:48:48.938663836Z"
+    dependencies:
+    - name: csi-vault
+      repository: https://charts.appscode.com/stable/
+      version: 0.2.0
+    description: An extended Helm chart derived from official Vault CSI chart.
+    digest: 883d6a6d88e1c119f3f5cedbea1e175781cdfb3a9abef37ed1b52adad717072a
+    home: https://www.vaultproject.io
+    icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: William Hearn
+    name: csi-vault
+    sources:
+    - https://github.com/kubevault/csi-driver
+    - https://github.com/kubevault/csi-driver/tree/master/chart/csi-vault
+    type: application
+    urls:
+    - https://statcan.github.io/charts/csi-vault-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2020-10-26T15:46:53.021521369Z"
+    created: "2020-10-26T18:48:48.936831599Z"
+    dependencies:
+    - name: csi-vault
+      repository: https://charts.appscode.com/stable/
+      version: 0.2.0
     description: An extended Helm chart derived from official Vault CSI chart.
     digest: 56962c9be24e9101e4430b1e3fde30b2758e10fe55a69a484c8c21b9617977fb
-    engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
     maintainers:
@@ -171,13 +269,29 @@ entries:
     - https://statcan.github.io/charts/csi-vault-0.0.1.tgz
     version: 0.0.1
   dremio:
+  - apiVersion: v2
+    appVersion: 4.2.0
+    created: "2020-10-26T18:48:48.940958783Z"
+    description: |
+      Dremio is an open source platform providing the missing link in modern data.
+    digest: 27d86863c77c1b280e66288a4925dfd11dcd115a44e2d4e81ff145a0c9166689
+    home: https://www.dremio.com
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    name: dremio
+    sources:
+    - https://github.com/dremio/dremio-cloud-tools
+    type: application
+    urls:
+    - https://statcan.github.io/charts/dremio-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v1
     appVersion: 4.2.0
-    created: "2020-10-26T15:46:53.022235491Z"
+    created: "2020-10-26T18:48:48.93981986Z"
     description: |
       Dremio is an open source platform providing the missing link in modern data.
     digest: 7f2da76c49ba422e5b1322efede6686b1738c86a94da470d138b1f9d2c56b27e
-    engine: gotpl
     home: https://www.dremio.com
     maintainers:
     - email: william.hearn@canada.ca
@@ -189,12 +303,34 @@ entries:
     - https://statcan.github.io/charts/dremio-0.0.1.tgz
     version: 0.0.1
   fluentd-operator:
+  - apiVersion: v2
+    appVersion: v1.11.0-3-ge92efff
+    created: "2020-10-26T18:48:48.942248609Z"
+    description: Distribution of Fluentd as K8S daemonset
+    digest: d3f7328a17a7bcec45603d5b38384e70b9adb659a98c763f1240916b9e020e25
+    home: https://github.com/vmware/kube-fluentd-operator
+    keywords:
+    - fluentd
+    - operator
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: Zachary Seguin
+    - email: julie.dion@canada.ca
+      name: Julie Dion
+    name: fluentd-operator
+    sources:
+    - https://github.com/vmware/kube-fluentd-operator
+    type: application
+    urls:
+    - https://statcan.github.io/charts/fluentd-operator-0.4.3.tgz
+    version: 0.4.3
   - apiVersion: v1
     appVersion: 0.3.1
-    created: "2020-10-26T15:46:53.022607703Z"
+    created: "2020-10-26T18:48:48.941542395Z"
     description: Distribution of Fluentd as K8S daemonset
     digest: b3d37f2dbbf5b5b9c0dc073f7ca5db85816939171b2744409cfb9948c0d045c8
-    engine: gotpl
     home: https://github.com/vmware/kube-fluentd-operator
     keywords:
     - fluentd
@@ -213,7 +349,7 @@ entries:
   gitlab-runner:
   - apiVersion: v1
     appVersion: bleeding
-    created: "2020-10-26T15:46:53.023774539Z"
+    created: "2020-10-26T18:48:48.943417833Z"
     description: GitLab Runner
     digest: a4570e085cfa92329a7615058fb09253b18bda59eaa700e15e28178b947eb2ae
     home: https://gitlab.com
@@ -233,9 +369,35 @@ entries:
     - https://statcan.github.io/charts/gitlab-runner-0.19.0-beta.tgz
     version: 0.19.0-beta
   logstash:
+  - apiVersion: v2
+    appVersion: 7.2.0
+    created: "2020-10-26T18:48:48.948109528Z"
+    dependencies:
+    - name: logstash
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 2.1.0
+    description: Logstash is an open source, server-side data processing pipeline
+    digest: 250c864cc945ac237297d0be5c6664848b4c8f65a13e39506f7c17e23c59976c
+    home: https://www.elastic.co/products/logstash
+    icon: https://www.elastic.co/assets/blt86e4472872eed314/logo-elastic-logstash-lt.svg
+    maintainers:
+    - email: zachary.seguin@canada.ca
+      name: zachary.seguin
+    name: logstash
+    sources:
+    - https://www.docker.elastic.co
+    - https://www.elastic.co/guide/en/logstash/current/index.html
+    type: application
+    urls:
+    - https://statcan.github.io/charts/logstash-3.1.0.tgz
+    version: 3.1.0
   - apiVersion: v1
     appVersion: 7.2.0
-    created: "2020-10-26T15:46:53.024886173Z"
+    created: "2020-10-26T18:48:48.945791081Z"
+    dependencies:
+    - name: logstash
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 2.1.0
     description: Logstash is an open source, server-side data processing pipeline
     digest: 7c64e06020ef2e14c279f6e153df15316b83acdac5c3dd9cb9190731f21ab074
     home: https://www.elastic.co/products/logstash
@@ -251,9 +413,36 @@ entries:
     - https://statcan.github.io/charts/logstash-2.1.0.tgz
     version: 2.1.0
   matomo:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-10-26T18:48:48.954363855Z"
+    dependencies:
+    - condition: mariadb.deployChart
+      name: mariadb
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 5.11.1
+    description: A Helm chart for using Matomo
+    digest: f7d115a1478beef14c224a858bac7f4c3116f1e04aae7df3a8e20984446e70ef
+    home: https://matomo.org
+    icon: https://bitnami.com/assets/stacks/matomo/img/matomo-stack-110x117.png
+    maintainers:
+    - email: jean-philippe.tissot@canada.ca
+      name: jptissot
+    name: matomo
+    sources:
+    - https://github.com/statcan/StatCan.OrchardCore
+    type: application
+    urls:
+    - https://statcan.github.io/charts/matomo-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-10-26T15:46:53.02637852Z"
+    created: "2020-10-26T18:48:48.950429975Z"
+    dependencies:
+    - condition: mariadb.deployChart
+      name: mariadb
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 5.11.1
     description: A Helm chart for using Matomo
     digest: b9d48c589edcf88228133d828280afe3213c4bbdba130e26dbe791e0af4d13c4
     home: https://matomo.org
@@ -268,13 +457,29 @@ entries:
     - https://statcan.github.io/charts/matomo-0.0.1.tgz
     version: 0.0.1
   mlflow:
+  - apiVersion: v2
+    appVersion: 1.7.2
+    created: "2020-10-26T18:48:48.957995729Z"
+    description: |
+      [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
+    digest: ca848e3ad0f50a00acf9f96d2e61d1242eeb3fdf99f4ef502d1aa5dbbeb22c35
+    home: https://mlflow.org/
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    name: mlflow
+    sources:
+    - https://github.com/statcan/charts
+    type: application
+    urls:
+    - https://statcan.github.io/charts/mlflow-0.1.3.tgz
+    version: 0.1.3
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2020-10-26T15:46:53.027747062Z"
+    created: "2020-10-26T18:48:48.957295515Z"
     description: |
       [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
     digest: 383abf9932f6137bc3d818ab67405e3efeb7b77adfb3c33651b56b49dbb3f093
-    engine: gotpl
     home: https://mlflow.org/
     maintainers:
     - email: william.hearn@canada.ca
@@ -287,11 +492,10 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2020-10-26T15:46:53.027286448Z"
+    created: "2020-10-26T18:48:48.9565429Z"
     description: |
       [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
     digest: d0bcc84bfd2989660344d202e3c25110974c38d781f7b9a6c26c525703830595
-    engine: gotpl
     home: https://mlflow.org/
     maintainers:
     - email: william.hearn@canada.ca
@@ -304,11 +508,10 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2020-10-26T15:46:53.026836634Z"
+    created: "2020-10-26T18:48:48.955765284Z"
     description: |
       [MLFlow](https://mlflow.org/) is an open source platform specialized in tracking ML experiments, and packaging and deploying ML models.
     digest: 02253d17e7c7803a9b64fbc11b30454fa04c7744ab2143444fcf24d5f47ec856
-    engine: gotpl
     home: https://mlflow.org/
     maintainers:
     - email: william.hearn@canada.ca
@@ -320,9 +523,29 @@ entries:
     - https://statcan.github.io/charts/mlflow-0.0.1.tgz
     version: 0.0.1
   orchard-cms:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-10-26T18:48:48.97281433Z"
+    dependencies:
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.8.4
+    description: A Helm chart that hosts OrchardCore with PostgreSql
+    digest: ab4cbbea1427aee19d09ae554ed00e8bbf8f9e6a2125ef178665a4aa09dbf687
+    home: https://www.orchardcore.net/
+    maintainers:
+    - email: jean-philippe.tissot@canada.ca
+      name: jptissot
+    name: orchard-cms
+    sources:
+    - https://github.com/statcan/StatCan.OrchardCore
+    type: application
+    urls:
+    - https://statcan.github.io/charts/orchard-cms-1.2.0.tgz
+    version: 1.2.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2020-10-26T15:46:53.032611014Z"
+    created: "2020-10-26T18:48:48.965937991Z"
     description: A Helm chart that hosts OrchardCore with PostgreSql
     digest: 2b73f930a7bb9a6b81f81c3a7b2bff49b19c101f684c8776495b8ddad7c50825
     home: https://www.orchardcore.net/
@@ -337,7 +560,11 @@ entries:
     version: 1.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2020-10-26T15:46:53.029649122Z"
+    created: "2020-10-26T18:48:48.961125393Z"
+    dependencies:
+    - name: postgresql
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 7.7.2
     description: A Helm chart for using OrchardCore cms
     digest: 054c143ae5aa61d52725fa1c72eb18cb14e0adaadd98242663a6cc4de61d095f
     home: https://www.orchardcore.net/
@@ -351,9 +578,37 @@ entries:
     - https://statcan.github.io/charts/orchard-cms-0.0.1.tgz
     version: 0.0.1
   pachyderm:
+  - apiVersion: v2
+    appVersion: 1.8.6
+    created: "2020-10-26T18:48:48.975445284Z"
+    description: |
+      Pachyderm is a large-scale container-based workflow engine that offers complete version control for data and reproducible data processing
+    digest: f488b8b75aef9091ca31e1f82f0ef6bcd9181898265bf2160708d328263137dc
+    home: https://pachyderm.io
+    icon: https://avatars2.githubusercontent.com/u/10432478?s=200
+    keywords:
+    - pachyderm
+    - workflows
+    - reproducibility
+    - distributed
+    - processing
+    maintainers:
+    - email: novella.uu@gmail.com
+      name: jonandernovella
+    - email: whitenack.daniel@gmail.com
+      name: dwhitena
+    - email: jdoliner@pachyderm.io
+      name: jdoliner
+    name: pachyderm
+    sources:
+    - https://github.com/pachyderm/pachyderm
+    type: application
+    urls:
+    - https://statcan.github.io/charts/pachyderm-0.5.0.tgz
+    version: 0.5.0
   - apiVersion: v1
     appVersion: 1.8.6
-    created: "2020-10-26T15:46:53.033731548Z"
+    created: "2020-10-26T18:48:48.974105556Z"
     description: |
       Pachyderm is a large-scale container-based workflow engine that offers complete version control for data and reproducible data processing
     digest: 909fb972714604dee2b2180b340cdb1979f95a8a9fd5551363be806d550eec6c
@@ -379,13 +634,37 @@ entries:
     - https://statcan.github.io/charts/pachyderm-0.4.0.tgz
     version: 0.4.0
   prometheus-operator:
+  - apiVersion: v2
+    appVersion: 0.38.1
+    created: "2020-10-26T18:48:49.021175418Z"
+    dependencies:
+    - name: prometheus-operator
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 9.3.1
+    description: An extended Helm chart derived from official Prometheus Operator
+      chart.
+    digest: c68dd4cbda66edaaee8c595569cb2225093ad401d5120a3837199d330287035c
+    home: https://coreos.com/operators/prometheus/docs/latest/
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    name: prometheus-operator
+    sources:
+    - https://github.com/coreos/prometheus-operator
+    type: application
+    urls:
+    - https://statcan.github.io/charts/prometheus-operator-0.2.2.tgz
+    version: 0.2.2
   - apiVersion: v1
     appVersion: 0.30.0
-    created: "2020-10-26T15:46:53.043128141Z"
+    created: "2020-10-26T18:48:48.991711714Z"
+    dependencies:
+    - name: prometheus-operator
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 5.11.0
     description: An extended Helm chart derived from official Prometheus Operator
       chart.
     digest: 4696e8fa9007abd47e706bd84bf58eb7f6d25446a2653917b4d0310ce23b0ac4
-    engine: gotpl
     home: https://coreos.com/operators/prometheus/docs/latest/
     maintainers:
     - email: william.hearn@canada.ca
@@ -397,9 +676,23 @@ entries:
     - https://statcan.github.io/charts/prometheus-operator-0.0.2.tgz
     version: 0.0.2
   rotate-elasticsearch-index:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2020-10-26T18:48:49.022146838Z"
+    description: A Helm chart for deploying Elasticsearch index rotation
+    digest: 20a33faf5a9044bbf00c7e3f6472f1e14822d546a1441d957d7d580f4f2e72bd
+    home: https://github.com/kairen/rotate-elasticsearch-index
+    maintainers:
+    - email: k2r2.bai@gmail.com
+      name: Kyle Bai
+    name: rotate-elasticsearch-index
+    type: application
+    urls:
+    - https://statcan.github.io/charts/rotate-elasticsearch-index-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-10-26T15:46:53.043391649Z"
+    created: "2020-10-26T18:48:49.021683329Z"
     description: A Helm chart for deploying Elasticsearch index rotation
     digest: 85e0dedc0212a8f4943ad45c10c3e7442940504e84efd2dfd2481d58840e22cf
     home: https://github.com/kairen/rotate-elasticsearch-index
@@ -411,12 +704,27 @@ entries:
     - https://statcan.github.io/charts/rotate-elasticsearch-index-0.1.0.tgz
     version: 0.1.0
   shiny:
+  - apiVersion: v2
+    appVersion: 3.6.0
+    created: "2020-10-26T18:48:49.023317863Z"
+    description: A Helm chart for using Shiny.
+    digest: 85eb28cac48255d387dba0a322dcf6cbb837ccebf227ca2870526459673e68cd
+    home: https://rstudio.com/products/shiny/shiny-server/
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    name: shiny
+    sources:
+    - https://github.com/statcan/shiny
+    type: application
+    urls:
+    - https://statcan.github.io/charts/shiny-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v1
     appVersion: 3.6.0
-    created: "2020-10-26T15:46:53.043783561Z"
+    created: "2020-10-26T18:48:49.022736151Z"
     description: A Helm chart for using Shiny.
     digest: 6ed5c3f38f47a35b48a77448c57235c5eb7d42b489d59a893b15959bf089eb44
-    engine: gotpl
     home: https://rstudio.com/products/shiny/shiny-server/
     maintainers:
     - email: william.hearn@canada.ca
@@ -428,12 +736,27 @@ entries:
     - https://statcan.github.io/charts/shiny-0.0.1.tgz
     version: 0.0.1
   varnish:
+  - apiVersion: v2
+    appVersion: 6.4.0
+    created: "2020-10-26T18:48:49.025279903Z"
+    description: A Helm chart for using Varnish.
+    digest: 0ba66aff629f104e3966be3035b7c4b804f1e99810198d79156019a885e6aa3c
+    home: https://www.varnish-software.com
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    name: varnish
+    sources:
+    - https://github.com/varnish
+    type: application
+    urls:
+    - https://statcan.github.io/charts/varnish-0.1.3.tgz
+    version: 0.1.3
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2020-10-26T15:46:53.044827693Z"
+    created: "2020-10-26T18:48:49.024806693Z"
     description: A Helm chart for using Varnish.
     digest: 827b9b21d59ab10ef929f2884213e8e73cbf83804cec144cbd2a2aa27d2b9616
-    engine: gotpl
     home: https://www.varnish-software.com
     maintainers:
     - email: william.hearn@canada.ca
@@ -446,10 +769,9 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2020-10-26T15:46:53.044466182Z"
+    created: "2020-10-26T18:48:49.024321783Z"
     description: A Helm chart for using Varnish.
     digest: 96ea55f8646b463290f4d1787f70acbc5912614097241d4c25ff01038594f929
-    engine: gotpl
     home: https://www.varnish-software.com
     maintainers:
     - email: william.hearn@canada.ca
@@ -462,10 +784,9 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2020-10-26T15:46:53.044111671Z"
+    created: "2020-10-26T18:48:49.023802873Z"
     description: A Helm chart for using Varnish.
     digest: 4bb8cc91a5d83ed119180a2b0f46885d718b4c04447ebee49dff9281d77fa7b1
-    engine: gotpl
     home: https://www.varnish-software.com
     maintainers:
     - email: william.hearn@canada.ca
@@ -477,12 +798,33 @@ entries:
     - https://statcan.github.io/charts/varnish-0.0.1.tgz
     version: 0.0.1
   vault:
+  - apiVersion: v2
+    appVersion: 1.2.2
+    created: "2020-10-26T18:48:49.039703301Z"
+    dependencies:
+    - name: vault
+      repository: https://helm.releases.hashicorp.com
+      version: 0.8.0
+    description: An extended Helm chart derived from official Vault chart.
+    digest: 95a7ac8a3cb949e0a1d4f0cd992d0ab5c4a655dc5d67118027c1fa843563ea19
+    home: https://www.vaultproject.io
+    icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: William Hearn
+    name: vault
+    sources:
+    - https://github.com/hashicorp/vault
+    - https://github.com/hashicorp/vault-helm
+    type: application
+    urls:
+    - https://statcan.github.io/charts/vault-0.1.8.tgz
+    version: 0.1.8
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-10-26T15:46:53.050655775Z"
+    created: "2020-10-26T18:48:49.035248009Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: 02e77b7bc3af379303a5b1d340b7ebe172c641c8d86997fe6875d1b839d7b7a6
-    engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
     maintainers:
@@ -497,10 +839,9 @@ entries:
     version: 0.0.7
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-10-26T15:46:53.049026024Z"
+    created: "2020-10-26T18:48:49.032274047Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: b371038b12818d373abb7f75f8ca6bf40ee26175d392a31dccc1ab89fe11fe09
-    engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
     maintainers:
@@ -515,10 +856,9 @@ entries:
     version: 0.0.6
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-10-26T15:46:53.047539578Z"
+    created: "2020-10-26T18:48:49.029714095Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: ac5af6987e345e63d16d0485d246e8e27c3d216c3d401a45e975f452fec24a3e
-    engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
     maintainers:
@@ -533,10 +873,9 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2020-10-26T15:46:53.046158635Z"
+    created: "2020-10-26T18:48:49.027442548Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: e943ffaa01e55a2a0986da29a69541cdec1fcc8c623c6f56f026922a135332ed
-    engine: gotpl
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
     maintainers:
@@ -550,12 +889,37 @@ entries:
     - https://statcan.github.io/charts/vault-0.0.1.tgz
     version: 0.0.1
   velero:
+  - apiVersion: v2
+    appVersion: 1.3.2
+    created: "2020-10-26T18:48:49.04793267Z"
+    dependencies:
+    - name: velero
+      repository: https://vmware-tanzu.github.io/helm-charts
+      version: 2.9.15
+    description: An extended Helm chart derived from official Velero chart.
+    digest: 2b84a1051b23ce0a9054d06c21361700e336e2c513069df15f3feb7c20ec0cb6
+    home: https://heptio.com/products/#heptio-velero
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: zachomedia
+    name: velero
+    sources:
+    - https://github.com/heptio/velero
+    type: application
+    urls:
+    - https://statcan.github.io/charts/velero-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v1
     appVersion: 1.3.2
-    created: "2020-10-26T15:46:53.053382159Z"
+    created: "2020-10-26T18:48:49.044496099Z"
+    dependencies:
+    - name: velero
+      repository: https://vmware-tanzu.github.io/helm-charts
+      version: 2.9.15
     description: An extended Helm chart derived from official Velero chart.
     digest: 5f4878b22051723059d3c955d612c5d078ee1608d0f15df75caaf436382193b9
-    engine: gotpl
     home: https://heptio.com/products/#heptio-velero
     maintainers:
     - email: william.hearn@canada.ca
@@ -570,10 +934,13 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.11.0
-    created: "2020-10-26T15:46:53.0514747Z"
+    created: "2020-10-26T18:48:49.04113253Z"
+    dependencies:
+    - name: velero
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 1.0.0
     description: An extended Helm chart derived from official Velero chart.
     digest: 959669cf7b7afa4df6d827caf436c95840e16848f6f5d7696aa114dd0394ad4a
-    engine: gotpl
     home: https://heptio.com/products/#heptio-velero
     maintainers:
     - email: william.hearn@canada.ca
@@ -584,4 +951,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/velero-0.0.2.tgz
     version: 0.0.2
-generated: "2020-10-26T15:46:52.982723862Z"
+generated: "2020-10-26T18:48:48.84041764Z"
