@@ -37,10 +37,6 @@ spec:
     # allows all connections from the jupyter-apis pod to the kubecost-cost-analyzer pod on TCP ports listed 
     ports:
       - protocol: TCP
-        port: 9001
-      - protocol: TCP
-        port: 9003
-      - protocol: TCP
         port: 9090
 ---
 # Policy to allow intercommunication between pods in the kubecost namespace
