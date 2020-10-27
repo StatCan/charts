@@ -14,7 +14,6 @@ spec:
       pod-template-hash: 7c9f6d6cfb
   policyTypes:
   - Ingress
-  - Egress
   ingress:
   # Incoming requests from jupyter-apis pod
   - from:
@@ -35,6 +34,14 @@ spec:
           app.kubernetes.io/version: v1.0.0
           kustomize.component: jupyter-web-app
           pod-template-hash: 57f758fd98
+    # allows all connections from the jupyter-apis pod to the kubecost-cost-analyzer pod on TCP ports listed 
+    ports:
+      - protocol: TCP
+        port: 9001
+      - protocol: TCP
+        port: 9003
+      - protocol: TCP
+        port: 9090
 ---
 # Policy to allow intercommunication between pods in the kubecost namespace
 kind: NetworkPolicy
