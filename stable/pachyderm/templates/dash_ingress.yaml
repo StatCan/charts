@@ -1,6 +1,6 @@
 {{- if .Values.dash.ingress.enabled -}}
 {{- $ingressPath := .Values.dash.ingress.path -}}
-apiVersion: apps/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: dash

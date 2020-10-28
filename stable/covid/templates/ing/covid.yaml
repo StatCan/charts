@@ -1,6 +1,6 @@
 {{- if .Values.covid.ingress.enabled -}}
 {{- $fullName := include "covid.fullname" . -}}
-apiVersion: apps/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
