@@ -28,8 +28,7 @@ varnishd:
 nameOverride: ""
 fullnameOverride: ""
 
-annotations:
-  sidecar.istio.io/inject: "false"
+annotations: {}
 
 destinationRule:
   enabled: false
