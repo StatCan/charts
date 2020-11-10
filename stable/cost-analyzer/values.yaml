@@ -4,11 +4,17 @@ cost-analyer:
     prometheus:
       enabled: true # If false, Prometheus will not be installed -- only actively supported on paid Kubecost plans
       fqdn: http://cost-analyzer-prometheus-server.default.svc #example fqdn. Ignored if enabled: true
+      # insecureSkipVerify : false # If true, kubecost will not check the TLS cert of prometheus
+      # queryServiceBasicAuthSecretName: dbsecret # kubectl create secret generic dbsecret -n kubecost --from-file=USERNAME --from-file=PASSWORD
+      # queryServiceBearerTokenSecretName: dbsecret  # kubectl create secret generic mcdbsecret -n kubecost --from-file=TOKEN 
 
     # Durable storage option, product key required
     thanos:
       enabled: false
-      # queryService: http://kubecost-thanos-query-http.kubecost:{{ .Values.thanos.query.http.port }} # an address of the thanos query endpoint, if different from installed thanos
+      # queryService: http://thanos-query-frontend-http.kubecost:{{ .Values.thanos.queryFrontend.http.port }} # an address of the thanos query-frontend endpoint, if different from installed thanos
+      # queryServiceBasicAuthSecretName: mcdbsecret #  kubectl create secret generic mcdbsecret -n kubecost --from-file=USERNAME --from-file=PASSWORD <---enter basic auth credentials like that
+      # queryServiceBearerTokenSecretName mcdbsecret # kubectl create secret generic mcdbsecret -n kubecost --from-file=TOKEN
+      # queryOffset: 3h # The offset to apply to all thanos queries in order to achieve syncronization on all cluster block stores
 
     grafana:
       enabled: true # If false, Grafana will not be installed
@@ -59,7 +65,7 @@ cost-analyer:
 
   kubecostChecks:
     enabled: true
-    image: "gcr.io/kubecost1/checks"
+    image: "quay.io/kubecost1/checks"
     resources:
       requests:
         cpu: "20m"
@@ -95,7 +101,14 @@ cost-analyer:
     warmCache: true
     warmSavingsCache: true
     etl: true
+    # The total number of days the ETL storage will build
+    etlStoreDurationDays: 120
     maxQueryConcurrency: 5
+    # utcOffset represents a timezone in hours and minutes east (+) or west (-)
+    # of UTC, itself, which is defined as +00:00.
+    # See the tz database of timezones to look up your local UTC offset:
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    utcOffset: "+00:00"
     resources:
       requests:
         cpu: "200m"
@@ -103,10 +116,6 @@ cost-analyer:
       #limits:
       #  cpu: "800m"
       #  memory: "256Mi"
-
-  kubecostInit:
-    image: "gcr.io/kubecost1/init"
-    imagePullPolicy: Always
 
   ingress:
     enabled: false
@@ -124,6 +133,10 @@ cost-analyer:
   nodeSelector: {}
 
   tolerations: []
+  #  - key: "key"
+  #    operator: "Equal|Exists"
+  #    value: "value"
+  #    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
 
   affinity: {}
 
@@ -142,6 +155,7 @@ cost-analyer:
   # Define persistence volume for cost-analyzer
   persistentVolume:
     size: 0.2Gi
+    dbSize: 32.0Gi
     enabled: true # Note that setting this to false means configurations will be wiped out on pod restart.
     # storageClass: "-" #
     # existingClaim: kubecost-cost-analyzer # a claim in the same namespace as kubecost
@@ -150,6 +164,7 @@ cost-analyer:
     type: ClusterIP
     port: 9090
     targetPort: 9090
+    # nodePort:
     labels: {}
     annotations: {}
 
@@ -193,6 +208,14 @@ cost-analyer:
       # This overrides the cluster_id set in prometheus.server.global.external_labels.
       # NOTE: This does not affect the external_labels set in prometheus config.
       # clusterIDConfigmap: cluster-id-configmap
+      
+      resources: {}
+      # limits:
+      #   cpu: 500m
+      #   memory: 512Mi
+      # requests:
+      #   cpu: 500m
+      #   memory: 512Mi
       global:
         scrape_interval: 1m
         scrape_timeout: 10s
@@ -204,6 +227,12 @@ cost-analyer:
         enabled: true
       extraArgs:
         query.max-concurrency: 1
+        query.max-samples: 100000000
+      tolerations: []
+      #  - key: "key"
+      #    operator: "Equal|Exists"
+      #    value: "value"
+      #    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
     alertmanager:
       # enabled: false
       persistentVolume:
@@ -240,13 +269,47 @@ cost-analyer:
                 record: kubecost_container_memory_working_set_bytes
               - expr: sum(container_memory_working_set_bytes{container_name!="POD",container_name!=""})
                 record: kubecost_cluster_memory_working_set_bytes
+          - name: Savings
+            rules:
+              - expr: sum(avg(kube_pod_owner{owner_kind!="DaemonSet"}) by (pod) * sum(container_cpu_allocation) by (pod))
+                record: kubecost_savings_cpu_allocation
+                labels:
+                  daemonset: "false"
+              - expr: sum(avg(kube_pod_owner{owner_kind="DaemonSet"}) by (pod) * sum(container_cpu_allocation) by (pod)) / sum(kube_node_info)
+                record: kubecost_savings_cpu_allocation
+                labels:
+                  daemonset: "true"
+              - expr: sum(avg(kube_pod_owner{owner_kind!="DaemonSet"}) by (pod) * sum(container_memory_allocation_bytes) by (pod))
+                record: kubecost_savings_memory_allocation_bytes
+                labels:
+                  daemonset: "false"
+              - expr: sum(avg(kube_pod_owner{owner_kind="DaemonSet"}) by (pod) * sum(container_memory_allocation_bytes) by (pod)) / sum(kube_node_info)
+                record: kubecost_savings_memory_allocation_bytes
+                labels:
+                  daemonset: "true"
+              - expr: label_replace(sum(kube_pod_status_phase{phase="Running",namespace!="kube-system"} > 0) by (pod, namespace), "pod_name", "$1", "pod", "(.+)")
+                record: kubecost_savings_running_pods
+              - expr: sum(rate(container_cpu_usage_seconds_total{container_name!="",container_name!="POD",instance!=""}[5m])) by (namespace, pod_name, container_name, instance)
+                record: kubecost_savings_container_cpu_usage_seconds
+              - expr: sum(container_memory_working_set_bytes{container_name!="",container_name!="POD",instance!=""}) by (namespace, pod_name, container_name, instance)
+                record: kubecost_savings_container_memory_usage_bytes
+              - expr: avg(sum(kube_pod_container_resource_requests_cpu_cores{namespace!="kube-system"}) by (pod, namespace, instance)) by (pod, namespace)
+                record: kubecost_savings_pod_requests_cpu_cores
+              - expr: avg(sum(kube_pod_container_resource_requests_memory_bytes{namespace!="kube-system"}) by (pod, namespace, instance)) by (pod, namespace)
+                record: kubecost_savings_pod_requests_memory_bytes
 
   networkCosts:
     enabled: false
     podSecurityPolicy:
       enabled: false
-    image: gcr.io/kubecost1/kubecost-network-costs:v13.2
+    image: gcr.io/kubecost1/kubecost-network-costs:v13.6
     imagePullPolicy: Always
+    # Traffic Logging will enable logging the top 5 destinations for each source
+    # every 30 minutes. 
+    trafficLogging: true
+    # Port will set both the containerPort and hostPort to this value. 
+    # These must be identical due to network-costs being run on hostNetwork
+    port: 3001
     resources: {}
       #requests:
       #  cpu: "50m"
@@ -277,6 +340,16 @@ cost-analyer:
         # Cross Region contains a list of address/range that will be
         # classified as non-internet egress from one region to another.
         cross-region: []
+
+        # Direct Classification specifically maps an ip address or range
+        # to a region (required) and/or zone (optional). This classification
+        # takes priority over in-zone, in-region, and cross-region configurations.
+        direct-classification: []
+        # - region: "us-east1"
+        #   zone: "us-east1-c"
+        #   ips: 
+        #     - "10.0.0.0/24"
+
     ## Node tolerations for server scheduling to nodes with taints
     ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
     ##
@@ -289,6 +362,11 @@ cost-analyer:
     ## PriorityClassName
     ## Ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
     priorityClassName: []
+    ## PodMonitor
+    ## Allows scraping of network metrics from a dedicated prometheus operator setup
+    podMonitor:
+      enabled: false
+      additionalLabels: {}
 
   # Kubecost Deployment Configuration
   # Used for HA mode in Business & Enterprise tier
@@ -307,6 +385,7 @@ cost-analyer:
     logCollection: true
     productAnalytics: true
     errorReporting: true
+    valuesReporting: true
 
   serviceMonitor:
     enabled: false
@@ -318,6 +397,11 @@ cost-analyer:
 
   supportNFS: true
   initChownDataImage: "busybox" # Supports a fully qualified Docker image eg: registry.hub.docker.com/library/busybox:latest
+  initChownData:
+    resources: {}
+      #requests:
+      #  cpu: "50m"
+      #  memory: "20Mi"
 
   grafana:
     # namespace_datasources: kubecost # override the default namespace here
@@ -328,6 +412,7 @@ cost-analyer:
         # label that the configmaps with dashboards are marked with
         label: grafana_dashboard
       datasources:
+        # dataSourceFilename: foo.yml # If you need to change the name of the datasource file
         enabled: true
         defaultDatasourceEnabled: false
         dataSourceName: default-kubecost
@@ -377,22 +462,26 @@ cost-analyer:
   #    regionNetworkEgress: 0.01
   #    internetNetworkEgress: 0.12
   #    enabled: true
+  #  # The cluster profile represents a predefined set of parameters to use when calculating savings.
+  #  # Possible values are: [ development, production, high-availability ]
+  #  clusterProfile: production 
   #  customPricesEnabled: false # This makes the default view custom prices-- generally used for on-premises clusters
   #  spotLabel: lifecycle
   #  spotLabelValue: Ec2Spot
   #  gpuLabel: gpu
   #  gpuLabelValue: true
   #  awsServiceKeyName: ACCESSKEYID
+  #  awsServiceKeyPassword:  fakepassword # Only use if your values.yaml are stored encrypted. Otherwise provide an existing secret via serviceKeySecretName
   #  awsSpotDataRegion: us-east-1
   #  awsSpotDataBucket: spot-data-feed-s3-bucket
   #  awsSpotDataPrefix: dev
-  #  athenaProjectID: "530337586277"
+  #  athenaProjectID: "530337586277" # The AWS AccountID where the Athena CUR is. Generally your masterpayer account
   #  athenaBucketName: "s3://aws-athena-query-results-530337586277-us-east-1"
   #  athenaRegion: us-east-1
   #  athenaDatabase: athenacurcfn_athena_test1
   #  athenaTable: "athena_test1"
   #  masterPayerARN: ""
-  #  projectID: "123456789"
+  #  projectID: "123456789"  # Also known as AccountID on AWS -- the current account/project that this instance of Kubecost is deployed on.
   #  gcpSecretName: gcp-secret # Name of a secret representing the gcp service key
   #  bigQueryBillingDataDataset: billing_data.gcp_billing_export_v1_01AC9F_74CF1D_5565A2
   #  labelMappingConfigs:  # names of k8s labels used to designate different allocation concepts
@@ -421,11 +510,13 @@ cost-analyer:
   #  azureSubscriptionID: 0bd50fdf-c923-4e1e-850c-196dd3dcc5d3
   #  azureClientID: f2ef6f7d-71fb-47c8-b766-8d63a19db017
   #  azureTenantID: 72faf3ff-7a3f-4597-b0d9-7b0b201bb23a
+  #  azureClientPassword: fake key # Only use if your values.yaml are stored encrypted. Otherwise provide an existing secret via serviceKeySecretName
   #  discount: "" # percentage discount applied to compute
   #  negotiatedDiscount: "" # custom negotiated cloud provider discount
   #  defaultIdle: false
-  #  serviceKeySecretName: ""
-  #  sharedNamespaces: ""
+  #  serviceKeySecretName: "" # Use an existing AWS or Azure secret with format as in aws-service-key-secret.yaml or azure-service-key-secret.yaml. Leave blank if using createServiceKeySecret 
+  #  createServiceKeySecret: true # Creates a secret representing your cloud service key based on data in values.yaml. If you are storing unencrypted values, add a secret manually
+  #  sharedNamespaces: "" # namespaces with shared workloads, example value: "kube-system\,ingress-nginx\,kubecost\,monitoring"
   #  productKey: # apply business or enterprise product license
   #    key: ""
   #    enabled: false
