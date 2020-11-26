@@ -7,9 +7,6 @@
 
 rbac:
   create: true
-  # Change false for true I.e access dendied for evrething
-  # JD
-  # create: false
 
 serviceAccountName: "default"
 
@@ -23,13 +20,10 @@ crdMigrationMode: false
 defaultConfigmap: "fluentd-config"
 
 image:
-  # repository: jvassev/kube-fluentd-operator
-  repository: artifactory.cloud.statcan.ca/docker/jvassev/kube-fluentd-operator
+  repository: vmware/kube-fluentd-operator
   pullPolicy: IfNotPresent
-  # tag: latest
-  # JD
-  tag: v1.11.0-3-ge92efff
-  pullSecret: artifactory-prod
+  tag: latest
+  pullSecret: ""
 
 
 logLevel: debug
@@ -95,6 +89,20 @@ updateStrategy: {}
 #  scheduler.alpha.kubernetes.io/tolerations: '[{"key": "example", "value": "foo"}]'
 
 prometheusEnabled: false
+metricsPort: 9000
+
+### Disable privileged access and running service as root
+# securityContext:
+#  runAsUser: 0
+#  runAsGroup: 0
+#  fsGroup: 0
+
+### By default, Fluentd does not rotate log files
+logRotate:
+  enabled: false
+# logRotateAge: 5
+# logRotateSize: 1048576000
+
 
 serviceMonitor:
   # enable support for Prometheus Operator
@@ -111,5 +119,4 @@ allowTagExpansion: false
 # Change the following value to define a different namespace that is treated as admin
 # namespace, i.e. its configs are not validated or processed and virtual plugins can be
 # defined to be used in all other namespaces.
-# JD
-# adminNamespace: "kube-system"
+adminNamespace: "kube-system"
