@@ -4,10 +4,9 @@ chart-dirs:
 chart-repos:
   - bitnami=https://charts.bitnami.com/bitnami
   - csi-vault=https://charts.appscode.com/stable/
-  - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
+  - helm=https://charts.helm.sh/stable
   - jfrog=https://charts.jfrog.io/
   - kubecost=https://kubecost.github.io/cost-analyzer/
-  - stable=https://kubernetes-charts.storage.googleapis.com/
   - vmware-tanzu=https://vmware-tanzu.github.io/helm-charts
   - vault=https://helm.releases.hashicorp.com
 check-version-increment: true
