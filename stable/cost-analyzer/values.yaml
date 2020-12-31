@@ -127,7 +127,7 @@ cost-analyer:
             - "superusers"
         - name: readonly
           enabled: false # if readonly is disabled, all users authorized on SAML will default to readonly
-          assertionName:  "http://schemas.auth0.com/userType"
+          assertionName: "http://schemas.auth0.com/userType"
           assertionvalues:
             - "readonly"
 
