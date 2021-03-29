@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "geoserver.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "geoserver.name" . }}
+    helm.sh/chart: {{ include "geoserver.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "geoserver.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "geoserver.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+{{ toYaml .Values.annotations | indent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - name: geoserver
+            containerPort: 8080
+            protocol: TCP
+          volumeMounts:
+            - name: {{ include "geoserver.fullname" . }}
+              mountPath: /opt/geoserver/data_dir
+{{- if .Values.volumeMounts }}
+{{ toYaml .Values.volumeMounts | indent 12 }}
+{{- end }}
+          env:
+          - name: GEOSERVER_DATA_DIR
+            value: "{{ .Values.dataDir }}"
+          - name: GEOWEBCACHE_CACHE_DIR
+            value: "{{ .Values.cacheDir }}"
+          - name: GEOSERVER_ADMIN_USER
+            value: "{{ .Values.adminUser }}"
+          - name: GEOSERVER_ADMIN_PASSWORD
+            value: "{{ .Values.adminPassword }}"
+          - name: INITIAL_MEMORY
+            value: "{{ .Values.initMemory }}"
+          - name: MAXIMUM_MEMORY
+            value: "{{ .Values.maxMemory }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: geoserver
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "geoserver.fullname" . }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+{{- if .Values.volumes }}
+{{ toYaml .Values.volumes | indent 8 }}
+{{- end }}
