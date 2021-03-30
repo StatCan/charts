@@ -1,0 +1,15 @@
+{{- if .Values.external.enabled }}
+<gwcJdbcConfiguration>
+  <dialect>PostgreSQL</dialect>
+  <connectionPool>
+    <driver>org.postgresql.Driver</driver>
+    <url>jdbc:postgresql://{{ .Values.external.host }}:{{ .Values.external.port }}/{{ .Values.external.database }}</url>
+    <username>{{ .Values.external.user }}</username>
+    <password>{{ .Values.external.password  }}</password>
+    <minConnections>1</minConnections>
+    <maxConnections>100</maxConnections>
+    <connectionTimeout>10000</connectionTimeout>
+    <maxOpenPreparedStatements>50</maxOpenPreparedStatements>
+  </connectionPool>
+</gwcJdbcConfiguration>
+{{- end }}

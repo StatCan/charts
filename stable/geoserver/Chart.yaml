@@ -1,0 +1,13 @@
+apiVersion: v2
+type: application
+description: A Helm chart for using GeoServer.
+name: geoserver
+version: 0.0.1
+appVersion: 2.18.2
+home: http://geoserver.org
+sources:
+- https://github.com/statcan/geoserver
+maintainers:
+- name: sylus
+  email: william.hearn@canada.ca
+engine: gotpl
