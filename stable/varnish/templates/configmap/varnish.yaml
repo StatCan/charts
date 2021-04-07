@@ -12,9 +12,21 @@ data:
   default.vcl: |
     vcl 4.0;
 
-    backend default {
-      .host = "{{ include "varnish.fullname" . }}-drupal";
-      .port = "8080";
+    # Varnish configuration was not provided to the helm chart.
+    # Please provide `varnishConfigContent`
+
+    backend placeholder {
+      .host = "localhost";
+      .port = "80";
+    }
+
+    sub vcl_recv {
+      return (synth(700, "Service Unavailable"));
+    }
+
+    sub vcl_synth {
+      set resp.status = 503;
+      return (deliver);
     }
 
 {{- end }}

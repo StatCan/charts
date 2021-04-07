@@ -16,20 +16,53 @@ spec:
         app.kubernetes.io/name: {{ include "varnish.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
+{{- if .Values.annotations }}
 {{ toYaml .Values.annotations | indent 8 }}
+{{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap/varnish.yaml") . | sha256sum }}
+{{- if .Values.admin.enabled }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret/varnish.yaml") . | sha256sum }}
+{{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.varnishd.image }}:{{ default .Chart.AppVersion .Values.varnishd.tag }}"
           imagePullPolicy: {{ .Values.varnishd.pullPolicy }}
+          command:
+          - varnishd
+          - -F
+          - -f
+          - /etc/varnish/default.vcl
+          - -a
+          - http=:80,HTTP
+{{- if .Values.admin.enabled }}
+          - -T
+          - 0.0.0.0:{{ .Values.admin.port }}
+          - -S
+          - /etc/varnish/secret
+{{- end }}
+          - -p
+          - feature=+http2
+          - -s
+          - malloc,{{ .Values.memorySize }}
           volumeMounts:
             - name: varnish-config
               mountPath: /etc/varnish/default.vcl
               subPath: default.vcl
+{{- if .Values.admin.enabled }}
+            - name: varnish-secret
+              mountPath: /etc/varnish/secret
+              subPath: secret
+{{- end }}
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
+{{- if .Values.admin.enabled }}
+            - name: tcp-admin
+              containerPort: {{ .Values.admin.port }}
+              protocol: TCP
+{{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
     {{- with .Values.varnishd.imagePullSecrets }}
@@ -40,3 +73,8 @@ spec:
       - name: varnish-config
         configMap:
           name: "{{ include "varnish.fullname" . }}"
+{{- if .Values.admin.enabled }}
+      - name: varnish-secret
+        secret:
+          secretName: {{ include "varnish.fullname" . }}
+{{- end }}
