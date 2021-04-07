@@ -1,15 +1,18 @@
+{{- if .Values.admin.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "varnish.fullname" . }}
+  name: {{ include "varnish.fullname" . }}-admin
   labels:
 {{ include "varnish.labels" . | indent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
+  clusterIP: None
   ports:
-    - name: http
-      port: {{ .Values.service.port }}
+    - name: tcp-admin
+      port: {{ .Values.admin.port }}
       protocol: TCP
   selector:
     app.kubernetes.io/name: {{ include "varnish.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

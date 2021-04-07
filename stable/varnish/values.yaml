@@ -28,7 +28,7 @@ varnishd:
 nameOverride: ""
 fullnameOverride: ""
 
-annotations: {}
+# annotations: {}
 
 destinationRule:
   enabled: false
@@ -38,6 +38,19 @@ destinationRule:
 service:
   type: ClusterIP
   port: 80
+
+# The size of the Varnish memory
+# (e.g., 100M, 1G)
+memorySize: 100M
+
+# Admin
+admin:
+  enable: false
+  port: 6082
+
+  # Set admin secret
+  # (when unset, a random value is generated and should be copied from the secret into your values)
+  # secret: replaceme
 
 # Use this property to override the default content with
 # the --set-file option: helm install --set-file varnishConfigContent=varnish.vcl
