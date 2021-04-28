@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Name overrides that can be used by the helpers.
+nameOverride: ""
+fullnameOverride: ""
+
 # These values determine the settings that can be passed to the controller.
 # If values are left empty, defaults in the image will be used.
 # Please see github.com/statcan/ingress-istio-controller for defaults.
@@ -73,13 +77,9 @@ image:
   repository: statcan/ingress-istio-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.0.1"
+  # tag: "v0.0.1"
 
-imagePullSecrets:
-  - name: artifactory-prod
-
-nameOverride: ""
-fullnameOverride: ""
+imagePullSecrets: {}
 
 serviceAccount:
   # Specifies whether a service account should be created
