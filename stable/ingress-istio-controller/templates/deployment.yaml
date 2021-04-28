@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ingress-istio-controller.fullname" . }}
+  labels:
+    {{- include "ingress-istio-controller.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ingress-istio-controller.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "ingress-istio-controller.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ingress-istio-controller.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: istio-ingress-controller
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+          {{- if or .Values.controller.defaultGateway (and .Values.gateway.deploy .Values.gateway.isControllerDefault) }}
+            - "--default-gateway" 
+            {{- if .Values.gateway.isControllerDefault }}
+            - {{ printf "%s/%s" .Release.Namespace (include "ingress-istio-controller.fullname" .) | quote }}
+            {{- else }}
+            - {{ .Values.controller.defaultGateway | quote }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.controller.virtualServiceWeight }}
+            - "--virtual-service-weight"
+            - {{ .Values.controller.virtualServiceWeight | quote }}
+          {{- end }}
+          {{- if .Values.controller.ingressClass }}
+            - "--ingress-class"
+            - {{ .Values.controller.ingressClass | quote }}
+          {{- end }}
+          {{- if .Values.controller.kubeconfig }}
+            - "--kubeconfig"
+            - {{ .Values.controller.kubeconfig | quote}}
+          {{- end }}
+          {{- if .Values.controller.master }}
+            - "--master"
+            - {{ .Values.controller.master | quote}}
+          {{- end }}
+          {{- if .Values.controller.clusterDomain }}
+            - "--cluster-domain"
+            - {{ .Values.controller.clusterDomain | quote }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

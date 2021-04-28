@@ -1,0 +1,14 @@
+{{- if .Values.ingressClass.deploy -}}
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1/IngressClass" -}}
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: {{ include "ingress-istio-controller.fullname" . }}
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: {{ .Values.ingressClass.default }}
+  labels:
+    {{- include "ingress-istio-controller.labels" . | nindent 4 }}
+spec:
+  controller: ingress.statcan.gc.ca/ingress-istio-controller
+{{- end -}}
+{{- end -}}

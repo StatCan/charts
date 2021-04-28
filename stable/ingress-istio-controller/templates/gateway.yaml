@@ -1,0 +1,16 @@
+{{- if .Values.gateway.deploy -}}
+{{- if .Capabilities.APIVersions.Has "networking.istio.io/v1beta1/Gateway" -}}
+apiVersion: networking.istio.io/v1beta1
+{{- else if .Capabilities.APIVersions.Has "networking.istio.io/v1alpha3/Gateway" -}}
+apiVersion: networking.istio.io/v1alpha3
+{{- else -}}
+{{- fail "networking.istio.io CRDs are not installed on the Cluster." -}}
+{{- end }}
+kind: Gateway
+metadata:
+  labels:
+    {{- include "ingress-istio-controller.labels" . | nindent 4 }}
+  name: {{ include "ingress-istio-controller.fullname" . }}
+spec:
+  {{- toYaml .Values.gateway.spec | nindent 2 }}
+{{- end -}}
