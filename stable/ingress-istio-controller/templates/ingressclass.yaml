@@ -5,7 +5,7 @@ kind: IngressClass
 metadata:
   name: {{ include "ingress-istio-controller.fullname" . }}
   annotations:
-    ingressclass.kubernetes.io/is-default-class: {{ .Values.ingressClass.default }}
+    ingressclass.kubernetes.io/is-default-class: {{ .Values.ingressClass.default | quote }}
   labels:
     {{- include "ingress-istio-controller.labels" . | nindent 4 }}
 spec:
