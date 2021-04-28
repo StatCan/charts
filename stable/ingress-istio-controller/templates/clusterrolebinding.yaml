@@ -12,3 +12,4 @@ roleRef:
   kind: ClusterRole
   name: {{ include "ingress-istio-controller.fullname" . }}
   apiGroup: rbac.authorization.k8s.io
+  
