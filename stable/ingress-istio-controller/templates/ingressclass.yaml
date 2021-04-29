@@ -1,6 +1,6 @@
 {{- if .Values.ingressClass.deploy -}}
-{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1/IngressClass" -}}
-apiVersion: networking.k8s.io/v1
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/IngressClass" }}
+apiVersion: networking.k8s.io/v1beta1
 kind: IngressClass
 metadata:
   name: {{ include "ingress-istio-controller.fullname" . }}
@@ -10,5 +10,5 @@ metadata:
     {{- include "ingress-istio-controller.labels" . | nindent 4 }}
 spec:
   controller: ingress.statcan.gc.ca/ingress-istio-controller
-{{- end -}}
-{{- end -}}
+{{- end }}
+{{- end }}
