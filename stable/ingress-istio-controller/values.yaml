@@ -34,10 +34,10 @@ ingressClass:
 
 gateway:
   # Determines if the Gateway should be deployed
-  deploy: true
+  deploy: false
   # Determines if this gateway should be used as the Controllers defaultGateway.
   # Takes precedence over controller.defaultGateway
-  isControllerDefault: true
+  isControllerDefault: false
   # The specification of the Gateway to be used.
   spec:
     selector:
