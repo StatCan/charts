@@ -1,0 +1,85 @@
+# Default values for vetting-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+appImage:
+  repository: artifactory.cloud.statcan.ca/docker-local/daaas/disclosure_vetting/disclosure_vetting_app
+  tag: 0.1.1
+  pullPolicy: Always
+
+imagePullSecrets:
+  name: artifactory-prod
+
+## Configuration values for postgresql dependency
+## ref: https://bitnami.com/stack/postgresql/containers
+## https://bitnami.com/stack/postgresql/helm
+postgresql:
+  postgresqlUsername: testuser
+  postgresqlPassword: testpassword
+  postgresqlDatabase: DisclosureVettingDb
+  persistence:
+    size: 20Gi
+
+configmodulePy:
+  name: configmodulepy
+  mountPath: /app/app/configmodule.py
+  subPath: configmodule.py
+  secretKey: ""
+  emailEnableNotifications: "False"
+  emailUsername: ""
+  emailPassword: ""
+  emailReceiverEmail: ""
+  clientSecret: ""
+  clientID: ""
+  tenantID: ""
+  appReleaseDate: ""
+  appReleaseVersion: ""
+  storageAnalystName: ""
+  storageResearcherName: ""
+
+entrypointSh:
+  name: entrypointsh
+  mountPath: /app/entrypoint.sh
+  subPath: entrypoint.sh
+
+nameOverride: ""
+fullnameOverride: ""
+managedIdentityName: "disclosure-vetting"
+
+service:
+  type: ClusterIP
+  port: 5000
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: istio
+    # kubernetes.io/tls-acme: "true"
+  paths:
+    - /*
+  hosts:
+    - vetting.dev.cloud.statcan.ca
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
