@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ include "mutating-webhook.fullname" . }}-issuer
+  labels:
+    {{- include "mutating-webhook.labels" . | nindent 4 }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ include "mutating-webhook.fullname" . }}
+  labels:
+    {{- include "mutating-webhook.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "mutating-webhook.fullname" . }}-tls
+  commonName: {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.cluster.local
+  dnsNames:
+  - {{ include "mutating-webhook.fullname" . }}
+  - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}
+  - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc
+  - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.cluster
+  isCA: true
+  duration: 8760h
+  issuerRef:
+    name: {{ include "mutating-webhook.fullname" . }}-issuer
+    kind: Issuer
