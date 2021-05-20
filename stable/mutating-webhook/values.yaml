@@ -19,9 +19,9 @@ certsMountPath:
 # Configurations pertaining to configuring the Webhook
 webhook:
   # The name of the admission webhook.
-	# Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where
-	# "imagepolicy" is the name of the webhook, and kubernetes.io is the name
-	# of the organization.
+  # Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where
+  # "imagepolicy" is the name of the webhook, and kubernetes.io is the name
+  # of the organization.
   name:
   # Rules describes what operations on what resources/subresources the webhook cares about.
   rules: []

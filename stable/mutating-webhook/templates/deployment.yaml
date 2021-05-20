@@ -51,10 +51,12 @@ spec:
             httpGet:
               path: /_healthz
               port: https
+              protocol: HTTPS
           readinessProbe:
             httpGet:
               path: /_healthz
               port: https
+              protocol: HTTPS
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
