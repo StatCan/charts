@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "toleration-injector.fullname" . }}
+  labels:
+    {{- include "toleration-injector.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "toleration-injector.fullname" . }}-tls
+  commonName: {{ include "toleration-injector.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default .Values.clusterDomain "cluster.local" }}
+  dnsNames:
+    - {{ include "toleration-injector.fullname" . }}
+    - {{ include "toleration-injector.fullname" . }}.{{ .Release.Namespace }}
+    - {{ include "toleration-injector.fullname" . }}.{{ .Release.Namespace }}.svc
+    - {{ include "toleration-injector.fullname" . }}.{{ .Release.Namespace }}.svc.{{ default .Values.clusterDomain "cluster.local" }}
+  isCA: true
+  duration: 8760h
+  issuerRef:
+    name: {{ include "toleration-injector.fullname" . }}
+    kind: Issuer

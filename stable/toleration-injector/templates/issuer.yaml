@@ -1,0 +1,8 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "toleration-injector.fullname" . }}
+  labels:
+    {{- include "toleration-injector.labels" . | nindent 4 }}
+spec:
+  selfSigned: {}

@@ -1,0 +1,40 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "toleration-injector.fullname" . }}
+  labels:
+    admissions.enforcer/disabled: "true"
+    {{- include "toleration-injector.labels" . | nindent 4 }}
+  annotations:
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "toleration-injector.fullname" . }}
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: {{ include "toleration-injector.fullname" . }}
+      namespace: {{ .Release.Namespace }}
+      path: /mutate
+      port: {{ .Values.service.port }}
+  failurePolicy: {{ default .Values.mutatingwebhook.failurePolicy "Fail" }}
+  name: toleration-injector.statcan.gc.ca
+  namespaceSelector:
+    matchExpressions:
+    # Do not run this on control-plane environments
+    - key: control-plane
+      operator: DoesNotExist
+  objectSelector:
+    matchExpressions:
+    - key: app.kubernetes.io/name
+      operator: NotIn
+      values: ["toleration-injector"]
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    resources:
+    - pods
+    scope: '*'
