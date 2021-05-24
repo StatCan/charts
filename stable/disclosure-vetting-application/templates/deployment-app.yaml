@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vetting-app.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "vetting-app.name" . }}
+    helm.sh/chart: {{ include "vetting-app.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "vetting-app.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        aadpodidbinding: {{ .Values.managedIdentityName }}
+        app.kubernetes.io/name: {{ include "vetting-app.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.appImage.repository }}:{{ .Values.appImage.tag }}"
+          imagePullPolicy: {{ .Values.appImage.pullPolicy }}
+          env:
+            - name: FLASK_ENV
+              value: development
+            - name: APP_SETTINGS
+              value: project.config.DevelopmentConfig
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.postgresUser  }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresql.postgresPassword  }}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          volumeMounts:
+            - name: {{ include "vetting-app.fullname" . }}-{{ .Values.configmodulePy.name }}
+              mountPath: {{ .Values.configmodulePy.mountPath }}
+              subPath: {{ .Values.configmodulePy.subPath }}
+            - name: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
+              mountPath: {{ .Values.entrypointSh.mountPath }}
+              subPath: {{ .Values.entrypointSh.subPath }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      imagePullSecrets:              
+        - name: {{ .Values.imagePullSecrets.name }}     
+      volumes:
+        - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.configmodulePy.name }}
+          secret:
+            secretName: {{ include "vetting-app.fullname" . }}-{{ .Values.configmodulePy.name }}-secret
+        - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
+          secret:
+            secretName: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}-secret
+            defaultMode: 0755         
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
