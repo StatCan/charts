@@ -12,10 +12,19 @@ appImage:
 imagePullSecrets:
   name: artifactory-prod
 
+external:
+  enabled: false
+  postgresqlUsername: ""
+  postgresqlPassword: ""
+  postgresqlDatabase: ""
+  host: ""
+  post: ""
+
 ## Configuration values for postgresql dependency
 ## ref: https://bitnami.com/stack/postgresql/containers
 ## https://bitnami.com/stack/postgresql/helm
 postgresql:
+  enabled: true
   postgresqlUsername: testuser
   postgresqlPassword: testpassword
   postgresqlDatabase: DisclosureVettingDB
