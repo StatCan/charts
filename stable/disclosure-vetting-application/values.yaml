@@ -5,7 +5,9 @@
 replicaCount: 1
 
 appImage:
+
   repository: statcan/disclosure-vetting-app
+
   tag: 0.1.1
   pullPolicy: Always
 
@@ -50,6 +52,7 @@ configmodulePy:
   smtpServer: ""
   senderEmail: ""
 
+
 entrypointSh:
   name: entrypointsh
   mountPath: /app/entrypoint.sh
@@ -72,6 +75,7 @@ ingress:
     - /*
   hosts:
     - vetting.example.ca
+
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
