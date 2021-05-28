@@ -5,20 +5,31 @@
 replicaCount: 1
 
 appImage:
-  repository: artifactory.cloud.statcan.ca/docker-local/daaas/disclosure_vetting/disclosure_vetting_app
+
+  repository: statcan/disclosure-vetting-app
+
   tag: 0.1.1
   pullPolicy: Always
 
 imagePullSecrets:
   name: artifactory-prod
 
+external:
+  enabled: false
+  postgresqlUsername: ""
+  postgresqlPassword: ""
+  postgresqlDatabase: ""
+  host: ""
+  post: ""
+
 ## Configuration values for postgresql dependency
 ## ref: https://bitnami.com/stack/postgresql/containers
 ## https://bitnami.com/stack/postgresql/helm
 postgresql:
+  enabled: true
   postgresqlUsername: testuser
   postgresqlPassword: testpassword
-  postgresqlDatabase: DisclosureVettingDb
+  postgresqlDatabase: DisclosureVettingDB
   persistence:
     size: 20Gi
 
@@ -38,6 +49,9 @@ configmodulePy:
   appReleaseVersion: ""
   storageAnalystName: ""
   storageResearcherName: ""
+  smtpServer: ""
+  senderEmail: ""
+
 
 entrypointSh:
   name: entrypointsh
@@ -60,7 +74,8 @@ ingress:
   paths:
     - /*
   hosts:
-    - vetting.dev.cloud.statcan.ca
+    - vetting.example.ca
+
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
