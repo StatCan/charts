@@ -1,4 +1,4 @@
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: {{ include "mutating-webhook.fullname" . }}-issuer
@@ -7,7 +7,7 @@ metadata:
 spec:
   selfSigned: {}
 ---
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ include "mutating-webhook.fullname" . }}
@@ -15,14 +15,14 @@ metadata:
     {{- include "mutating-webhook.labels" . | nindent 4 }}
 spec:
   secretName: {{ include "mutating-webhook.fullname" . }}-tls
-  commonName: {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.cluster.local
+  commonName: {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.{{ .Values.clusterDomain | default "cluster.local" }}
   dnsNames:
   - {{ include "mutating-webhook.fullname" . }}
   - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}
   - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc
   - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.cluster
-  isCA: true
-  duration: 8760h
+  isCA: false
+  duration: {{ required .Values.certificates.certsMountPath }}
   issuerRef:
     name: {{ include "mutating-webhook.fullname" . }}-issuer
     kind: Issuer

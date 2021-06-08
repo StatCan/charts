@@ -14,7 +14,9 @@ webhooks:
       namespace: {{ .Release.Namespace }}
       path: /mutate
       port: 443
-  failurePolicy: Ignore
+  failurePolicy: {{ required .Values.webhook.failurePolicy }}
+  reinvocationPolicy: {{ required .Values.webhook.reinvocationPolicy }}
+  sideEffects: {{ required .Values.webhook.sideEffects }}
   name: {{ required .Values.webhook.name }}
   rules:
   {{- toYaml .Values.webhook.rules | nindent 2 }}

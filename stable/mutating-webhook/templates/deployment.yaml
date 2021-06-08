@@ -45,7 +45,7 @@ spec:
               protocol: TCP
           volumeMounts:
           - name: certs
-            mountPath: {{ .Values.certsMountPath | default "/certs" | quote }}
+            mountPath: {{ .Values.certificates.certsMountPath | default "/certs" | quote }}
             readOnly: true
           livenessProbe:
             httpGet:

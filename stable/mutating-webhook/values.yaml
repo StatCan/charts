@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# The domain of the cluster.
+# Defaults to cluster.local
+clusterDomain: cluster.local
+
 replicaCount: 1
 image:
   repository: nginx
@@ -12,9 +16,13 @@ image:
 # Arguments to pass to the container.
 arguments: []
 
-# The mount path of the certificates. 
-# Defaults to /certs.
-certsMountPath: 
+# Configurations around certificates.
+certificates:
+  # The mount path of the certificates. 
+  # Defaults to /certs.
+  certsMountPath: /certs
+  # Defines the duration of the certificates validity.
+  duration: 720h # 30 days
 
 # Configurations pertaining to configuring the Webhook
 webhook:
@@ -23,7 +31,16 @@ webhook:
   # "imagepolicy" is the name of the webhook, and kubernetes.io is the name
   # of the organization.
   name:
-  # Rules describes what operations on what resources/subresources the webhook cares about.
+  # Defines how unrecognized errors and timeout errors from the admission webhook are handled.
+  # Allowed values are Ignore or Fail.
+  failurePolicy: Fail
+  # Defines if mutating admission plugins observe changes made by other plugins.
+  # Allowed values are Never or IfNeeded.
+  reinvocationPolicy: Never
+  # Defines if a webhook has a side-effect. Webhooks typically operate only on the content of the AdmissionReview sent to them.
+  # Allowed values are Unknown, None, Some, NoneOnDryRun.
+  sideEffects: 
+  # Rules describes what operations on what resources/subresources the webhook cares about.  
   rules: []
   # - apiGroups:
   #   - ""
@@ -60,6 +77,13 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
