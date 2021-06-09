@@ -22,7 +22,7 @@ spec:
   - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc
   - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.cluster
   isCA: false
-  duration: {{ required .Values.certificates.certsMountPath }}
+  duration: {{ required .Values.certificates.duration }}
   issuerRef:
     name: {{ include "mutating-webhook.fullname" . }}-issuer
     kind: Issuer
