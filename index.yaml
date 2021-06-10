@@ -3,9 +3,9 @@ entries:
   argocd-operator:
   - apiVersion: v2
     appVersion: v0.0.15
-    created: "2021-06-10T01:52:46.310288516Z"
+    created: "2021-06-10T02:58:26.201382425Z"
     description: A Helm chart for ArgoCD Operator
-    digest: f924beb5c98f297f720375dac78af55049bed47828d38e4ea90b58d5182e7525
+    digest: 1ffb54387355d04ceb149649c7fed49230729be2bd0452461b69c717d44e302d
     home: https://argocd-operator.readthedocs.io/
     icon: https://raw.githubusercontent.com/argoproj-labs/argocd-operator/master/deploy/argo-cd/icon.png
     keywords:
@@ -27,9 +27,9 @@ entries:
   cert-manager-istio-controller:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.312377281Z"
+    created: "2021-06-10T02:58:26.202884041Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
-    digest: 27a1152362d4cd1a46650fe213840478658a9c223d67a6782bb0053a60b27eab
+    digest: eb1d0213ef2207c0238aa83628672f6750ab804e25fafd940c6ab072943c9f6e
     home: https://github.com/StatCan/cert-manager-istio-controller
     name: cert-manager-istio-controller
     type: application
@@ -38,7 +38,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.311881166Z"
+    created: "2021-06-10T02:58:26.202393203Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
     digest: 068eeb6080826576e3a91e2bd50c46b679f6d81ccadd1ffb8f82d463f0f6c467
     home: https://github.com/StatCan/cert-manager-istio-controller
@@ -48,7 +48,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.310881535Z"
+    created: "2021-06-10T02:58:26.201902365Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
     digest: 130d152724d81b7d256ff3bb9c0593d21e3d1a671f58113678ae4d0f1faa7ab6
     home: https://github.com/StatCan/cert-manager-istio-controller
@@ -59,7 +59,7 @@ entries:
   ckan:
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2021-06-10T01:52:46.343052331Z"
+    created: "2021-06-10T02:58:26.235442453Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -86,7 +86,7 @@ entries:
     version: 1.0.24
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2021-06-10T01:52:46.328594883Z"
+    created: "2021-06-10T02:58:26.219433518Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -105,7 +105,7 @@ entries:
       repository: https://statcan.github.io/charts
       version: 1.0.0
     description: CKAN Helm Chart for Kubernetes.
-    digest: de040b996cc7fc3f395d2142f9ccda243fc543cb7b388d3e1b04f8d7ae26c08a
+    digest: 8bb1b4a70333445324f772660df32f99e843a04783f2da6de2e807f6adb0031d
     home: https://ckan.org/
     icon: https://ckan.org/static/img/logo.svg
     keywords:
@@ -129,13 +129,13 @@ entries:
   cost-analyzer:
   - apiVersion: v2
     appVersion: 1.81.0
-    created: "2021-06-10T01:52:46.528705582Z"
+    created: "2021-06-10T02:58:26.415269731Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
       version: 1.81.0
     description: Kubecost
-    digest: 85dc13362d641abcfbf209a8454093397ea1a8eee2740479ac98177cbbd4c1c1
+    digest: 5835f56003c20d646ec992aae2f454dfb60ff14ae8a4c2a0e5984ca08208e9ac
     home: https://kubecost.com
     keywords:
     - costing
@@ -156,7 +156,7 @@ entries:
     version: 1.81.0
   - apiVersion: v2
     appVersion: 1.80.1
-    created: "2021-06-10T01:52:46.509801696Z"
+    created: "2021-06-10T02:58:26.396965119Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -183,7 +183,7 @@ entries:
     version: 1.80.1
   - apiVersion: v2
     appVersion: 1.74.0
-    created: "2021-06-10T01:52:46.491059216Z"
+    created: "2021-06-10T02:58:26.378206471Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -210,7 +210,7 @@ entries:
     version: 1.74.0+1
   - apiVersion: v2
     appVersion: 1.71.0
-    created: "2021-06-10T01:52:46.472513341Z"
+    created: "2021-06-10T02:58:26.359785549Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -235,7 +235,7 @@ entries:
     version: 1.71.0
   - apiVersion: v2
     appVersion: 1.68.1
-    created: "2021-06-10T01:52:46.455617418Z"
+    created: "2021-06-10T02:58:26.341618347Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -260,7 +260,7 @@ entries:
     version: 1.68.1+1
   - apiVersion: v2
     appVersion: 1.61.3
-    created: "2021-06-10T01:52:46.438545289Z"
+    created: "2021-06-10T02:58:26.324578432Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -285,7 +285,7 @@ entries:
     version: 0.1.5
   - apiVersion: v1
     appVersion: 1.61.3
-    created: "2021-06-10T01:52:46.422058178Z"
+    created: "2021-06-10T02:58:26.310516347Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -309,7 +309,7 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2021-06-10T01:52:46.406374693Z"
+    created: "2021-06-10T02:58:26.296376056Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -333,7 +333,7 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2021-06-10T01:52:46.390530402Z"
+    created: "2021-06-10T02:58:26.280950965Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -357,7 +357,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2021-06-10T01:52:46.375112424Z"
+    created: "2021-06-10T02:58:26.265622883Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -381,7 +381,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.57.1
-    created: "2021-06-10T01:52:46.359903353Z"
+    created: "2021-06-10T02:58:26.252058636Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -406,9 +406,9 @@ entries:
   covid:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.530596841Z"
+    created: "2021-06-10T02:58:26.417179779Z"
     description: Covid-19 nodejs app built in React.
-    digest: 3650ca5d66385e37e2e091d1d47fa0a6ce43f4015d7924414dba877f4572407f
+    digest: 1d9d631d4dc1a8ff7dc0c04ea4cbd9dbe0a946a337a85deefb8ce028b51bf008
     home: https://github.com/CSSEGISandData/COVID-19
     keywords:
     - covid
@@ -429,7 +429,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.529985722Z"
+    created: "2021-06-10T02:58:26.416562231Z"
     description: Covid-19 nodejs app built in React.
     digest: bb94edbbb9e316dc82f9ff642f66928fedc6d9e5c21f0ca18e54174175db2256
     home: https://github.com/CSSEGISandData/COVID-19
@@ -452,7 +452,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.529340002Z"
+    created: "2021-06-10T02:58:26.415921382Z"
     description: Covid-19 nodejs app built in React.
     digest: ca8e393dd7158ca1ac1949086a5a74b6736c590e1d6103f277b277ebdda3f0a2
     home: https://github.com/CSSEGISandData/COVID-19
@@ -475,13 +475,13 @@ entries:
   csi-vault:
   - apiVersion: v2
     appVersion: 0.2.0
-    created: "2021-06-10T01:52:46.534636266Z"
+    created: "2021-06-10T02:58:26.420903666Z"
     dependencies:
     - name: csi-vault
       repository: https://charts.appscode.com/stable/
       version: 0.2.0
     description: An extended Helm chart derived from official Vault CSI chart.
-    digest: 67e17a3e1a5ca2d21ea0eda41e3502d730e7fb13cd69c025f1e5aadc6a690112
+    digest: 079b3149d2d1b5246cfeed468d9399bc1187ced1019d2d62919d27f4742d5c17
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
     maintainers:
@@ -497,7 +497,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2021-06-10T01:52:46.532773208Z"
+    created: "2021-06-10T02:58:26.419020721Z"
     dependencies:
     - name: csi-vault
       repository: https://charts.appscode.com/stable/
@@ -519,9 +519,9 @@ entries:
   datapusher:
   - apiVersion: v2
     appVersion: 0.0.17
-    created: "2021-06-10T01:52:46.535267085Z"
+    created: "2021-06-10T02:58:26.421561017Z"
     description: CKAN Datapusher helm chart
-    digest: 1ee8e4497ab4ed43837319500a04d49473f70351ca1a8213cbe1ede6ddc44d85
+    digest: d3d769dd183258ee400a0ce1f16baff9f236ff8ba234361cd88aa8dc52a3d87f
     name: datapusher
     type: application
     urls:
@@ -530,7 +530,7 @@ entries:
   dremio:
   - apiVersion: v2
     appVersion: 4.2.0
-    created: "2021-06-10T01:52:46.538802095Z"
+    created: "2021-06-10T02:58:26.425049586Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: 1ac8a1cb1a94335543a100d04dfa899f81e3f9391f66471d89364e78e8b76dd4
@@ -547,7 +547,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 4.2.0
-    created: "2021-06-10T01:52:46.537623958Z"
+    created: "2021-06-10T02:58:26.423795189Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: 27d86863c77c1b280e66288a4925dfd11dcd115a44e2d4e81ff145a0c9166689
@@ -564,7 +564,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 4.2.0
-    created: "2021-06-10T01:52:46.536489723Z"
+    created: "2021-06-10T02:58:26.422694604Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: 7f2da76c49ba422e5b1322efede6686b1738c86a94da470d138b1f9d2c56b27e
@@ -581,9 +581,9 @@ entries:
   fluentd-operator:
   - apiVersion: v2
     appVersion: 1.13.0
-    created: "2021-06-10T01:52:46.540791156Z"
+    created: "2021-06-10T02:58:26.427069742Z"
     description: Distribution of Fluentd as K8S daemonset
-    digest: fa625b2ad96d19d9d3bb6a2a8f9b06cdb9ea5dbe8e5906cb7061458cd433ace4
+    digest: 3def4dc7713980b543d62b4539b96f941eceef8c504044b5ee923566525321dc
     home: https://github.com/vmware/kube-fluentd-operator
     keywords:
     - fluentd
@@ -604,7 +604,7 @@ entries:
     version: 0.4.4
   - apiVersion: v2
     appVersion: v1.11.0-3-ge92efff
-    created: "2021-06-10T01:52:46.540077334Z"
+    created: "2021-06-10T02:58:26.426338186Z"
     description: Distribution of Fluentd as K8S daemonset
     digest: e27289318e3a70e6dbc074e31f5ecdd51ff0e13e1946ba86cec6c3a45a27fbdf
     home: https://github.com/vmware/kube-fluentd-operator
@@ -627,7 +627,7 @@ entries:
     version: 0.4.3
   - apiVersion: v1
     appVersion: 0.3.1
-    created: "2021-06-10T01:52:46.539354012Z"
+    created: "2021-06-10T02:58:26.425656833Z"
     description: Distribution of Fluentd as K8S daemonset
     digest: b3d37f2dbbf5b5b9c0dc073f7ca5db85816939171b2744409cfb9948c0d045c8
     home: https://github.com/vmware/kube-fluentd-operator
@@ -648,9 +648,9 @@ entries:
   geoserver:
   - apiVersion: v2
     appVersion: 2.18.2
-    created: "2021-06-10T01:52:46.54155688Z"
+    created: "2021-06-10T02:58:26.427770896Z"
     description: A Helm chart for using GeoServer.
-    digest: e7c39c4126a4d47e11d66b62ac66dc4e29a3be2d9486e36f92b8f80d8f2e6999
+    digest: 0e5c80e34df6720bd9f82fb1e1ed7bb4b275432e05166ea0314763f9b78e71b7
     home: http://geoserver.org
     maintainers:
     - email: william.hearn@canada.ca
@@ -665,7 +665,7 @@ entries:
   gitlab-runner:
   - apiVersion: v1
     appVersion: bleeding
-    created: "2021-06-10T01:52:46.542592012Z"
+    created: "2021-06-10T02:58:26.429700045Z"
     description: GitLab Runner
     digest: a4570e085cfa92329a7615058fb09253b18bda59eaa700e15e28178b947eb2ae
     home: https://gitlab.com
@@ -687,10 +687,10 @@ entries:
   ingress-istio-controller:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2021-06-10T01:52:46.544107159Z"
+    created: "2021-06-10T02:58:26.430830232Z"
     description: An Ingress controller for Istio which converts Kubernetes Ingresses
       into VirtualServices.
-    digest: 795358ae446fb6d35166bd02e1b07c833824f6feffcae2ca247240e06bab7a8d
+    digest: 1b3252bf36fccf897f98b6a2d5ee6279240da5f1ef6afb4ec7935d9230490eaa
     home: https://statcan.gc.ca
     maintainers:
     - email: william.hearn@canada.ca
@@ -709,13 +709,13 @@ entries:
   logstash:
   - apiVersion: v2
     appVersion: 7.2.0
-    created: "2021-06-10T01:52:46.549539527Z"
+    created: "2021-06-10T02:58:26.435951627Z"
     dependencies:
     - name: logstash
       repository: https://charts.helm.sh/stable
       version: 2.1.0
     description: Logstash is an open source, server-side data processing pipeline
-    digest: 8de5fc14d052e1e2f50a24812259cace384eca8e3003f9ffd70b764b9161fb4b
+    digest: 0d4c8b5d65fe45872d2159d361e4596d2f026c0ec032c112bb28e430fa9716af
     home: https://www.elastic.co/products/logstash
     icon: https://www.elastic.co/assets/blt86e4472872eed314/logo-elastic-logstash-lt.svg
     maintainers:
@@ -731,7 +731,7 @@ entries:
     version: 3.1.0
   - apiVersion: v1
     appVersion: 7.2.0
-    created: "2021-06-10T01:52:46.547272157Z"
+    created: "2021-06-10T02:58:26.433677652Z"
     dependencies:
     - name: logstash
       repository: https://kubernetes-charts.storage.googleapis.com/
@@ -753,14 +753,14 @@ entries:
   matomo:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.556454142Z"
+    created: "2021-06-10T02:58:26.442988271Z"
     dependencies:
     - condition: mariadb.deployChart
       name: mariadb
       repository: https://charts.helm.sh/stable
       version: 5.11.1
     description: A Helm chart for using Matomo
-    digest: 4ff905cfcd58b48fc9e42324a59b8c361106d7cb5cfa2622056bdee93f064330
+    digest: 58f790998c15db4fc9fad0112390ef32fe0fdbd00da79f6f034983f8a43e2887
     home: https://matomo.org
     icon: https://bitnami.com/assets/stacks/matomo/img/matomo-stack-110x117.png
     maintainers:
@@ -775,7 +775,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.554110069Z"
+    created: "2021-06-10T02:58:26.440660991Z"
     dependencies:
     - condition: mariadb.deployChart
       name: mariadb
@@ -797,7 +797,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.551822798Z"
+    created: "2021-06-10T02:58:26.438308409Z"
     dependencies:
     - condition: mariadb.deployChart
       name: mariadb
@@ -819,9 +819,9 @@ entries:
   minio-operator:
   - apiVersion: v2
     appVersion: v4.1.0
-    created: "2021-06-10T01:52:46.559140125Z"
+    created: "2021-06-10T02:58:26.445847891Z"
     description: A Helm chart for MinIO Operator
-    digest: ebe1e7c33fc52cc2022a9da3773d220ba4c9fdffd3ad5fa0b8c7c047ba7a438e
+    digest: e28b59c09fa123352fcb151e400d3bae742cf5741f22052079396494835cffd2
     home: https://min.io
     icon: https://min.io/resources/img/logo/MINIO_wordmark.png
     keywords:
@@ -841,10 +841,10 @@ entries:
   mlflow:
   - apiVersion: v2
     appVersion: 1.7.2
-    created: "2021-06-10T01:52:46.563597763Z"
+    created: "2021-06-10T02:58:26.450807874Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
-    digest: 18c59ce259b39c41fec3b075ee5faf3278115341040cb2644515fad1e5f9194a
+    digest: 709eca578d3cc9396f883047e3e10f0486d2fd6618e1a848ba372f6f802c3da6
     home: https://mlflow.org/
     maintainers:
     - email: william.hearn@canada.ca
@@ -858,7 +858,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 1.7.2
-    created: "2021-06-10T01:52:46.562893141Z"
+    created: "2021-06-10T02:58:26.449789995Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: ca848e3ad0f50a00acf9f96d2e61d1242eeb3fdf99f4ef502d1aa5dbbeb22c35
@@ -875,7 +875,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2021-06-10T01:52:46.562142018Z"
+    created: "2021-06-10T02:58:26.448963832Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: 383abf9932f6137bc3d818ab67405e3efeb7b77adfb3c33651b56b49dbb3f093
@@ -891,7 +891,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2021-06-10T01:52:46.561379594Z"
+    created: "2021-06-10T02:58:26.448100365Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: d0bcc84bfd2989660344d202e3c25110974c38d781f7b9a6c26c525703830595
@@ -907,7 +907,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2021-06-10T01:52:46.560660472Z"
+    created: "2021-06-10T02:58:26.44686777Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: 02253d17e7c7803a9b64fbc11b30454fa04c7744ab2143444fcf24d5f47ec856
@@ -924,13 +924,13 @@ entries:
   orchard-cms:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-06-10T01:52:46.577547695Z"
+    created: "2021-06-10T02:58:26.464957966Z"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 9.8.4
     description: A Helm chart that hosts OrchardCore with PostgreSql
-    digest: ab5c4de9c16b957238ab9c8a86b3da42991b974c4cfb956c32b8a66ee368b74b
+    digest: 3c371d0e036d6c7572ff6546a48a41cd24f2a3272fdfa21450c6be69aa7d158a
     home: https://www.orchardcore.net/
     maintainers:
     - email: jean-philippe.tissot@canada.ca
@@ -944,7 +944,7 @@ entries:
     version: 1.2.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2021-06-10T01:52:46.571604011Z"
+    created: "2021-06-10T02:58:26.459271327Z"
     description: A Helm chart that hosts OrchardCore with PostgreSql
     digest: 2b73f930a7bb9a6b81f81c3a7b2bff49b19c101f684c8776495b8ddad7c50825
     home: https://www.orchardcore.net/
@@ -959,7 +959,7 @@ entries:
     version: 1.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-10T01:52:46.56737798Z"
+    created: "2021-06-10T02:58:26.454176434Z"
     dependencies:
     - name: postgresql
       repository: https://kubernetes-charts.storage.googleapis.com
@@ -979,10 +979,10 @@ entries:
   pachyderm:
   - apiVersion: v2
     appVersion: 1.8.6
-    created: "2021-06-10T01:52:46.581049703Z"
+    created: "2021-06-10T02:58:26.469507117Z"
     description: 'Pachyderm is a large-scale container-based workflow engine that
       offers complete version control for data and reproducible data processing '
-    digest: 10e2e40e1e881925e61c11902b7cf9afad78dce3fd302704c9ba07c70c968c0e
+    digest: 6d9c9dd23bc3aa8a6789afa9bb1b875903da2b9c158d6955fe78e24fa0e0b5e8
     home: https://pachyderm.io
     icon: https://avatars2.githubusercontent.com/u/10432478?s=200
     keywords:
@@ -1007,7 +1007,7 @@ entries:
     version: 0.5.1
   - apiVersion: v2
     appVersion: 1.8.6
-    created: "2021-06-10T01:52:46.579875967Z"
+    created: "2021-06-10T02:58:26.468204817Z"
     description: 'Pachyderm is a large-scale container-based workflow engine that
       offers complete version control for data and reproducible data processing '
     digest: f488b8b75aef9091ca31e1f82f0ef6bcd9181898265bf2160708d328263137dc
@@ -1035,7 +1035,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: 1.8.6
-    created: "2021-06-10T01:52:46.578715431Z"
+    created: "2021-06-10T02:58:26.466665998Z"
     description: 'Pachyderm is a large-scale container-based workflow engine that
       offers complete version control for data and reproducible data processing '
     digest: 909fb972714604dee2b2180b340cdb1979f95a8a9fd5551363be806d550eec6c
@@ -1063,14 +1063,14 @@ entries:
   prometheus-operator:
   - apiVersion: v2
     appVersion: 0.38.1
-    created: "2021-06-10T01:52:46.626038297Z"
+    created: "2021-06-10T02:58:26.515537369Z"
     dependencies:
     - name: prometheus-operator
       repository: https://charts.helm.sh/stable
       version: 9.3.1
     description: An extended Helm chart derived from official Prometheus Operator
       chart.
-    digest: 7924e47d69d85d3246e88ca0b6d113c81755b193521a07e780c7241564daef1b
+    digest: f01bc013303e5df206731f073a309d0d1eadcb1137310a4a9404b95a81c315a8
     home: https://coreos.com/operators/prometheus/docs/latest/
     maintainers:
     - email: william.hearn@canada.ca
@@ -1084,7 +1084,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: 0.30.0
-    created: "2021-06-10T01:52:46.595580453Z"
+    created: "2021-06-10T02:58:26.48600009Z"
     dependencies:
     - name: prometheus-operator
       repository: https://kubernetes-charts.storage.googleapis.com/
@@ -1105,9 +1105,9 @@ entries:
   rotate-elasticsearch-index:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2021-06-10T01:52:46.627353238Z"
+    created: "2021-06-10T02:58:26.516563549Z"
     description: A Helm chart for deploying Elasticsearch index rotation
-    digest: 3d1fe3635331d908603f0aef3f27d55da9528b0ab493352c5606f266a6d380a4
+    digest: 74aae72dafa3c192668a066a0d2df8ba9acbe0bfac2dbc96c349d05f124bdb24
     home: https://github.com/kairen/rotate-elasticsearch-index
     maintainers:
     - email: k2r2.bai@gmail.com
@@ -1119,7 +1119,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-06-10T01:52:46.626811921Z"
+    created: "2021-06-10T02:58:26.51606421Z"
     description: A Helm chart for deploying Elasticsearch index rotation
     digest: 85e0dedc0212a8f4943ad45c10c3e7442940504e84efd2dfd2481d58840e22cf
     home: https://github.com/kairen/rotate-elasticsearch-index
@@ -1133,9 +1133,9 @@ entries:
   shiny:
   - apiVersion: v2
     appVersion: 3.6.0
-    created: "2021-06-10T01:52:46.629313998Z"
+    created: "2021-06-10T02:58:26.51839559Z"
     description: A Helm chart for using Shiny.
-    digest: 62ba83413ac1c5fa241f1f7404f44e99a535cd2a01d14869b21eb14776d7915c
+    digest: 740bda61026f126cc45fbdfc338e960fd296b78e8855f3853d10eac58dd95bad
     home: https://rstudio.com/products/shiny/shiny-server/
     maintainers:
     - email: william.hearn@canada.ca
@@ -1149,7 +1149,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 3.6.0
-    created: "2021-06-10T01:52:46.628669178Z"
+    created: "2021-06-10T02:58:26.517798744Z"
     description: A Helm chart for using Shiny.
     digest: 85eb28cac48255d387dba0a322dcf6cbb837ccebf227ca2870526459673e68cd
     home: https://rstudio.com/products/shiny/shiny-server/
@@ -1165,7 +1165,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 3.6.0
-    created: "2021-06-10T01:52:46.628035959Z"
+    created: "2021-06-10T02:58:26.517187897Z"
     description: A Helm chart for using Shiny.
     digest: 6ed5c3f38f47a35b48a77448c57235c5eb7d42b489d59a893b15959bf089eb44
     home: https://rstudio.com/products/shiny/shiny-server/
@@ -1181,13 +1181,13 @@ entries:
   solr:
   - apiVersion: v2
     appVersion: 8.4.0
-    created: "2021-06-10T01:52:46.63195028Z"
+    created: "2021-06-10T02:58:26.520899383Z"
     dependencies:
     - name: zookeeper
       repository: https://charts.helm.sh/incubator
       version: 2.1.3
     description: A helm chart to install Apache Solr
-    digest: bebf6568d16c7840b818e6b7e17aa81158f50ce82925f10d74a639e08dfee50c
+    digest: 24534e9ec787a957c697db43aa29a29407150a72b7a0eacbf66387fb01228cc8
     home: http://lucene.apache.org/solr/
     keywords:
     - solr
@@ -1262,10 +1262,10 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v1
     appVersion: v0.2.8
-    created: "2021-06-10T01:52:46.637175342Z"
+    created: "2021-06-10T02:58:26.526452812Z"
     description: The Solr Operator enables easy management of Solr resources within
       Kubernetes.
-    digest: ed8c4002727c70578615591160ba13e770db0aaf29919b822ccea41260fe55a1
+    digest: 240c1fa423fd0f2371dafd91ca30bf217a2e49a0ec515568ce5f54bb72e7c652
     home: https://github.com/apache/lucene-solr-operator
     icon: https://lucene.apache.org/theme/images/solr/identity/Solr_Logo_on_white.png
     keywords:
@@ -1289,9 +1289,9 @@ entries:
   starboard-operator:
   - apiVersion: v2
     appVersion: 0.8.0
-    created: "2021-06-10T01:52:46.640192035Z"
+    created: "2021-06-10T02:58:26.529372237Z"
     description: A Helm chart for starboard-operator.
-    digest: d7c0795611a54ac29fa5408f3decafdb295690a24df7c4c0d4104cc9dd581195
+    digest: d834fd20db6be882d6ad4334cef3d294e8c6fb5a21b9ce9ba96603a5499cc071
     home: https://github.com/aquasecurity/starboard
     keywords:
     - aquasecurity
@@ -1311,7 +1311,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 0.8.0
-    created: "2021-06-10T01:52:46.639181204Z"
+    created: "2021-06-10T02:58:26.528397662Z"
     description: A Helm chart for starboard-operator.
     digest: 20518411699c87d4a3be80023d019ede1bb502e52ba161b511a09db4e5fd6ee6
     home: https://github.com/aquasecurity/starboard
@@ -1333,7 +1333,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 0.6.0
-    created: "2021-06-10T01:52:46.638202774Z"
+    created: "2021-06-10T02:58:26.527429087Z"
     description: A Helm chart for starboard-operator.
     digest: 1bce6693064aef685098ac66d1465949ab94797047d82fa1cc762f2a4824ebbd
     home: https://github.com/aquasecurity/starboard
@@ -1356,9 +1356,9 @@ entries:
   varnish:
   - apiVersion: v2
     appVersion: 6.6.0
-    created: "2021-06-10T01:52:46.643932751Z"
+    created: "2021-06-10T02:58:26.532898709Z"
     description: A Helm chart for using Varnish.
-    digest: 68abe1e86926e8a1c9d91193207f30786818a259049aaaedcec2d0310ff7f635
+    digest: 08e64adf72c3a629ec46f913781995f9bb241a71eeae0838c7561b54cbe238ca
     home: https://www.varnish-software.com
     maintainers:
     - email: william.hearn@canada.ca
@@ -1374,7 +1374,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 6.5.1
-    created: "2021-06-10T01:52:46.643387234Z"
+    created: "2021-06-10T02:58:26.532342066Z"
     description: A Helm chart for using Varnish.
     digest: 3196e45647de90af4eb34ee7b119ec5a67995f09a108260d02f957916b97560b
     home: https://www.varnish-software.com
@@ -1390,7 +1390,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 6.4.0
-    created: "2021-06-10T01:52:46.642881719Z"
+    created: "2021-06-10T02:58:26.531837927Z"
     description: A Helm chart for using Varnish.
     digest: 037534a2de78ba477160e7d9e9c55d318625b188c4bda79de24dddc8465c1e8c
     home: https://www.varnish-software.com
@@ -1406,7 +1406,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 6.4.0
-    created: "2021-06-10T01:52:46.642357702Z"
+    created: "2021-06-10T02:58:26.531322088Z"
     description: A Helm chart for using Varnish.
     digest: b07fdf813e229c4fd739b03be3acd35f882c87df714c890fa8141ee6000bda50
     home: https://www.varnish-software.com
@@ -1422,7 +1422,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2021-06-10T01:52:46.641838286Z"
+    created: "2021-06-10T02:58:26.53083525Z"
     description: A Helm chart for using Varnish.
     digest: 827b9b21d59ab10ef929f2884213e8e73cbf83804cec144cbd2a2aa27d2b9616
     home: https://www.varnish-software.com
@@ -1437,7 +1437,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2021-06-10T01:52:46.641278169Z"
+    created: "2021-06-10T02:58:26.530353513Z"
     description: A Helm chart for using Varnish.
     digest: 96ea55f8646b463290f4d1787f70acbc5912614097241d4c25ff01038594f929
     home: https://www.varnish-software.com
@@ -1452,7 +1452,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2021-06-10T01:52:46.640751353Z"
+    created: "2021-06-10T02:58:26.529870476Z"
     description: A Helm chart for using Varnish.
     digest: 4bb8cc91a5d83ed119180a2b0f46885d718b4c04447ebee49dff9281d77fa7b1
     home: https://www.varnish-software.com
@@ -1468,13 +1468,13 @@ entries:
   vault:
   - apiVersion: v2
     appVersion: 1.2.2
-    created: "2021-06-10T01:52:46.660793774Z"
+    created: "2021-06-10T02:58:26.549502491Z"
     dependencies:
     - name: vault
       repository: https://helm.releases.hashicorp.com
       version: 0.8.0
     description: An extended Helm chart derived from official Vault chart.
-    digest: 4828483d944519666c852bb9d64c0d854a35855f8182159625391e0b269ef092
+    digest: f6acc128b74913e74ea20224a6fb837fcd5558b4a4d1ca33fe95d9f0e944aeaf
     home: https://www.vaultproject.io
     icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
     maintainers:
@@ -1490,7 +1490,7 @@ entries:
     version: 0.1.8
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2021-06-10T01:52:46.654043964Z"
+    created: "2021-06-10T02:58:26.542686765Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: 02e77b7bc3af379303a5b1d340b7ebe172c641c8d86997fe6875d1b839d7b7a6
     home: https://www.vaultproject.io
@@ -1507,7 +1507,7 @@ entries:
     version: 0.0.7
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2021-06-10T01:52:46.651098173Z"
+    created: "2021-06-10T02:58:26.539784041Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: b371038b12818d373abb7f75f8ca6bf40ee26175d392a31dccc1ab89fe11fe09
     home: https://www.vaultproject.io
@@ -1524,7 +1524,7 @@ entries:
     version: 0.0.6
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2021-06-10T01:52:46.648632197Z"
+    created: "2021-06-10T02:58:26.537337452Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: ac5af6987e345e63d16d0485d246e8e27c3d216c3d401a45e975f452fec24a3e
     home: https://www.vaultproject.io
@@ -1541,7 +1541,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2021-06-10T01:52:46.64615412Z"
+    created: "2021-06-10T02:58:26.535016673Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: e943ffaa01e55a2a0986da29a69541cdec1fcc8c623c6f56f026922a135332ed
     home: https://www.vaultproject.io
@@ -1559,13 +1559,13 @@ entries:
   velero:
   - apiVersion: v2
     appVersion: 1.3.2
-    created: "2021-06-10T01:52:46.668507012Z"
+    created: "2021-06-10T02:58:26.556893161Z"
     dependencies:
     - name: velero
       repository: https://vmware-tanzu.github.io/helm-charts
       version: 2.9.15
     description: An extended Helm chart derived from official Velero chart.
-    digest: dd3fca9e1bdd780f01e4d604c3f1dbcc7a8ed79aba25f3dfcd0820d6de219806
+    digest: 4ddec8c42405d697f55e6389103a962efb13a062002cc56ac22ff04a1deb3edc
     home: https://heptio.com/products/#heptio-velero
     maintainers:
     - email: william.hearn@canada.ca
@@ -1581,7 +1581,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 1.3.2
-    created: "2021-06-10T01:52:46.665330814Z"
+    created: "2021-06-10T02:58:26.553940233Z"
     dependencies:
     - name: velero
       repository: https://vmware-tanzu.github.io/helm-charts
@@ -1602,7 +1602,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.11.0
-    created: "2021-06-10T01:52:46.662320921Z"
+    created: "2021-06-10T02:58:26.550965604Z"
     dependencies:
     - name: velero
       repository: https://kubernetes-charts.storage.googleapis.com/
@@ -1622,13 +1622,13 @@ entries:
   vetting:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2021-06-10T01:52:46.678898534Z"
+    created: "2021-06-10T02:58:26.567532182Z"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 9.4.1
     description: A Helm chart for Discolsure Vetting Application
-    digest: 3dbd3ec238be58da5f64dd55643ed4ce17bc2555fba2813a6984c04f0bf0c7f1
+    digest: 5416694ef0cc5e577edfb31b2fe1441d5e9c77501862c73368d314452e8fab92
     home: https://statcan.gc.ca
     icon: https://www.python.org/static/img/python-logo
     maintainers:
@@ -1646,7 +1646,7 @@ entries:
     version: 0.1.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2021-06-10T01:52:46.673097155Z"
+    created: "2021-06-10T02:58:26.562415387Z"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -1668,4 +1668,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.4.tgz
     version: 0.1.4
-generated: "2021-06-10T01:52:46.307344325Z"
+generated: "2021-06-10T02:58:26.199886809Z"
