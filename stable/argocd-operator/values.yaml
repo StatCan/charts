@@ -1,0 +1,46 @@
+# Default values for argocd-operator.
+
+operator:
+  clusterDomain: ""
+  nsToWatch: "argocd-operator-system"
+  image:
+    repository: quay.io/argoprojlabs/argocd-operator@sha256
+    tag: 38254c8d53172993cb51c0b4c72645757ba36e7e8e3b1251683b00cede47fa7c
+    pullPolicy: IfNotPresent
+  imagePullSecrets: []
+  podAnnotations: {}
+  podLabels: {}
+  replicaCount: 1
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    runAsNonRoot: true
+    fsGroup: 1000
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+      ephemeral-storage: 500Mi
+
+## ArgoCD Projects Definition
+projects:
+  # Project name
+  - name: argprojo01
+    namespace:
+    podAnnotations: {}
+    podLabels: {}
+    spec:
+      oidcConfig: |
+        name: myoidc
+        issuer: OIDC_FQDN
+        clientID: id
+        clientSecret: secret
+        requestedIDTokenClaims:
+          groups:
+            essential: true
+        requestedScopes: ["openid", "profile", "email"]
+      server:
+        autoscale:
+          enabled: true
+        host: ARGOCD_FQDN
+        insecure: false
