@@ -1,0 +1,15 @@
+**********************
+** CONGRATULATIONS! **
+**********************
+
+Your CKAN site has been installed.
+
+1. Get the application URL by running these commands:
+
+{{- if .Values.ingress.enabled }}
+  Visit http://{{ index .Values.ingress.hosts 0 }}{{ .Values.ingress.path }}
+{{- end }}
+
+2. Generate an API Token for the sysadmin user using the CKAN UI:
+
+kubectl -n {namespace} create secret generic {{ include "ckan.fullname" . }}-sysadmintoken --from-literal=sysadminApiToken={insert_generated_api_token_here} --dry-run -o yaml | kubectl apply -f -
