@@ -130,14 +130,6 @@ ckan:
     annotations: {}
     name:
 
-# Fix for Azure Database with "@" symbol in username
-azure:
-  compat:
-    enabled: false
-    scripts: |-
-      sed -i 's/user@host:/user%%40host:/g' /srv/app/production.ini
-      cat  /srv/app/production.ini
-
 ## Configuration values for DataPusher
 datapusher:
   enabled: true

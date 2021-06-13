@@ -42,6 +42,11 @@ spec:
           configMap:
             name: psql-init-configmap
       {{ end }}
+      {{ if .Values.pgbouncer.enabled }}
+        - name: configfiles
+          secret:
+            secretName: {{ include "ckan.fullname" . }}-pgbouncer
+      {{ end }}
         - name: ckan-config
           emptyDir: {}
       {{- if .Values.ckan.persistence.enabled }}
@@ -75,6 +80,29 @@ spec:
           readOnly: false
       {{ end }}
       containers:
+      {{ if .Values.pgbouncer.enabled }}
+        - name: pgbouncer
+          image: mcr.microsoft.com/azure-oss-db-tools/pgbouncer-sidecar:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: configfiles
+              mountPath: "/etc/pgbouncer"
+              readOnly: true
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            periodSeconds: 60
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "killall -INT pgbouncer && sleep 120"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ['all']
+      {{ end  }}
       {{ if .Values.solr.initialize.enabled }}
         - name: solr-init
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -191,12 +219,6 @@ spec:
                 if getenv(v):
                     print(f"{k} = {getenv(v)}")
             EOF
-
-            # Fix for Azure Database with "@" symbol in username
-            {{- if .Values.azure.compat.enabled }}
-            {{ .Values.azure.compat.scripts | nindent 14}}
-            {{- end }}
-
             ckan -c /srv/app/production.ini db init
             ckan -c /srv/app/production.ini run --host 0.0.0.0
           ports:
