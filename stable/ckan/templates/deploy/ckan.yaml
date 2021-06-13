@@ -148,37 +148,41 @@ spec:
           {{- if .Values.external.enabled }}
           - name: PSQL_MASTER
             value: {{ .Values.external.user }}
-          - name: PSQL_PASSWD
-            value: {{ .Values.external.password }}
           - name: PSQL_DB
             value: {{ .Values.external.database }}
           {{- else if .Values.postgresql.enabled }}
           - name: PSQL_MASTER
             value: {{ .Values.postgresql.postgresqlUsername  }}
-          - name: PSQL_PASSWD
-            value: {{ .Values.postgresql.postgresqlPassword  }}
           - name: PSQL_DB
             value: {{ .Values.postgresql.postgresqlDatabase  }}
-          - name: PSQL_HOST
-            value: {{ ternary "localhost" (printf "%s-postgresql" .Release.Name) (eq .Values.pgbouncer.enabled true)}}
           {{- end }}
+          - name: PSQL_HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: psqlHost
+          - name: PSQL_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: psqlMasterPassword
           - name: CKAN_SOLR_URL
             value: {{ .Values.ckan.solr }}
-          {{- if .Values.external.enabled }}
           - name: CKAN_SQLALCHEMY_URL
-            value: "postgresql://{{ .Values.ckan.db.ckanDbUser }}:{{ .Values.ckan.db.ckanDbPassword  }}@{{ ternary "localhost" .Values.external.password (eq .Values.pgbouncer.enabled true)}}/{{ .Values.ckan.db.ckanDbName  }}"
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: ckanSqlAlchemyUrl
           - name: CKAN_DATASTORE_WRITE_URL
-            value: "postgresql://{{ .Values.ckan.datastore.RwDbUser }}:{{ .Values.ckan.datastore.RwDbPassword }}@{{ ternary "localhost" .Values.external.password (eq .Values.pgbouncer.enabled true)}}/{{ .Values.ckan.datastore.RwDbName }}"
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: ckanDatastoreWriteUrl
           - name: CKAN_DATASTORE_READ_URL
-            value: "postgresql://{{ .Values.ckan.datastore.RoDbUser }}:{{ .Values.ckan.datastore.RoDbPassword }}@{{ ternary "localhost" .Values.external.password (eq .Values.pgbouncer.enabled true)}}/{{ .Values.ckan.datastore.RoDbName }}"
-          {{- else if .Values.postgresql.enabled }}
-          - name: CKAN_SQLALCHEMY_URL
-            value: "postgresql://{{ .Values.ckan.db.ckanDbUser  }}:{{ .Values.ckan.db.ckanDbPassword  }}@{{ ternary "localhost" (printf "%s-postgresql" .Release.Name) (eq .Values.pgbouncer.enabled true)}}/{{ .Values.ckan.db.ckanDbName  }}"
-          - name: CKAN_DATASTORE_WRITE_URL
-            value: "postgresql://{{ .Values.ckan.datastore.RwDbUser }}:{{ .Values.ckan.datastore.RwDbPassword }}@{{ ternary "localhost" (printf "%s-postgresql" .Release.Name) (eq .Values.pgbouncer.enabled true)}}/{{ .Values.ckan.datastore.RwDbName }}"
-          - name: CKAN_DATASTORE_READ_URL
-            value: "postgresql://{{ .Values.ckan.datastore.RoDbUser }}:{{ .Values.ckan.datastore.RoDbPassword }}@{{ ternary "localhost" (printf "%s-postgresql" .Release.Name) (eq .Values.pgbouncer.enabled true)}}/{{ .Values.ckan.datastore.RoDbName }}"
-          {{- end }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: ckanDatastoreReadUrl
           command:
           - /bin/bash
           - -c
