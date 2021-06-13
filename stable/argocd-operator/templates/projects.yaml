@@ -21,6 +21,10 @@ spec:
   oidcConfig: |
     {{ toYaml . | nindent 8 }}
   {{ end }}
+  {{- with .spec.rbac }}
+  rbac:
+    {{ toYaml . | nindent 8 }}
+  {{ end }}
   {{- with .spec.server }}
   server:
     {{ toYaml . | nindent 8 }}
