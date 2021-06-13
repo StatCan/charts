@@ -29,23 +29,23 @@ projects:
     namespace:
     podAnnotations: {}
     podLabels: {}
-    # spec:
-    #   oidcConfig: |
-    #     name: myoidc
-    #     issuer: OIDC_FQDN
-    #     clientID: id
-    #     clientSecret: secret
-    #     requestedIDTokenClaims:
-    #       groups:
-    #         essential: true
-    #     requestedScopes: ["openid", "profile", "email"]
-    #   rbac:
-    #     defaultPolicy: 'role:readonly'
-    #     policy: |
-    #       g, system:cluster-admins, role:admin
-    #     scopes: '[groups]'
-    #   server:
-    #     autoscale:
-    #       enabled: true
-    #     host: ARGOCD_FQDN
-    #     insecure: false
+    spec:
+      oidcConfig: |
+        name: myoidc
+        issuer: OIDC_FQDN
+        clientID: id
+        clientSecret: secret
+        requestedIDTokenClaims:
+          groups:
+            essential: true
+        requestedScopes: ["openid", "profile", "email"]
+      rbac:
+        defaultPolicy: 'role:readonly'
+        policy: |
+          g, system:cluster-admins, role:admin
+        scopes: '[groups]'
+      server:
+        autoscale:
+          enabled: true
+        host: ARGOCD_FQDN
+        insecure: false
