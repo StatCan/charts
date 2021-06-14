@@ -31,15 +31,15 @@ spec:
           - argocd-operator
           imagePullPolicy: {{ .Values.operator.image.pullPolicy }}
           env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             - name: POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "argocd-operator"
-            {{- if .Values.operator.nsToWatch }}
-            - name: WATCH_NAMESPACE
-              value: {{ .Values.operator.nsToWatch }}
-            {{- end }}
           resources:
             {{- toYaml .Values.operator.resources | nindent 12 }}
