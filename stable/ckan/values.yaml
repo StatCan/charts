@@ -169,6 +169,9 @@ solr:
 ## ref: https://github.com/bitnami/charts/blob/master/bitnami/redis/README.md
 redis:
   enabled: true
+  # At the moment CKAN doesn't support Redis with a password, though that
+  # would be an easy patch.
+  usePassword: false
   image:
     registry: docker.io
     repository: bitnami/redis
