@@ -32,6 +32,9 @@ spec:
         - name: ckan-ini-overlay-configmap
           configMap:
             name: ckan-ini-overlay-configmap
+        - name: ckan-prerun-configmap
+          configMap:
+            name: ckan-prerun-configmap
       {{ if .Values.solr.initialize.enabled }}
         - name: solr-init-configmap
           configMap:
@@ -230,6 +233,7 @@ spec:
             echo "Applying the production.ini overlay..."
             ckan config-tool /srv/app/production.ini -f /config/production.ini
             ckan -c /srv/app/production.ini db init
+            python3 /srv/prerun/prerun.py
             ckan -c /srv/app/production.ini run --host 0.0.0.0
           ports:
             - name: http
@@ -347,6 +351,8 @@ spec:
             failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
             timeoutSeconds: {{ .Values.ckan.liveness.timeoutSeconds }}
           volumeMounts:
+          - name: ckan-prerun-configmap
+            mountPath: /srv/prerun
           - name: ckan-ini-overlay-configmap
             mountPath: /config/
           - name: ckan-config
