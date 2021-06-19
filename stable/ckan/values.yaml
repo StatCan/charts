@@ -58,7 +58,7 @@ ckan:
     RoDbUser: datastorero
     RoDbPassword: pass
   solr: "http://solr-headless:8983/solr/ckancollection"
-  redis: "redis://redis-headless:6379/0"
+  redis: "redis://ckan-redis-headless:6379/0"
   spatialBackend: "solr"
   locale:
     offered: "en"
