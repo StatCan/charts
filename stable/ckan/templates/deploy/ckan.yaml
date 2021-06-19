@@ -223,6 +223,7 @@ spec:
                 if getenv(v):
                     print(f"{k} = {getenv(v)}")
             EOF
+            ckan config-tool /srv/app/production.ini "ckan.plugins = ${CKAN_PLUGINS}"
             ckan -c /srv/app/production.ini db init
             ckan -c /srv/app/production.ini run --host 0.0.0.0
           ports:
