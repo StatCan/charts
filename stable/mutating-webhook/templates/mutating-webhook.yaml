@@ -14,10 +14,11 @@ webhooks:
       namespace: {{ .Release.Namespace }}
       path: /mutate
       port: 443
-  failurePolicy: {{ required .Values.webhook.failurePolicy }}
-  reinvocationPolicy: {{ required .Values.webhook.reinvocationPolicy }}
-  sideEffects: {{ required .Values.webhook.sideEffects }}
-  name: {{ required .Values.webhook.name }}
+  failurePolicy: {{ required "webhook.failurePolicy is required" .Values.webhook.failurePolicy }}
+  reinvocationPolicy: {{ required "webhook.reinvocationPolicy is required" .Values.webhook.reinvocationPolicy }}
+  sideEffects: {{ required "webhook.sideEffects is required" .Values.webhook.sideEffects }}
+  matchPolicy: {{ required "webhook.matchPolicy is required" .Values.webhook.matchPolicy }}
+  name: {{ required "webhook.name is required" .Values.webhook.name }}
   rules:
   {{- toYaml .Values.webhook.rules | nindent 2 }}
   

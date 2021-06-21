@@ -15,14 +15,15 @@ metadata:
     {{- include "mutating-webhook.labels" . | nindent 4 }}
 spec:
   secretName: {{ include "mutating-webhook.fullname" . }}-tls
-  commonName: {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.{{ .Values.clusterDomain | default "cluster.local" }}
   dnsNames:
   - {{ include "mutating-webhook.fullname" . }}
-  - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}
-  - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc
-  - {{ include "mutating-webhook.fullname" . }}.{{ Release.Namespace }}.svc.cluster
+  - {{ include "mutating-webhook.fullname" . }}.{{ .Release.Namespace }}
+  - {{ include "mutating-webhook.fullname" . }}.{{ .Release.Namespace }}.svc
+  - {{ include "mutating-webhook.fullname" . }}.{{ .Release.Namespace }}.svc.cluster
+  - {{ include "mutating-webhook.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain | default "cluster.local" }}
   isCA: false
-  duration: {{ required .Values.certificates.duration }}
+  duration: {{ .Values.certificates.duration | default "720h0m0s" }}
+  renewBefore: {{ .Values.certificates.renewBefore | default "120h0m0s" }}
   issuerRef:
     name: {{ include "mutating-webhook.fullname" . }}-issuer
     kind: Issuer
