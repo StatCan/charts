@@ -189,6 +189,11 @@ spec:
               secretKeyRef:
                 name: {{ include "ckan.fullname" . }}
                 key: ckanDatastoreReadUrl
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: { { include "ckan.fullname" . } }-util
+                key: azureClientSecretUtil
           command:
           - /bin/bash
           - -c
