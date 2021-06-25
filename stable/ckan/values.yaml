@@ -30,6 +30,11 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+extensions:
+  util:
+    enabled: true
+    azureClientSecretUtil: "yep.. lemme just paste that here..."
+
 ## Configuration values for CKAN
 ckan:
   sysadminName: "ckan_admin"
