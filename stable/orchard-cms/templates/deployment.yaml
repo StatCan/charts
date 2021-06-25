@@ -35,8 +35,17 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-{{ include "orchard-cms.postgresEnv" . | indent 12 }}
-{{- toYaml .Values.image.environmentVariables | nindent 12 }}
+          {{- range $k, $v := .Values.environmentSecrets }}
+            - name: {{ $k }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "orchard-cms.fullname" $ }}-env
+                  key: {{ $k }}
+          {{- end }}
+          {{- range $k, $v := .Values.environmentVariables }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 80
@@ -47,12 +56,7 @@ spec:
           volumeMounts:
           - mountPath: /app/App_Data
             name: volume
-{{- end }}     
-{{- if not .Values.volumeClaim.enabled }}
-          volumes:
-          - name: volume
-            emptyDir: {}
-{{- end }}       
+{{- end }}  
 {{- include "orchard-cms.imagePullSecrets" . | indent 6 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

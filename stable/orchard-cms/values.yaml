@@ -13,9 +13,7 @@ image:
   repository: orchard-cms
   tag: latest
   pullPolicy: IfNotPresent
-  environmentVariables:
-    - name: ASPNETCORE_ENVIRONMENT
-      value: production
+
 
 nameOverride: ""
 fullnameOverride: ""
@@ -38,6 +36,12 @@ ingress:
   hosts:
     - orchard-cms.local
   tls: []
+
+environmentVariables:
+  ASPNETCORE_ENVIRONMENT: production
+
+# environmentSecrets:
+  # ENV_VARIABLE_SECRET: "MySecretValue"
 
 resources: {}
 
