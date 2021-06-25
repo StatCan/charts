@@ -189,13 +189,6 @@ spec:
               secretKeyRef:
                 name: {{ include "ckan.fullname" . }}
                 key: ckanDatastoreReadUrl
-          {{- if .Values.extensions.util.enabled }}
-          - name: AZURE_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "ckan.fullname" . }}-util
-                key: azureClientSecretUtil
-          {{- end }}
           command:
           - /bin/bash
           - -c
@@ -253,6 +246,13 @@ spec:
               value: {{ .Values.ckan.maintenanceMode | quote }}
             - name: CKAN_DEBUG
               value: {{ .Values.ckan.debug | quote }}
+            {{- if .Values.extensions.util.enabled }}
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureClientSecretUtil
+            {{- end }}
 {{- if .Values.ckan.extraEnv }}
 {{ toYaml .Values.ckan.extraEnv | indent 12 }}
 {{- end }}
