@@ -29,10 +29,17 @@ spec:
               value: development
             - name: APP_SETTINGS
               value: project.config.DevelopmentConfig
+            {{- if .Values.external.enabled }}
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.postgresUser  }}
+              value: {{ .Values.external.postgresqlUsername }}
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgresql.postgresPassword  }}
+              value: {{ .Values.external.postgresqlPassword }}
+            {{- else if .Values.postgresql.enabled }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.postgresqlUsername }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresql.postgresqlPassword }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 5000
