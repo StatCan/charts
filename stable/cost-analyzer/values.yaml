@@ -117,6 +117,19 @@ cost-analyzer:
           accumulate: true # entire window resolution
           filters: [] # if no filters, specify empty array
 
+    # Set saved report(s) accessible from reports.html
+    # Ref: http://docs.kubecost.com/saved-reports
+    assetReports:
+      enabled: false # If true, overwrites report parameters set through UI
+      reports:
+      - title: "Example Asset Report 0"
+        window: "today"
+        aggregateBy: "type"
+        accumulate: false # daily resolution
+        filters:
+          - property: "cluster"
+            value: "cluster-one"
+
     podAnnotations: {}
       # iam.amazonaws.com/role: role-arn
     additionalLabels: {}
@@ -414,7 +427,7 @@ cost-analyzer:
     enabled: false
     podSecurityPolicy:
       enabled: false
-    image: gcr.io/kubecost1/kubecost-network-costs:v15.3
+    image: gcr.io/kubecost1/kubecost-network-costs:v15.4
     imagePullPolicy: Always
     # For existing Prometheus Installs, create a Service which generates Endpoints for each of the network-costs pods.
     # This Service is annotated with prometheus.io/scrape: "true" to automatically get picked up by the prometheus config.

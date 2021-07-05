@@ -32,9 +32,7 @@ spec:
           imagePullPolicy: {{ .Values.operator.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
+              value: {{ .Values.operator.nsToWatch }}
             - name: POD_NAME
               valueFrom:
                 fieldRef:

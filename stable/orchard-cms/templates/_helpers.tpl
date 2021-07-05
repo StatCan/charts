@@ -32,41 +32,6 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Get the password secret.
-*/}}
-{{- define "orchard-cms.postgresSecret" -}}
-{{- if .Values.global.postgresql.existingSecret }}
-    {{- printf "%s" .Values.global.postgresql.existingSecret -}}
-{{- else if .Values.postgresql.existingSecret -}}
-    {{- printf "%s" .Values.postgresql.existingSecret -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Get the environment variables for postgres db connection
-*/}}
-{{- define "orchard-cms.postgresEnv" -}}
-- name: PGHOST
-  value: {{ .Release.Name -}}-postgresql
-- name: PGPORT
-  value: !!string {{ .Values.postgresql.service.port }}
-- name: PGDATABASE
-  value: {{ .Values.global.postgresql.postgresqlDatabase }}
-- name: PGUSER
-  value: {{ .Values.global.postgresql.postgresqlUsername }}
-- name: PGPASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ include "orchard-cms.postgresSecret" . }}
-      key: postgresql-password
-{{- end -}}
-
-
-
-
-{{/*
 Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "orchard-cms.imagePullSecrets" -}}
