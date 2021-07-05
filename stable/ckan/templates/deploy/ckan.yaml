@@ -253,20 +253,20 @@ spec:
                   name: {{ include "ckan.fullname" . }}-util
                   key: azureClientSecretUtil
             - name: AZURE_CLIENT_ID
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ include "ckan.fullname" . }}-util
-                    key: azureClientIdUtil
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureClientIdUtil
             - name: AZURE_TENANT_ID
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ include "ckan.fullname" . }}-util
-                    key: azureTenantIdUtil
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureTenantIdUtil
             - name: KEY_VAULT_URL
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ include "ckan.fullname" . }}-util
-                    key: azureKeyVaultUrlUtil
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureKeyVaultUrlUtil
             {{- end }}
 {{- if .Values.ckan.extraEnv }}
 {{ toYaml .Values.ckan.extraEnv | indent 12 }}
