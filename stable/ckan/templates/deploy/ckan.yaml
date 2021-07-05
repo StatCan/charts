@@ -255,17 +255,17 @@ spec:
             - name: AZURE_CLIENT_ID
                 valueFrom:
                   secretKeyRef:
-                    name: { { include "ckan.fullname" . } }-util
+                    name: {{ include "ckan.fullname" . }}-util
                     key: azureClientIdUtil
             - name: AZURE_TENANT_ID
                 valueFrom:
                   secretKeyRef:
-                    name: { { include "ckan.fullname" . } }-util
+                    name: {{ include "ckan.fullname" . }}-util
                     key: azureTenantIdUtil
             - name: KEY_VAULT_URL
                 valueFrom:
                   secretKeyRef:
-                    name: { { include "ckan.fullname" . } }-util
+                    name: {{ include "ckan.fullname" . }}-util
                     key: azureKeyVaultUrlUtil
             {{- end }}
 {{- if .Values.ckan.extraEnv }}
