@@ -71,7 +71,8 @@ spec:
           mkdir -p /srv/app && \
           ln -s /lib/ckan/venv/src /srv/app/src && \
           ln -s /usr/lib/ckan/venv/src/ckan/ckan/config/who.ini /srv/app/who.ini && \
-          chown -R 900:900 /srv/app
+          chown -R 900:900 /srv/app && \
+          chmod 775 -R /srv/app
         volumeMounts:
         - name: ckan-config
           mountPath: /srv/app
