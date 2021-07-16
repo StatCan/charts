@@ -72,7 +72,7 @@ spec:
           ln -s /lib/ckan/venv/src /srv/app/src && \
           ln -s /usr/lib/ckan/venv/src/ckan/ckan/config/who.ini /srv/app/who.ini && \
           chown -R 900:900 /srv/app && \
-          chmod 775 -R /srv/app
+          chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files
         volumeMounts:
         - name: ckan-config
           mountPath: /srv/app
