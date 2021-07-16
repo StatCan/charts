@@ -71,8 +71,7 @@ spec:
           mkdir -p /srv/app && \
           ln -s /lib/ckan/venv/src /srv/app/src && \
           ln -s /usr/lib/ckan/venv/src/ckan/ckan/config/who.ini /srv/app/who.ini && \
-          chown -R 900:900 /srv/app && \
-          chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files
+          chown -R 900:900 /srv/app
         volumeMounts:
         - name: ckan-config
           mountPath: /srv/app
@@ -80,7 +79,7 @@ spec:
       {{- if .Values.ckan.persistence.enabled }}
       - name: set-volume-ownsership
         image: busybox
-        command: ["sh", "-c", "chown -R 900:900 /var/lib/ckan && chmod 755 -R /var/lib/ckan"]
+        command: ["sh", "-c", "chown -R 900:900 /var/lib/ckan && chmod 755 -R /var/lib/ckan && chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files"]
         volumeMounts:
         - name: ckan
           mountPath: {{ .Values.ckan.storagePath }}
