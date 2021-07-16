@@ -79,7 +79,7 @@ spec:
       {{- if .Values.ckan.persistence.enabled }}
       - name: set-volume-ownsership
         image: busybox
-        command: ["sh", "-c", "chown -R 900:900 /var/lib/ckan && chmod 755 -R /var/lib/ckan && chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files"]
+        command: ["sh", "-c", "chown -R 900:900 /var/lib/ckan && chmod 755 -R /var/lib/ckan && chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files && chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/json"]
         volumeMounts:
         - name: ckan
           mountPath: {{ .Values.ckan.storagePath }}
