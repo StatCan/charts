@@ -71,13 +71,15 @@ spec:
           mkdir -p /srv/app && \
           ln -s /lib/ckan/venv/src /srv/app/src && \
           ln -s /usr/lib/ckan/venv/src/ckan/ckan/config/who.ini /srv/app/who.ini && \
-          chown -R 900:900 /srv/app
+          chown -R 900:900 /srv/app && \
+          chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files && \
+          chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/json
         volumeMounts:
         - name: ckan-config
           mountPath: /srv/app
           readOnly: false
       {{- if .Values.ckan.persistence.enabled }}
-      - name: set-volume-ownsership
+      - name: set-volume-ownership
         image: busybox
         command: ["sh", "-c", "chown -R 900:900 /var/lib/ckan && chmod 755 -R /var/lib/ckan && chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files && chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/json"]
         volumeMounts:
