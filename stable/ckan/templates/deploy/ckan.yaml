@@ -101,7 +101,7 @@ spec:
           chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/json
       volumeMounts:
         - name: ckan
-          mountPath: { { .Values.ckan.venvPath } }
+          mountPath: {{ .Values.ckan.venvPath }}
           readOnly: false
       {{ end }}
       containers:
