@@ -90,24 +90,6 @@ spec:
           mountPath: {{ .Values.ckan.storagePath }}
           readOnly: false
       {{ end }}
-      - name: set-volume-ownership-for-sastojson-upload
-        image: busybox
-        command:
-          - "sh"
-          - "-c"
-          - |
-            mkdir -p /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files && \
-            mkdir -p /srv/app/src/ckanext-sastojson/ckanext/sastojson/json && \
-            ln -s /lib/ckan/venv/src/ckanext-sastojson/ckanext/sastojson/upload_files /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files && \
-            ln -s /lib/ckan/venv/src/ckanext-sastojson/ckanext/sastojson/json /srv/app/src/ckanext-sastojson/ckanext/sastojson/json && \
-            chown -R 900:900 /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files && \
-            chown -R 900:900 /srv/app/src/ckanext-sastojson/ckanext/sastojson/json && \
-            chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/upload_files && \
-            chmod 777 -R /srv/app/src/ckanext-sastojson/ckanext/sastojson/json
-        volumeMounts:
-          - name: ckan-config
-            mountPath: /srv/app
-            readOnly: false
       containers:
       {{ if .Values.pgbouncer.enabled }}
         - name: pgbouncer
