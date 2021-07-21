@@ -89,7 +89,7 @@ spec:
         - name: ckan
           mountPath: {{ .Values.ckan.storagePath }}
           readOnly: false
-      - name: set-volume-ownership-for-extensions
+      - name: set-volume-ownership-for-sastojson-upload
         image: busybox
         command:
           - "sh"
