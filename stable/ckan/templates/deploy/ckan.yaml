@@ -369,19 +369,17 @@ spec:
             - name: CKANEXT_ISSUES_SEND_EMAIL_NOTIFICATIONS
               value: {{ .Values.ckan.issues.sendEmailNotifications | quote }}
           readinessProbe:
-            exec:
-              command:
-              - cat
-              - /srv/app
+            httpGet:
+              path: /api/3/action/status_show
+              port: http
             initialDelaySeconds: {{ .Values.ckan.readiness.initialDelaySeconds }}
             periodSeconds: {{ .Values.ckan.readiness.periodSeconds }}
             failureThreshold: {{ .Values.ckan.readiness.failureThreshold }}
             timeoutSeconds: {{ .Values.ckan.readiness.timeoutSeconds }}
           livenessProbe:
-            exec:
-              command:
-              - cat
-              - /srv/app
+            httpGet:
+              path: /api/3/action/status_show
+              port: http
             initialDelaySeconds: {{ .Values.ckan.liveness.initialDelaySeconds }}
             periodSeconds: {{ .Values.ckan.liveness.periodSeconds }}
             failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
