@@ -91,12 +91,12 @@ ckan:
   extraEnv: []
   readiness:
     initialDelaySeconds: 10
-    periodSeconds: 10
+    periodSeconds: 60
     failureThreshold: 6
     timeoutSeconds: 10
   liveness:
     initialDelaySeconds: 10
-    periodSeconds: 10
+    periodSeconds: 60
     failureThreshold: 6
     timeoutSeconds: 10
   resources: {}
