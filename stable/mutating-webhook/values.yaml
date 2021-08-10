@@ -32,7 +32,7 @@ webhook:
   # Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where
   # "imagepolicy" is the name of the webhook, and kubernetes.io is the name
   # of the organization.
-  name: virtual-service-renamer.statcan.gc.ca
+  name: 
   # Defines how unrecognized errors and timeout errors from the admission webhook are handled.
   # Allowed values are Ignore or Fail.
   failurePolicy: Fail
@@ -44,20 +44,10 @@ webhook:
   reinvocationPolicy: Never
   # Defines if a webhook has a side-effect. Webhooks typically operate only on the content of the AdmissionReview sent to them.
   # Allowed values are Unknown, None, Some, NoneOnDryRun.
-  sideEffects: None
+  sideEffects: Unknown
   # Rules describes what operations on what resources/subresources the webhook cares about. 
   # Note: resources should be lowercase and their plural name. 
   rules: 
-    - apiGroups:
-      - "networking.istio.io"
-      apiVersions:
-      - v1beta1
-      operations:
-      - CREATE
-      - UPDATE
-      resources:
-      - virtualservices
-      scope: '*'
     # - apiGroups:
     #   - ""
     #   apiVersions:
@@ -68,8 +58,8 @@ webhook:
     #   - pods
     #   scope: '*'
 
-imagePullSecrets: 
- - name: "artifactory-prod"
+imagePullSecrets: []
+ # - name: "secretname"
 
 nameOverride: ""
 fullnameOverride: ""
@@ -98,7 +88,7 @@ securityContext: {}
 
 autoscaling:
   enabled: false
-  minReplicas: 1
+  minReplicas: 2
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
