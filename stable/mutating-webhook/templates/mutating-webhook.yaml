@@ -8,6 +8,8 @@ metadata:
   name: {{ include "mutating-webhook.fullname" . }}
 webhooks:
 - admissionReviewVersions: ["v1beta1", "v1"]
+  namespaceSelector:
+  {{- toYaml .Values.webhook.namespaceSelector | nindent 2 }}
   clientConfig:
     service:
       name: {{ include "mutating-webhook.fullname" . }}
@@ -21,4 +23,3 @@ webhooks:
   name: {{ required "webhook.name is required" .Values.webhook.name }}
   rules:
   {{- toYaml .Values.webhook.rules | nindent 2 }}
-  

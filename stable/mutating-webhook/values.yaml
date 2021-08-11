@@ -33,6 +33,11 @@ webhook:
   # "imagepolicy" is the name of the webhook, and kubernetes.io is the name
   # of the organization.
   name: 
+  namespaceSelector:
+    # matchExpressions:
+    # - key: environment
+    #   operator: In
+    #   values: ["prod","staging"]
   # Defines how unrecognized errors and timeout errors from the admission webhook are handled.
   # Allowed values are Ignore or Fail.
   failurePolicy: Fail
