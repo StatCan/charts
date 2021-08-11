@@ -28,6 +28,7 @@ certificates:
 
 # Configurations pertaining to configuring the Webhook
 webhook:
+  admissionReviewVersions: ["v1beta1", "v1"]
   # The name of the admission webhook.
   # Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where
   # "imagepolicy" is the name of the webhook, and kubernetes.io is the name
