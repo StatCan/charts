@@ -28,6 +28,8 @@ certificates:
 
 # Configurations pertaining to configuring the Webhook
 webhook:
+  # The API version of the AdmissionReviews to use. 
+  # Webhooks are required to support at least one AdmissionReview version understood by the current and previous API server.
   admissionReviewVersions: ["v1beta1", "v1"]
   # The name of the admission webhook.
   # Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where
