@@ -33,6 +33,8 @@ webhook:
   # "imagepolicy" is the name of the webhook, and kubernetes.io is the name
   # of the organization.
   name: 
+  # A LabelSelector for Namespaces. Allows the inclusion or exclusion of Namespaces
+  # for namespaced resources.
   namespaceSelector:
     # matchExpressions:
     # - key: environment
