@@ -117,6 +117,19 @@ cost-analyzer:
           accumulate: true # entire window resolution
           filters: [] # if no filters, specify empty array
 
+    # Set saved report(s) accessible from reports.html
+    # Ref: http://docs.kubecost.com/saved-reports
+    assetReports:
+      enabled: false # If true, overwrites report parameters set through UI
+      reports:
+      - title: "Example Asset Report 0"
+        window: "today"
+        aggregateBy: "type"
+        accumulate: false # daily resolution
+        filters:
+          - property: "cluster"
+            value: "cluster-one"
+
     podAnnotations: {}
       # iam.amazonaws.com/role: role-arn
     additionalLabels: {}
@@ -169,18 +182,6 @@ cost-analyzer:
   # imagePullSecrets:
   # - name: "image-pull-secret"
 
-  # Manages Kubecost alerts
-  kubecostChecks:
-    enabled: false
-    image: "quay.io/kubecost1/checks"
-    resources:
-      requests:
-        cpu: "20m"
-        memory: "100Mi"
-      limits:
-        cpu: "100m"
-        memory: "200Mi"
-    additionalLabels: {}
   kubecostFrontend:
     image: "gcr.io/kubecost1/frontend"
     imagePullPolicy: Always
@@ -214,8 +215,12 @@ cost-analyzer:
     warmSavingsCache: true
     # Run allocation ETL pipelines
     etl: true
-    # The total number of days the ETL storage will build
-    etlStoreDurationDays: 90
+    # The total number of days the ETL pipelines will build
+    # Set to 0 to disable daily ETL (not recommended)
+    etlDailyStoreDurationDays: 91
+    # The total number of hours the ETL pipelines will build
+    # Set to 0 to disable hourly ETL (not recommended)
+    etlHourlyStoreDurationHours: 49
     # max number of concurrent Prometheus queries
     maxQueryConcurrency: 5
     # utcOffset represents a timezone in hours and minutes east (+) or west (-)
@@ -367,7 +372,7 @@ cost-analyzer:
     #        - url: "http://pgprometheus-adapter:9201/write"
     #          write_relabel_configs:
     #            - source_labels: [__name__]
-    #              regex: 'container_.*_allocation|container_.*_allocation_bytes|.*_hourly_cost|kube_pod_container_resource_requests_memory_bytes|container_memory_working_set_bytes|kube_pod_container_resource_requests_cpu_cores|kube_pod_container_resource_requests|pod_pvc_allocation|kube_namespace_labels|kube_pod_labels'
+    #              regex: 'container_.*_allocation|container_.*_allocation_bytes|.*_hourly_cost|kube_pod_container_resource_requests{resource="memory", unit="byte"}|container_memory_working_set_bytes|kube_pod_container_resource_requests{resource="cpu", unit="core"}|kube_pod_container_resource_requests|pod_pvc_allocation|kube_namespace_labels|kube_pod_labels'
     #              action: keep
     #          queue_config:
     #            max_samples_per_send: 1000
@@ -411,9 +416,9 @@ cost-analyzer:
                 record: kubecost_savings_container_cpu_usage_seconds
               - expr: sum(container_memory_working_set_bytes{container_name!="",container_name!="POD",instance!=""}) by (namespace, pod_name, container_name, instance)
                 record: kubecost_savings_container_memory_usage_bytes
-              - expr: avg(sum(kube_pod_container_resource_requests_cpu_cores{namespace!="kube-system"}) by (pod, namespace, instance)) by (pod, namespace)
+              - expr: avg(sum(kube_pod_container_resource_requests{resource="cpu", unit="core", namespace!="kube-system"}) by (pod, namespace, instance)) by (pod, namespace)
                 record: kubecost_savings_pod_requests_cpu_cores
-              - expr: avg(sum(kube_pod_container_resource_requests_memory_bytes{namespace!="kube-system"}) by (pod, namespace, instance)) by (pod, namespace)
+              - expr: avg(sum(kube_pod_container_resource_requests{resource="memory", unit="byte", namespace!="kube-system"}) by (pod, namespace, instance)) by (pod, namespace)
                 record: kubecost_savings_pod_requests_memory_bytes
 
   ## Module for measuring network costs
@@ -422,7 +427,7 @@ cost-analyzer:
     enabled: false
     podSecurityPolicy:
       enabled: false
-    image: gcr.io/kubecost1/kubecost-network-costs:v15.3
+    image: gcr.io/kubecost1/kubecost-network-costs:v15.4
     imagePullPolicy: Always
     # For existing Prometheus Installs, create a Service which generates Endpoints for each of the network-costs pods.
     # This Service is annotated with prometheus.io/scrape: "true" to automatically get picked up by the prometheus config.

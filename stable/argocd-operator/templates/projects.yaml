@@ -1,0 +1,32 @@
+{{ range .Values.projects }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: {{ .name }}
+  namespace: {{ .namespace }}
+  ## Annotations for ArgoCD Project Pods
+  annotations:
+  {{- with .podAnnotations }}
+  {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  ## Optionally pass labels to be applied to the statefulset pods
+  labels:
+    app: argocd
+    {{- with .podLabels }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+spec:
+  {{- with .spec.oidcConfig }}
+  oidcConfig: |
+    {{ toYaml . | nindent 8 }}
+  {{ end }}
+  {{- with .spec.rbac }}
+  rbac:
+    {{ toYaml . | nindent 8 }}
+  {{ end }}
+  {{- with .spec.server }}
+  server:
+    {{ toYaml . | nindent 8 }}
+  {{ end }}
+{{ end }}

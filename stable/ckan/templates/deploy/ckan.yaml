@@ -1,0 +1,411 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ckan.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ckan.name" . }}
+    helm.sh/chart: {{ include "ckan.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "ckan.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      tier: ckan
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "ckan.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        tier: ckan
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "ckan.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.ckan.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: ckan-ini-overlay-configmap
+          configMap:
+            name: ckan-ini-overlay-configmap
+        - name: ckan-prerun-configmap
+          configMap:
+            name: ckan-prerun-configmap
+      {{ if .Values.solr.initialize.enabled }}
+        - name: solr-init-configmap
+          configMap:
+            name: solr-init-configmap
+        - name: solr-configset-configmap
+          configMap:
+            name: solr-configset-configmap
+      {{ end }}
+      {{ if .Values.ckan.psql.initialize }}
+        - name: psql-init-configmap
+          configMap:
+            name: psql-init-configmap
+      {{ end }}
+      {{ if .Values.pgbouncer.enabled }}
+        - name: configfiles
+          secret:
+            secretName: {{ include "ckan.fullname" . }}-pgbouncer
+      {{ end }}
+        - name: ckan-config
+          emptyDir: {}
+      {{- if .Values.ckan.persistence.enabled }}
+        - name: ckan
+          persistentVolumeClaim:
+            claimName: {{ template "ckan.fullname" . }}
+      {{ end }}
+      initContainers:
+      - name: create-production-ini
+        image: busybox
+        command:
+        - "sh"
+        - "-c"
+        - |
+          # 900 is the uid and gid of ckan user/group
+          mkdir -p /srv/app && \
+          ln -s /lib/ckan/venv/src /srv/app/src && \
+          ln -s /usr/lib/ckan/venv/src/ckan/ckan/config/who.ini /srv/app/who.ini && \
+          chown -R 900:900 /srv/app
+        volumeMounts:
+        - name: ckan-config
+          mountPath: /srv/app
+          readOnly: false
+      {{- if .Values.ckan.persistence.enabled }}
+      - name: set-volume-ownership
+        image: busybox
+        command:
+        - "sh"
+        - "-c"
+        - |
+          chown -R 900:900 /var/lib/ckan && \
+          chmod 755 -R /var/lib/ckan
+        volumeMounts:
+        - name: ckan
+          mountPath: {{ .Values.ckan.storagePath }}
+          readOnly: false
+      {{ end }}
+      containers:
+      {{ if .Values.pgbouncer.enabled }}
+        - name: pgbouncer
+          image: mcr.microsoft.com/azure-oss-db-tools/pgbouncer-sidecar:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: configfiles
+              mountPath: "/etc/pgbouncer"
+              readOnly: true
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            periodSeconds: 60
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "killall -INT pgbouncer && sleep 120"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ['all']
+      {{ end  }}
+      {{ if .Values.solr.initialize.enabled }}
+        - name: solr-init
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: CKAN_SOLR_URL
+            value: {{ .Values.ckan.solr }}
+          - name: CKAN_SOLR_INIT_NUMSHARDS
+            value: "{{ .Values.solr.initialize.numShards }}"
+          - name: CKAN_SOLR_INIT_REPLICATIONFACTOR
+            value: "{{ .Values.solr.initialize.replicationFactor }}"
+          - name: CKAN_SOLR_INIT_MAXSHARDSPERNODE
+            value: "{{ .Values.solr.initialize.maxShardsPerNode }}"
+          - name: CKAN_SOLR_INIT_CONFIGSETNAME
+            value: "{{ .Values.solr.initialize.configsetName }}"
+          command:
+          - /bin/bash
+          - -c
+          - |
+            sleep 10
+            source $CKAN_VENV/bin/activate
+            while ! python3 /srv/solr-init/solr-init.py; do
+                sleep 30;
+            done
+            echo "Solr Initialized"
+            sleep infinity
+          volumeMounts:
+          - name: solr-init-configmap
+            mountPath: /srv/solr-init
+            readOnly: false
+          - name: solr-configset-configmap
+            mountPath: /srv/solr-configset
+            readOnly: false
+          - name: ckan-config
+            mountPath: /srv/app
+            readOnly: false
+      {{ end }}
+      {{ if .Values.ckan.psql.initialize }}
+        - name: psql-init
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          {{- if .Values.external.enabled }}
+          - name: PSQL_MASTER
+            value: {{ .Values.external.user }}
+          - name: PSQL_DB
+            value: {{ .Values.external.database }}
+          {{- else if .Values.postgresql.enabled }}
+          - name: PSQL_MASTER
+            value: {{ .Values.postgresql.postgresqlUsername  }}
+          - name: PSQL_DB
+            value: {{ .Values.postgresql.postgresqlDatabase  }}
+          {{- end }}
+          - name: PSQL_HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: psqlHost
+          - name: PSQL_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: psqlMasterPassword
+          - name: CKAN_SOLR_URL
+            value: {{ .Values.ckan.solr }}
+          - name: CKAN_SQLALCHEMY_URL
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: ckanSqlAlchemyUrl
+          - name: CKAN_DATASTORE_WRITE_URL
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: ckanDatastoreWriteUrl
+          - name: CKAN_DATASTORE_READ_URL
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}
+                key: ckanDatastoreReadUrl
+          {{- if .Values.extensions.util.enabled }}
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ckan.fullname" . }}-util
+                key: azureClientSecretUtil
+          {{- end }}
+          command:
+          - /bin/bash
+          - -c
+          - |
+            set -e
+            sleep 10
+            source $CKAN_VENV/bin/activate
+            while ! python3 /tmp/psql-init/psql-init.py; do
+                ckan -c /srv/app/production.ini datastore set-permissions
+                sleep 30;
+            done
+            echo "Postgres Initialized"
+            sleep infinity
+          volumeMounts:
+          - name: ckan-config
+            mountPath: /srv/app
+            readOnly: false
+          - name: psql-init-configmap
+            mountPath: /tmp/psql-init
+      {{ end }}
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - /bin/bash
+          - -c
+          - |
+            set -e
+            source $CKAN_VENV/bin/activate
+            ckan generate config /srv/app/production.ini
+            python3 <<EOF | xargs -I{} ckan config-tool /srv/app/production.ini "{}"
+            from ckan.config.environment import CONFIG_FROM_ENV_VARS
+            from os import getenv
+            import sys
+            for (k,v) in CONFIG_FROM_ENV_VARS.items():
+                if getenv(v):
+                    print(f"{k} = {getenv(v)}")
+            EOF
+            ckan config-tool /srv/app/production.ini "ckan.plugins = ${CKAN_PLUGINS}"
+            echo "Applying the production.ini overlay..."
+            ckan config-tool /srv/app/production.ini -f /config/production.ini
+            ckan -c /srv/app/production.ini db init
+            python3 /srv/prerun/prerun.py
+            ckan -c /srv/app/production.ini run --host 0.0.0.0
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          env:
+            - name: DEBUG
+              value: {{ .Values.ckan.debug | quote }}
+            - name: MAINTENANCE_MODE
+              value: {{ .Values.ckan.maintenanceMode | quote }}
+            - name: CKAN_DEBUG
+              value: {{ .Values.ckan.debug | quote }}
+            {{- if .Values.extensions.util.enabled }}
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureClientSecretUtil
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureClientIdUtil
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureTenantIdUtil
+            - name: KEY_VAULT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}-util
+                  key: azureKeyVaultUrlUtil
+            {{- end }}
+{{- if .Values.ckan.extraEnv }}
+{{ toYaml .Values.ckan.extraEnv | indent 12 }}
+{{- end }}
+            - name: CKAN_CONFIG
+              value: /srv/app/
+            - name: CKAN_SYSADMIN_NAME
+              value: {{ .Values.ckan.sysadminName }}
+            - name: CKAN_SYSADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}
+                  key: sysadminPassword
+            - name: CKAN_SYSADMIN_EMAIL
+              value: {{ .Values.ckan.sysadminEmail }}
+            - name: CKAN_SITE_TITLE
+              value: {{ .Values.ckan.siteTitle }}
+            - name: CKAN_SITE_ID
+              value: {{ .Values.ckan.siteId }}
+            - name: CKAN_SITE_URL
+              value: {{ .Values.ckan.siteUrl }}
+            - name: CKAN_PLUGINS
+              value: {{ .Values.ckan.ckanPlugins }}
+            - name: CKAN_STORAGE_PATH
+              value: {{ .Values.ckan.storagePath }}
+            {{- if .Values.external.enabled }}
+            - name: PSQL_MASTER
+              value: {{ .Values.external.user }}
+            - name: PSQL_DB
+              value: {{ .Values.external.database }}
+            {{- else if .Values.postgresql.enabled }}
+            - name: PSQL_MASTER
+              value: {{ .Values.postgresql.postgresqlUsername  }}
+            - name: PSQL_DB
+              value: {{ .Values.postgresql.postgresqlDatabase  }}
+            {{- end }}
+            - name: PSQL_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}
+                  key: psqlMasterPassword
+            - name: CKAN_SQLALCHEMY_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}
+                  key: ckanSqlAlchemyUrl
+            - name: CKAN_DATASTORE_WRITE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}
+                  key: ckanDatastoreWriteUrl
+            - name: CKAN_DATASTORE_READ_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}
+                  key: ckanDatastoreReadUrl
+            - name: CKAN_SOLR_URL
+              value: {{ .Values.ckan.solr }}
+            - name: CKAN_REDIS_URL
+              value: {{ .Values.ckan.redis }}
+            - name: CKANEXT_SPATIAL_SEARCH_BACKEND
+              value: {{ .Values.ckan.spatialBackend }}
+            - name: CKAN_LOCALES_OFFERED
+              value: {{ .Values.ckan.locale.offered | quote }}
+            - name: CKAN_LOCALE_DEFAULT
+              value: {{ .Values.ckan.locale.default }}
+            - name: CKAN_DATAPUSHER_URL
+              value: {{ .Values.ckan.datapusherUrl }}
+            - name: CKAN_DATAPUSHER_CALLBACK_URL_BASE
+              value: {{ .Values.ckan.datapusherCallbackUrlBase }}
+            - name: CKAN_SMTP_SERVER
+              value: {{ .Values.ckan.smtp.server | quote }}
+            - name: CKAN_SMTP_USER
+              value: {{ .Values.ckan.smtp.user }}
+            - name: CKAN_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ckan.fullname" . }}
+                  key: smtpPassword
+            - name: CKAN_SMTP_MAIL_FROM
+              value: {{ .Values.ckan.smtp.mailFrom }}
+            - name: CKAN_SMTP_TLS
+              value: {{ .Values.ckan.smtp.tls }}
+            - name: CKAN_SMTP_STARTTLS
+              value: {{ .Values.ckan.smtp.starttls | quote }}
+            - name: CKAN__ACTIVITY_STREAMS_EMAIL_NOTIFICATIONS
+              value: {{ .Values.ckan.activityStreamsEmailNotifications | quote }}
+            - name: CKANEXT_ISSUES_SEND_EMAIL_NOTIFICATIONS
+              value: {{ .Values.ckan.issues.sendEmailNotifications | quote }}
+          readinessProbe:
+            exec:
+              command: [ "/bin/sh", "-c", "test -d '/srv/app'" ]
+            initialDelaySeconds: {{ .Values.ckan.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ckan.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.ckan.readiness.failureThreshold }}
+            timeoutSeconds: {{ .Values.ckan.readiness.timeoutSeconds }}
+          livenessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "test -d '/srv/app'"]
+            initialDelaySeconds: {{ .Values.ckan.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ckan.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
+            timeoutSeconds: {{ .Values.ckan.liveness.timeoutSeconds }}
+          volumeMounts:
+          - name: ckan-prerun-configmap
+            mountPath: /srv/prerun
+          - name: ckan-ini-overlay-configmap
+            mountPath: /config/
+          - name: ckan-config
+            mountPath: /srv/app
+            readOnly: false
+          {{- if .Values.ckan.persistence.enabled }}
+          - name: "ckan"
+            mountPath: {{ .Values.ckan.storagePath }}
+            readOnly: false
+          {{ end }}
+          resources:
+            {{- toYaml .Values.ckan.resources | nindent 12 }}
+      {{- with .Values.ckan.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.ckan.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.ckan.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

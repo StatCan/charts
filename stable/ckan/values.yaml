@@ -1,0 +1,259 @@
+# Default values for ckan.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: statcan/ckan
+  tag: 2.9
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "ckan"
+
+## Configure Ingress resource that allow you to access the Drupal installation
+## Set up the URL
+## ref: http://kubernetes.io/docs/user-guide/ingress/
+##
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+extensions:
+  util:
+    enabled: true
+    azureClientSecretUtil: "yep.. lemme just paste that azureClientSecretUtil here..."
+    azureClientIdUtil: "yep.. lemme just paste that azureClientIdUtil here..."
+    azureTenantIdUtil: "yep.. lemme just paste that azureTenantIdUtil here..."
+    azureKeyVaultUrlUtil: "yep.. lemme just paste that azureKeyVaultUrlUtil here..."
+
+## Configuration values for CKAN
+ckan:
+  sysadminName: "ckan_admin"
+  sysadminPassword: "PasswordHere"
+  sysadminApiToken: "replace_this_with_generated_api_token_for_sysadmin"
+  sysadminEmail: "admin@domain.com"
+  siteTitle: "Site Title here"
+  siteId: "site-id-here"
+  siteUrl: "http://localhost:5000"
+  ckanPlugins: "image_view text_view recline_view datastore datapusher"
+  storagePath: "/var/lib/ckan/default"
+  activityStreamsEmailNotifications: "true"
+  debug: "false"
+  maintenanceMode: "false"
+  psql:
+    initialize: true
+  db:
+    ckanDbName: ckan_default
+    ckanDbUser: ckan_default
+    ckanDbPassword: pass
+  datastore:
+    RwDbName: datastore_default
+    RwDbUser: datastorerw
+    RwDbPassword: pass
+    RoDbName: datastore_default
+    RoDbUser: datastorero
+    RoDbPassword: pass
+  solr: "http://solr-headless:8983/solr/ckancollection"
+  redis: "redis://ckan-redis-headless:6379/0"
+  spatialBackend: "solr"
+  locale:
+    offered: "en"
+    default: "en"
+  datapusherUrl: "http://datapusher-headless:8000"
+  datapusherCallbackUrlBase: http://ckan
+  smtp:
+    server: "smtpServerURLorIP:port"
+    user: "smtpUser"
+    password: "smtpPassword"
+    mailFrom: "postmaster@domain.com"
+    tls: "enabled"
+    starttls: "true"
+  issues:
+    sendEmailNotifications: "true"
+  # ckan.extraEnv -- An array to add extra environment variables
+  # For example:
+  # extraEnv:
+  #   - name: FOO
+  #     value: "bar"
+  #
+  extraEnv: []
+  readiness:
+    initialDelaySeconds: 10
+    periodSeconds: 60
+    failureThreshold: 6
+    timeoutSeconds: 10
+  liveness:
+    initialDelaySeconds: 10
+    periodSeconds: 60
+    failureThreshold: 6
+    timeoutSeconds: 10
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  podSecurityContext: {}
+    # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 80
+  persistence:
+    enabled: false
+    ## A manually managed Persistent Volume and Claim
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    # existingClaim:
+
+    ## CKAN data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    annotations: {}
+    accessMode: ReadWriteOnce
+    size: 8Gi
+  serviceAccount:
+    create: false
+    annotations: {}
+    name:
+
+## Configuration values for DataPusher
+datapusher:
+  enabled: true
+  fullnameOverride: datapusher
+  datapusher:
+    maxContentLength: "102400000"
+    chunkSize: "10240000"
+    insertRows: "50000"
+    downloadTimeout: "300"
+    datapusherSslVerify: "False"
+    datapusherRewriteResources: "True"
+    datapusherRewriteUrl: http://ckan
+
+## Configuration values for Solr
+## ToDo: Switch to Solr Operator sub-chart
+solr:
+  enabled: true
+  initialize:
+    enabled: true
+    numShards: 2
+    replicationFactor: 1
+    maxShardsPerNode: 10
+    configsetName: ckanConfigSet
+  fullnameOverride: solr
+  replicaCount: 1
+  volumeClaimTemplates:
+    storageSize: 5Gi
+  image:
+    repository: solr
+    tag: 6.6.6
+  zookeeper:
+    replicaCount: 1
+    persistence:
+      size: 1Gi
+
+## Configuration values for the Redis dependency sub-chart
+## ref: https://github.com/bitnami/charts/blob/master/bitnami/redis/README.md
+redis:
+  enabled: true
+  # At the moment CKAN doesn't support Redis with a password, though that
+  # would be an easy patch.
+  usePassword: false
+  image:
+    registry: docker.io
+    repository: bitnami/redis
+    tag: 6.0.12-debian-10-r33
+    # clientInterface: PhpRedis
+  cluster:
+    enabled: true
+    slaveCount: 2
+  sentinel:
+    enabled: false
+  master:
+    service:
+      type: ClusterIP
+    disableCommands: []
+  slave:
+    service:
+      type: ClusterIP
+    disableCommands: []
+
+## Configuration values for the PostgreSQL dependency sub-chart
+## ref: https://github.com/kubernetes/charts/blob/master/stable/postgresql/README.md
+postgresql:
+  enabled: true
+  image:
+    tag: 11.6.0-debian-9-r0
+  postgresqlUsername: postgres
+  postgresqlDatabase: postgres
+  postgresqlPostgresPassword: "pass"
+  postgresqlPassword: "pass"
+  postgresqlConfiguration:
+    listenAddresses: "'*'"
+    maxConnections: "200"
+    sharedBuffers: 512MB
+    workMem: 2048MB
+    effectiveCacheSize: 512MB
+    maintenanceWorkMem: 32MB
+    minWalSize: 512MB
+    maxWalSize: 512MB
+    walBuffers: 8048kB
+    byteaOutput: "'escape'"
+  persistence:
+    enabled: true
+    size: 50Gi
+  volumePermissions:
+    enabled: true
+  service:
+    port: 5432
+  resources: {}
+  #  requests:
+  #    memory: "512Mi"
+  #    cpu: "100m"
+  #  limits:
+  #    memory: "1Gi"
+  #    cpu: "500m"
+  nodeSelector: {}
+
+## Configuration values for PGBouncer
+pgbouncer:
+  enabled: false
+  host: pgserver.postgres.database.azure.com
+  user: username@hostname
+  password: password
+  poolSize: 50
+  maxClientConnections: 400
+
+# Specify an external database
+# Useful for managed offerings from your Cloud Provider
+external:
+  enabled: false
+  # CKAN DB driver
+  driver: pgsql
+  port: 5432
+  host: pgserver.postgres.database.azure.com
+  # Credentials
+  database: ckan
+  user: username@hostname
+  password: password

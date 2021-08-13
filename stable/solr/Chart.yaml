@@ -1,0 +1,15 @@
+apiVersion: "v2"
+name: "solr"
+version: "1.5.6"
+appVersion: "8.4.0"
+description: "A helm chart to install Apache Solr"
+keywords:
+  - "solr"
+home: "http://lucene.apache.org/solr/"
+sources:
+  - "https://gitbox.apache.org/repos/asf?p=lucene-solr.git"
+
+dependencies:
+  - name: zookeeper
+    version: 2.1.3
+    repository: https://charts.helm.sh/incubator

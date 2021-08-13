@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ckan.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ckan.name" . }}
+    helm.sh/chart: {{ include "ckan.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.ckan.service.type }}
+  ports:
+    - port: {{ .Values.ckan.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "ckan.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    tier: ckan

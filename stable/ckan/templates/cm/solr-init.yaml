@@ -1,0 +1,9 @@
+{{- if .Values.solr.initialize.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: solr-init-configmap
+data:
+  solr-init.py: |
+{{ .Files.Get "conf/solr-init/solr-init.py" | indent 4 }}
+{{- end }}
