@@ -24,6 +24,14 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret/varnish.yaml") . | sha256sum }}
 {{- end }}
     spec:
+{{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 6 }}
+{{- end }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.varnishd.image }}:{{ default .Chart.AppVersion .Values.varnishd.tag }}"
