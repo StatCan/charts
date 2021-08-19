@@ -1,0 +1,21 @@
+apiVersion: v2
+name: mutating-webhook
+description: -|
+  A Helm chart for deploying Mutating Webhooks.
+  Requires cert-manager.
+
+type: application
+version: 0.1.0
+
+appVersion: "1.0.0"
+
+home: https://statcan.gc.ca
+sources: 
+- https://github.com/StatCan/charts/mutating-webhook
+- https://github.com/StatCan/mutating-webhook
+maintainers:
+- name: Zachary Seguin
+  email: zachary.seguin@canada.ca
+- name: Justin Bertrand
+  email: justin.bertrand@canada.ca
+engine: gotpl
