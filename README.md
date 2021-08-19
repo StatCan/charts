@@ -1,3 +1,3 @@
 # Charts
 
-Repository housing both custom and extended of official Helm charts.
+Repository for housing custom and extended versions of official Helm charts.
