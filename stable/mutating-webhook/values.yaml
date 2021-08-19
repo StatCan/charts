@@ -18,7 +18,7 @@ arguments: []
 
 # Configurations around certificates.
 certificates:
-  # The mount path of the certificates. 
+  # The mount path of the certificates.
   # Defaults to /certs.
   certsMountPath: /certs
   # Defines the duration of the certificates validity.
@@ -28,14 +28,14 @@ certificates:
 
 # Configurations pertaining to configuring the Webhook
 webhook:
-  # The API version of the AdmissionReviews to use. 
+  # The API version of the AdmissionReviews to use.
   # Webhooks are required to support at least one AdmissionReview version understood by the current and previous API server.
   admissionReviewVersions: ["v1beta1", "v1"]
   # The name of the admission webhook.
   # Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where
   # "imagepolicy" is the name of the webhook, and kubernetes.io is the name
   # of the organization.
-  name: 
+  name: "imagepolicy"
   # A LabelSelector for Namespaces. Allows the inclusion or exclusion of Namespaces
   # for namespaced resources.
   namespaceSelector:
@@ -55,9 +55,9 @@ webhook:
   # Defines if a webhook has a side-effect. Webhooks typically operate only on the content of the AdmissionReview sent to them.
   # Allowed values are Unknown, None, Some, NoneOnDryRun.
   sideEffects: Unknown
-  # Rules describes what operations on what resources/subresources the webhook cares about. 
-  # Note: resources should be lowercase and their plural name. 
-  rules: 
+  # Rules describes what operations on what resources/subresources the webhook cares about.
+  # Note: resources should be lowercase and their plural name.
+  rules:
     # - apiGroups:
     #   - ""
     #   apiVersions:

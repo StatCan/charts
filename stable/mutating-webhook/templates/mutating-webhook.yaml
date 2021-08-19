@@ -7,9 +7,9 @@ metadata:
     {{- include "mutating-webhook.labels" . | nindent 4 }}
   name: {{ include "mutating-webhook.fullname" . }}
 webhooks:
-- admissionReviewVersions: {{ required "webhook.admissionReviewVersions is required".Values.webhook.admissionReviewVersions }}
+- admissionReviewVersions: {{ required "webhook.admissionReviewVersions is required" .Values.webhook.admissionReviewVersions }}
   namespaceSelector:
-  {{- toYaml .Values.webhook.namespaceSelector | nindent 2 }}
+  {{- toYaml .Values.webhook.namespaceSelector | nindent 4 }}
   clientConfig:
     service:
       name: {{ include "mutating-webhook.fullname" . }}
@@ -22,4 +22,4 @@ webhooks:
   matchPolicy: {{ required "webhook.matchPolicy is required" .Values.webhook.matchPolicy }}
   name: {{ required "webhook.name is required" .Values.webhook.name }}
   rules:
-  {{- toYaml .Values.webhook.rules | nindent 2 }}
+  {{- toYaml .Values.webhook.rules | nindent 4 }}
