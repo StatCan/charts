@@ -8,13 +8,13 @@
 ###
 minio:
   gateway:
-     enabled: true
-     type: azure
-     replicaCount: 4
-     auth:
-       azure:
-         storageAccountName: "xxxxxxxxxxxx"
-         storageAccountKey: "xxxxxxxxxxxx"
+    enabled: true
+    type: azure
+    replicaCount: 4
+    auth:
+      azure:
+        storageAccountName: "xxxxxxxxxxxx"
+        storageAccountKey: "xxxxxxxxxxxx"
 
   # ETCD settings:
   # https://github.com/minio/minio/blob/master/docs/sts/etcd.md
@@ -522,11 +522,6 @@ minio:
       additionalLabels: {}
 
 
-
-
-
-
-
 #############################
 ###  _____ _____ ____ ____
 ### | ____|_   _/ ___|  _ \
@@ -535,7 +530,6 @@ minio:
 ### |_____| |_| \____|____/
 ###
 etcd:
-     
   ## Global Docker image parameters
   ## Please, note that this will override the image parameters, including dependencies, configured to use the global value
   ## Current available global Docker image parameters: imageRegistry and imagePullSecrets
