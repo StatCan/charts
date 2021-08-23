@@ -16,17 +16,9 @@ metadata:
     {{- with .podLabels }}
     {{- . | toYaml | nindent 4 }}
     {{- end }}
-spec:
-  {{- with .spec.oidcConfig }}
-  oidcConfig: |
-    {{ toYaml . | nindent 8 }}
-  {{ end }}
-  {{- with .spec.rbac }}
-  rbac:
-    {{ toYaml . | nindent 8 }}
-  {{ end }}
-  {{- with .spec.server }}
-  server:
-    {{ toYaml . | nindent 8 }}
+
+spec: {{- with .spec }}
+  # See https://argocd-operator.readthedocs.io/en/latest/reference/api.html/#argoproj.io/v1alpha1.ArgoCDSpec
+  {{ toYaml . | nindent 2 }}
   {{ end }}
 {{ end }}

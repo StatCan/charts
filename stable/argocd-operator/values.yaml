@@ -22,6 +22,38 @@ operator:
       memory: 256Mi
       ephemeral-storage: 500Mi
 
+# For the argocd-vault-plugin
+vault:
+  enabled: false
+  auth:
+    url: http://vault.default:8200
+    # https://github.com/IBM/argocd-vault-plugin/blob/main/docs/config.md
+    type: k8s
+    # You need to create this kubernetes role in vault
+    # The end role is `{prefix}{namespace}`, like `argocd-dscd-system`.
+    # This is to isolate Vault spaces from eachother.
+    rolePrefix: argocd-
+
+
+
+pluginConfig: &pluginConfig |
+    # If the argocd-vault-plugin is not enabled,
+    # then obviously these will not work.
+    - name: argocd-vault-plugin
+      generate:
+        command: ["argocd-vault-plugin"]
+        args: ["-s", "argocd-vault-secret", "generate", "./"]
+    - name: argocd-vault-plugin-helm
+      generate:
+        command: ["sh", "-c"]
+        args: ["helm template . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
+    - name: argocd-vault-plugin-kustomize
+      generate:
+        command: ["sh", "-c"]
+        args: ["kustomize build . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
+
+
+
 ## ArgoCD Projects Definition
 projects:
   # Project name
@@ -30,6 +62,8 @@ projects:
     podAnnotations: {}
     podLabels: {}
     spec:
+      image: blairdrummond/argocd
+      version: namespaced-secret-debian-two
       oidcConfig: |
         name: myoidc
         issuer: OIDC_FQDN
@@ -44,8 +78,12 @@ projects:
         policy: |
           g, system:cluster-admins, role:admin
         scopes: '[groups]'
+      repo:
+        serviceaccount: argocd-repo-server-vault
+        mountsatoken: true
       server:
         autoscale:
           enabled: true
         host: ARGOCD_FQDN
         insecure: false
+      configManagementPlugins: *pluginConfig
