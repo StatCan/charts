@@ -1,6 +1,11 @@
+
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.6.1
+  creationTimestamp: null
   name: argocds.argoproj.io
 spec:
   group: argoproj.io
@@ -42,6 +47,11 @@ spec:
                   image:
                     description: Image is the Argo CD ApplicationSet image (optional)
                     type: string
+                  logLevel:
+                    description: LogLevel describes the log level that should be used
+                      by the ApplicationSet controller. Defaults to ArgoCDDefaultLogLevel
+                      if not set.  Valid options are debug,info, error, and warn.
+                    type: string
                   resources:
                     description: Resources defines the Compute Resources required
                       by the container for ApplicationSet.
@@ -54,7 +64,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -66,7 +76,7 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                   version:
@@ -87,6 +97,11 @@ spec:
                       default the ArgoCD controller polls Git every 3m by default.
                       \n Set this to a duration, e.g. 10m or 600s to control the synchronisation
                       frequency."
+                    type: string
+                  logLevel:
+                    description: LogLevel refers to the log level used by the Application
+                      Controller component. Defaults to ArgoCDDefaultLogLevel if not
+                      configured. Valid options are debug, info, error, and warn.
                     type: string
                   processors:
                     description: Processors contains the options for the Application
@@ -114,7 +129,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -126,8 +141,22 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
+                    type: object
+                  sharding:
+                    description: Sharding contains the options for the Application
+                      Controller sharding configuration.
+                    properties:
+                      enabled:
+                        description: Enabled defines whether sharding should be enabled
+                          on the Application Controller component.
+                        type: boolean
+                      replicas:
+                        description: Replicas defines the number of replicas to run
+                          in the Application controller shard.
+                        format: int32
+                        type: integer
                     type: object
                 type: object
               dex:
@@ -155,7 +184,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -167,7 +196,7 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                   version:
@@ -259,7 +288,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -271,7 +300,7 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                   route:
@@ -288,6 +317,12 @@ spec:
                         description: Enabled will toggle the creation of the OpenShift
                           Route.
                         type: boolean
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels is the map of labels to use for the Route
+                          resource
+                        type: object
                       path:
                         description: Path the router watches for, to route traffic
                           for to the service.
@@ -377,7 +412,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -389,7 +424,7 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                 required:
@@ -441,6 +476,23 @@ spec:
                 description: KustomizeBuildOptions is used to specify build options/parameters
                   to use with `kustomize build`.
                 type: string
+              kustomizeVersions:
+                description: KustomizeVersions is a listing of configured versions
+                  of Kustomize to be made available within ArgoCD.
+                items:
+                  description: KustomizeVersionSpec is used to specify information
+                    about a kustomize version to be used within ArgoCD.
+                  properties:
+                    path:
+                      description: Path is the path to a configured kustomize version
+                        on the filesystem of your repo server.
+                      type: string
+                    version:
+                      description: Version is a configured kustomize version in the
+                        format of vX.Y.Z
+                      type: string
+                  type: object
+                type: array
               oidcConfig:
                 description: OIDCConfig is the OIDC configuration as an alternative
                   to dex.
@@ -520,6 +572,12 @@ spec:
                         description: Enabled will toggle the creation of the OpenShift
                           Route.
                         type: boolean
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels is the map of labels to use for the Route
+                          resource
+                        type: object
                       path:
                         description: Path the router watches for, to route traffic
                           for to the service.
@@ -619,7 +677,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -631,7 +689,7 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                   version:
@@ -646,6 +704,18 @@ spec:
                       TLS configuration for the repo server The value specified here
                       can currently be: - openshift - Use the OpenShift service CA
                       to request TLS config'
+                    type: string
+                  execTimeout:
+                    description: ExecTimeout specifies the timeout in seconds for
+                      tool execution
+                    type: integer
+                  image:
+                    description: Image is the ArgoCD Repo Server container image.
+                    type: string
+                  logLevel:
+                    description: LogLevel describes the log level that should be used
+                      by the Repo Server. Defaults to ArgoCDDefaultLogLevel if not
+                      set.  Valid options are debug, info, error, and warn.
                     type: string
                   mountsatoken:
                     description: MountSAToken describes whether you would like to
@@ -663,7 +733,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -675,7 +745,7 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                   serviceaccount:
@@ -686,6 +756,10 @@ spec:
                     description: VerifyTLS defines whether repo server API should
                       be accessed using strict TLS validation
                     type: boolean
+                  version:
+                    description: Version is the ArgoCD Repo Server container image
+                      tag.
+                    type: string
                 type: object
               repositoryCredentials:
                 description: RepositoryCredentials are the Git pull credentials to
@@ -880,6 +954,11 @@ spec:
                   insecure:
                     description: Insecure toggles the insecure flag.
                     type: boolean
+                  logLevel:
+                    description: LogLevel refers to the log level to be used by the
+                      ArgoCD Server component. Defaults to ArgoCDDefaultLogLevel if
+                      not set.  Valid options are debug, info, error, and warn.
+                    type: string
                   resources:
                     description: Resources defines the Compute Resources required
                       by the container for the Argo CD server component.
@@ -892,7 +971,7 @@ spec:
                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                           x-kubernetes-int-or-string: true
                         description: 'Limits describes the maximum amount of compute
-                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                       requests:
                         additionalProperties:
@@ -904,7 +983,7 @@ spec:
                         description: 'Requests describes the minimum amount of compute
                           resources required. If Requests is omitted for a container,
                           it defaults to Limits if that is explicitly specified, otherwise
-                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
                         type: object
                     type: object
                   route:
@@ -921,6 +1000,12 @@ spec:
                         description: Enabled will toggle the creation of the OpenShift
                           Route.
                         type: boolean
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels is the map of labels to use for the Route
+                          resource
+                        type: object
                       path:
                         description: Path the router watches for, to route traffic
                           for to the service.
@@ -989,13 +1074,46 @@ spec:
                 description: SSO defines the Single Sign-on configuration for Argo
                   CD
                 properties:
+                  image:
+                    description: Image is the SSO container image.
+                    type: string
                   provider:
                     description: Provider installs and configures the given SSO Provider
                       with Argo CD.
                     type: string
+                  resources:
+                    description: Resources defines the Compute Resources required
+                      by the container for SSO.
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute
+                          resources required. If Requests is omitted for a container,
+                          it defaults to Limits if that is explicitly specified, otherwise
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
                   verifyTLS:
                     description: VerifyTLS set to false disables strict TLS validation.
                     type: boolean
+                  version:
+                    description: Version is the SSO container image tag.
+                    type: string
                 type: object
               statusBadgeEnabled:
                 description: StatusBadgeEnabled toggles application status badge feature.
@@ -1110,3 +1228,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

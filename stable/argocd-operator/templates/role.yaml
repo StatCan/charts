@@ -1,8 +1,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   creationTimestamp: null
-  name: argocd-operator
+  name: manager-role
 rules:
 - apiGroups:
   - ""
@@ -10,6 +10,7 @@ rules:
   - configmaps
   - endpoints
   - events
+  - namespaces
   - persistentvolumeclaims
   - pods
   - secrets
@@ -19,8 +20,16 @@ rules:
   verbs:
   - '*'
 - apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/log
+  verbs:
+  - get
+- apiGroups:
   - apps
   resources:
+  - daemonsets
   - deployments
   - replicasets
   - statefulsets
@@ -35,22 +44,40 @@ rules:
   verbs:
   - update
 - apiGroups:
+  - apps.openshift.io
+  resources:
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
   - argoproj.io
   resources:
-  - argocds
-  - argocds/finalizers
-  - argocds/status
+  - applications
+  - appprojects
+  verbs:
+  - '*'
+- apiGroups:
+  - argoproj.io
+  resources:
   - argocdexports
   - argocdexports/finalizers
   - argocdexports/status
   verbs:
   - '*'
 - apiGroups:
+  - argoproj.io
+  resources:
+  - argocds
+  - argocds/finalizers
+  - argocds/status
+  verbs:
+  - '*'
+- apiGroups:
   - autoscaling
   resources:
-    - horizontalpodautoscalers
+  - horizontalpodautoscalers
   verbs:
-    - '*'
+  - '*'
 - apiGroups:
   - batch
   resources:
@@ -72,35 +99,22 @@ rules:
   verbs:
   - '*'
 - apiGroups:
-  - route.openshift.io
-  resources:
-  - routes
-  - routes/custom-host
-  verbs:
-  - '*'
-- apiGroups:
   - rbac.authorization.k8s.io
   resources:
   - '*'
   verbs:
   - '*'
 - apiGroups:
-  - template.openshift.io
+  - rbac.authorization.k8s.io
   resources:
-  - templates
-  - templateinstances
-  - templateconfigs
+  - clusterrolebindings
+  - clusterroles
   verbs:
   - '*'
 - apiGroups:
-  - apps.openshift.io
+  - route.openshift.io
   resources:
-  - deploymentconfigs
-  verbs:
-  - '*'
-- apiGroups:
-  - oauth.openshift.io
-  resources:
-  - oauthclients 
+  - routes
+  - routes/custom-host
   verbs:
   - '*'

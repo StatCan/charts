@@ -28,7 +28,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.operator.image.repository }}:{{ .Values.operator.image.tag }}"
           command:
-          - argocd-operator
+          - /manager
+          args:
+          - --leader-elect
           imagePullPolicy: {{ .Values.operator.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
