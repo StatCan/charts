@@ -31,9 +31,10 @@ vault:
     # https://github.com/IBM/argocd-vault-plugin/blob/main/docs/config.md
     type: k8s
     # You need to create this kubernetes role in vault
-    # The end role is `{prefix}{namespace}`, like `argocd-dscd-system`.
+    # The end role is `{prefix}{namespace}`, like `argocd_dscd_system`.
     # This is to isolate Vault spaces from eachother.
-    rolePrefix: argocd-
+    # NOTE: The namespace will have "-"s replaced with "_"s
+    rolePrefix: argocd_
 
 
 
