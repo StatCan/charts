@@ -46,3 +46,13 @@ Selector labels Operator
 app.kubernetes.io/name: {{ include "argocd-operator.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
+
+
+{{/*
+ArgoCD Vault plugin validation
+*/}}
+{{- if .Values.vault.enabled }}
+{{- if ne .Values.vault.auth.type "k8s" }}
+{{- fail "This chart currently only supports k8s auth for the argocd-vault-plugin" }}
+{{- end }}
+{{- end }}
