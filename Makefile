@@ -1,4 +1,4 @@
-NAME := sylus/charts
+NAME := statcan/charts
 VERSION := $(or $(VERSION),$(VERSION),'latest')
 PLATFORM := $(shell uname -s)
 
