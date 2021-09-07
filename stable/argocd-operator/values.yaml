@@ -22,7 +22,6 @@ operator:
       memory: 256Mi
       ephemeral-storage: 500Mi
 
-
 # For the argocd-vault-plugin
 vault:
   enabled: false
@@ -36,24 +35,21 @@ vault:
     # NOTE: The namespace will have "-"s replaced with "_"s
     rolePrefix: argocd_
 
-
-
 pluginConfig: &pluginConfig |
-    # If the argocd-vault-plugin is not enabled,
-    # then obviously these will not work.
-    - name: argocd-vault-plugin
-      generate:
-        command: ["argocd-vault-plugin"]
-        args: ["-s", "argocd-vault-secret", "generate", "./"]
-    - name: argocd-vault-plugin-helm
-      generate:
-        command: ["sh", "-c"]
-        args: ["helm template . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
-    - name: argocd-vault-plugin-kustomize
-      generate:
-        command: ["sh", "-c"]
-        args: ["kustomize build . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
-
+  # If the argocd-vault-plugin is not enabled,
+  # then obviously these will not work.
+  - name: argocd-vault-plugin
+    generate:
+      command: ["argocd-vault-plugin"]
+      args: ["-s", "argocd-vault-secret", "generate", "./"]
+  - name: argocd-vault-plugin-helm
+    generate:
+      command: ["sh", "-c"]
+      args: ["helm template . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
+  - name: argocd-vault-plugin-kustomize
+    generate:
+      command: ["sh", "-c"]
+      args: ["kustomize build . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
 
 # ## ArgoCD Projects Definition
 # projects:
