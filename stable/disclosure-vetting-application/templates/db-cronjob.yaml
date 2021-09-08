@@ -1,14 +1,13 @@
-apiVersion: batch/v1beta1
-kind: CronJob
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: Vetting db job
+  name: pi
 spec:
-  jobTemplate:
+  template:
     spec:
-      template:
-        spec:
-          containers:
-          - name: vettingCronJob
-            image: "{{ .Values.appImageCron.repository }}:{{ .Values.appImageCron.tag }}"
-            imagePullPolicy: "{{ .Values.appImageCron.pullPolicy }}"
-          restartPolicy: Never
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+      restartPolicy: Never
+  backoffLimit: 4
