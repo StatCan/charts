@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: hello
+  name: db-vetting-job
 spec:
   schedule: "*/1 * * * *"
   suspend: true
@@ -10,11 +10,34 @@ spec:
       template:
         spec:
           containers:
-          - name: hello
-            image: busybox
-            imagePullPolicy: IfNotPresent
-            command:
-            - /bin/sh
-            - -c
-            - date; echo "Hello from the Kubernetes cluster"
+          - name: db-vetting-job
+            image: "{{ .Values.appImageCron.repository }}:{{ .Values.appImageCron.tag }}"
+            imagePullPolicy: "{{ .Values.appImageCron.pullPolicy }}"
+            env:
+            - name: RESEARCHER_ACCOUNTS
+              valueFrom:
+                secretKeyRef:
+                  name: db-cronjob-init
+                  key: researcherAccounts
+            - name: ANALYST_ACCOUNTS
+              valueFrom:
+                secretKeyRef:
+                  name: db-cronjob-init
+                  key: analystAccounts
+            - name: ADMIN_ACCOUNTS
+              valueFrom:
+                secretKeyRef:
+                  name: db-cronjob-init
+                  key: adminAccounts
+            - name: PROJECTS_DATA
+              valueFrom:
+                secretKeyRef:
+                  name: db-cronjob-init
+                  key: projectsData
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: db-cronjob-init
+                  key: dbConnectionString
           restartPolicy: OnFailure
+         
