@@ -1,0 +1,49 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: {{ include "istio-ingress-gateway.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
+spec:
+  components:
+    ingressGateways:
+    - enabled: {{ .Values.ingressGateway.enabled }}
+      name: {{ .Release.Name }}
+      namespace: {{ .Release.Namespace }}
+      labels:
+        {{- include "istio-ingress-gateway.selectorLabels" . | nindent 8 }}
+      k8s:
+        hpaSpec:
+          minReplicas: {{ .Values.ingressGateway.minReplicas }}
+          maxReplicas: {{ .Values.ingressGateway.maxReplicas }}
+          metrics:
+          - resource:
+              name: cpu
+              targetAverageUtilization: 80
+            type: Resource
+        service:
+          type: {{ .Values.ingressGateway.service.type }}
+          ports:
+          {{- if .Values.https.enable }}
+          {{- if .Values.https.httpsRedirect }}
+          - name: http2
+            nodePort: 30540
+            port: 8080
+            protocol: TCP
+            targetPort: 80
+          {{- end }}
+          - name: https
+            nodePort: 31607
+            port: 443
+            protocol: TCP
+            targetPort: 8443
+          {{- end }}
+        serviceAnnotations:
+          {{- if eq .Values.ingressGateway.service.azureLoadBalancer "internal" }}
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+          {{- end }}
+          {{- if eq .Values.ingressGateway.service.azureLoadBalancer "external" }}
+          service.beta.kubernetes.io/azure-load-balancer-external: "true"
+          {{- end }}
+  profile: none

@@ -1,0 +1,19 @@
+{{- if .Values.https.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  labels:
+    {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
+    {{- if .Values.https.certificate.useAzureDNSSolver }}
+    use-azuredns-solver: "true"
+    {{- end }}
+  name: {{ include "istio-ingress-gateway.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  commonName: {{ first .Values.https.certificate.dnsNames }}
+  dnsNames: {{ toYaml .Values.https.certificate.dnsNames | nindent 4 }}
+  issuerRef:
+    kind: {{ .Values.https.certificate.issuerRef.kind }}
+    name: {{ .Values.https.certificate.issuerRef.name }}
+  secretName: {{ .Values.https.certificate.secretName }}
+{{- end }}

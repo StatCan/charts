@@ -1,0 +1,39 @@
+{{- if .Values.https.enabled }}
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ include "istio-ingress-gateway.fullname" . }}-https
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "istio-ingress-gateway.selectorLabels" . | nindent 4 }}
+  servers:
+  {{- if .Values.https.httpRedirect }}
+  - hosts: {{ .Values.https.hosts | toYaml | nindent 6 }}
+    port:
+      name: http
+      number: 80
+      protocol: HTTP2
+    tls:
+      httpsRedirect: true
+  {{- end }}
+  - hosts: {{ .Values.https.hosts | toYaml | nindent 6 }}
+    port:
+      name: https-default
+      number: 443
+      protocol: HTTPS
+    tls:
+      cipherSuites:
+      - TLS_AES_256_GCM_SHA384
+      - TLS_AES_128_GCM_SHA256
+      - ECDHE-RSA-AES256-GCM-SHA384
+      - ECDHE-RSA-AES128-GCM-SHA256
+      credentialName: {{ .Values.https.certificate.secretName }}
+      maxProtocolVersion: TLSV1_2
+      minProtocolVersion: TLSV1_2
+      mode: SIMPLE
+      privateKey: sds
+      serverCertificate: sds
+{{- end }}
