@@ -13,6 +13,7 @@ spec:
           - name: db-vetting-job
             image: "{{ .Values.appImageCron.repository }}:{{ .Values.appImageCron.tag }}"
             imagePullPolicy: "{{ .Values.appImageCron.pullPolicy }}"
+            args: ["{{ .Values.appImageCron.addTestData }}"]
             env:
             - name: RESEARCHER_ACCOUNTS
               valueFrom:
