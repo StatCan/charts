@@ -1,0 +1,35 @@
+{{- if .Values.https.hsts.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: {{ include "istio-ingress-gateway.fullname" . }}-hsts
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
+spec:
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: envoy.http_connection_manager
+            subFilter:
+              name: envoy.router
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.lua
+        typed_config:
+          '@type': type.googleapis.com/envoy.config.filter.http.lua.v2.Lua
+          inlineCode: |
+            function envoy_on_response(response_handle)
+              if not response_handle:headers():get("strict-transport-security") then
+                  response_handle:headers():add("strict-transport-security", "{{ .Values.https.hsts.value }}")
+                end
+            end
+  workloadSelector:
+    labels:
+      {{- include "istio-ingress-gateway.selectorLabels" . | nindent 6 }}
+{{- end }}

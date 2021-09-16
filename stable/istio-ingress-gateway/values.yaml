@@ -1,0 +1,46 @@
+# Configurations relating to the Istio Ingress Gateway to deploy.
+ingressGateway:
+  # The name of the ingress-gateway instance.
+  # If left blank, will use the Release name.
+  name:
+  # Toggles if the ingress gateway is enabled or not.
+  # If disabled, the Istio Operator will remove the deployment and service.
+  enabled: true
+  maxReplicas: 5
+  minReplicas: 3
+  service:
+    # Defines the type of Service to deploy:
+    type: LoadBalancer
+    # Defines if an "internal" or "external" Azure load-balancer is deployed for the service.
+    azureLoadBalancer: internal
+    # Specifies the IP that the LoadBalancer should use. Skipped if empty.
+    loadBalancerIP:
+
+# Configures HTTPS on the ingress gateway.
+https:
+  # Toggles HTTPS configurations on the ingress gateway.
+  enabled: true
+  # The hosts to which the ingress gateway should route traffic to.
+  hosts: []
+  httpRedirect: true
+  # Configures if HSTS headers should be added to all responses which do not have it.
+  hsts:
+    enabled: true
+    # Sets the values of the header.
+    # Defaults to only setting the max-age to one year.
+    value: max-age=31536000
+  # Configures a cert-manager Certificate for automated certificate generation.
+  certificate:
+    # Defines the name of the secret that will contain the certificates.
+    secretName:
+    # Defines list of DNS names for the certificate.
+    # Note: The first entry is set as the common name.
+    dnsNames: []
+    # Toggles if the Azure DNS solver should be used.
+    useAzureDNSSolver: true
+    # Defines the type of Issuer to use.
+    issuerRef:
+      # Can be ClusterIssuer or Issuer.
+      kind:
+      # The name of the Issuer to use.
+      name:
