@@ -13,6 +13,8 @@ ingressGateway:
     type: LoadBalancer
     # Defines if an "internal" or "external" Azure load-balancer is deployed for the service.
     azureLoadBalancer: internal
+    # Specifies the IP that the LoadBalancer should use.
+    loadBalancerIP:
 
 # Configures HTTPS on the ingress gateway.
 https:
