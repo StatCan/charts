@@ -9,7 +9,7 @@ spec:
   components:
     ingressGateways:
     - enabled: {{ .Values.ingressGateway.enabled }}
-      name: {{ .Release.Name }}
+      name: {{ .Values.ingressGateway.name | default .Release.Name }}
       namespace: {{ .Release.Namespace }}
       labels:
         {{- include "istio-ingress-gateway.selectorLabels" . | nindent 8 }}
