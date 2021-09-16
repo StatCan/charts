@@ -11,7 +11,7 @@ spec:
     - enabled: {{ .Values.ingressGateway.enabled }}
       name: {{ .Values.ingressGateway.name | default .Release.Name }}
       namespace: {{ .Release.Namespace }}
-      labels:
+      label:
         {{- include "istio-ingress-gateway.selectorLabels" . | nindent 8 }}
       k8s:
         hpaSpec:
