@@ -10,7 +10,7 @@ metadata:
   name: {{ include "istio-ingress-gateway.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
-  commonName: {{ first .Values.https.certificate.dnsNames }}
+  commonName: {{ first .Values.https.certificate.dnsNames | toYaml }}
   dnsNames: {{ toYaml .Values.https.certificate.dnsNames | nindent 4 }}
   issuerRef:
     kind: {{ .Values.https.certificate.issuerRef.kind }}
