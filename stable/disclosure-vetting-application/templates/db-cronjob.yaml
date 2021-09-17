@@ -40,7 +40,7 @@ spec:
                 secretKeyRef:
                   name: db-cronjob-init
                   key: dbConnectionString
-            volumesMount:
+            volumeMounts:
               - name: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
                 mountPath: {{ .Values.entrypointSh.mountPath }}
                 subPath: {{ .Values.entrypointSh.subPath }}
