@@ -40,5 +40,14 @@ spec:
                 secretKeyRef:
                   name: db-cronjob-init
                   key: dbConnectionString
+            volumesMount:
+              - name: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
+                mountPath: {{ .Values.entrypointSh.mountPath }}
+                subPath: {{ .Values.entrypointSh.subPath }}
+          volumes:
+            - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
+              secret:
+                secretName: {{ include "vetting-db-cronjob.fullname" . }}-{{ .Values.entrypointSh.name }}-secret
+                defaultMode: 0755         
           restartPolicy: OnFailure
          
