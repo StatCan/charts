@@ -1,0 +1,161 @@
+# Default values for analytics-platform.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+## Optionally specify an array of imagePullSecrets.
+## Secrets must be manually created in the namespace.
+## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+##
+imagePullSecrets:
+  - name: artifactory-prod
+
+ingress:
+  enabled: true
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: istio
+  hosts:
+    - host: chart-example.local
+      paths:
+        - '/*'
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+development:
+  enabled: false
+
+destinationRule:
+  enabled: false
+  mode: DISABLE
+
+# Common
+initContainerImage: "alpine:3.10"
+
+## InitContainer configurations
+## Use the wait-for-db init container. Set to false to skip
+waitForDatabase: true
+## Use the wait-for-redis init container. Set to false to skip
+waitForRedis: true
+
+# Specify an external database
+# Useful for managed offerings from your Cloud Provider
+external:
+  enabled: false
+  # DB driver
+  driver: postgresql+psycopg2
+  port: 5432
+  host: postgres.example.org
+  # Credentials
+  database: analytics
+  user: analytics
+  password: password
+
+portal:
+  image:
+    repository: repo.private.example.ca/docker/analytics-platform/portal
+    tag: stable
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  service:
+    type: ClusterIP
+    port: 8000
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+worker:
+  image:
+    repository: repo.private.example.ca/docker/analytics-platform/portal
+    tag: stable
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  service:
+    type: ClusterIP
+    port: 8001
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+elasticsearch:
+  uri: elasticsearch:9000
+
+## Configuration values for the PostgreSQL dependency sub-chart
+## ref: https://github.com/kubernetes/charts/blob/master/stable/postgresql/README.md
+postgresql:
+  enabled: false
+  image:
+    tag: 11.6.0-debian-9-r0
+  postgresqlUsername: webportal
+  postgresqlPassword: ""
+  postgresqlDatabase: webportal
+  postgresqlConfiguration:
+    listenAddresses: "'*'"
+    maxConnections: "1500"
+  persistence:
+    enabled: true
+    size: 50Gi
+  service:
+    port: 5432
+  resources: {}
+  #  requests:
+  #    memory: "512Mi"
+  #    cpu: "100m"
+  #  limits:
+  #    memory: "1Gi"
+  #    cpu: "500m"
+  nodeSelector: {}
+
+
+## Configuration values for the Redis dependency sub-chart
+## ref: https://github.com/kubernetes/charts/blob/master/stable/redis/README.md
+redis:
+  enabled: true
+  redisPassword: "FFFFFF"
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+  nodeSelector: {}

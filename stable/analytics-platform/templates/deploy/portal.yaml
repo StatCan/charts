@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "analytics-platform.fullname" . }}-portal
+  labels:
+    app.kubernetes.io/name: {{ include "analytics-platform.name" . }}
+    helm.sh/chart: {{ include "analytics-platform.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.portal.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "analytics-platform.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: portal
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "analytics-platform.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: portal
+    spec:
+      initContainers:
+    {{- if .Values.waitForDatabase }}
+      - name: "wait-for-db"
+        image: "{{ .Values.initContainerImage }}"
+        command:
+        - 'sh'
+        - '-c'
+        - >
+      {{- if and .Values.postgresql.enabled (not .Values.external.enabled) }}
+          until nc -z -w 2 {{ .Release.Name }}-postgresql {{ .Values.postgresql.service.port }} && echo database ok; do
+      {{- else }}
+          until true; do
+      {{- end }}
+            sleep 2;
+          done;
+    {{- end }}
+    {{- if .Values.waitForRedis }}
+      - name: "wait-for-redis"
+        image: "{{ .Values.initContainerImage }}"
+        securityContext:
+          runAsUser: 1337
+        command:
+        - 'sh'
+        - '-c'
+        - >
+      {{- if .Values.redis.enabled }}
+          until nc -z -w 2 {{ .Release.Name }}-redis-master {{ .Values.redis.master.service.port }} && echo database ok; do
+      {{- else }}
+          until true; do
+      {{- end }}
+            sleep 2;
+          done;
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.portal.image.repository }}:{{ .Values.portal.image.tag }}"
+          imagePullPolicy: {{ .Values.portal.image.pullPolicy }}
+          ports:
+            - name: portal
+              containerPort: 8000
+              protocol: TCP
+          command: ["sh"]
+          args: ["-c", "python setup.py develop && daaas run --host 0.0.0.0 --port 8000"]
+          env:
+    {{- if .Values.development.enabled }}
+          - name: FLASK_DEBUG
+            value: "1"
+          - name: FLASK_ENVIRONMENT
+            value: development
+    {{- end }}
+    {{- if .Values.external.enabled }}
+          - name: PORTAL_SQLALCHEMY_DATABASE_URI
+            value: postgresql+psycopg2://{{ .Values.external.user }}:{{ .Values.external.password }}@{{ .Values.external.host }}:{{ .Values.external.port }}/{{ .Values.external.database }}
+    {{- else }}
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{ .Release.Name }}-postgresql"
+                key: postgresql-password
+          - name: PORTAL_SQLALCHEMY_DATABASE_URI
+            value: postgresql+psycopg2://{{ .Values.postgresql.postgresqlUsername }}:$(POSTGRESQL_PASSWORD)@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.postgresqlDatabase }}
+    {{- end }}
+          - name: PORTAL_ES_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                name: "{{ include "analytics-platform.fullname" . }}-elasticsearch"
+                key: uri
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "analytics-platform.fullname" . }}-redis
+                key: redis-password
+          - name: PORTAL_CELERY_RESULTS_URI
+            value: "redis://:$(REDIS_PASSWORD)@{{ include "analytics-platform.fullname" . }}-redis-master"
+          - name: PORTAL_CELERY_BROKER_URI
+            value: "redis://:$(REDIS_PASSWORD)@{{ include "analytics-platform.fullname" . }}-redis-master"
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: portal
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: portal
+          resources:
+            {{- toYaml .Values.portal.resources | nindent 12 }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      {{- with .Values.portal.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.portal.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.portal.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
