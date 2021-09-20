@@ -1,0 +1,43 @@
+{{- if .Values.nsiResetSiscc.enabled -}}
+{{- if .Values.nsiResetSiscc.ingress.enabled -}}
+{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $svcPort := .Values.nsiResetSiscc.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-nsi-reset-siscc
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-nsi-reset-siscc
+  {{- with .Values.nsiResetSiscc.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.nsiResetSiscc.ingress.tls }}
+  tls:
+    {{- range .Values.nsiResetSiscc.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.nsiResetSiscc.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ . }}
+            backend:
+              serviceName: {{ $fullName }}-nsi-reset-siscc
+              servicePort: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end -}}

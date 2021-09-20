@@ -1,0 +1,17 @@
+{{- if .Values.nsiStagingOecd.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-nsi-staging-oecd
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-nsi-staging-oecd
+spec:
+  type: {{ .Values.nsiStagingOecd.service.type }}
+  ports:
+    - port: {{ .Values.nsiStagingOecd.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http-nsi-staging-oecd
+  selector:
+    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-nsi-staging-oecd
+{{- end -}}
