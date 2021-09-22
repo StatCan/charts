@@ -7,19 +7,19 @@ metadata:
     {{- include "mutating-webhook.labels" . | nindent 4 }}
   name: {{ include "mutating-webhook.fullname" . }}
 webhooks:
-- admissionReviewVersions: {{ required "webhook.admissionReviewVersions is required" .Values.webhook.admissionReviewVersions }}
-  namespaceSelector:
-  {{- toYaml .Values.webhook.namespaceSelector | nindent 4 }}
-  clientConfig:
-    service:
-      name: {{ include "mutating-webhook.fullname" . }}
-      namespace: {{ .Release.Namespace }}
-      path: /mutate
-      port: 443
-  failurePolicy: {{ required "webhook.failurePolicy is required" .Values.webhook.failurePolicy }}
-  reinvocationPolicy: {{ required "webhook.reinvocationPolicy is required" .Values.webhook.reinvocationPolicy }}
-  sideEffects: {{ required "webhook.sideEffects is required" .Values.webhook.sideEffects }}
-  matchPolicy: {{ required "webhook.matchPolicy is required" .Values.webhook.matchPolicy }}
-  name: {{ required "webhook.name is required" .Values.webhook.name }}
-  rules:
-  {{- toYaml .Values.webhook.rules | nindent 4 }}
+  - admissionReviewVersions: {{- required "webhook.admissionReviewVersions is required" .Values.webhook.admissionReviewVersions | toYaml | nindent 6 }}
+    namespaceSelector:
+      {{- toYaml .Values.webhook.namespaceSelector | nindent 6 }}
+    clientConfig:
+      service:
+        name: {{ include "mutating-webhook.fullname" . }}
+        namespace: {{ .Release.Namespace }}
+        path: /mutate
+        port: 443
+    failurePolicy: {{ required "webhook.failurePolicy is required" .Values.webhook.failurePolicy }}
+    reinvocationPolicy: {{ required "webhook.reinvocationPolicy is required" .Values.webhook.reinvocationPolicy }}
+    sideEffects: {{ required "webhook.sideEffects is required" .Values.webhook.sideEffects }}
+    matchPolicy: {{ required "webhook.matchPolicy is required" .Values.webhook.matchPolicy }}
+    name: {{ required "webhook.name is required" .Values.webhook.name }}
+    rules:
+      {{- toYaml .Values.webhook.rules | nindent 6 }}
