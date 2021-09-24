@@ -1,0 +1,30 @@
+{{- if .Values.fdiStableCensus.enabled -}}
+{{- if .Values.fdiStableCensus.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-census
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-census
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-census
+  minReplicas: {{ .Values.fdiStableCensus.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.fdiStableCensus.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.fdiStableCensus.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.fdiStableCensus.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.fdiStableCensus.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.fdiStableCensus.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}

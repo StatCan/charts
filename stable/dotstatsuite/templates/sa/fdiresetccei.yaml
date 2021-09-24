@@ -1,0 +1,14 @@
+{{- if .Values.fdiResetCcei.enabled -}}
+{{- if .Values.fdiResetCcei.serviceAccount.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "dotstatsuite.fdiResetCcei.serviceAccountName" . }}-fdi-reset-ccei
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-ccei
+  {{- with .Values.fdiResetCcei.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end -}}

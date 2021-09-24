@@ -2,7 +2,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: authz
+  name: authz-noauth
 data:
   auth__TokenUrl: "{{ .Values.managed.azuread.tokenUrl }}"
   auth__allowAnonymous: 'true'
@@ -11,7 +11,7 @@ data:
   auth__claimsMapping__email: email
   auth__claimsMapping__groups: roles
   auth__clientId: "{{ .Values.managed.azuread.clientId }}"
-  auth__enabled: 'true'
+  auth__enabled: 'false'
   auth__requireHttps: 'false'
   auth__scopes__0: openid
   auth__scopes__1: profile
@@ -19,4 +19,5 @@ data:
   auth__scopes__3: "{{ .Values.managed.azuread.clientId }}/access_as_app"
   auth__validateIssuer: 'false'
   auth__showPii: 'true'
+  authorization__enabled: 'false'
 {{- end -}}

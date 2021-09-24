@@ -1,0 +1,151 @@
+{{- if .Values.fdiStableGeese.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-geese
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-geese
+spec:
+{{- if not .Values.fdiStableGeese.autoscaling.enabled }}
+  replicas: {{ .Values.fdiStableGeese.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-fdi-stable-geese
+  template:
+    metadata:
+      annotations:
+        traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+    {{- with .Values.fdiStableGeese.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-fdi-stable-geese
+    spec:
+      {{- with .Values.fdiStableGeese.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.fdiStableGeese.serviceAccountName" . }}-fdi-stable-geese
+      securityContext:
+        {{- toYaml .Values.fdiStableGeese.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-fdi-stable-geese
+          securityContext:
+            {{- toYaml .Values.fdiStableGeese.securityContext | nindent 12 }}
+          image: "{{ .Values.fdiStableGeese.image.repository }}:{{ .Values.fdiStableGeese.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.fdiStableGeese.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: mssql
+            - configMapRef:
+                name: authz
+          env:
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dotstatsuite-db-secret
+                  key: sapassword
+            - name: STABLE_DATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-fdi-stable-geese-data
+                  key: password
+            - name: STABLE_STRUCTURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-fdi-stable-geese-structure
+                  key: password
+            - name: COMMON_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-common
+                  key: password
+            - name: disseminationDbConnection__dbType
+              value: "SqlServer"
+            - name: disseminationDbConnection__connectionString
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_DATA_DB);User=$(FDI_STABLE_GEESE_DATA_USER);Password=$(STABLE_DATA_PASSWORD);"
+            - name: "DotStatSuiteCoreCommonDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+            - name: "mappingStore__Id__Default"
+              value: "stable-geese"
+            # - name: "SpacesInternal__0__DotStatSuiteCoreStructDbConnectionString"
+            #   value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_STRUCTURE_DB);User=$(FDI_STABLE_GEESE_STRUCTURE_USER);Password=$(STABLE_STRUCTURE_PASSWORD);"
+            # - name: "SpacesInternal__0__DotStatSuiteCoreDataDbConnectionString"
+            #   value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_DATA_DB);User=$(FDI_STABLE_GEESE_DATA_USER);Password=$(STABLE_DATA_PASSWORD);"
+            # - name: "SpacesInternal__0__DataImportTimeOutInMinutes"
+            #   value: "2"
+            # - name: "SpacesInternal__0__DatabaseCommandTimeoutInSec"
+            #   value: "60"
+            # - name: "SpacesInternal__0__AuthEndpoint"
+            #   value: "{{ .Chart.Name }}-authz"
+            # - name: "SpacesInternal__0__AutoLog2DB"
+            #   value: "true"
+            # - name: "SpacesInternal__0__AutoLog2DBLogLevel"
+            #   value: "Notice"
+            - name: SQL_SERVER
+              value: {{ template "dotstatsuite.databaseHost" . }}
+            - name: SQL_DATABASE
+              value: $(FDI_STABLE_GEESE_STRUCTURE_DB)
+            - name: SQL_USER
+              value: $(FDI_STABLE_GEESE_STRUCTURE_USER)
+            - name: SQL_PASSWORD
+              value: $(STABLE_STRUCTURE_PASSWORD)
+            - name: SENDER_ID
+              value: "Stable - DotStat v8"
+            - name: DATASPACE_ID
+              value: "stable-geese"
+            - name: MA_SQL_USER
+              value: $(SA_USER)
+            - name: MA_SQL_PASSWORD
+              value: $(SA_PASSWORD)
+            - name: MA_ALWAYS_RESET
+              value: "N"
+            - name: enableReleaseManagement
+              value: "true"
+            - name: INSERT_NEW_ITEM_SCHEME_VALUES
+              value: "false"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.fdiStableGeese.resources | nindent 12 }}
+      initContainers:
+        - name: {{ .Chart.Name }}-dbup-stable-structure
+          image: "{{ .Values.fdiStableGeese.dbup.image.repository }}:{{ .Values.fdiStableGeese.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.fdiStableGeese.dbup.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: mssql
+          env:
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: dotstatsuite-db-secret
+                key: sapassword
+          - name: STABLE_STRUCTURE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mssql-fdi-stable-geese-structure
+                key: password
+          command: ['bash', '-c']
+          args:
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(FDI_STABLE_GEESE_STRUCTURE_USER) --loginPwd $(STABLE_STRUCTURE_PASSWORD) --force
+      {{- with .Values.fdiStableGeese.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fdiStableGeese.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fdiStableGeese.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

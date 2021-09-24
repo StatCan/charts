@@ -1,45 +1,45 @@
-{{- if .Values.transfer.enabled -}}
+{{- if .Values.transfernoauth.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-transfer
+  name: {{ include "dotstatsuite.fullname" . }}-transfernoauth
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfer
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfernoauth
 spec:
-{{- if not .Values.transfer.autoscaling.enabled }}
-  replicas: {{ .Values.transfer.replicaCount }}
+{{- if not .Values.transfernoauth.autoscaling.enabled }}
+  replicas: {{ .Values.transfernoauth.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-transfer
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-transfernoauth
   template:
     metadata:
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
-    {{- with .Values.transfer.podAnnotations }}
+    {{- with .Values.transfernoauth.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-transfer
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-transfernoauth
     spec:
-      {{- with .Values.transfer.imagePullSecrets }}
+      {{- with .Values.transfernoauth.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dotstatsuite.transfer.serviceAccountName" . }}-transfer
+      serviceAccountName: {{ include "dotstatsuite.transfernoauth.serviceAccountName" . }}-transfernoauth
       securityContext:
-        {{- toYaml .Values.transfer.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.transfernoauth.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-transfer
+        - name: {{ .Chart.Name }}-transfernoauth
           securityContext:
-            {{- toYaml .Values.transfer.securityContext | nindent 12 }}
-          image: "{{ .Values.transfer.image.repository }}:{{ .Values.transfer.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.transfer.image.pullPolicy }}
+            {{- toYaml .Values.transfernoauth.securityContext | nindent 12 }}
+          image: "{{ .Values.transfernoauth.image.repository }}:{{ .Values.transfernoauth.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.transfernoauth.image.pullPolicy }}
           envFrom:
             - configMapRef:
                 name: mssql
             - configMapRef:
-                name: authz
+                name: authz-noauth
           env:
             - name: SA_PASSWORD
               valueFrom:
@@ -96,7 +96,6 @@ spec:
                 secretKeyRef:
                   name: mssql-fdi-reset-ckan-structure
                   key: password            
-            
             - name: STABLE_CCEI_DATA_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -392,257 +391,217 @@ spec:
               path: /health
               port: http
           resources:
-            {{- toYaml .Values.transfer.resources | nindent 12 }}
-      initContainers:
-        - name: dbup-fdi-stable-sdmx-data
-          image: "{{ .Values.fdiStableSdmx.dbup.image.repository }}:{{ .Values.fdiStableSdmx.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableSdmx.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-sdmx-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_SDMX_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_SDMX_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-sdmx-data
-          image: "{{ .Values.fdiResetSdmx.dbup.image.repository }}:{{ .Values.fdiResetSdmx.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetSdmx.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-sdmx-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_SDMX_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_SDMX_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-ckan-data
-          image: "{{ .Values.fdiStableCkan.dbup.image.repository }}:{{ .Values.fdiStableCkan.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCkan.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-ckan-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CKAN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CKAN_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-ckan-data
-          image: "{{ .Values.fdiResetCkan.dbup.image.repository }}:{{ .Values.fdiResetCkan.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCkan.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-ckan-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CKAN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CKAN_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-ccei-data
-          image: "{{ .Values.fdiStableCcei.dbup.image.repository }}:{{ .Values.fdiStableCcei.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCcei.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-ccei-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CCEI_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CCEI_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-ccei-data
-          image: "{{ .Values.fdiResetCcei.dbup.image.repository }}:{{ .Values.fdiResetCcei.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCcei.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-ccei-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CCEI_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CCEI_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-census-data
-          image: "{{ .Values.fdiStableCensus.dbup.image.repository }}:{{ .Values.fdiStableCensus.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCensus.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-census-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CENSUS_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CENSUS_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-census-data
-          image: "{{ .Values.fdiResetCensus.dbup.image.repository }}:{{ .Values.fdiResetCensus.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCensus.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-census-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CENSUS_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CENSUS_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-geese-data
-          image: "{{ .Values.fdiStableGeese.dbup.image.repository }}:{{ .Values.fdiStableGeese.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableGeese.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-geese-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_GEESE_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-geese-data
-          image: "{{ .Values.fdiResetGeese.dbup.image.repository }}:{{ .Values.fdiResetGeese.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetGeese.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-geese-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_GEESE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_GEESE_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb        
-        - name: dbup-fdi-stable-codr-data
-          image: "{{ .Values.fdiStableCodr.dbup.image.repository }}:{{ .Values.fdiStableCodr.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCodr.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-codr-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CODR_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CODR_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-codr-data
-          image: "{{ .Values.fdiResetCodr.dbup.image.repository }}:{{ .Values.fdiResetCodr.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCodr.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-codr-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CODR_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb        
-      {{- with .Values.transfer.nodeSelector }}
+            {{- toYaml .Values.transfernoauth.resources | nindent 12 }}
+      # initContainers:
+      #   - name: dbup-fdi-stable-sdmx-data
+      #     image: "{{ .Values.fdiStableSdmx.dbup.image.repository }}:{{ .Values.fdiStableSdmx.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiStableSdmx.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-stable-sdmx-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_SDMX_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_SDMX_DATA_USER) --loginPwd $(PASSWORD) --force        
+      #   - name: dbup-fdi-reset-sdmx-data
+      #     image: "{{ .Values.fdiResetSdmx.dbup.image.repository }}:{{ .Values.fdiResetSdmx.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiResetSdmx.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-reset-sdmx-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_SDMX_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_SDMX_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
+      #   - name: dbup-fdi-stable-ccei-data
+      #     image: "{{ .Values.fdiStableCcei.dbup.image.repository }}:{{ .Values.fdiStableCcei.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiStableCcei.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-stable-ccei-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CCEI_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CCEI_DATA_USER) --loginPwd $(PASSWORD) --force        
+      #   - name: dbup-fdi-reset-ccei-data
+      #     image: "{{ .Values.fdiResetCcei.dbup.image.repository }}:{{ .Values.fdiResetCcei.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiResetCcei.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-reset-ccei-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CCEI_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CCEI_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
+      #   - name: dbup-fdi-stable-census-data
+      #     image: "{{ .Values.fdiStableCensus.dbup.image.repository }}:{{ .Values.fdiStableCensus.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiStableCensus.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-stable-census-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CENSUS_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CENSUS_DATA_USER) --loginPwd $(PASSWORD) --force        
+      #   - name: dbup-fdi-reset-census-data
+      #     image: "{{ .Values.fdiResetCensus.dbup.image.repository }}:{{ .Values.fdiResetCensus.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiResetCensus.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-reset-census-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CENSUS_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CENSUS_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
+      #   - name: dbup-fdi-stable-geese-data
+      #     image: "{{ .Values.fdiStableGeese.dbup.image.repository }}:{{ .Values.fdiStableGeese.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiStableGeese.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-stable-geese-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_GEESE_DATA_USER) --loginPwd $(PASSWORD) --force        
+      #   - name: dbup-fdi-reset-geese-data
+      #     image: "{{ .Values.fdiResetGeese.dbup.image.repository }}:{{ .Values.fdiResetGeese.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiResetGeese.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-reset-geese-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_GEESE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_GEESE_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb        
+      #   - name: dbup-fdi-stable-codr-data
+      #     image: "{{ .Values.fdiStableCodr.dbup.image.repository }}:{{ .Values.fdiStableCodr.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiStableCodr.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-stable-codr-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CODR_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CODR_DATA_USER) --loginPwd $(PASSWORD) --force        
+      #   - name: dbup-fdi-reset-codr-data
+      #     image: "{{ .Values.fdiResetCodr.dbup.image.repository }}:{{ .Values.fdiResetCodr.dbup.image.tag }}"
+      #     imagePullPolicy: {{ .Values.fdiResetCodr.dbup.image.pullPolicy }}
+      #     envFrom:
+      #     - configMapRef:
+      #         name: mssql
+      #     env:
+      #     - name: SA_PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: dotstatsuite-db-secret
+      #           key: sapassword
+      #     - name: PASSWORD
+      #       valueFrom:
+      #         secretKeyRef:
+      #           name: mssql-fdi-reset-codr-data
+      #           key: password
+      #     command: ['bash', '-c']
+      #     args:
+      #       - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CODR_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb        
+       {{- with .Values.transfernoauth.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.transfer.affinity }}
+      {{- with .Values.transfernoauth.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.transfer.tolerations }}
+      {{- with .Values.transfernoauth.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
