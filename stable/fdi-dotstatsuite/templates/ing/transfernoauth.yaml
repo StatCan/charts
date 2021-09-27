@@ -1,0 +1,43 @@
+{{- if .Values.transfernoauth.enabled -}}
+{{- if .Values.transfernoauth.ingress.enabled -}}
+{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $svcPort := .Values.transfernoauth.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-transfernoauth
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfernoauth
+  {{- with .Values.transfernoauth.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.transfernoauth.ingress.tls }}
+  tls:
+    {{- range .Values.transfernoauth.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.transfernoauth.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ . }}
+            backend:
+              serviceName: {{ $fullName }}-transfernoauth
+              servicePort: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
+{{- end }}
+{{- end -}}

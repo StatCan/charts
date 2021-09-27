@@ -1,0 +1,30 @@
+{{- if .Values.transfernoauth.enabled -}}
+{{- if .Values.transfernoauth.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-transfernoauth
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfernoauth
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-transfernoauth
+  minReplicas: {{ .Values.transfernoauth.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.transfernoauth.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.transfernoauth.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.transfernoauth.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.transfernoauth.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.transfernoauth.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}

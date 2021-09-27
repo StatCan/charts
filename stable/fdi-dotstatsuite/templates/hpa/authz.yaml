@@ -1,0 +1,30 @@
+{{- if .Values.authz.enabled -}}
+{{- if .Values.authz.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-authz
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-authz
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-authz
+  minReplicas: {{ .Values.authz.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.authz.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.authz.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.authz.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.authz.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.authz.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}

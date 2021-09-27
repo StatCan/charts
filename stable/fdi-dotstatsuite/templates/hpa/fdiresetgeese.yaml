@@ -1,0 +1,30 @@
+{{- if .Values.fdiResetGeese.enabled -}}
+{{- if .Values.fdiResetGeese.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-geese
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-geese
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-geese
+  minReplicas: {{ .Values.fdiResetGeese.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.fdiResetGeese.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.fdiResetGeese.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.fdiResetGeese.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.fdiResetGeese.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.fdiResetGeese.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}

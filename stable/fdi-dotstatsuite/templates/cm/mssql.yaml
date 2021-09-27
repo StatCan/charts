@@ -1,0 +1,60 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mssql
+data:
+  COMMON_DB: commonDb
+  COMMON_USER: commonUser
+  FDI_RESET_SDMX_DATA_DB: fdiResetSdmxDataDb
+  FDI_RESET_SDMX_DATA_USER: fdiResetSdmxDataUser
+  FDI_RESET_SDMX_STRUCTURE_DB: fdiResetSdmxStructureDb
+  FDI_RESET_SDMX_STRUCTURE_USER: fdiResetSdmxStructureUser
+  FDI_STABLE_SDMX_DATA_DB: fdiStableSdmxDataDb
+  FDI_STABLE_SDMX_DATA_USER: fdiStableSdmxDataUser
+  FDI_STABLE_SDMX_STRUCTURE_DB: fdiStableSdmxStructureDb
+  FDI_STABLE_SDMX_STRUCTURE_USER: fdiStableSdmxStructureUser
+  FDI_RESET_CCEI_DATA_DB: fdiResetCceiDataDb
+  FDI_RESET_CCEI_DATA_USER: fdiResetCceiDataUser
+  FDI_RESET_CCEI_STRUCTURE_DB: fdiResetCceiStructureDb
+  FDI_RESET_CCEI_STRUCTURE_USER: fdiResetCceiStructureUser
+  FDI_STABLE_CCEI_DATA_DB: fdiStableCceiDataDb
+  FDI_STABLE_CCEI_DATA_USER: fdiStableCceiDataUser
+  FDI_STABLE_CCEI_STRUCTURE_DB: fdiStableCceiStructureDb
+  FDI_STABLE_CCEI_STRUCTURE_USER: fdiStableCceiStructureUser
+  FDI_RESET_CKAN_DATA_DB: fdiResetCkanDataDb
+  FDI_RESET_CKAN_DATA_USER: fdiResetCkanDataUser
+  FDI_RESET_CKAN_STRUCTURE_DB: fdiResetCkanStructureDb
+  FDI_RESET_CKAN_STRUCTURE_USER: fdiResetCkanStructureUser
+  FDI_STABLE_CKAN_DATA_DB: fdiStableCkanDataDb
+  FDI_STABLE_CKAN_DATA_USER: fdiStableCkanDataUser
+  FDI_STABLE_CKAN_STRUCTURE_DB: fdiStableCkanStructureDb
+  FDI_STABLE_CKAN_STRUCTURE_USER: fdiStableCkanStructureUser
+  FDI_RESET_CENSUS_DATA_DB: fdiResetCensusDataDb
+  FDI_RESET_CENSUS_DATA_USER: fdiResetCensusDataUser
+  FDI_RESET_CENSUS_STRUCTURE_DB: fdiResetCensusStructureDb
+  FDI_RESET_CENSUS_STRUCTURE_USER: fdiResetCensusStructureUser
+  FDI_STABLE_CENSUS_DATA_DB: fdiStableCensusDataDb
+  FDI_STABLE_CENSUS_DATA_USER: fdiStableCensusDataUser
+  FDI_STABLE_CENSUS_STRUCTURE_DB: fdiStableCensusStructureDb
+  FDI_STABLE_CENSUS_STRUCTURE_USER: fdiStableCensusStructureUser
+  FDI_STABLE_GEESE_DATA_DB: fdiStableGeeseDataDb
+  FDI_STABLE_GEESE_DATA_USER: fdiStableGeeseDataUser
+  FDI_STABLE_GEESE_STRUCTURE_DB: fdiStableGeeseStructureDb
+  FDI_STABLE_GEESE_STRUCTURE_USER: fdiStableGeeseStructureUser  
+  FDI_RESET_GEESE_DATA_DB: fdiResetGeeseDataDb
+  FDI_RESET_GEESE_DATA_USER: fdiResetGeeseDataUser
+  FDI_RESET_GEESE_STRUCTURE_DB: fdiResetGeeseStructureDb
+  FDI_RESET_GEESE_STRUCTURE_USER: fdiResetGeeseStructureUser  
+  FDI_STABLE_CODR_DATA_DB: fdiStableCodrDataDb
+  FDI_STABLE_CODR_DATA_USER: fdiStableCodrDataUser
+  FDI_STABLE_CODR_STRUCTURE_DB: fdiStableCodrStructureDb
+  FDI_STABLE_CODR_STRUCTURE_USER: fdiStableCodrStructureUser  
+  FDI_RESET_CODR_DATA_DB: fdiResetCodrDataDb
+  FDI_RESET_CODR_DATA_USER: fdiResetCodrDataUser
+  FDI_RESET_CODR_STRUCTURE_DB: fdiResetCodrStructureDb
+  FDI_RESET_CODR_STRUCTURE_USER: fdiResetCodrStructureUser  
+{{- if index .Values "mssql-linux" "enabled" }}
+  SA_USER: sa
+{{- else }}
+  SA_USER: sqlhstsvc
+{{- end }}
