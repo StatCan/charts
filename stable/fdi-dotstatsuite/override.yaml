@@ -1,0 +1,282 @@
+managed:
+  azuread:
+    tokenUrl: https://login.microsoftonline.com/258f1f99-ee3d-42c7-bfc5-7af1b2343e02/oauth2/v2.0/token
+    authority: https://login.microsoftonline.com/258f1f99-ee3d-42c7-bfc5-7af1b2343e02/v2.0
+    authorizationUrl: https://login.microsoftonline.com/258f1f99-ee3d-42c7-bfc5-7af1b2343e02/oauth2/v2.0/authorize
+    clientId: api://dotstatsuite
+  database:
+    sapassword: "'2~qPY_o,E;*jpj598~p]V7*TbPFlbLEYkI]3B*C$'"
+    password: "8fLlEQCQRY"
+  smtp:
+    username: "admin@example.com"
+    password: "#{SMTP_PASSWORD}"
+    host: "smtp.sendgrid.net"
+    port: "587"
+    enableSsl: "true"
+    mailFrom: "build@siscc.org"
+    
+authz:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-authz-sdmx.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/dotstatsuite-core-auth-management
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiResetSdmx:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-reset-sdmx.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiStableSdmx:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-stable-sdmx.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiStableCcei:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-stable-ccei.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiResetCcei:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-reset-ccei.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiStableCensus:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-stable-census.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiResetCensus:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-reset-census.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+fdiStableCkan:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-stable-ckan.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiResetCkan:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-reset-ckan.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiResetGeese:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-reset-geese.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiStableGeese:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-stable-geese.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b      
+
+fdiResetCodr:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-reset-codr.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b
+
+fdiStableCodr:
+  enabled: true
+  ingress:
+    hosts:
+      - host: fdi-stable-codr.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/sdmxri-nsi-maapi
+    pullPolicy: Always
+    tag: latest
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b      
+
+transfer:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts:
+      - host: fdi-transfer-sdmx.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/dotstatsuite-core-transfer
+    pullPolicy: Always
+    tag: ac37f544
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b   
+
+transfernoauth:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts:
+      - host: fdi-transfernoauth-sdmx.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+  image:
+    repository: siscc/dotstatsuite-core-transfer
+    pullPolicy: Always
+    tag: ac37f544
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      tag: acba7e0b      
+
+keycloak:
+  enabled: false
+
+mssql-linux:
+  enabled: true
+
+destinationRule:
+  enabled: false
+  mode: DISABLE

@@ -1,0 +1,43 @@
+{{- if .Values.fdiStableSdmx.enabled -}}
+{{- if .Values.fdiStableSdmx.ingress.enabled -}}
+{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $svcPort := .Values.fdiStableSdmx.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-fdi-stable-sdmx
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-sdmx
+  {{- with .Values.fdiStableSdmx.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.fdiStableSdmx.ingress.tls }}
+  tls:
+    {{- range .Values.fdiStableSdmx.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.fdiStableSdmx.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ . }}
+            backend:
+              serviceName: {{ $fullName }}-fdi-stable-sdmx
+              servicePort: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end -}}

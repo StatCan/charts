@@ -1,0 +1,30 @@
+{{- if .Values.fdiStableGeese.enabled -}}
+{{- if .Values.fdiStableGeese.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-geese
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-geese
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-geese
+  minReplicas: {{ .Values.fdiStableGeese.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.fdiStableGeese.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.fdiStableGeese.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.fdiStableGeese.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.fdiStableGeese.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.fdiStableGeese.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}

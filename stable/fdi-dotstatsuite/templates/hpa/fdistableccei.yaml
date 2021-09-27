@@ -1,0 +1,30 @@
+{{- if .Values.fdiStableCcei.enabled -}}
+{{- if .Values.fdiStableCcei.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-ccei
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-ccei
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-ccei
+  minReplicas: {{ .Values.fdiStableCcei.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.fdiStableCcei.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.fdiStableCcei.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.fdiStableCcei.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.fdiStableCcei.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.fdiStableCcei.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}
