@@ -1,0 +1,17 @@
+{{- if .Values.nsiResetSiscc.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-nsi-reset-siscc
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-nsi-reset-siscc
+spec:
+  type: {{ .Values.nsiResetSiscc.service.type }}
+  ports:
+    - port: {{ .Values.nsiResetSiscc.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http-nsi-reset-siscc
+  selector:
+    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-nsi-reset-siscc
+{{- end -}}

@@ -4,7 +4,6 @@ apiVersion: v1
 metadata:
   name: authz
 data:
-  auth__TokenUrl: "{{ .Values.managed.azuread.tokenUrl }}"
   auth__allowAnonymous: 'true'
   auth__authority: "{{ .Values.managed.azuread.authority }}"
   auth__authorizationUrl: "{{ .Values.managed.azuread.authorizationUrl }}"
@@ -16,7 +15,6 @@ data:
   auth__scopes__0: openid
   auth__scopes__1: profile
   auth__scopes__2: email
-  auth__scopes__3: "{{ .Values.managed.azuread.clientId }}/access_as_app"
   auth__validateIssuer: 'false'
   auth__showPii: 'true'
 {{- end -}}

@@ -1,0 +1,145 @@
+{{- if .Values.nsiDesignOecd.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-nsi-design-oecd
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-nsi-design-oecd
+spec:
+{{- if not .Values.nsiDesignOecd.autoscaling.enabled }}
+  replicas: {{ .Values.nsiDesignOecd.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-nsi-design-oecd
+  template:
+    metadata:
+      annotations:
+        traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+    {{- with .Values.nsiDesignOecd.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-nsi-design-oecd
+    spec:
+      {{- with .Values.nsiDesignOecd.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.nsiDesignOecd.serviceAccountName" . }}-nsi-design-oecd
+      securityContext:
+        {{- toYaml .Values.nsiDesignOecd.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-nsi-design-oecd
+          securityContext:
+            {{- toYaml .Values.nsiDesignOecd.securityContext | nindent 12 }}
+          image: "{{ .Values.nsiDesignOecd.image.repository }}:{{ .Values.nsiDesignOecd.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.nsiDesignOecd.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: mssql
+            - configMapRef:
+                name: authz
+          env:
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dotstatsuite-db-secret
+                  key: sapassword
+            - name: DESIGN_DATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-nsi-design-oecd-data
+                  key: password
+            - name: DESIGN_STRUCTURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-nsi-design-oecd-structure
+                  key: password
+            - name: COMMON_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-common
+                  key: password
+            - name: "DotStatSuiteCoreCommonDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+            - name: "SpacesInternal__0__Id"
+              value: "OECD-design"
+            - name: "SpacesInternal__0__DotStatSuiteCoreStructDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_DESIGN_OECD_STRUCTURE_DB);User=$(NSI_DESIGN_OECD_STRUCTURE_USER);Password=$(DESIGN_STRUCTURE_PASSWORD);"
+            - name: "SpacesInternal__0__DotStatSuiteCoreDataDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_DESIGN_OECD_DATA_DB);User=$(NSI_DESIGN_OECD_DATA_USER);Password=$(DESIGN_DATA_PASSWORD);"
+            - name: "SpacesInternal__0__DataImportTimeOutInMinutes"
+              value: "2"
+            - name: "SpacesInternal__0__DatabaseCommandTimeoutInSec"
+              value: "60"
+            - name: "SpacesInternal__0__AuthEndpoint"
+              value: "{{ .Chart.Name }}-authz"
+            - name: "SpacesInternal__0__AutoLog2DB"
+              value: "true"
+            - name: "SpacesInternal__0__AutoLog2DBLogLevel"
+              value: "Notice"
+            - name: SQL_SERVER
+              value: {{ template "dotstatsuite.databaseHost" . }}
+            - name: SQL_DATABASE
+              value: $(NSI_DESIGN_OECD_STRUCTURE_DB)
+            - name: SQL_USER
+              value: $(NSI_DESIGN_OECD_STRUCTURE_USER)
+            - name: SQL_PASSWORD
+              value: $(DESIGN_STRUCTURE_PASSWORD)
+            - name: SENDER_ID
+              value: "Stable - DotStat v8"
+            - name: DATASPACE_ID
+              value: "OECD-design"
+            - name: MA_SQL_USER
+              value: $(SA_USER)
+            - name: MA_SQL_PASSWORD
+              value: $(SA_PASSWORD)
+            - name: MA_ALWAYS_RESET
+              value: "N"
+            - name: INSERT_NEW_ITEM_SCHEME_VALUES
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.nsiDesignOecd.resources | nindent 12 }}
+      initContainers:
+        - name: {{ .Chart.Name }}-dbup-design-structure
+          image: "{{ .Values.nsiDesignOecd.dbup.image.repository }}:{{ .Values.nsiDesignOecd.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.nsiDesignOecd.dbup.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: mssql
+          env:
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: dotstatsuite-db-secret
+                key: sapassword
+          - name: DESIGN_STRUCTURE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mssql-nsi-design-oecd-structure
+                key: password
+          command: ['bash', '-c']
+          args:
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_DESIGN_OECD_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(NSI_DESIGN_OECD_STRUCTURE_USER) --loginPwd $(DESIGN_STRUCTURE_PASSWORD) --force
+      {{- with .Values.nsiDesignOecd.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nsiDesignOecd.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nsiDesignOecd.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

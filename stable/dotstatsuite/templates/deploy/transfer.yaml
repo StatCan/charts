@@ -56,133 +56,54 @@ spec:
                 secretKeyRef:
                   name: smtp
                   key: password
-            - name: STABLE_SDMX_DATA_PASSWORD
+            {{- if .Values.nsiDesignOecd.enabled }}
+            - name: DESIGN_DATA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mssql-fdi-stable-sdmx-data
+                  name: mssql-nsi-design-oecd-data
+                  key: password
+            - name: DESIGN_STRUCTURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-nsi-design-oecd-structure
+                  key: password
+            {{- end }}
+            {{- if .Values.nsiStagingOecd.enabled }}
+            - name: STAGING_DATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-nsi-staging-oecd-data
+                  key: password
+            - name: STAGING_STRUCTURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-nsi-staging-oecd-structure
+                  key: password
+            {{- end }}
+            - name: STABLE_DATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-nsi-stable-siscc-data
                   key: password
             - name: STABLE_STRUCTURE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mssql-fdi-stable-sdmx-structure
+                  name: mssql-nsi-stable-siscc-structure
                   key: password
-            - name: RESET_SDMX_DATA_PASSWORD
+            - name: RESET_DATA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mssql-fdi-reset-sdmx-data
+                  name: mssql-nsi-reset-siscc-data
                   key: password
             - name: RESET_STRUCTURE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mssql-fdi-reset-sdmx-structure
-                  key: password
-            - name: STABLE_CKAN_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-ckan-data
-                  key: password
-            - name: STABLE_CKAN_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-ckan-structure
-                  key: password
-            - name: RESET_CKAN_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-ckan-data
-                  key: password
-            - name: RESET_CKAN_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-ckan-structure
-                  key: password            
-            
-            - name: STABLE_CCEI_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-ccei-data
-                  key: password
-            - name: STABLE_CCEI_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-ccei-structure
-                  key: password
-            - name: RESET_CCEI_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-ccei-data
-                  key: password
-            - name: RESET_CCEI_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-ccei-structure
-                  key: password
-            - name: STABLE_CENSUS_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-census-data
-                  key: password
-            - name: STABLE_CENSUS_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-census-structure
-                  key: password
-            - name: RESET_CENSUS_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-census-data
-                  key: password
-            - name: RESET_CENSUS_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-census-structure
-                  key: password
-            - name: STABLE_GEESE_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-geese-data
-                  key: password
-            - name: STABLE_GEESE_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-geese-structure
-                  key: password
-            - name: RESET_GEESE_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-geese-data
-                  key: password
-            - name: RESET_GEESE_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-geese-structure
-                  key: password
-            - name: STABLE_CODR_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-codr-data
-                  key: password
-            - name: STABLE_CODR_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-stable-codr-structure
-                  key: password
-            - name: RESET_CODR_DATA_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-codr-data
-                  key: password
-            - name: RESET_CODR_STRUCTURE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mssql-fdi-reset-codr-structure
+                  name: mssql-nsi-reset-siscc-structure
                   key: password
             - name: "MaxTransferErrorAmount"
               value: "0"
             - name: "MaxTextAttributeLength"
               value: "150"
-            - name: "MinPercentageDiskSpace"
-              value: "10"
             - name: "DefaultLanguageCode"
               value: "en"
             - name: "SmtpHost"
@@ -198,43 +119,45 @@ spec:
             - name: "MailFrom"
               value: "{{ .Values.managed.smtp.mailFrom }}"
             - name: "DotStatSuiteCoreCommonDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"          
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+            {{- if .Values.nsiDesignOecd.enabled }}
             - name: "SpacesInternal__0__Id"
-              value: "stable-sdmx"
+              value: "OECD-design"
             - name: "SpacesInternal__0__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_SDMX_STRUCTURE_DB);User=$(FDI_STABLE_SDMX_STRUCTURE_USER);Password=$(STABLE_STRUCTURE_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_DESIGN_OECD_STRUCTURE_DB);User=$(NSI_DESIGN_OECD_STRUCTURE_USER);Password=$(DESIGN_STRUCTURE_PASSWORD);"
             - name: "SpacesInternal__0__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_SDMX_DATA_DB);User=$(FDI_STABLE_SDMX_DATA_USER);Password=$(STABLE_SDMX_DATA_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_DESIGN_OECD_DATA_DB);User=$(NSI_DESIGN_OECD_DATA_USER);Password=$(DESIGN_DATA_PASSWORD);"
             - name: "SpacesInternal__0__DataImportTimeOutInMinutes"
-              value: "5"
+              value: "2"
             - name: "SpacesInternal__0__DatabaseCommandTimeoutInSec"
-              value: "270"
+              value: "60"
             - name: "SpacesInternal__0__AutoLog2DB"
               value: "true"
             - name: "SpacesInternal__0__AutoLog2DBLogLevel"
               value: "Notice"
+            {{- end }}
+            {{- if .Values.nsiStagingOecd.enabled }}
             - name: "SpacesInternal__1__Id"
-              value: "reset-sdmx"
+              value: "OECD-staging"
             - name: "SpacesInternal__1__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_SDMX_STRUCTURE_DB);User=$(FDI_RESET_SDMX_STRUCTURE_USER);Password=$(RESET_STRUCTURE_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_STAGING_OECD_STRUCTURE_DB);User=$(NSI_STAGING_OECD_STRUCTURE_USER);Password=$(STAGING_STRUCTURE_PASSWORD);"
             - name: "SpacesInternal__1__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_SDMX_DATA_DB);User=$(FDI_RESET_SDMX_DATA_USER);Password=$(RESET_SDMX_DATA_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_STAGING_OECD_DATA_DB);User=$(NSI_STAGING_OECD_DATA_USER);Password=$(STAGING_DATA_PASSWORD);"
             - name: "SpacesInternal__1__DataImportTimeOutInMinutes"
-              value: "5"
+              value: "2"
             - name: "SpacesInternal__1__DatabaseCommandTimeoutInSec"
-              value: "270"
+              value: "60"
             - name: "SpacesInternal__1__AutoLog2DB"
               value: "true"
             - name: "SpacesInternal__1__AutoLog2DBLogLevel"
               value: "Notice"
-            - name: "SpacesInternal__1__auth__enabled"
-              value: "false" 
+            {{- end }}
             - name: "SpacesInternal__2__Id"
-              value: "stable-census"
+              value: "staging:SIS-CC-stable"
             - name: "SpacesInternal__2__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CENSUS_STRUCTURE_DB);User=$(FDI_STABLE_CENSUS_STRUCTURE_USER);Password=$(STABLE_CENSUS_STRUCTURE_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_STABLE_SISCC_STRUCTURE_DB);User=$(NSI_STABLE_SISCC_STRUCTURE_USER);Password=$(STABLE_STRUCTURE_PASSWORD);"
             - name: "SpacesInternal__2__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CENSUS_DATA_DB);User=$(FDI_STABLE_CENSUS_DATA_USER);Password=$(STABLE_CENSUS_DATA_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_STABLE_SISCC_DATA_DB);User=$(NSI_STABLE_SISCC_DATA_USER);Password=$(STABLE_DATA_PASSWORD);"
             - name: "SpacesInternal__2__DataImportTimeOutInMinutes"
               value: "5"
             - name: "SpacesInternal__2__DatabaseCommandTimeoutInSec"
@@ -242,13 +165,13 @@ spec:
             - name: "SpacesInternal__2__AutoLog2DB"
               value: "true"
             - name: "SpacesInternal__2__AutoLog2DBLogLevel"
-              value: "Notice"              
+              value: "Notice"
             - name: "SpacesInternal__3__Id"
-              value: "reset-census"
+              value: "staging:SIS-CC-reset"
             - name: "SpacesInternal__3__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CENSUS_STRUCTURE_DB);User=$(FDI_RESET_CENSUS_STRUCTURE_USER);Password=$(RESET_CENSUS_STRUCTURE_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_RESET_SISCC_STRUCTURE_DB);User=$(NSI_RESET_SISCC_STRUCTURE_USER);Password=$(RESET_STRUCTURE_PASSWORD);"
             - name: "SpacesInternal__3__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CENSUS_DATA_DB);User=$(FDI_RESET_CENSUS_DATA_USER);Password=$(RESET_CENSUS_DATA_PASSWORD);"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_RESET_SISCC_DATA_DB);User=$(NSI_RESET_SISCC_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
             - name: "SpacesInternal__3__DataImportTimeOutInMinutes"
               value: "5"
             - name: "SpacesInternal__3__DatabaseCommandTimeoutInSec"
@@ -256,129 +179,7 @@ spec:
             - name: "SpacesInternal__3__AutoLog2DB"
               value: "true"
             - name: "SpacesInternal__3__AutoLog2DBLogLevel"
-              value: "Notice"            
-            - name: "SpacesInternal__4__Id"
-              value: "stable-ccei"
-            - name: "SpacesInternal__4__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CCEI_STRUCTURE_DB);User=$(FDI_STABLE_CCEI_STRUCTURE_USER);Password=$(STABLE_CCEI_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__4__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CCEI_DATA_DB);User=$(FDI_STABLE_CCEI_DATA_USER);Password=$(STABLE_CCEI_DATA_PASSWORD);"
-            - name: "SpacesInternal__4__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__4__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__4__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__4__AutoLog2DBLogLevel"
               value: "Notice"
-            - name: "SpacesInternal__5__Id"
-              value: "reset-ccei"
-            - name: "SpacesInternal__5__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CCEI_STRUCTURE_DB);User=$(FDI_RESET_CCEI_STRUCTURE_USER);Password=$(RESET_CCEI_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__5__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CCEI_DATA_DB);User=$(FDI_RESET_CCEI_DATA_USER);Password=$(RESET_CCEI_DATA_PASSWORD);"
-            - name: "SpacesInternal__5__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__5__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__5__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__5__AutoLog2DBLogLevel"
-              value: "Notice"
-            - name: "SpacesInternal__5__auth__enabled"
-              value: "false" 
-            - name: "SpacesInternal__6__Id"
-              value: "stable-geese"
-            - name: "SpacesInternal__6__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_STRUCTURE_DB);User=$(FDI_STABLE_GEESE_STRUCTURE_USER);Password=$(STABLE_GEESE_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__6__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_DATA_DB);User=$(FDI_STABLE_GEESE_DATA_USER);Password=$(STABLE_GEESE_DATA_PASSWORD);"
-            - name: "SpacesInternal__6__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__6__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__6__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__6__AutoLog2DBLogLevel"
-              value: "Notice"
-            - name: "SpacesInternal__7__Id"
-              value: "reset-geese"
-            - name: "SpacesInternal__7__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_GEESE_STRUCTURE_DB);User=$(FDI_RESET_GEESE_STRUCTURE_USER);Password=$(RESET_GEESE_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__7__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_GEESE_DATA_DB);User=$(FDI_RESET_GEESE_DATA_USER);Password=$(RESET_GEESE_DATA_PASSWORD);"
-            - name: "SpacesInternal__7__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__7__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__7__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__7__AutoLog2DBLogLevel"
-              value: "Notice"
-            - name: "SpacesInternal__7__authorization__enabled"
-              value: "false" 
-            - name: "SpacesInternal__7__auth__enabled"
-              value: "false"
-            - name: "SpacesInternal__8__Id"
-              value: "stable-codr"
-            - name: "SpacesInternal__8__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CODR_STRUCTURE_DB);User=$(FDI_STABLE_CODR_STRUCTURE_USER);Password=$(STABLE_CODR_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__8__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CODR_DATA_DB);User=$(FDI_STABLE_CODR_DATA_USER);Password=$(STABLE_CODR_DATA_PASSWORD);"
-            - name: "SpacesInternal__8__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__8__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__8__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__8__AutoLog2DBLogLevel"
-              value: "Notice"
-            - name: "SpacesInternal__9__Id"
-              value: "reset-codr"
-            - name: "SpacesInternal__9__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_STRUCTURE_DB);User=$(FDI_RESET_CODR_STRUCTURE_USER);Password=$(RESET_CODR_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__9__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(FDI_RESET_CODR_DATA_USER);Password=$(RESET_CODR_DATA_PASSWORD);"
-            - name: "SpacesInternal__9__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__9__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__9__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__9__AutoLog2DBLogLevel"
-              value: "Notice"
-            - name: "SpacesInternal__9__auth__enabled"
-              value: "false" 
-            - name: "SpacesInternal__10__Id"
-              value: "stable-ckan"
-            - name: "SpacesInternal__10__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CKAN_STRUCTURE_DB);User=$(FDI_STABLE_CKAN_STRUCTURE_USER);Password=$(STABLE_CKAN_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__10__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CKAN_DATA_DB);User=$(FDI_STABLE_CKAN_DATA_USER);Password=$(STABLE_CKAN_DATA_PASSWORD);"
-            - name: "SpacesInternal__10__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__10__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__10__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__10__AutoLog2DBLogLevel"
-              value: "Notice"
-            - name: "SpacesInternal__11__Id"
-              value: "reset-ckan"
-            - name: "SpacesInternal__11__DotStatSuiteCoreStructDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CKAN_STRUCTURE_DB);User=$(FDI_RESET_CKAN_STRUCTURE_USER);Password=$(RESET_CKAN_STRUCTURE_PASSWORD);"
-            - name: "SpacesInternal__11__DotStatSuiteCoreDataDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CKAN_DATA_DB);User=$(FDI_RESET_CKAN_DATA_USER);Password=$(RESET_CKAN_DATA_PASSWORD);"
-            - name: "SpacesInternal__11__DataImportTimeOutInMinutes"
-              value: "5"
-            - name: "SpacesInternal__11__DatabaseCommandTimeoutInSec"
-              value: "270"
-            - name: "SpacesInternal__11__AutoLog2DB"
-              value: "true"
-            - name: "SpacesInternal__11__AutoLog2DBLogLevel"
-              value: "Notice"
-            - name: "SpacesInternal__11__auth__enabled"
-              value: "false"
           ports:
             - name: http
               containerPort: 80
@@ -394,9 +195,10 @@ spec:
           resources:
             {{- toYaml .Values.transfer.resources | nindent 12 }}
       initContainers:
-        - name: dbup-fdi-stable-sdmx-data
-          image: "{{ .Values.fdiStableSdmx.dbup.image.repository }}:{{ .Values.fdiStableSdmx.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableSdmx.dbup.image.pullPolicy }}
+        {{- if .Values.nsiDesignOecd.enabled }}
+        - name: dbup-nsi-design-oecd-data
+          image: "{{ .Values.nsiDesignOecd.dbup.image.repository }}:{{ .Values.nsiDesignOecd.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.nsiDesignOecd.dbup.image.pullPolicy }}
           envFrom:
           - configMapRef:
               name: mssql
@@ -409,14 +211,16 @@ spec:
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mssql-fdi-stable-sdmx-data
+                name: mssql-nsi-design-oecd-data
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_SDMX_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_SDMX_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-sdmx-data
-          image: "{{ .Values.fdiResetSdmx.dbup.image.repository }}:{{ .Values.fdiResetSdmx.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetSdmx.dbup.image.pullPolicy }}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_DESIGN_OECD_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(NSI_DESIGN_OECD_DATA_USER) --loginPwd $(PASSWORD) --force
+        {{- end }}
+        {{- if .Values.nsiStagingOecd.enabled }}
+        - name: dbup-nsi-staging-oecd-data
+          image: "{{ .Values.nsiStagingOecd.dbup.image.repository }}:{{ .Values.nsiStagingOecd.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.nsiStagingOecd.dbup.image.pullPolicy }}
           envFrom:
           - configMapRef:
               name: mssql
@@ -429,14 +233,15 @@ spec:
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mssql-fdi-reset-sdmx-data
+                name: mssql-nsi-staging-oecd-data
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_SDMX_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_SDMX_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-ckan-data
-          image: "{{ .Values.fdiStableCkan.dbup.image.repository }}:{{ .Values.fdiStableCkan.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCkan.dbup.image.pullPolicy }}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_STAGING_OECD_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(NSI_STAGING_OECD_DATA_USER) --loginPwd $(PASSWORD) --force
+        {{- end }}
+        - name: dbup-nsi-stable-siscc-data
+          image: "{{ .Values.nsiStableSiscc.dbup.image.repository }}:{{ .Values.nsiStableSiscc.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.nsiStableSiscc.dbup.image.pullPolicy }}
           envFrom:
           - configMapRef:
               name: mssql
@@ -449,14 +254,14 @@ spec:
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mssql-fdi-stable-ckan-data
+                name: mssql-nsi-stable-siscc-data
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CKAN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CKAN_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-ckan-data
-          image: "{{ .Values.fdiResetCkan.dbup.image.repository }}:{{ .Values.fdiResetCkan.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCkan.dbup.image.pullPolicy }}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_STABLE_SISCC_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(NSI_STABLE_SISCC_DATA_USER) --loginPwd $(PASSWORD) --force
+        - name: dbup-nsi-reset-siscc-data
+          image: "{{ .Values.nsiResetSiscc.dbup.image.repository }}:{{ .Values.nsiResetSiscc.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.nsiResetSiscc.dbup.image.pullPolicy }}
           envFrom:
           - configMapRef:
               name: mssql
@@ -469,171 +274,11 @@ spec:
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mssql-fdi-reset-ckan-data
+                name: mssql-nsi-reset-siscc-data
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CKAN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CKAN_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-ccei-data
-          image: "{{ .Values.fdiStableCcei.dbup.image.repository }}:{{ .Values.fdiStableCcei.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCcei.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-ccei-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CCEI_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CCEI_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-ccei-data
-          image: "{{ .Values.fdiResetCcei.dbup.image.repository }}:{{ .Values.fdiResetCcei.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCcei.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-ccei-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CCEI_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CCEI_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-census-data
-          image: "{{ .Values.fdiStableCensus.dbup.image.repository }}:{{ .Values.fdiStableCensus.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCensus.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-census-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CENSUS_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CENSUS_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-census-data
-          image: "{{ .Values.fdiResetCensus.dbup.image.repository }}:{{ .Values.fdiResetCensus.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCensus.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-census-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CENSUS_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CENSUS_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
-        - name: dbup-fdi-stable-geese-data
-          image: "{{ .Values.fdiStableGeese.dbup.image.repository }}:{{ .Values.fdiStableGeese.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableGeese.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-geese-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_GEESE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_GEESE_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-geese-data
-          image: "{{ .Values.fdiResetGeese.dbup.image.repository }}:{{ .Values.fdiResetGeese.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetGeese.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-geese-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_GEESE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_GEESE_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb        
-        - name: dbup-fdi-stable-codr-data
-          image: "{{ .Values.fdiStableCodr.dbup.image.repository }}:{{ .Values.fdiStableCodr.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiStableCodr.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-stable-codr-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_STABLE_CODR_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_STABLE_CODR_DATA_USER) --loginPwd $(PASSWORD) --force        
-        - name: dbup-fdi-reset-codr-data
-          image: "{{ .Values.fdiResetCodr.dbup.image.repository }}:{{ .Values.fdiResetCodr.dbup.image.tag }}"
-          imagePullPolicy: {{ .Values.fdiResetCodr.dbup.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: mssql
-          env:
-          - name: SA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: dotstatsuite-db-secret
-                key: sapassword
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mssql-fdi-reset-codr-data
-                key: password
-          command: ['bash', '-c']
-          args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(FDI_RESET_CODR_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb        
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(NSI_RESET_SISCC_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(NSI_RESET_SISCC_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb
       {{- with .Values.transfer.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
