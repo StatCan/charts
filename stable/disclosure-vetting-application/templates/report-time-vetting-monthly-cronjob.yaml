@@ -37,7 +37,7 @@ spec:
           volumes:
             - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
               secret:
-                secretName: {{ include "vetting-app.fullname" . }}-reports-cronjob-{{ .Values.entrypointSh.name }}-reports-secret
+                secretName: {{ include "vetting-app.fullname" . }}-reports-cronjob-{{ .Values.entrypointSh.name }}-secret
                 defaultMode: 0755         
           restartPolicy: OnFailure
          
