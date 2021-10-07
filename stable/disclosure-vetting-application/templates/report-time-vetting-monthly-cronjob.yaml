@@ -9,6 +9,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            aadpodidbinding: "{{ .Values.managedIdentityName }}"
         spec:
           containers:
           - name: report-time-vetting-monthly-vetting-job
