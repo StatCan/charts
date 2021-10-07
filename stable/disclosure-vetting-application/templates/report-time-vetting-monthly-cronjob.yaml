@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: report-timeVetting-monthly-vetting-job
+  name: report-time-vetting-monthly-vetting-job
 spec:
   schedule: "*/1 * * * *"
   #schedule: "0 0 1 * *"
@@ -10,7 +10,7 @@ spec:
       template:
         spec:
           containers:
-          - name: report-timeVetting-monthly-vetting-job
+          - name: report-time-vetting-monthly-vetting-job
             image: "{{ .Values.appImageReportCron.repository }}:{{ .Values.appImageReportCron.tag }}"
             imagePullPolicy: "{{ .Values.appImageReportCron.pullPolicy }}"
             args: ["time_spent_vetting","monthly"]
