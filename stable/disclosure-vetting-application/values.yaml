@@ -4,6 +4,10 @@
 
 replicaCount: 1
 
+reportsCronJob:
+  storageAccountName: ""
+  storageResourceGroup: ""
+
 appImageReportCron:
   repository: statcan/disclosure-vetting-app
   tag: 0.1.1
