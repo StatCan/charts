@@ -4,6 +4,7 @@ metadata:
   name: report-time-vetting-monthly-vetting-job
 spec:
   schedule: "*/1 * * * *"
+  suspend: true
   #schedule: "0 0 1 * *"
   jobTemplate:
     spec:
