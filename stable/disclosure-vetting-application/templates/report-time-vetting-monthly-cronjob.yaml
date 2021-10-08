@@ -32,7 +32,7 @@ spec:
             - name: DB_CONNECTION_STRING
               valueFrom:
                 secretKeyRef:
-                  name: db-cronjob-init
+                  name: reports-cronjob-init
                   key: dbConnectionString
             volumeMounts:
               - name: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
