@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-sdmx
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-stable-sdmx
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-sdmx
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-stable-sdmx
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-sdmx
+    name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-stable-sdmx
   minReplicas: {{ .Values.fdiStableSdmx.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.fdiStableSdmx.autoscaling.maxReplicas }}
   metrics:

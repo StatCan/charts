@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "dotstatsuite.fdiResetCodr.serviceAccountName" . }}-fdi-reset-codr
+  name: {{ include "fdi-dotstatsuite.fdiResetCodr.serviceAccountName" . }}-fdi-reset-codr
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-codr
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-reset-codr
   {{- with .Values.fdiResetCodr.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

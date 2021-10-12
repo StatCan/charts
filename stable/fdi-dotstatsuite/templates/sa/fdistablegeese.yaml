@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "dotstatsuite.fdiStableGeese.serviceAccountName" . }}-fdi-stable-geese
+  name: {{ include "fdi-dotstatsuite.fdiStableGeese.serviceAccountName" . }}-fdi-stable-geese
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-geese
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-stable-geese
   {{- with .Values.fdiStableGeese.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
