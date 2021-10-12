@@ -38,6 +38,18 @@ rules:
       - patch
       - delete
   - apiGroups:
+      - ''
+    resources:
+      - limitranges
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
       - networking.k8s.io
     resources:
       - networkpolicies

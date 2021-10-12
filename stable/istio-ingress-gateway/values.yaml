@@ -44,3 +44,10 @@ https:
       kind:
       # The name of the Issuer to use.
       name:
+  # Configurations around RBAC for the HTTPS Gateway
+  # Deploys a ClusterRole that allows Read access to the Gateway
+  rbac:
+    enabled: true
+    # Extra labels to add to the ClusterRole
+    # Can be used for ClusterRole Aggregation
+    labels: {}
