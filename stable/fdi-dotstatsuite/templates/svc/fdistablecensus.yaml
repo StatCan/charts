@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-census
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-stable-census
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-census
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-stable-census
 spec:
   type: {{ .Values.fdiStableCensus.service.type }}
   ports:
@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http-fdi-stable-census
   selector:
-    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-fdi-stable-census
+    {{- include "fdi-dotstatsuite.selectorLabels" . | nindent 4 }}-fdi-stable-census
 {{- end -}}

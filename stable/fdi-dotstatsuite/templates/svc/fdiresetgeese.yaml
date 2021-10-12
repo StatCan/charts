@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-geese
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-reset-geese
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-geese
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-reset-geese
 spec:
   type: {{ .Values.fdiResetGeese.service.type }}
   ports:
@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http-fdi-reset-geese
   selector:
-    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-fdi-reset-geese
+    {{- include "fdi-dotstatsuite.selectorLabels" . | nindent 4 }}-fdi-reset-geese
 {{- end -}}

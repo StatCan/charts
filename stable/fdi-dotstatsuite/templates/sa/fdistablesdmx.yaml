@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "dotstatsuite.fdiStableSdmx.serviceAccountName" . }}-fdi-stable-sdmx
+  name: {{ include "fdi-dotstatsuite.fdiStableSdmx.serviceAccountName" . }}-fdi-stable-sdmx
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-sdmx
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-stable-sdmx
   {{- with .Values.fdiStableSdmx.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
