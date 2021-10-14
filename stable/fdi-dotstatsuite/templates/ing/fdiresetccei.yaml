@@ -1,6 +1,6 @@
 {{- if .Values.fdiResetCcei.enabled -}}
 {{- if .Values.fdiResetCcei.ingress.enabled -}}
-{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $fullName := include "fdi-dotstatsuite.fullname" . -}}
 {{- $svcPort := .Values.fdiResetCcei.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -11,7 +11,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}-fdi-reset-ccei
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-ccei
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-reset-ccei
   {{- with .Values.fdiResetCcei.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

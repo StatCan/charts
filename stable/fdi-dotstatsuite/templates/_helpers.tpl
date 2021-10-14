@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "dotstatsuite.name" -}}
+{{- define "fdi-dotstatsuite.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "dotstatsuite.fullname" -}}
+{{- define "fdi-dotstatsuite.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "dotstatsuite.chart" -}}
+{{- define "fdi-dotstatsuite.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "dotstatsuite.labels" -}}
-helm.sh/chart: {{ include "dotstatsuite.chart" . }}
-{{ include "dotstatsuite.selectorLabels" . }}
+{{- define "fdi-dotstatsuite.labels" -}}
+helm.sh/chart: {{ include "fdi-dotstatsuite.chart" . }}
+{{ include "fdi-dotstatsuite.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "dotstatsuite.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "dotstatsuite.name" . }}
+{{- define "fdi-dotstatsuite.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "fdi-dotstatsuite.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.authz.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.authz.serviceAccountName" -}}
 {{- if .Values.authz.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.authz.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.authz.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.authz.serviceAccount.name }}
 {{- end }}
@@ -65,9 +65,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiResetSdmx.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiResetSdmx.serviceAccountName" -}}
 {{- if .Values.fdiResetSdmx.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiResetSdmx.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiResetSdmx.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiResetSdmx.serviceAccount.name }}
 {{- end }}
@@ -76,9 +76,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiStableSdmx.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiStableSdmx.serviceAccountName" -}}
 {{- if .Values.fdiStableSdmx.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiStableSdmx.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiStableSdmx.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiStableSdmx.serviceAccount.name }}
 {{- end }}
@@ -87,9 +87,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiResetCkan.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiResetCkan.serviceAccountName" -}}
 {{- if .Values.fdiResetCkan.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiResetCkan.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiResetCkan.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiResetCkan.serviceAccount.name }}
 {{- end }}
@@ -98,9 +98,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiStableCkan.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiStableCkan.serviceAccountName" -}}
 {{- if .Values.fdiStableCkan.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiStableCkan.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiStableCkan.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiStableCkan.serviceAccount.name }}
 {{- end }}
@@ -109,9 +109,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiResetCcei.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiResetCcei.serviceAccountName" -}}
 {{- if .Values.fdiResetCcei.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiResetCcei.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiResetCcei.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiResetCcei.serviceAccount.name }}
 {{- end }}
@@ -120,9 +120,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiStableCcei.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiStableCcei.serviceAccountName" -}}
 {{- if .Values.fdiStableCcei.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiStableCcei.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiStableCcei.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiStableCcei.serviceAccount.name }}
 {{- end }}
@@ -131,9 +131,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiResetCensus.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiResetCensus.serviceAccountName" -}}
 {{- if .Values.fdiResetCensus.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiResetCensus.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiResetCensus.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiResetCensus.serviceAccount.name }}
 {{- end }}
@@ -142,9 +142,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiStableCensus.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiStableCensus.serviceAccountName" -}}
 {{- if .Values.fdiStableCensus.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiStableCensus.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiStableCensus.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiStableCensus.serviceAccount.name }}
 {{- end }}
@@ -153,9 +153,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiResetGeese.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiResetGeese.serviceAccountName" -}}
 {{- if .Values.fdiResetGeese.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiResetGeese.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiResetGeese.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiResetGeese.serviceAccount.name }}
 {{- end }}
@@ -164,9 +164,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiStableGeese.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiStableGeese.serviceAccountName" -}}
 {{- if .Values.fdiStableGeese.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiStableGeese.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiStableGeese.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiStableGeese.serviceAccount.name }}
 {{- end }}
@@ -175,9 +175,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiResetCodr.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiResetCodr.serviceAccountName" -}}
 {{- if .Values.fdiResetCodr.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiResetCodr.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiResetCodr.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiResetCodr.serviceAccount.name }}
 {{- end }}
@@ -186,9 +186,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.fdiStableCodr.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.fdiStableCodr.serviceAccountName" -}}
 {{- if .Values.fdiStableCodr.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.fdiStableCodr.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.fdiStableCodr.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.fdiStableCodr.serviceAccount.name }}
 {{- end }}
@@ -197,9 +197,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.transfer.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.transfer.serviceAccountName" -}}
 {{- if .Values.transfer.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.transfer.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.transfer.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.transfer.serviceAccount.name }}
 {{- end }}
@@ -208,9 +208,9 @@ Create the name of the service account to use
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dotstatsuite.transfernoauth.serviceAccountName" -}}
+{{- define "fdi-dotstatsuite.transfernoauth.serviceAccountName" -}}
 {{- if .Values.transfernoauth.serviceAccount.create }}
-{{- default (include "dotstatsuite.fullname" .) .Values.transfernoauth.serviceAccount.name }}
+{{- default (include "fdi-dotstatsuite.fullname" .) .Values.transfernoauth.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.transfernoauth.serviceAccount.name }}
 {{- end }}
@@ -219,8 +219,8 @@ Create the name of the service account to use
 {{/*
 Database Host logic
 */}}
-{{- define "dotstatsuite.databaseHost" -}}
+{{- define "fdi-dotstatsuite.databaseHost" -}}
 {{- if index .Values "mssql-linux" "enabled" }}{{ .Chart.Name }}-mssql-linux
-{{- else }}dotstatsuite.database.windows.net
+{{- else }}fdi-dotstatsuite.database.windows.net
 {{- end }}
 {{- end }}

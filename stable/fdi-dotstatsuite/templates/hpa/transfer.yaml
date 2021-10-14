@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-transfer
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-transfer
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfer
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-transfer
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "dotstatsuite.fullname" . }}-transfer
+    name: {{ include "fdi-dotstatsuite.fullname" . }}-transfer
   minReplicas: {{ .Values.transfer.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.transfer.autoscaling.maxReplicas }}
   metrics:

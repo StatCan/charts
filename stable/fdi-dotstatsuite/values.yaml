@@ -1,4 +1,4 @@
-# Default values for dotstatsuite.
+# Default values for fdi-dotstatsuite.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -12,11 +12,11 @@ managed:
     authorizationUrl: ""
     clientId: ""
   database:
-    sapassword: ""
-    password: ""
+    sapassword: "sapassword"
+    password: "password"
   smtp:
     username: "admin@example.com"
-    password: ""
+    password: "password"
     host: "smtp.sendgrid.net"
     port: "587"
     enableSsl: "true"
@@ -389,7 +389,7 @@ fdiResetCcei:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {}  
 
 # FDI Stable CCEI
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
@@ -481,7 +481,7 @@ fdiStableCcei:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
 # FDI Reset CENSUS
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
@@ -573,7 +573,7 @@ fdiResetCensus:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
   # FDI Stable CCEI
 
@@ -667,7 +667,7 @@ fdiStableCensus:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {}     
 
 # FDI Reset GEESE
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
@@ -1219,8 +1219,7 @@ transfernoauth:
 
   tolerations: []
 
-  affinity: {}
-
+  affinity: {}  
 # FDI Reset CKAN
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
 fdiResetCkan:
@@ -1311,7 +1310,7 @@ fdiResetCkan:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {}  
 
 # FDI Stable CKAN
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
@@ -1403,7 +1402,7 @@ fdiStableCkan:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
 # MSSQL for Linux
 # https://github.com/helm/charts/tree/master/stable/mssql-linux

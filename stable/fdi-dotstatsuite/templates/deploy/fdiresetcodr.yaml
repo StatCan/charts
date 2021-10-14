@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-codr
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-reset-codr
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-codr
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-reset-codr
 spec:
 {{- if not .Values.fdiResetCodr.autoscaling.enabled }}
   replicas: {{ .Values.fdiResetCodr.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-fdi-reset-codr
+      {{- include "fdi-dotstatsuite.selectorLabels" . | nindent 6 }}-fdi-reset-codr
   template:
     metadata:
       annotations:
@@ -20,13 +20,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-fdi-reset-codr
+        {{- include "fdi-dotstatsuite.selectorLabels" . | nindent 8 }}-fdi-reset-codr
     spec:
       {{- with .Values.fdiResetCodr.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dotstatsuite.fdiResetCodr.serviceAccountName" . }}-fdi-reset-codr
+      serviceAccountName: {{ include "fdi-dotstatsuite.fdiResetCodr.serviceAccountName" . }}-fdi-reset-codr
       securityContext:
         {{- toYaml .Values.fdiResetCodr.podSecurityContext | nindent 8 }}
       containers:
@@ -44,7 +44,7 @@ spec:
             - name: SA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: dotstatsuite-db-secret
+                  name: fdi-dotstatsuite-db-secret
                   key: sapassword
             - name: RESET_DATA_PASSWORD
               valueFrom:
@@ -64,15 +64,15 @@ spec:
             - name: disseminationDbConnection__dbType
               value: "SqlServer"
             - name: disseminationDbConnection__connectionString
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(FDI_RESET_CODR_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
+              value: "Server={{ template "fdi-dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(FDI_RESET_CODR_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
             - name: "DotStatSuiteCoreCommonDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+              value: "Server={{ template "fdi-dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
             - name: "mappingStore__Id__Default"
               value: "reset-codr"
             # - name: "SpacesInternal__0__DotStatSuiteCoreStructDbConnectionString"
-            #   value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_STRUCTURE_DB);User=$(FDI_RESET_CODR_STRUCTURE_USER);Password=$(RESET_STRUCTURE_PASSWORD);"
+            #   value: "Server={{ template "fdi-dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_STRUCTURE_DB);User=$(FDI_RESET_CODR_STRUCTURE_USER);Password=$(RESET_STRUCTURE_PASSWORD);"
             # - name: "SpacesInternal__0__DotStatSuiteCoreDataDbConnectionString"
-            #   value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(FDI_RESET_CODR_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
+            #   value: "Server={{ template "fdi-dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_DATA_DB);User=$(FDI_RESET_CODR_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
             # - name: "SpacesInternal__0__DataImportTimeOutInMinutes"
             #   value: "2"
             # - name: "SpacesInternal__0__DatabaseCommandTimeoutInSec"
@@ -84,7 +84,7 @@ spec:
             # - name: "SpacesInternal__0__AutoLog2DBLogLevel"
             #   value: "Notice"
             - name: SQL_SERVER
-              value: {{ template "dotstatsuite.databaseHost" . }}
+              value: {{ template "fdi-dotstatsuite.databaseHost" . }}
             - name: SQL_DATABASE
               value: $(FDI_RESET_CODR_STRUCTURE_DB)
             - name: SQL_USER
@@ -130,7 +130,7 @@ spec:
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: dotstatsuite-db-secret
+                name: fdi-dotstatsuite-db-secret
                 key: sapassword
           - name: RESET_STRUCTURE_PASSWORD
             valueFrom:
@@ -139,7 +139,7 @@ spec:
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(FDI_RESET_CODR_STRUCTURE_USER) --loginPwd $(RESET_STRUCTURE_PASSWORD) --force
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "fdi-dotstatsuite.databaseHost" . }};Database=$(FDI_RESET_CODR_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(FDI_RESET_CODR_STRUCTURE_USER) --loginPwd $(RESET_STRUCTURE_PASSWORD) --force
       {{- with .Values.fdiResetCodr.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
