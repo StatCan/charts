@@ -221,6 +221,6 @@ Database Host logic
 */}}
 {{- define "fdi-dotstatsuite.databaseHost" -}}
 {{- if index .Values "mssql-linux" "enabled" }}{{ .Chart.Name }}-mssql-linux
-{{- else }}fdi-dotstatsuite.database.windows.net
+{{- else }}dotstatsuite.database.windows.net
 {{- end }}
 {{- end }}
