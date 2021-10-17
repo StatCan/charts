@@ -52,7 +52,7 @@ rules:
   - apiGroups:
       - ''
     resources:
-      - authorizationpolicies
+      - authorizationpolicies.security.istio.io
     verbs:
       - get
       - list
