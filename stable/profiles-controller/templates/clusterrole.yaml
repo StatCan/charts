@@ -50,6 +50,18 @@ rules:
       - patch
       - delete
   - apiGroups:
+      - ''
+    resources:
+      - authorizationpolicies
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
       - networking.k8s.io
     resources:
       - networkpolicies
