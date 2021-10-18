@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: report-time-open-requests-by-analysts-biweelky-vetting-job
+  name: report-time-open-requests-by-analysts-biweelky-job
 spec:
   #schedule: "*/1 * * * *"
   #suspend: true
@@ -14,7 +14,7 @@ spec:
             aadpodidbinding: "{{ .Values.managedIdentityName }}"
         spec:
           containers:
-          - name: report-time-open-requests-by-analysts-biweelky-vetting-job
+          - name: report-time-open-requests-by-analysts-biweelky-job
             image: "{{ .Values.appImageReportCron.repository }}:{{ .Values.appImageReportCron.tag }}"
             imagePullPolicy: "{{ .Values.appImageReportCron.pullPolicy }}"
             args: ["open_requests_analysts"]
