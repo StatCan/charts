@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: report-time-vetting-annually-vetting-job
+  name: report-time-vetting-annually-job
 spec:
   #schedule: "*/1 * * * *"
   #suspend: true
@@ -14,7 +14,7 @@ spec:
             aadpodidbinding: "{{ .Values.managedIdentityName }}"
         spec:
           containers:
-          - name: report-time-vetting-annually-vetting-job
+          - name: report-time-vetting-annually-job
             image: "{{ .Values.appImageReportCron.repository }}:{{ .Values.appImageReportCron.tag }}"
             imagePullPolicy: "{{ .Values.appImageReportCron.pullPolicy }}"
             args: ["time_spent_vetting","annually"]
