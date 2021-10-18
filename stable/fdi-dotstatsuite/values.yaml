@@ -1,4 +1,4 @@
-# Default values for dotstatsuite.
+# Default values for fdi-dotstatsuite.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -12,11 +12,11 @@ managed:
     authorizationUrl: ""
     clientId: ""
   database:
-    sapassword: ""
-    password: ""
+    sapassword: "sapassword"
+    password: "password"
   smtp:
     username: "admin@example.com"
-    password: ""
+    password: "password"
     host: "smtp.sendgrid.net"
     port: "587"
     enableSsl: "true"
@@ -1220,7 +1220,6 @@ transfernoauth:
   tolerations: []
 
   affinity: {}
-
 # FDI Reset CKAN
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
 fdiResetCkan:

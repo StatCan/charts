@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-codr
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-reset-codr
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-codr
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-reset-codr
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-codr
+    name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-reset-codr
   minReplicas: {{ .Values.fdiResetCodr.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.fdiResetCodr.autoscaling.maxReplicas }}
   metrics:

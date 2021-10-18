@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-authz
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-authz
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-authz
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-authz
 spec:
 {{- if not .Values.authz.autoscaling.enabled }}
   replicas: {{ .Values.authz.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-authz
+      {{- include "fdi-dotstatsuite.selectorLabels" . | nindent 6 }}-authz
   template:
     metadata:
       annotations:
@@ -20,13 +20,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-authz
+        {{- include "fdi-dotstatsuite.selectorLabels" . | nindent 8 }}-authz
     spec:
       {{- with .Values.authz.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dotstatsuite.authz.serviceAccountName" . }}-authz
+      serviceAccountName: {{ include "fdi-dotstatsuite.authz.serviceAccountName" . }}-authz
       securityContext:
         {{- toYaml .Values.authz.podSecurityContext | nindent 8 }}
       containers:
@@ -47,7 +47,7 @@ spec:
                   name: mssql-common
                   key: password
             - name: "DotStatSuiteCoreCommonDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+              value: "Server={{ template "fdi-dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
           ports:
             - name: http
               containerPort: 80
@@ -73,7 +73,7 @@ spec:
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: dotstatsuite-db-secret
+                name: fdi-dotstatsuite-db-secret
                 key: sapassword
           - name: COMMON_PASSWORD
             valueFrom:
@@ -82,7 +82,7 @@ spec:
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "fdi-dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force
       {{- with .Values.authz.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

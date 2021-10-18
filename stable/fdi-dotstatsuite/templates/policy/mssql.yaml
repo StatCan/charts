@@ -2,10 +2,10 @@
 apiVersion: authentication.istio.io/v1alpha1
 kind: Policy
 metadata:
-  name: {{ template "dotstatsuite.fullname" . }}-mssql-linux
+  name: {{ template "fdi-dotstatsuite.fullname" . }}-mssql-linux
   labels:
-    app: {{ template "dotstatsuite.name" . }}
-    chart: {{ template "dotstatsuite.chart" . }}
+    app: {{ template "fdi-dotstatsuite.name" . }}
+    chart: {{ template "fdi-dotstatsuite.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -13,7 +13,7 @@ spec:
   - mtls:
       mode: PERMISSIVE
   targets:
-  - name: {{ template "dotstatsuite.fullname" . }}-mssql-linux
+  - name: {{ template "fdi-dotstatsuite.fullname" . }}-mssql-linux
     ports:
     - number: 1433
 {{- end }}

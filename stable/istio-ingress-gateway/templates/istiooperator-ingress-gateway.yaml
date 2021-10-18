@@ -29,9 +29,9 @@ spec:
           {{- if .Values.https.httpRedirect }}
             - name: http2
               nodePort: 30540
-              port: 8080
+              port: 80
               protocol: TCP
-              targetPort: 80
+              targetPort: 8080
           {{- end }}
             - name: https
               nodePort: 31607

@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-transfernoauth
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-transfernoauth
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfernoauth
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-transfernoauth
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "dotstatsuite.fullname" . }}-transfernoauth
+    name: {{ include "fdi-dotstatsuite.fullname" . }}-transfernoauth
   minReplicas: {{ .Values.transfernoauth.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.transfernoauth.autoscaling.maxReplicas }}
   metrics:
