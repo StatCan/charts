@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-geese
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-reset-geese
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-geese
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-reset-geese
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "dotstatsuite.fullname" . }}-fdi-reset-geese
+    name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-reset-geese
   minReplicas: {{ .Values.fdiResetGeese.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.fdiResetGeese.autoscaling.maxReplicas }}
   metrics:

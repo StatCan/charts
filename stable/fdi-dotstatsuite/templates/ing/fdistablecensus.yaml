@@ -1,6 +1,6 @@
 {{- if .Values.fdiStableCensus.enabled -}}
 {{- if .Values.fdiStableCensus.ingress.enabled -}}
-{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $fullName := include "fdi-dotstatsuite.fullname" . -}}
 {{- $svcPort := .Values.fdiStableCensus.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -11,7 +11,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}-fdi-stable-census
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-census
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-stable-census
   {{- with .Values.fdiStableCensus.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

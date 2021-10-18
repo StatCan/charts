@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-ccei
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-stable-ccei
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-ccei
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-stable-ccei
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "dotstatsuite.fullname" . }}-fdi-stable-ccei
+    name: {{ include "fdi-dotstatsuite.fullname" . }}-fdi-stable-ccei
   minReplicas: {{ .Values.fdiStableCcei.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.fdiStableCcei.autoscaling.maxReplicas }}
   metrics:

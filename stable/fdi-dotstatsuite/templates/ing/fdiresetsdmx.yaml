@@ -1,6 +1,6 @@
 {{- if .Values.fdiResetSdmx.enabled -}}
 {{- if .Values.fdiResetSdmx.ingress.enabled -}}
-{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $fullName := include "fdi-dotstatsuite.fullname" . -}}
 {{- $svcPort := .Values.fdiResetSdmx.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -11,7 +11,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}-fdi-reset-sdmx
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-reset-sdmx
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-reset-sdmx
   {{- with .Values.fdiResetSdmx.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

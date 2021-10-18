@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "dotstatsuite.fullname" . }}-authz
+  name: {{ include "fdi-dotstatsuite.fullname" . }}-authz
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-authz
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-authz
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "dotstatsuite.fullname" . }}-authz
+    name: {{ include "fdi-dotstatsuite.fullname" . }}-authz
   minReplicas: {{ .Values.authz.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.authz.autoscaling.maxReplicas }}
   metrics:

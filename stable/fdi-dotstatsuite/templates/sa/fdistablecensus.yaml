@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "dotstatsuite.fdiStableCensus.serviceAccountName" . }}-fdi-stable-census
+  name: {{ include "fdi-dotstatsuite.fdiStableCensus.serviceAccountName" . }}-fdi-stable-census
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-fdi-stable-census
+    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-fdi-stable-census
   {{- with .Values.fdiStableCensus.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
