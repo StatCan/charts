@@ -50,9 +50,9 @@ rules:
       - patch
       - delete
   - apiGroups:
-      - ''
+      - security.istio.io
     resources:
-      - authorizationpolicies.security.istio.io
+      - authorizationpolicies
     verbs:
       - get
       - list
