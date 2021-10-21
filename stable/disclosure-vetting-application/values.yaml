@@ -7,6 +7,7 @@ replicaCount: 1
 reportsCronJob:
   storageAccountName: ""
   storageAccountResourceGroup: ""
+  storageAccountFileShareName: ""
 
 appImageReportCron:
   repository: statcan/disclosure-vetting-app
@@ -18,10 +19,9 @@ appImageCron:
   tag: 0.1.1
   pullPolicy: Always
   addTestData: false
+
 appImage:
-
   repository: statcan/disclosure-vetting-app
-
   tag: 0.1.1
   pullPolicy: Always
 
