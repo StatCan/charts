@@ -15,6 +15,8 @@ ingressGateway:
     azureLoadBalancer: internal
     # Specifies the IP that the LoadBalancer should use. Skipped if empty.
     loadBalancerIP:
+    # Extra ports to expose on the service.
+    ports: []
 
 # Configures HTTPS on the ingress gateway.
 https:
@@ -22,7 +24,8 @@ https:
   enabled: true
   # The hosts to which the ingress gateway should route traffic to.
   hosts: []
-  httpRedirect: true
+  # Enables an HTTP server that redirects all traffic to an HTTPS endpoint
+  httpsRedirect: true
   # Configures if HSTS headers should be added to all responses which do not have it.
   hsts:
     enabled: true
