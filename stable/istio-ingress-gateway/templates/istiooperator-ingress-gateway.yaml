@@ -26,7 +26,7 @@ spec:
           type: {{ .Values.ingressGateway.service.type }}
           ports:
           {{- if .Values.https.enabled }}
-          {{- if .Values.https.httpRedirect }}
+          {{- if .Values.https.httpsRedirect }}
             - name: http2
               nodePort: 30540
               port: 80
@@ -38,6 +38,9 @@ spec:
               port: 443
               protocol: TCP
               targetPort: 8443
+          {{- end }}
+          {{- if .Values.ingressGateway.service.ports }}
+            {{- .Values.ingressGateway.service.ports | toYaml | nindent 12 }}
           {{- end }}
           {{- if .Values.ingressGateway.service.loadBalancerIP }}
           loadBalancerIP: {{ .Values.ingressGateway.service.loadBalancerIP }}
