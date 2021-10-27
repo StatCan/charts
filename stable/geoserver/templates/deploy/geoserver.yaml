@@ -43,7 +43,7 @@ spec:
             containerPort: 8080
             protocol: TCP
           volumeMounts:
-            - name: {{ include "geoserver.fullname" . }}
+            - name: geoserver
               mountPath: /opt/geoserver/data_dir
             - name: cm-geoserver
               readOnly: true
