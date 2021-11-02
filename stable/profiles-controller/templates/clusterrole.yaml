@@ -28,6 +28,18 @@ rules:
   - apiGroups:
       - ''
     resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - ''
+    resources:
       - resourcequotas
     verbs:
       - get
