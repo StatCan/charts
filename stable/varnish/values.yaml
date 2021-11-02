@@ -56,6 +56,17 @@ admin:
 # the --set-file option: helm install --set-file varnishConfigContent=varnish.vcl
 # varnishConfigContent:
 
+#   volumes:
+#   - name: example-cron-disk
+#     azureFile:
+#       shareName: ''
+#       secretName: ''
+
+#   volumeMounts:
+#   - name: example-cron-disk
+#     mountPath: /path/to/folder
+#     readOnly: true
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

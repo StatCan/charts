@@ -62,6 +62,9 @@ spec:
               mountPath: /etc/varnish/secret
               subPath: secret
 {{- end }}
+{{- if .Values.volumeMounts }}
+{{ toYaml .Values.volumeMounts | indent 12 }}
+{{- end }}
           ports:
             - name: http
               containerPort: 80
@@ -81,6 +84,9 @@ spec:
       - name: varnish-config
         configMap:
           name: "{{ include "varnish.fullname" . }}"
+{{- if .Values.volumes }}
+{{ toYaml .Values.volumes | indent 6 }}
+{{- end }}
 {{- if .Values.admin.enabled }}
       - name: varnish-secret
         secret:
