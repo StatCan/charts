@@ -29,6 +29,11 @@ spec:
                 secretKeyRef:
                   name: reports-cronjob-init
                   key: storageAccountResourceGroup
+            - name: STORAGE_ACCOUNT_FILE_SHARE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: reports-cronjob-init
+                  key: storageAccountFileShareName
             - name: DB_CONNECTION_STRING
               valueFrom:
                 secretKeyRef:
