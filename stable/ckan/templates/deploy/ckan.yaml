@@ -283,6 +283,10 @@ spec:
 {{- if .Values.ckan.extraEnv }}
 {{ toYaml .Values.ckan.extraEnv | indent 12 }}
 {{- end }}
+            {{- if .Values.extensions.sdmx.enabled }}
+            - name: TRANSFER_API_VERSION
+              value: {{ .Values.extensions.sdmx.transferApiVersion }}
+            {{- end }}
             - name: CKAN_CONFIG
               value: /srv/app/
             - name: CKAN_SYSADMIN_NAME
