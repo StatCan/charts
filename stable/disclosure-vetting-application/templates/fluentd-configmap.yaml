@@ -18,21 +18,20 @@ data:
       pos_file /var/log/fluentd-containers.log.pos
       time_format %Y-%m-%dT%H:%M:%S.%NZ
       tag kubernetes.*
-      format json
-      read_from_head false
+      read_from_head true
+      <parse>
+        @type json
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+      </parse>
     </source>
     <filter kubernetes.**>
       @type kubernetes_metadata
-      verify_ssl false
     </filter>
     <match kubernetes.**>
-        @type elasticsearch_dynamic
+        @type elasticsearch
         include_tag_key true
         logstash_format true
-#Below line is use to isolate the indexes as per different namespaces in K8s.
-        logstash_prefix kubernetes-${record['kubernetes']['namespace_name']}
-#Uncomment the below line, if want to isolate the indexes as per different pods in K8s.
-        #logstash_prefix kubernetes-${record['kubernetes']['pod_name']}
+        logstash_prefix logstash
         host "{{ .Values.configmodulePy.elasticSearchUrl }}"
         port "443"
         scheme "https"
