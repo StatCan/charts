@@ -15,8 +15,6 @@ data:
     <source>
       @type tail
       path /var/log/containers/*.log
-# Here in exclude_path, we can define the path having the namespace name like prometheus, logging etc for which we don't want to create the indexes.
-      #exclude_path ["/var/log/containers/*prometheus*.log", "/var/log/containers/*logging*.log"]
       pos_file /var/log/fluentd-containers.log.pos
       time_format %Y-%m-%dT%H:%M:%S.%NZ
       tag kubernetes.*
