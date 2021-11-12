@@ -1,0 +1,54 @@
+#fluetd-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-configmap
+  namespace: logging
+  labels:
+    app: fluentd
+    kubernetes.io/cluster-service: "true"
+data:
+  fluent.conf: |
+    <match fluent.**>
+      @type null
+    </match>
+    <source>
+      @type tail
+      path /var/log/containers/*.log
+# Here in exclude_path, we can define the path having the namespace name like prometheus, logging etc for which we don't want to create the indexes.
+      #exclude_path ["/var/log/containers/*prometheus*.log", "/var/log/containers/*logging*.log"]
+      pos_file /var/log/fluentd-containers.log.pos
+      time_format %Y-%m-%dT%H:%M:%S.%NZ
+      tag kubernetes.*
+      format json
+      read_from_head false
+    </source>
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+      verify_ssl false
+    </filter>
+    <match kubernetes.**>
+        @type elasticsearch_dynamic
+        include_tag_key true
+        logstash_format true
+#Below line is use to isolate the indexes as per different namespaces in K8s.
+        logstash_prefix kubernetes-${record['kubernetes']['namespace_name']}
+#Uncomment the below line, if want to isolate the indexes as per different pods in K8s.
+        #logstash_prefix kubernetes-${record['kubernetes']['pod_name']}
+        host "{{ .Values.configmodulePy.elasticSearchUrl }}"
+        port "443"
+        scheme "https"
+        user "{{ .Values.configmodulePy.elasticSearchUsername }}"
+        password "{{ .Values.configmodulePy.elasticSearchPassword }}"
+        reload_connections false
+        reconnect_on_error true
+        reload_on_failure true
+        <buffer>
+            flush_thread_count 16
+            flush_interval 5s
+            chunk_limit_size 2M
+            queue_limit_length 32
+            retry_max_interval 30
+            retry_forever true
+        </buffer>
+    </match>
