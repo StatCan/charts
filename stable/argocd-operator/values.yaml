@@ -3,6 +3,7 @@
 operator:
   clusterDomain: ""
   nsToWatch: "argocd-operator-system,argocd-system"
+  nsClusterConfig: ""
   image:
     repository: statcan/argocd-operator
     tag: v0.1.0

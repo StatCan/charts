@@ -35,6 +35,8 @@ spec:
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.operator.nsToWatch }}
+            - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
+              value:  {{ .Values.operator.nsClusterConfig }}
             - name: POD_NAME
               valueFrom:
                 fieldRef:
