@@ -12,11 +12,8 @@ data:
       @type tail
       path /var/log/containers/*.log
       pos_file /var/log/fluentd-containers.log.pos
-      time_format %Y-%m-%dT%H:%M:%S.%NZ
-      tag disclosure-vetting.*
-      read_from_head true
     </source>
-    <match disclosure-vetting.**>
+    <match **>
         @type elasticsearch
         include_tag_key true
         logstash_format true
