@@ -8,25 +8,15 @@ metadata:
     kubernetes.io/cluster-service: "true"
 data:
   fluent.conf: |
-    <match fluent.**>
-      @type null
-    </match>
     <source>
       @type tail
       path /var/log/containers/*.log
       pos_file /var/log/fluentd-containers.log.pos
       time_format %Y-%m-%dT%H:%M:%S.%NZ
-      tag kubernetes.*
+      tag disclosure-vetting.*
       read_from_head true
-      <parse>
-        @type json
-        time_format %Y-%m-%dT%H:%M:%S.%NZ
-      </parse>
     </source>
-    <filter kubernetes.**>
-      @type kubernetes_metadata
-    </filter>
-    <match kubernetes.**>
+    <match disclosure-vetting.**>
         @type elasticsearch
         include_tag_key true
         logstash_format true
@@ -38,13 +28,4 @@ data:
         password "{{ .Values.configmodulePy.elasticSearchPassword }}"
         reload_connections false
         reconnect_on_error true
-        reload_on_failure true
-        <buffer>
-            flush_thread_count 16
-            flush_interval 5s
-            chunk_limit_size 2M
-            queue_limit_length 32
-            retry_max_interval 30
-            retry_forever true
-        </buffer>
     </match>
