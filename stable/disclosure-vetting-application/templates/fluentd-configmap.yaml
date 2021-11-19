@@ -9,17 +9,13 @@ metadata:
 data:
   fluent.conf: |
     <source>
-      @type tail
-      path /var/log/containers/*.log
-      pos_file /var/log/fluentd-containers.log.pos
+      @type null
     </source>
     <match **>
         @type elasticsearch
         include_timestamp true
         index_name "vetting-reqs-dev"
-        host "{{ .Values.configmodulePy.elasticSearchUrl }}"
-        port "443"
-        scheme "https"
+        hosts "https://{{ .Values.configmodulePy.elasticSearchUrl }}"
         user "{{ .Values.configmodulePy.elasticSearchUsername }}"
         password "{{ .Values.configmodulePy.elasticSearchPassword }}"
 
