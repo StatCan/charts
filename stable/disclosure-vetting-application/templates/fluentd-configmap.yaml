@@ -14,7 +14,6 @@ data:
     <match **>
         @type elasticsearch
         include_timestamp true
-        index_name "vetting-reqs-dev"
         hosts "https://{{ .Values.configmodulePy.elasticSearchUrl }}"
         user "{{ .Values.configmodulePy.elasticSearchUsername }}"
         password "{{ .Values.configmodulePy.elasticSearchPassword }}"
