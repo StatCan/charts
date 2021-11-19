@@ -15,14 +15,12 @@ data:
     </source>
     <match **>
         @type elasticsearch
-        include_tag_key true
-        logstash_format true
-        logstash_prefix logstash
+        include_timestamp true
+        index_name "vetting-reqs-dev"
         host "{{ .Values.configmodulePy.elasticSearchUrl }}"
         port "443"
         scheme "https"
         user "{{ .Values.configmodulePy.elasticSearchUsername }}"
         password "{{ .Values.configmodulePy.elasticSearchPassword }}"
-        reload_connections false
-        reconnect_on_error true
+
     </match>
