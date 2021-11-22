@@ -13,6 +13,10 @@ rules:
       - get
       - list
       - watch
+      - patch
+      - update
+    resourceNames:
+      - coredns-custom
   - apiGroups:
       - serving.kubeflow.org
     resources:
