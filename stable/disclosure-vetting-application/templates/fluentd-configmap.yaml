@@ -8,9 +8,6 @@ metadata:
     kubernetes.io/cluster-service: "true"
 data:
   fluent.conf: |
-    <source>
-      @type null
-    </source>
     <match **>
         @type elasticsearch
         include_timestamp true
