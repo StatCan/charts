@@ -11,8 +11,8 @@ data:
     <match **>
         @type elasticsearch
         include_timestamp true
-        hosts "https://{{ .Values.configmodulePy.elasticSearchUrl }}"
-        user "{{ .Values.configmodulePy.elasticSearchUsername }}"
-        password "{{ .Values.configmodulePy.elasticSearchPassword }}"
+        hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}:443
+        user {{ .Values.configmodulePy.elasticSearchUsername }}
+        password {{ .Values.configmodulePy.elasticSearchPassword }}
 
     </match>
