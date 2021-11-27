@@ -1,0 +1,11 @@
+{{- if .Values.vaultagent.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "profiles-controller.fullname" . }}-vault-agent-config
+  labels:
+    {{- include "profiles-controller.labels" . | nindent 4 }}
+data:
+  config.hcl: |
+    {{ .Values.vaultagent.config  | nindent 4}}
+{{- end }}
