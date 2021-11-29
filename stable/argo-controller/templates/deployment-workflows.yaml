@@ -36,6 +36,19 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - workflows
+          env:
+            {{- if .Values.storageAccount.existingSecret }}
+            - name: ARGO_STORAGE_ACCOUNT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.storageAccount.existingSecret }}
+                  key: storageAccountName
+            - name: ARGO_STORAGE_ACCOUNT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.storageAccount.existingSecret }}
+                  key: storageAccountKey
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
