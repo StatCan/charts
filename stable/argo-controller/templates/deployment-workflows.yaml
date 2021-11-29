@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "argo-controller.fullname" . }}-dns
+  name: {{ include "argo-controller.fullname" . }}-workflows
   labels:
     {{- include "argo-controller.labels" . | nindent 4 }}
 spec:
@@ -35,7 +35,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            - dns
+            - workflows
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
