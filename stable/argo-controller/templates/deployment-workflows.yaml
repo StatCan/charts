@@ -44,12 +44,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.storageAccount.existingSecret }}
-                  key: storageAccountName
+                  key: root-user
             - name: ARGO_STORAGE_ACCOUNT_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.storageAccount.existingSecret }}
-                  key: storageAccountKey
+                  key: root-password
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
