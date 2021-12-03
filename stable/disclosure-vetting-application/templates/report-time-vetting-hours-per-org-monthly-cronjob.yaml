@@ -12,6 +12,8 @@ spec:
         metadata:
           labels:
             aadpodidbinding: "{{ .Values.managedIdentityName }}"
+            app.kubernetes.io/name: reports-app.name
+            app.kubernetes.io/instance: {{ .Release.Name }}
         spec:
           containers:
           - name: report-time-vetting-hours-per-org-monthly-job

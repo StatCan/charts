@@ -1,0 +1,19 @@
+#fluetd-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-configmap
+  labels:
+    app: fluentd
+    kubernetes.io/cluster-service: "true"
+data:
+  fluent.conf: |
+    <match **>
+        @type elasticsearch
+        include_timestamp true
+        logstash_format true
+        hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}:443
+        user {{ .Values.configmodulePy.elasticSearchUsername }}
+        password {{ .Values.configmodulePy.elasticSearchPassword }}
+
+    </match>
