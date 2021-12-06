@@ -70,10 +70,10 @@ def check_solr_connection(retry=None):
         sys.exit(1)
 
     url = os.environ.get('CKAN_SOLR_URL', '')
-    search_url = '{url}/select/?q=*&wt=json'.format(url=url)
+    check_existence_url = '{url}/solr/admin/collections?action=LIST&wt=json'.format(url=url)
 
     try:
-        connection = urllib.request.urlopen(search_url)
+        connection = urllib.request.urlopen(check_existence_url)
     except urllib.error.URLError as e:
         print('[prerun] Unable to connect to solr...try again in a while.')
         import time
@@ -83,8 +83,8 @@ def check_solr_connection(retry=None):
         import re
         conn_info = connection.read()
         # SolrCloud
-        conn_info = re.sub(r'"zkConnected":true', '"zkConnected":True', conn_info.decode('utf-8'))
-        conn_info = re.sub(r'"zkConnected":false', '"zkConnected":False', conn_info.decode('utf-8'))
+        conn_info = re.sub(r'"zkConnected":true', '"zkConnected":True', conn_info)
+        conn_info = re.sub(r'"zkConnected":false', '"zkConnected":False', conn_info)
         eval(conn_info)
 
 
