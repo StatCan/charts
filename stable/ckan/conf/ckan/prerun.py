@@ -69,7 +69,8 @@ def check_solr_connection(retry=None):
         print('[prerun] Giving up after 5 tries...')
         sys.exit(1)
 
-    url = os.environ.get('CKAN_SOLR_URL', '')
+    protocol = os.environ.get('CKAN_SOLR_URL', '').split('/')[0]
+    url = protocol + "//" + os.environ.get('CKAN_SOLR_URL', '').split('/')[2]
     check_existence_url = '{url}/solr/admin/collections?action=LIST&wt=json'.format(url=url)
 
     try:
