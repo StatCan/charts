@@ -46,11 +46,17 @@ image:
 livenessProbe:
   initialDelaySeconds: 45
   periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
 
 # Solr pod readiness
 readinessProbe:
   initialDelaySeconds: 15
   periodSeconds: 5
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
 
 # Annotations to apply to the solr pods
 podAnnotations: {}
