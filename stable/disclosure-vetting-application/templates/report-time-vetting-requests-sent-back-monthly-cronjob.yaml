@@ -5,8 +5,8 @@ metadata:
 spec:
   #schedule: "*/1 * * * *"
   #suspend: true
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 0
   schedule: "0 5 1 * *"
   jobTemplate:
     spec:
