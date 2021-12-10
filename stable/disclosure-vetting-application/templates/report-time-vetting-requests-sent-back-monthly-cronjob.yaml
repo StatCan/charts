@@ -3,12 +3,12 @@ kind: CronJob
 metadata:
   name: report-time-vetting-requests-sent-back-monthly-job
 spec:
+  ttlSecondsAfterFinished: 100
   #schedule: "*/1 * * * *"
   #suspend: true
   schedule: "0 5 1 * *"
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 100
       template:
         metadata:
           labels:
