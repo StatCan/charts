@@ -1,0 +1,17 @@
+{{- if .Values.nsiDesign.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-design
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-design
+spec:
+  type: {{ .Values.nsiDesign.service.type }}
+  ports:
+    - port: {{ .Values.nsiDesign.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http-design
+  selector:
+    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-design
+{{- end -}}

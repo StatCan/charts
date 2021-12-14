@@ -1,7 +1,7 @@
-{{- if .Values.authz.enabled -}}
-{{- if .Values.authz.ingress.enabled -}}
+{{- if .Values.nsiDesign.enabled -}}
+{{- if .Values.nsiDesign.ingress.enabled -}}
 {{- $fullName := include "dotstatsuite.fullname" . -}}
-{{- $svcPort := .Values.authz.service.port -}}
+{{- $svcPort := .Values.nsiDesign.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else -}}
@@ -9,17 +9,17 @@ apiVersion: extensions/v1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-authz
+  name: {{ $fullName }}-design
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-authz
-  {{- with .Values.authz.ingress.annotations }}
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-design
+  {{- with .Values.nsiDesign.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.authz.ingress.tls }}
+  {{- if .Values.nsiDesign.ingress.tls }}
   tls:
-    {{- range .Values.authz.ingress.tls }}
+    {{- range .Values.nsiDesign.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -28,7 +28,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.authz.ingress.hosts }}
+    {{- range .Values.nsiDesign.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -37,7 +37,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ $fullName }}-authz
+                name: {{ $fullName }}-design
                 port:
                   number: {{ $svcPort }}
           {{- end }}

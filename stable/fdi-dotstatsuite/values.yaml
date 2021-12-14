@@ -1,8 +1,9 @@
-# Default values for fdi-dotstatsuite.
+# Default values for dotstatsuite.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 # Globals
+
 nameOverride: ""
 fullnameOverride: ""
 managed:
@@ -12,21 +13,39 @@ managed:
     authorizationUrl: ""
     clientId: ""
   database:
-    sapassword: "sapassword"
-    password: "password"
+    server: ""
+    sapassword: ""
+    password: ""
   smtp:
     username: "admin@example.com"
-    password: "password"
+    password: ""
     host: "smtp.sendgrid.net"
     port: "587"
     enableSsl: "true"
     mailFrom: "build@siscc.org"
 
+  
+image: &image
+    repository: &repository siscc/sdmxri-nsi-maapi
+    pullPolicy: &pullPolicy Always
+    tag: &tag master
+    ## add tag version
+  
+dbup: &dbup
+    image:
+      repository: &repository siscc/dotstatsuite-dbup
+      pullPolicy: &pullPolicy Always
+      tag: &tag master     
+
 # Authz
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
+# https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
 authz:
   enabled: true
-  replicaCount: 1
+  replicaCount: 1  
+
+  common_db: "commonDb"
+  common_user: "commonUser"
+  read_only_user: "readOnlyUser"
 
   ingress:
     enabled: true
@@ -48,13 +67,8 @@ authz:
     pullPolicy: Always
     # Overrides the image tag whose default is the chart version.
     tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
+ 
+  dbup: *dbup
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -79,6 +93,7 @@ authz:
     # runAsUser: 1000
 
   service:
+    name: ""
     type: ClusterIP
     port: 80
 
@@ -114,196 +129,18 @@ authz:
 
   affinity: {}
 
-
-# FDI Reset SDMX
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiResetSdmx:
+# NSI RESET
+# https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
+#fdiResetCcei:
+nsiReset:
   enabled: true
   replicaCount: 1
 
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-reset-sdmx.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-# FDI Stable SDMX
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiStableSdmx:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-stable-sdmx.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-# FDI Reset CCEI
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiResetCcei:
-  enabled: true
-  replicaCount: 1
+  dataspace: "reset"
+  reset_data_db: sdmxResetDataDb
+  reset_data_user: sdmxResetDataUser
+  reset_structure_db: sdmxResetStructureDb
+  reset_structure_user: sdmxResetStructureUser
 
   ingress:
     enabled: true
@@ -320,18 +157,8 @@ fdiResetCcei:
     #    hosts:
     #      - chart-example.local
 
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
+  image: *image
+  dbup: *dbup
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -389,13 +216,20 @@ fdiResetCcei:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {}  
 
-# FDI Stable CCEI
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiStableCcei:
+# NSI STABLE
+# https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-stable-siscc.yaml
+#fdiStableCcei:
+nsiStable: 
   enabled: true
   replicaCount: 1
+
+  dataspace: "stable"
+  stable_data_db: sdmxStableDataDb
+  stable_data_user: sdmxStableDataUser
+  stable_structure_db: sdmxStableStructureDb
+  stable_structure_user: sdmxStableStructureUser
 
   ingress:
     enabled: true
@@ -412,18 +246,8 @@ fdiStableCcei:
     #    hosts:
     #      - chart-example.local
 
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
+  image: *image
+  dbup: *dbup
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -481,13 +305,19 @@ fdiStableCcei:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
-# FDI Reset CENSUS
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiResetCensus:
+# NSI DESIGN
+# https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-design-oecd.yaml
+nsiDesign: 
   enabled: true
   replicaCount: 1
+
+  dataspace: "design"
+  stable_data_db: sdmxDesignDataDb
+  stable_data_user: sdmxDesignDataUser
+  stable_structure_db: sdmxDesignStructureDb
+  stable_structure_user: sdmxDesignStructureUser
 
   ingress:
     enabled: true
@@ -496,7 +326,7 @@ fdiResetCensus:
       # kubernetes.io/tls-acme: "true"
       kubernetes.io/ingress.class: istio
     hosts:
-      - host: fdi-reset-census.redpelicans.com
+      - host: fdi-design-ccei.redpelicans.com
         paths:
           - '/*'
     tls: []
@@ -504,18 +334,8 @@ fdiResetCensus:
     #    hosts:
     #      - chart-example.local
 
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
+  image: *image
+  dbup: *dbup
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -573,15 +393,19 @@ fdiResetCensus:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
-  # FDI Stable CCEI
-
-# FDI Stable CENSUS
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiStableCensus:
+# NSI STAGING
+# https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
+nsiStaging: 
   enabled: true
   replicaCount: 1
+
+  dataspace: "staging"
+  stable_data_db: sdmxStagingDataDb
+  stable_data_user: sdmxStagingDataUser
+  stable_structure_db: sdmxStagingStructureDb
+  stable_structure_user: sdmxStagingStructureUser
 
   ingress:
     enabled: true
@@ -590,7 +414,7 @@ fdiStableCensus:
       # kubernetes.io/tls-acme: "true"
       kubernetes.io/ingress.class: istio
     hosts:
-      - host: fdi-stable-census.redpelicans.com
+      - host: fdi-staging-ccei.redpelicans.com
         paths:
           - '/*'
     tls: []
@@ -598,18 +422,8 @@ fdiStableCensus:
     #    hosts:
     #      - chart-example.local
 
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
+  image: *image
+  dbup: *dbup
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -667,381 +481,15 @@ fdiStableCensus:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
-# FDI Reset GEESE
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiResetGeese:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-reset-geese.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-# FDI Stable GEESE
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiStableGeese:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-stable-geese.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-# FDI Reset CODR
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiResetCodr:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-reset-codr.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-# FDI Stable CODR
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiStableCodr:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-stable-codr.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
 
 # Transfer
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
 transfer:
   enabled: true
   replicaCount: 1
+
 
   ingress:
     enabled: true
@@ -1064,287 +512,7 @@ transfer:
     # Overrides the image tag whose default is the chart version.
     tag: "master"
 
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-# Transfer No Auth
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-transfernoauth:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-transfernoauth-sdmx.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/dotstatsuite-core-transfer
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-# FDI Reset CKAN
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiResetCkan:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-reset-ckan.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  podAnnotations: {}
-
-  podSecurityContext: {}
-    # fsGroup: 2000
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  ##
-  imagePullSecrets:
-    - name: registry-pull-secret
-
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-# FDI Stable CKAN
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-fdiStableCkan:
-  enabled: true
-  replicaCount: 1
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
-    hosts:
-      - host: fdi-stable-ckan.redpelicans.com
-        paths:
-          - '/*'
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  image:
-    repository: siscc/sdmxri-nsi-maapi
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart version.
-    tag: "master"
-
-  dbup:
-    image:
-      repository: siscc/dotstatsuite-dbup
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart version.
-      tag: "master"
+  dbup: *dbup
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -1408,6 +576,7 @@ fdiStableCkan:
 # https://github.com/helm/charts/tree/master/stable/mssql-linux
 mssql-linux:
   enabled: false
+
   annotations:
     sidecar.istio.io/inject: "false"
   acceptEula:
@@ -1420,10 +589,11 @@ mssql-linux:
   # Override sapassword in templates/secret.yaml
   sapassword: "testPassword1313"
   image:
-    repository: mcr.microsoft.com/mssql/server
-    tag: 2017-latest
+    repository: microsoft/mssql-server-linux
+    tag: 2017-CU11
     pullPolicy: IfNotPresent
   service:
+    name: ""
     type: ClusterIP
     port: 1433
     # annotations:

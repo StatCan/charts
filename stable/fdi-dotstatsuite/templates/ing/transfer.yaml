@@ -1,17 +1,17 @@
 {{- if .Values.transfer.enabled -}}
 {{- if .Values.transfer.ingress.enabled -}}
-{{- $fullName := include "fdi-dotstatsuite.fullname" . -}}
+{{- $fullName := include "dotstatsuite.fullname" . -}}
 {{- $svcPort := .Values.transfer.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 {{- else -}}
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 {{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-transfer
   labels:
-    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-transfer
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfer
   {{- with .Values.transfer.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -34,9 +34,12 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ . }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{ $fullName }}-transfer
-              servicePort: {{ $svcPort }}
+              service:
+                name: {{ $fullName }}-transfer
+                port:
+                  number: {{ $svcPort }}
           {{- end }}
     {{- end }}
 {{- end }}

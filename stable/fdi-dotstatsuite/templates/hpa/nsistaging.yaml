@@ -1,0 +1,30 @@
+{{- if .Values.nsiStaging.enabled -}}
+{{- if .Values.nsiStaging.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-staging
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-staging
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-staging
+  minReplicas: {{ .Values.nsiStaging.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.nsiStaging.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.nsiStaging.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.nsiStaging.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.nsiStaging.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.nsiStaging.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}

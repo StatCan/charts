@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "fdi-dotstatsuite.authz.serviceAccountName" . }}-authz
+  name: {{ include "dotstatsuite.authz.serviceAccountName" . }}-authz
   labels:
-    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-authz
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-authz
   {{- with .Values.authz.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
