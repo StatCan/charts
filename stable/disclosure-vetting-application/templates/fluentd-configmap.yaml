@@ -12,7 +12,8 @@ data:
         @type elasticsearch
         include_timestamp true
         logstash_format true
-        hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}:443
+        host {{ .Values.configmodulePy.elasticSearchUrl }}
+        port 9200
         user {{ .Values.configmodulePy.elasticSearchUsername }}
         password {{ .Values.configmodulePy.elasticSearchPassword }}
 
