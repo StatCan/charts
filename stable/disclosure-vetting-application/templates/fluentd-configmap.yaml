@@ -10,14 +10,8 @@ data:
   fluent.conf: |
     <source>
       @type tail
-      path /var/log/containers/*.log
-      pos_file /var/log/fluentd-containers.log.pos
+      path /app/requests.log
       tag kubernetes.*
-      read_from_head true
-      <parse>
-        @type json
-        time_format %Y-%m-%dT%H:%M:%S.%NZ
-      </parse>      
     </source>
     <match **>
         @type elasticsearch
@@ -27,5 +21,4 @@ data:
         port 9200
         user {{ .Values.configmodulePy.elasticSearchUsername }}
         password {{ .Values.configmodulePy.elasticSearchPassword }}
-
     </match>
