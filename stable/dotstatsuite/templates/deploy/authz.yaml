@@ -1,0 +1,98 @@
+{{- if .Values.authz.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-authz
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-authz
+spec:
+{{- if not .Values.authz.autoscaling.enabled }}
+  replicas: {{ .Values.authz.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-authz
+  template:
+    metadata:
+      annotations:
+        traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+    {{- with .Values.authz.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-authz
+    spec:
+      {{- with .Values.authz.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.authz.serviceAccountName" . }}-authz
+      securityContext:
+        {{- toYaml .Values.authz.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-authz
+          securityContext:
+            {{- toYaml .Values.authz.securityContext | nindent 12 }}
+          image: "{{ .Values.authz.image.repository }}:{{ .Values.authz.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.authz.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: mssql
+            - configMapRef:
+                name: authz
+          env:
+            - name: COMMON_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mssql-common
+                  key: password
+            - name: "DotStatSuiteCoreCommonDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.authz.resources | nindent 12 }}
+      initContainers:
+        - name: {{ .Chart.Name }}-dbup-common
+          image: "{{ .Values.authz.dbup.image.repository }}:{{ .Values.authz.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.authz.dbup.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: mssql
+          env:
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: dotstatsuite-db-secret
+                key: sapassword
+          - name: COMMON_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mssql-common
+                key: password
+          command: ['bash', '-c']
+          args:
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force
+      {{- with .Values.authz.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.authz.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.authz.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

@@ -1,0 +1,628 @@
+# Default values for dotstatsuite.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Globals
+nameOverride: ""
+fullnameOverride: ""
+managed:
+  azuread:
+    authority: ""
+    authorizationUrl: ""
+    clientId: ""
+  database:
+    sapassword: ""
+    password: ""
+  smtp:
+    username: "admin@example.com"
+    password: ""
+    host: "smtp.sendgrid.net"
+    port: "587"
+    enableSsl: "true"
+    mailFrom: "build@siscc.org"
+
+# Authz
+authz:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: authz-siscc.redpelicans.com
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: siscc/dotstatsuite-core-auth-management
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart version.
+    tag: "9a653e82"
+
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart version.
+      tag: "master"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: registry-pull-secret
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# NSI Design OECD
+nsiDesignOecd:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: nsi-design-oecd.redpelicans.com
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: siscc/dotstatsuite-core-sdmxri-nsi
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart version.
+    tag: "master"
+
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart version.
+      tag: "master"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: registry-pull-secret
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# NSI Reset SISCC
+nsiResetSiscc:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: nsi-reset-siscc.redpelicans.com
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: siscc/dotstatsuite-core-sdmxri-nsi
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart version.
+    tag: "master"
+
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart version.
+      tag: "master"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: registry-pull-secret
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# NSI Stable SISCC
+nsiStableSiscc:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: nsi-stable-siscc.redpelicans.com
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: siscc/dotstatsuite-core-sdmxri-nsi
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart version.
+    tag: "master"
+
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart version.
+      tag: "master"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: registry-pull-secret
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# NSI Staging SISCC
+nsiStagingOecd:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: nsi-staging-oecd.redpelicans.com
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: siscc/dotstatsuite-core-sdmxri-nsi
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart version.
+    tag: "master"
+
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart version.
+      tag: "master"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: registry-pull-secret
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# Transfer
+transfer:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: transfer-siscc.redpelicans.com
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: siscc/dotstatsuite-core-transfer
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart version.
+    tag: "master"
+
+  dbup:
+    image:
+      repository: siscc/dotstatsuite-dbup
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart version.
+      tag: "master"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: registry-pull-secret
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# MSSQL for Linux
+# https://github.com/helm/charts/tree/master/stable/mssql-linux
+mssql-linux:
+  enabled: false
+  annotations:
+    sidecar.istio.io/inject: "false"
+  acceptEula:
+    value: "y"
+  edition:
+    value: Express
+  collation: SQL_Latin1_General_CP1_CI_AS
+  lcid: 1033
+  hadr: 0
+  # Override sapassword in templates/secret.yaml
+  sapassword: "testPassword1313"
+  image:
+    repository: microsoft/mssql-server-linux
+    tag: 2017-CU11
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 1433
+    # annotations:
+    #   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+  persistence:
+    enabled: true
+    # existingDataClaim:
+    # existingTransactionLogClaim:
+    # existingBackupClaim:
+    # existingMasterClaim:
+    storageClass: ""
+    dataAccessMode: ReadWriteOnce
+    dataSize: 10Gi
+    transactionLogAccessMode: ReadWriteOnce
+    transactionLogSize: 10Gi
+    backupAccessMode: ReadWriteOnce
+    backupSize: 1Gi
+    masterAccessMode: ReadWriteOnce
+    masterSize: 1Gi
+  livenessprobe:
+    initialDelaySeconds: 15
+    periodSeconds: 20
+  readinessprobe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 2Gi
+    # requests:
+    #  cpu: 100m
+    #  memory: 2Gi
+  nodeSelector:
+    beta.kubernetes.io/os: linux
+
+# Destination Rule
+destinationRule:
+  enabled: false
+  mode: DISABLE
