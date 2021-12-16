@@ -1,0 +1,140 @@
+{{- if .Values.nsiStaging.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-staging
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-staging
+spec:
+{{- if not .Values.nsiStaging.autoscaling.enabled }}
+  replicas: {{ .Values.nsiStaging.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-staging
+  template:
+    metadata:
+      annotations:
+        traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+    {{- with .Values.nsiStaging.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-staging
+    spec:
+      {{- with .Values.nsiStaging.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.nsiStaging.serviceAccountName" . }}-staging
+      securityContext:
+        {{- toYaml .Values.nsiStaging.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-staging
+          securityContext:
+            {{- toYaml .Values.nsiStaging.securityContext | nindent 12 }}
+          image: "{{ .Values.nsiStaging.image.repository }}:{{ .Values.nsiStaging.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.nsiStaging.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.fullnameOverride }}-mssql
+            - configMapRef:
+                name: {{ .Values.fullnameOverride }}-authz
+          env:
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-db-secret
+                  key: sapassword
+            - name: STAGING_DATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-mssql-sdmx-staging-data
+                  key: password
+            - name: STAGING_STRUCTURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-mssql-sdmx-staging-structure
+                  key: password
+            - name: COMMON_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-mssql-common
+                  key: password
+            - name: "DotStatSuiteCoreCommonDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+            - name: SQL_SERVER
+              value: {{ template "dotstatsuite.databaseHost" . }}
+            - name: SQL_DATABASE
+              value: $(STAGING_STRUCTURE_DB)
+            - name: SQL_USER
+              value: $(STAGING_STRUCTURE_USER)
+            - name: SQL_PASSWORD
+              value: $(STAGING_STRUCTURE_PASSWORD)
+            - name: SENDER_ID
+              value: "Stable - DotStat v8"
+            - name: MA_SQL_USER
+              value: $(SA_USER)
+            - name: MA_SQL_PASSWORD
+              value: $(SA_PASSWORD)
+            - name: MA_ALWAYS_RESET
+              value: "N"            
+            - name: INSERT_NEW_ITEM_SCHEME_VALUES
+              value: "false"              
+            - name: enableReleaseManagement
+              value: "true"              
+            - name: "mappingStore__Id__Default"
+              value: "{{ .Values.nsiStaging.dataspace }}"
+            - name: disseminationDbConnection__dbType
+              value: SqlServer
+            - name: "disseminationDbConnection__connectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(STAGING_DATA_USER);Password=$(STAGING_DATA_PASSWORD);"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.nsiStaging.resources | nindent 12 }}
+      initContainers:
+        - name: {{ .Chart.Name }}-dbup-staging-structure
+          image: "{{ .Values.nsiStaging.dbup.image.repository }}:{{ .Values.nsiStaging.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.nsiStaging.dbup.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: {{ .Values.fullnameOverride }}-mssql
+          env:
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.fullnameOverride }}-db-secret
+                key: sapassword
+          - name: STAGING_STRUCTURE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.fullnameOverride }}-mssql-sdmx-staging-structure
+                key: password
+          - name: READ_ONLY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.fullnameOverride }}-mssql-read-only
+                key: password
+          command: ['bash', '-c']
+          args:
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(STAGING_STRUCTURE_USER) --loginPwd $(STAGING_STRUCTURE_PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+      {{- with .Values.nsiStaging.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nsiStaging.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nsiStaging.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

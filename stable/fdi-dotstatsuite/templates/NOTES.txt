@@ -12,356 +12,26 @@
 
 {{- else if contains "NodePort" .Values.authz.service.type }}
 
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "dotstatsuite.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
 
 {{- else if contains "LoadBalancer" .Values.authz.service.type }}
 
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "dotstatsuite.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
   echo http://$SERVICE_IP:{{ .Values.authz.service.port }}
 
 {{- else if contains "ClusterIP" .Values.authz.service.type }}
 
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
 
 {{- end }}
 
-2. Application URL for FDI Reset Sdmx:
-
-{{- if .Values.fdiResetSdmx.ingress.enabled }}
-
-{{- range $host := .Values.fdiResetSdmx.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiResetSdmx.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiResetSdmx.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiResetSdmx.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiResetSdmx.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiResetSdmx.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-3. Application URL for FDI Stable Sdmx:
-
-{{- if .Values.fdiStableSdmx.ingress.enabled }}
-
-{{- range $host := .Values.fdiStableSdmx.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiStableSdmx.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiStableSdmx.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiStableSdmx.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiStableSdmx.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiStableSdmx.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-4. Application URL for FDI Reset Ccei:
-
-{{- if .Values.fdiResetCcei.ingress.enabled }}
-
-{{- range $host := .Values.fdiResetCcei.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiResetCcei.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiResetCcei.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiResetCcei.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiResetCcei.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiResetCcei.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-5. Application URL for FDI Stable Ccei:
-
-{{- if .Values.fdiStableCcei.ingress.enabled }}
-
-{{- range $host := .Values.fdiStableCcei.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiStableCcei.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiStableCcei.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiStableCcei.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiStableCcei.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiStableCcei.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-6. Application URL for FDI Reset Census:
-
-{{- if .Values.fdiResetCensus.ingress.enabled }}
-
-{{- range $host := .Values.fdiResetCensus.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiResetCensus.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiResetCensus.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiResetCensus.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiResetCensus.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiResetCensus.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-7. Application URL for FDI Stable Census:
-
-{{- if .Values.fdiStableCensus.ingress.enabled }}
-
-{{- range $host := .Values.fdiStableCensus.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiStableCensus.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiStableCensus.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiStableCensus.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiStableCensus.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiStableCensus.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-8. Application URL for FDI Reset Geese:
-
-{{- if .Values.fdiResetGeese.ingress.enabled }}
-
-{{- range $host := .Values.fdiResetGeese.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiResetGeese.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiResetGeese.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiResetGeese.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiResetGeese.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiResetGeese.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-9. Application URL for FDI Stable Geese:
-
-{{- if .Values.fdiStableGeese.ingress.enabled }}
-
-{{- range $host := .Values.fdiStableGeese.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiStableGeese.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiStableGeese.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiStableGeese.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiStableGeese.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiStableGeese.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-10. Application URL for FDI Reset Codr:
-
-{{- if .Values.fdiResetCodr.ingress.enabled }}
-
-{{- range $host := .Values.fdiResetCodr.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiResetCodr.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiResetCodr.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiResetCodr.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiResetCodr.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiResetCodr.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-11. Application URL for FDI Stable Codr:
-
-{{- if .Values.fdiStableCodr.ingress.enabled }}
-
-{{- range $host := .Values.fdiStableCodr.ingress.hosts }}
-
-  {{- range .paths }}
-  http{{ if $.Values.fdiStableCodr.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
-  {{- end }}
-
-{{- end }}
-
-{{- else if contains "NodePort" .Values.fdiStableCodr.service.type }}
-
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-
-{{- else if contains "LoadBalancer" .Values.fdiStableCodr.service.type }}
-
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiStableCodr.service.port }}
-
-{{- else if contains "ClusterIP" .Values.fdiStableCodr.service.type }}
-
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
-
-{{- end }}
-
-12. Application URL for Transfer:
+2. Application URL for Transfer:
 
 {{- if .Values.transfer.ingress.enabled }}
 
@@ -375,120 +45,154 @@
 
 {{- else if contains "NodePort" .Values.transfer.service.type }}
 
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "dotstatsuite.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
 
 {{- else if contains "LoadBalancer" .Values.transfer.service.type }}
 
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "dotstatsuite.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
   echo http://$SERVICE_IP:{{ .Values.transfer.service.port }}
 
 {{- else if contains "ClusterIP" .Values.transfer.service.type }}
 
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
 
 {{- end }}
 
-13. Application URL for No Auth Transfer:
+3. Application URL for NSI Reset:
 
-{{- if .Values.transfernoauth.ingress.enabled }}
+{{- if .Values.nsiReset.ingress.enabled }}
 
-{{- range $host := .Values.transfernoauth.ingress.hosts }}
+{{- range $host := .Values.nsiReset.ingress.hosts }}
 
   {{- range .paths }}
-  http{{ if $.Values.transfernoauth.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
+  http{{ if $.Values.nsiReset.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
   {{- end }}
 
 {{- end }}
 
-{{- else if contains "NodePort" .Values.transfernoauth.service.type }}
+{{- else if contains "NodePort" .Values.nsiReset.service.type }}
 
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "dotstatsuite.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
 
-{{- else if contains "LoadBalancer" .Values.transfernoauth.service.type }}
+{{- else if contains "LoadBalancer" .Values.nsiReset.service.type }}
 
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.transfernoauth.service.port }}
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "dotstatsuite.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.nsiReset.service.port }}
 
-{{- else if contains "ClusterIP" .Values.transfernoauth.service.type }}
+{{- else if contains "ClusterIP" .Values.nsiReset.service.type }}
 
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
 
 {{- end }}
 
-14. Application URL for FDI Reset Ckan:
+4. Application URL for NSI Stable:
 
-{{- if .Values.fdiResetCkan.ingress.enabled }}
+{{- if .Values.nsiStable.ingress.enabled }}
 
-{{- range $host := .Values.fdiResetCkan.ingress.hosts }}
+{{- range $host := .Values.nsiStable.ingress.hosts }}
 
   {{- range .paths }}
-  http{{ if $.Values.fdiResetCkan.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
+  http{{ if $.Values.nsiStable.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
   {{- end }}
 
 {{- end }}
 
-{{- else if contains "NodePort" .Values.fdiResetCkan.service.type }}
+{{- else if contains "NodePort" .Values.nsiStable.service.type }}
 
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "dotstatsuite.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
 
-{{- else if contains "LoadBalancer" .Values.fdiResetCkan.service.type }}
+{{- else if contains "LoadBalancer" .Values.nsiStable.service.type }}
 
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiResetCkan.service.port }}
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "dotstatsuite.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.nsiStable.service.port }}
 
-{{- else if contains "ClusterIP" .Values.fdiResetCkan.service.type }}
+{{- else if contains "ClusterIP" .Values.nsiStable.service.type }}
 
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
 
 {{- end }}
 
-15. Application URL for FDI Stable Ckan:
+5. Application URL for NSI Design:
 
-{{- if .Values.fdiStableCkan.ingress.enabled }}
+{{- if .Values.nsiDesign.ingress.enabled }}
 
-{{- range $host := .Values.fdiStableCkan.ingress.hosts }}
+{{- range $host := .Values.nsiDesign.ingress.hosts }}
 
   {{- range .paths }}
-  http{{ if $.Values.fdiStableCkan.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
+  http{{ if $.Values.nsiDesign.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
   {{- end }}
 
 {{- end }}
 
-{{- else if contains "NodePort" .Values.fdiStableCkan.service.type }}
+{{- else if contains "NodePort" .Values.nsiDesign.service.type }}
 
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fdi-dotstatsuite.fullname" . }})
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "dotstatsuite.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
   echo http://$NODE_IP:$NODE_PORT
 
-{{- else if contains "LoadBalancer" .Values.fdiStableCkan.service.type }}
+{{- else if contains "LoadBalancer" .Values.nsiDesign.service.type }}
 
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fdi-dotstatsuite.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fdi-dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.fdiStableCkan.service.port }}
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "dotstatsuite.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.nsiDesign.service.port }}
 
-{{- else if contains "ClusterIP" .Values.fdiStableCkan.service.type }}
+{{- else if contains "ClusterIP" .Values.nsiDesign.service.type }}
 
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "fdi-dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
 
 {{- end }}
+
+6. Application URL for NSI Staging:
+
+{{- if .Values.nsiStaging.ingress.enabled }}
+
+{{- range $host := .Values.nsiStaging.ingress.hosts }}
+
+  {{- range .paths }}
+  http{{ if $.Values.nsiStaging.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
+  {{- end }}
+
+{{- end }}
+
+{{- else if contains "NodePort" .Values.nsiStaging.service.type }}
+
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "dotstatsuite.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+
+{{- else if contains "LoadBalancer" .Values.nsiStaging.service.type }}
+
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "dotstatsuite.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "dotstatsuite.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.nsiStaging.service.port }}
+
+{{- else if contains "ClusterIP" .Values.nsiStaging.service.type }}
+
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "dotstatsuite.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:80
+
+{{- end }}
+

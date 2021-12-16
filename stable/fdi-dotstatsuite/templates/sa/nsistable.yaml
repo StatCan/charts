@@ -1,0 +1,14 @@
+{{- if .Values.nsiStable.enabled -}}
+{{- if .Values.nsiStable.serviceAccount.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "dotstatsuite.nsiStable.serviceAccountName" . }}-stable
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-stable
+  {{- with .Values.nsiStable.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end -}}
