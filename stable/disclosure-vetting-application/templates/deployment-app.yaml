@@ -52,7 +52,7 @@ spec:
               mountPath: {{ .Values.entrypointSh.mountPath }}
               subPath: {{ .Values.entrypointSh.subPath }}
             - name: vetting-app
-              mountPath: /app
+              mountPath: /app/logs
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       imagePullSecrets:              
