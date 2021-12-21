@@ -51,15 +51,14 @@ spec:
             - name: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
               mountPath: {{ .Values.entrypointSh.mountPath }}
               subPath: {{ .Values.entrypointSh.subPath }}
-            - name: app
-              mountPath: /app 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       imagePullSecrets:              
         - name: {{ .Values.imagePullSecrets.name }}     
       volumes:
-        - name: app
-          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: fluentd-configmap
         - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.configmodulePy.name }}
           secret:
             secretName: {{ include "vetting-app.fullname" . }}-{{ .Values.configmodulePy.name }}-secret
