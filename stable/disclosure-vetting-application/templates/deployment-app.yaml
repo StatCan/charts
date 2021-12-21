@@ -51,14 +51,14 @@ spec:
             - name: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
               mountPath: {{ .Values.entrypointSh.mountPath }}
               subPath: {{ .Values.entrypointSh.subPath }}
-            - name: vettingApp
+            - name: vetting-app
               mountPath: /app
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       imagePullSecrets:              
         - name: {{ .Values.imagePullSecrets.name }}     
       volumes:
-        - name: vettingApp
+        - name: vetting-app
           emptyDir: {}
         - name: config-volume
           configMap:
