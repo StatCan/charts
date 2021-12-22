@@ -10,6 +10,7 @@ data:
   fluent.conf: |
     <source>
       @type tail
+      format none
       path /app/logs/requests.log
     </source>
     <match **>
