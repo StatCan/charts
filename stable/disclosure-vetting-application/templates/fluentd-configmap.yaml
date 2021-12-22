@@ -13,7 +13,7 @@ data:
       format none
       path /app/logs/requests.log
     </source>
-    <match **>
+    <match *.**>
         @type elasticsearch
         include_timestamp true
         logstash_format true
