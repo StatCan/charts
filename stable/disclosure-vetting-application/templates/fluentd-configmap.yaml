@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: fluentd-configmap
+  name: fluentd-config
   labels:
     app: fluentd
     kubernetes.io/cluster-service: "true"
