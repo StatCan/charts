@@ -18,7 +18,7 @@ data:
         include_timestamp true
         logstash_format true
         host {{ .Values.configmodulePy.elasticSearchUrl }}
-        port 9200
+        port 443
         user {{ .Values.configmodulePy.elasticSearchUsername }}
         password {{ .Values.configmodulePy.elasticSearchPassword }}
     </match>
