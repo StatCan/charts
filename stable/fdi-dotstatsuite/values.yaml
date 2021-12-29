@@ -17,35 +17,31 @@ managed:
     sapassword: ""
     password: ""
   smtp:
-    username: "admin@example.com"
+    username: ""
     password: ""
-    host: "smtp.sendgrid.net"
+    host: ""
     port: "587"
     enableSsl: "true"
-    mailFrom: "build@siscc.org"
+    mailFrom: ""
 
-
+  
 image: &image
-  repository: &repository siscc/sdmxri-nsi-maapi
-  pullPolicy: &pullPolicy Always
-  tag: &tag master
-  ## add tag version
-
-dbup: &dbup
-  image:
-    repository: &repository siscc/dotstatsuite-dbup
+    repository: &repository siscc/sdmxri-nsi-maapi
     pullPolicy: &pullPolicy Always
     tag: &tag master
+    ## add tag version
+  
+dbup: &dbup
+    image:
+      repository: &repository siscc/dotstatsuite-dbup
+      pullPolicy: &pullPolicy Always
+      tag: &tag master     
 
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
 authz:
   enabled: true
   replicaCount: 1  
-
-  common_db: "commonDb"
-  common_user: "commonUser"
-  read_only_user: "readOnlyUser"
 
   common_db: "commonDb"
   common_user: "commonUser"
@@ -71,11 +67,7 @@ authz:
     pullPolicy: Always
     # Overrides the image tag whose default is the chart version.
     tag: "master"
-<<<<<<< HEAD
  
-=======
-
->>>>>>> 9bcbd058e2a8895024153577a80f0d7c05dcf8c6
   dbup: *dbup
 
   serviceAccount:
@@ -229,11 +221,7 @@ nsiReset:
 # NSI STABLE
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-stable-siscc.yaml
 #fdiStableCcei:
-<<<<<<< HEAD
 nsiStable: 
-=======
-nsiStable:
->>>>>>> 9bcbd058e2a8895024153577a80f0d7c05dcf8c6
   enabled: true
   replicaCount: 1
 
@@ -321,11 +309,7 @@ nsiStable:
 
 # NSI DESIGN
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-design-oecd.yaml
-<<<<<<< HEAD
 nsiDesign: 
-=======
-nsiDesign:
->>>>>>> 9bcbd058e2a8895024153577a80f0d7c05dcf8c6
   enabled: true
   replicaCount: 1
 
@@ -413,11 +397,7 @@ nsiDesign:
 
 # NSI STAGING
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
-<<<<<<< HEAD
 nsiStaging: 
-=======
-nsiStaging:
->>>>>>> 9bcbd058e2a8895024153577a80f0d7c05dcf8c6
   enabled: true
   replicaCount: 1
 
