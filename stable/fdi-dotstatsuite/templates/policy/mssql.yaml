@@ -1,6 +1,6 @@
 {{- if .Values.destinationRule.enabled -}}
-apiVersion: authentication.istio.io/v1alpha1
-kind: Policy
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
 metadata:
   name: {{ template "dotstatsuite.fullname" . }}-mssql-linux
   labels:
@@ -9,11 +9,11 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  peers:
-  - mtls:
+  portLevelMtls:
+    1433:
       mode: PERMISSIVE
-  targets:
-  - name: {{ template "dotstatsuite.fullname" . }}-mssql-linux
-    ports:
-    - number: 1433
+  selector:
+    matchLabels:
+      app: {{ template "dotstatsuite.fullname" . }}-mssql-linux
+      release: {{ .Release.Name }}
 {{- end }}

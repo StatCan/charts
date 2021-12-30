@@ -121,7 +121,7 @@ Create the name of the service account to use
 Database Host logic
 */}}
 {{- define "dotstatsuite.databaseHost" -}}
-{{- if index .Values "mssql-linux" "enabled" }}{{ .Chart.Name }}-mssql-linux
+{{- if index .Values "mssql-linux" "enabled" }}{{ .Release.Name }}-mssql-linux
 {{- else }} {{ .Values.managed.database.server }}
 {{- end }}
 {{- end }}

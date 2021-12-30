@@ -17,31 +17,31 @@ managed:
     sapassword: ""
     password: ""
   smtp:
-    username: "admin@example.com"
+    username: ""
     password: ""
-    host: "smtp.sendgrid.net"
+    host: ""
     port: "587"
     enableSsl: "true"
-    mailFrom: "build@siscc.org"
+    mailFrom: ""
 
-
+  
 image: &image
-  repository: &repository siscc/sdmxri-nsi-maapi
-  pullPolicy: &pullPolicy Always
-  tag: &tag master
-  ## add tag version
-
-dbup: &dbup
-  image:
-    repository: &repository siscc/dotstatsuite-dbup
+    repository: &repository siscc/sdmxri-nsi-maapi
     pullPolicy: &pullPolicy Always
     tag: &tag master
+    ## add tag version
+  
+dbup: &dbup
+    image:
+      repository: &repository siscc/dotstatsuite-dbup
+      pullPolicy: &pullPolicy Always
+      tag: &tag master     
 
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
 authz:
   enabled: true
-  replicaCount: 1
+  replicaCount: 1  
 
   common_db: "commonDb"
   common_user: "commonUser"
@@ -67,7 +67,7 @@ authz:
     pullPolicy: Always
     # Overrides the image tag whose default is the chart version.
     tag: "master"
-
+ 
   dbup: *dbup
 
   serviceAccount:
@@ -216,12 +216,12 @@ nsiReset:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {}  
 
 # NSI STABLE
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-stable-siscc.yaml
 #fdiStableCcei:
-nsiStable:
+nsiStable: 
   enabled: true
   replicaCount: 1
 
@@ -305,11 +305,11 @@ nsiStable:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
 # NSI DESIGN
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-design-oecd.yaml
-nsiDesign:
+nsiDesign: 
   enabled: true
   replicaCount: 1
 
@@ -393,11 +393,11 @@ nsiDesign:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
 # NSI STAGING
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
-nsiStaging:
+nsiStaging: 
   enabled: true
   replicaCount: 1
 
@@ -481,7 +481,7 @@ nsiStaging:
 
   tolerations: []
 
-  affinity: {}
+  affinity: {} 
 
 
 # Transfer
