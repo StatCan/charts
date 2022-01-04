@@ -12,8 +12,9 @@ data:
       @type tail
       format none
       path /app/logs/requests.log
+      pos_file /app/logs/requests.log.pos
     </source>
-    <match *.**>
+    <match **>
         @type elasticsearch
         include_timestamp true
         logstash_format true
