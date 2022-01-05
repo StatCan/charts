@@ -23,3 +23,6 @@ data:
         user {{ .Values.configmodulePy.elasticSearchUsername }}
         password {{ .Values.configmodulePy.elasticSearchPassword }}
     </match>
+    <system>
+      log_level debug
+    </system>
