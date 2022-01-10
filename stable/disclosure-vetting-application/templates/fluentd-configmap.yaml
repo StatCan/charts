@@ -9,10 +9,8 @@ metadata:
 data:
   fluent.conf: |
     <source>
-      @type tail
-      format none
+      @type mounted-file
       path /app/logs/requests.log
-      pos_file /app/logs/requests.log.pos
     </source>
     <match **>
         @type elasticsearch
@@ -23,6 +21,3 @@ data:
         user {{ .Values.configmodulePy.elasticSearchUsername }}
         password {{ .Values.configmodulePy.elasticSearchPassword }}
     </match>
-    <system>
-      log_level debug
-    </system>

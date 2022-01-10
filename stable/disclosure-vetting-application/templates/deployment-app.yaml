@@ -55,16 +55,6 @@ spec:
               mountPath: /app/app/logs
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: fluentd-agent
-          env:
-            - name: FLUENTD_ARGS
-              value: -c /etc/fluentd-config/fluentd.conf
-          volumeMounts:
-          - name: vetting-app
-            mountPath: /app/logs
-          - name: config-volume
-            mountPath: /etc/fluentd-config
-          image: fluent/fluentd
 
       imagePullSecrets:              
         - name: {{ .Values.imagePullSecrets.name }}     
