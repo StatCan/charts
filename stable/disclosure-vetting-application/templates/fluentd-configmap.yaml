@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/cluster-service: "true"
 data:
   fluent.conf: |
-      <filter **>
+    <filter **>
       @type record_transformer
       <record>
         cluster {{ .Values.vettingEnv.clusterName }}
