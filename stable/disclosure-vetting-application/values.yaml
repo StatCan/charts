@@ -31,6 +31,9 @@ appImage:
 imagePullSecrets:
   name: artifactory-prod
 
+vettingEnv:
+  clusterName: ""
+  
 external:
   enabled: false
   postgresqlUsername: ""

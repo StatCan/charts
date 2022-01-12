@@ -8,16 +8,30 @@ metadata:
     kubernetes.io/cluster-service: "true"
 data:
   fluent.conf: |
-    <source>
-      @type mounted-file
-      path /app/logs/requests.log
-    </source>
+      <filter **>
+      @type record_transformer
+      <record>
+        cluster {{ .Values.vettingEnv.clusterName }}
+      </record>
+    </filter>
+
     <match **>
-        @type elasticsearch
-        include_timestamp true
-        logstash_format true
-        host {{ .Values.configmodulePy.elasticSearchUrl }}
-        port 443
-        user {{ .Values.configmodulePy.elasticSearchUsername }}
-        password {{ .Values.configmodulePy.elasticSearchPassword }}
+      @type elasticsearch
+      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+
+      user {{ .Values.configmodulePy.elasticSearchUsername }}
+      password {{ .Values.configmodulePy.elasticSearchPassword }}
+
+      ssl_version TLSv1_2
+
+      include_timestamp true
+      index_name "kubernetes-project-%Y.%m.%d"
+
+      time_key @timestamp
+
+      <buffer tag, time>
+        @type memory
+        timekey 60
+        timekey_wait 0
+      </buffer>
     </match>
