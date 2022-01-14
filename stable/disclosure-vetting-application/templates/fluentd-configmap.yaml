@@ -25,7 +25,7 @@ data:
       ssl_version TLSv1_2
 
       include_timestamp true
-      index_name "kubernetes-project-%Y.%m.%d"
+      index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
 
       time_key @timestamp
 
