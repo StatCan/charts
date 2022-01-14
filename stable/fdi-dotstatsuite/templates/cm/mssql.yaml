@@ -33,5 +33,5 @@ data:
 {{- if index .Values "mssql-linux" "enabled" }}
   SA_USER: sa
 {{- else }}
-  SA_USER: sqlhstsvc
+  SA_USER: {{ .Values.managed.database.sa_user }}
 {{- end }}
