@@ -314,10 +314,10 @@ nsiDesign:
   replicaCount: 1
 
   dataspace: "design"
-  stable_data_db: sdmxDesignDataDb
-  stable_data_user: sdmxDesignDataUser
-  stable_structure_db: sdmxDesignStructureDb
-  stable_structure_user: sdmxDesignStructureUser
+  design_data_db: sdmxDesignDataDb
+  design_data_user: sdmxDesignDataUser
+  design_structure_db: sdmxDesignStructureDb
+  design_structure_user: sdmxDesignStructureUser
 
   ingress:
     enabled: true
@@ -402,10 +402,10 @@ nsiStaging:
   replicaCount: 1
 
   dataspace: "staging"
-  stable_data_db: sdmxStagingDataDb
-  stable_data_user: sdmxStagingDataUser
-  stable_structure_db: sdmxStagingStructureDb
-  stable_structure_user: sdmxStagingStructureUser
+  staging_data_db: sdmxStagingDataDb
+  staging_data_user: sdmxStagingDataUser
+  staging_structure_db: sdmxStagingStructureDb
+  staging_structure_user: sdmxStagingStructureUser
 
   ingress:
     enabled: true
@@ -587,7 +587,7 @@ mssql-linux:
   lcid: 1033
   hadr: 0
   # Override sapassword in templates/secret.yaml
-  sapassword: "testPassword1313"
+  sapassword: ""
   image:
     repository: microsoft/mssql-server-linux
     tag: 2017-CU11
