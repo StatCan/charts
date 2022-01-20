@@ -18,12 +18,12 @@ data:
     <match **>
       @type retag
       <rule>
-        key message
+        key log
         pattern /^(ERROR).*/
         tag vetting.error
       </rule>
       <rule>
-        key message
+        key log
         pattern /.*/
         tag vetting.log
         invert true
@@ -60,7 +60,7 @@ data:
       ssl_version TLSv1_2
       pipeline "vetting errors"
       include_timestamp true
-      index_name "vetting-errors-{{ .Values.vettingEnv.clusterName }}"
+      index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
 
       time_key @timestamp
 
