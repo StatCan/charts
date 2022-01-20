@@ -30,7 +30,7 @@ data:
       </rule>
     </match>
 
-    <match vetting.log>
+    <match $tag(vetting.log)>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
 
@@ -50,7 +50,7 @@ data:
         timekey_wait 0
       </buffer>
     </match>
-    <match vetting.error>
+    <match $tag(vetting.error)>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
 
