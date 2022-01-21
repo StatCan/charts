@@ -15,20 +15,47 @@ data:
       </record>
     </filter>
 
-    <match **>
+     <match **>
+      @type rewrite_tag_filter
+      <rule>
+        key log
+        pattern /^(ERROR).*/
+        tag vetting.error
+      </rule>
+      <rule>
+        key log
+        pattern /.*/
+        tag vetting.log
+        invert true
+      </rule>
+    </match>
+
+    <match vetting.log>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
-
       user {{ .Values.configmodulePy.elasticSearchUsername }}
       password {{ .Values.configmodulePy.elasticSearchPassword }}
-
       ssl_version TLSv1_2
       pipeline "vetting requests"
       include_timestamp true
       index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
-
       time_key @timestamp
-
+      <buffer tag, time>
+        @type memory
+        timekey 60
+        timekey_wait 0
+      </buffer>
+    </match>
+    <match vetting.error>
+      @type elasticsearch
+      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+      user {{ .Values.configmodulePy.elasticSearchUsername }}
+      password {{ .Values.configmodulePy.elasticSearchPassword }}
+      ssl_version TLSv1_2
+      pipeline "vetting errors"
+      include_timestamp true
+      index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
+      time_key @timestamp
       <buffer tag, time>
         @type memory
         timekey 60
