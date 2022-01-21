@@ -21,7 +21,7 @@ data:
       user {{ .Values.configmodulePy.elasticSearchUsername }}
       password {{ .Values.configmodulePy.elasticSearchPassword }}
       ssl_version TLSv1_2
-      pipeline "vetting errors"
+      pipeline "vetting requests"
       include_timestamp true
       index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
       time_key @timestamp
