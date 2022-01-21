@@ -17,7 +17,7 @@ datasource: default
 # together with the specified legacy datasource to facilitate the migration process to CRDs.
 crdMigrationMode: false
 
-defaultConfigmap: "vetting-fluentd-config"
+defaultConfigmap: "fluentd-config"
 
 image:
   repository: vmware/kube-fluentd-operator
