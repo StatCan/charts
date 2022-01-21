@@ -15,8 +15,8 @@ data:
       </record>
     </filter>
 
-     <match **>
-      @type rewrite_tag_filter
+    <match **>
+      @type retag
       <rule>
         key log
         pattern /^(ERROR).*/
@@ -24,29 +24,13 @@ data:
       </rule>
       <rule>
         key log
-        pattern /.*/
-        tag vetting.log
+        pattern /^(ERROR).*/
         invert true
+        tag vetting.log
       </rule>
     </match>
 
-    <match vetting.log>
-      @type elasticsearch
-      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
-      user {{ .Values.configmodulePy.elasticSearchUsername }}
-      password {{ .Values.configmodulePy.elasticSearchPassword }}
-      ssl_version TLSv1_2
-      pipeline "vetting requests"
-      include_timestamp true
-      index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
-      time_key @timestamp
-      <buffer tag, time>
-        @type memory
-        timekey 60
-        timekey_wait 0
-      </buffer>
-    </match>
-    <match vetting.error>
+    <match $tag(vetting.error)>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
       user {{ .Values.configmodulePy.elasticSearchUsername }}
@@ -55,6 +39,22 @@ data:
       pipeline "vetting errors"
       include_timestamp true
       index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
+      time_key @timestamp
+      <buffer tag, time>
+        @type memory
+        timekey 60
+        timekey_wait 0
+      </buffer>
+    </match>
+    <match $tag(vetting.log)>
+      @type elasticsearch
+      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+      user {{ .Values.configmodulePy.elasticSearchUsername }}
+      password {{ .Values.configmodulePy.elasticSearchPassword }}
+      ssl_version TLSv1_2
+      pipeline "vetting requests"
+      include_timestamp true
+      index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
       time_key @timestamp
       <buffer tag, time>
         @type memory
