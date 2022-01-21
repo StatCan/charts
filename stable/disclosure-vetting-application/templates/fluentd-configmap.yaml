@@ -46,7 +46,7 @@ data:
         timekey_wait 0
       </buffer>
     </match>
-    <match $tag(vetting.log)>
+    <match **>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
       user {{ .Values.configmodulePy.elasticSearchUsername }}
