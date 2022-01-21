@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: fluentd-config
+  name: vetting-fluentd-config
   labels:
     app: fluentd
     kubernetes.io/cluster-service: "true"
@@ -14,7 +14,6 @@ data:
         cluster {{ .Values.vettingEnv.clusterName }}
       </record>
     </filter>
-
     <match **>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
@@ -23,7 +22,7 @@ data:
       ssl_version TLSv1_2
       pipeline "vetting requests"
       include_timestamp true
-      index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
+      index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
       time_key @timestamp
       <buffer tag, time>
         @type memory
