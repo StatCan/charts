@@ -33,6 +33,11 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            {{- range $env := .Values.extraEnv }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - limitranges

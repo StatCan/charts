@@ -4,6 +4,10 @@
 
 replicaCount: 1
 
+extraEnv:
+  - name: REQUEUE_TIME
+    value: "5"
+
 image:
   repository: StatCan/profiles-controller
   pullPolicy: IfNotPresent

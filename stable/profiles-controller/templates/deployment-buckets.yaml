@@ -44,8 +44,12 @@ spec:
           args:
             - buckets
           env:
+            {{- range $env := .Values.extraEnv }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
             - name: MINIO_INSTANCES
-              value: {{ .Values.components.buckets.instances }}
+              value: "{{ .Values.components.buckets.instances }}"
             {{- if .Values.vaultagent.enabled }}
             - name: VAULT_AGENT_ADDR
               value: http://127.0.0.1:8100
