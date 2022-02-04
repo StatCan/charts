@@ -16,13 +16,16 @@ data:
     </filter>
     <match **>
       @type elasticsearch
-      hosts http://{{ .Values.configmodulePy.elasticSearchUrl }}
+      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+      ssl_version TLSv1_2
       user {{ .Values.configmodulePy.elasticSearchUsername }}
       password {{ .Values.configmodulePy.elasticSearchPassword }}
+
       pipeline "vetting requests"
       include_timestamp true
       index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
       time_key @timestamp
+
       <buffer tag, time>
         @type memory
         timekey 60
