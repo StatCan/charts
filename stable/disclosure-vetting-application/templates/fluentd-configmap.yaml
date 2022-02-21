@@ -14,7 +14,22 @@ data:
         cluster {{ .Values.vettingEnv.clusterName }}
       </record>
     </filter>
+
     <match **>
+      @type rewrite_tag_filter
+      <rule>
+        key message
+        pattern /.*(ERROR).*/
+        tag vetting.error
+      </rule>
+      <rule>
+        key message
+        pattern /.*/
+        tag vetting.logs
+      </rule>
+    </match>
+
+    <match vetting.logs>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
       ssl_version TLSv1_2
@@ -24,6 +39,25 @@ data:
       pipeline "vetting requests"
       include_timestamp true
       index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
+      time_key @timestamp
+
+      <buffer tag, time>
+        @type memory
+        timekey 60
+        timekey_wait 0
+      </buffer>
+    </match>
+
+    <match vetting.error>
+      @type elasticsearch
+      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+      ssl_version TLSv1_2
+      user {{ .Values.configmodulePy.elasticSearchUsername }}
+      password {{ .Values.configmodulePy.elasticSearchPassword }}
+
+      pipeline "vetting errors"
+      include_timestamp true
+      index_name "vetting-errors-{{ .Values.vettingEnv.clusterName }}"
       time_key @timestamp
 
       <buffer tag, time>
