@@ -18,12 +18,12 @@ data:
     <match **>
       @type rewrite_tag_filter
       <rule>
-        key message
+        key log
         pattern /.*(ERROR).*/
         tag vetting.error
       </rule>
       <rule>
-        key message
+        key log
         pattern /.*/
         tag vetting.logs
       </rule>
