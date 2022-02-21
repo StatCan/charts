@@ -16,7 +16,7 @@ data:
     </filter>
 
     <match **>
-      @type rewrite_tag_filter
+      @type retag
       <rule>
         key log
         pattern /.*(ERROR).*/
@@ -29,7 +29,7 @@ data:
       </rule>
     </match>
 
-    <match vetting.logs>
+    <match $tag(vetting.logs)>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
       ssl_version TLSv1_2
@@ -48,7 +48,7 @@ data:
       </buffer>
     </match>
 
-    <match vetting.error>
+    <match $tag(vetting.error)>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
       ssl_version TLSv1_2
