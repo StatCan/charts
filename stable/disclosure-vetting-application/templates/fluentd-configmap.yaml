@@ -14,8 +14,22 @@ data:
         cluster {{ .Values.vettingEnv.clusterName }}
       </record>
     </filter>
-
+    
     <match **>
+      @type rewrite_tag_filter
+      <rule>
+        key log
+        pattern /.*(ERROR).*/
+        tag vetting.errors
+      </rule>
+      <rule>
+        key log
+        pattern /.*/
+        tag vetting.logs
+      </rule>
+    </match>
+
+    <match vetting.logs>
       @type elasticsearch
       hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
       ssl_version TLSv1_2
@@ -23,7 +37,25 @@ data:
       password {{ .Values.configmodulePy.elasticSearchPassword }}
 
       include_timestamp true
-      index_name "vetting-logs-fluentd-test"
+      index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
+      time_key @timestamp
+
+      <buffer tag, time>
+        @type memory
+        timekey 60
+        timekey_wait 0
+      </buffer>
+    </match>
+
+    <match vetting.errors>
+      @type elasticsearch
+      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+      ssl_version TLSv1_2
+      user {{ .Values.configmodulePy.elasticSearchUsername }}
+      password {{ .Values.configmodulePy.elasticSearchPassword }}
+
+      include_timestamp true
+      index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
       time_key @timestamp
 
       <buffer tag, time>
