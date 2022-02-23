@@ -28,7 +28,6 @@ data:
         pipeline "vetting requests"
         include_timestamp true
         index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
-        time_key @timestamp
 
         <buffer tag, time>
           @type memory
@@ -44,10 +43,8 @@ data:
         user {{ .Values.configmodulePy.elasticSearchUsername }}
         password {{ .Values.configmodulePy.elasticSearchPassword }}
 
-        pipeline "vetting errors"
         include_timestamp true
         index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
-        time_key @timestamp
 
         <buffer tag, time>
           @type memory
