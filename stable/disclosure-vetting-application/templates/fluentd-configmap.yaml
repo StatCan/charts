@@ -43,8 +43,9 @@ data:
         user {{ .Values.configmodulePy.elasticSearchUsername }}
         password {{ .Values.configmodulePy.elasticSearchPassword }}
 
+        pipeline "vetting errors"
         include_timestamp true
-        index_name "disc-vett-logs-of-error"
+        index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
 
         <buffer tag, time>
           @type memory
