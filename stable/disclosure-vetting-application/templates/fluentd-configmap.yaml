@@ -16,51 +16,43 @@ data:
     </filter>
     
     <match **>
-      @type rewrite_tag_filter
-      <rule>
-        key log
-        pattern /.*(ERROR).*/
-        tag vetting.errors
-      </rule>
-      <rule>
-        key log
-        pattern /.*/
-        tag vetting.logs
-      </rule>
-    </match>
+      @type copy
 
-    <match vetting.logs>
-      @type elasticsearch
-      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
-      ssl_version TLSv1_2
-      user {{ .Values.configmodulePy.elasticSearchUsername }}
-      password {{ .Values.configmodulePy.elasticSearchPassword }}
+      <store ignore_error>
+        @type elasticsearch
+        hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+        ssl_version TLSv1_2
+        user {{ .Values.configmodulePy.elasticSearchUsername }}
+        password {{ .Values.configmodulePy.elasticSearchPassword }}
 
-      include_timestamp true
-      index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
-      time_key @timestamp
+        pipeline "vetting requests"
+        include_timestamp true
+        index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
+        time_key @timestamp
 
-      <buffer tag, time>
-        @type memory
-        timekey 60
-        timekey_wait 0
-      </buffer>
-    </match>
+        <buffer tag, time>
+          @type memory
+          timekey 60
+          timekey_wait 0
+        </buffer>
+      </store>
 
-    <match vetting.errors>
-      @type elasticsearch
-      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
-      ssl_version TLSv1_2
-      user {{ .Values.configmodulePy.elasticSearchUsername }}
-      password {{ .Values.configmodulePy.elasticSearchPassword }}
+      <store ignore_error>
+        @type elasticsearch
+        hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+        ssl_version TLSv1_2
+        user {{ .Values.configmodulePy.elasticSearchUsername }}
+        password {{ .Values.configmodulePy.elasticSearchPassword }}
 
-      include_timestamp true
-      index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
-      time_key @timestamp
+        pipeline "vetting errors"
+        include_timestamp true
+        index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
+        time_key @timestamp
 
-      <buffer tag, time>
-        @type memory
-        timekey 60
-        timekey_wait 0
-      </buffer>
+        <buffer tag, time>
+          @type memory
+          timekey 60
+          timekey_wait 0
+        </buffer>
+      </store>
     </match>
