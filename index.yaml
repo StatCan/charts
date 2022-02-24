@@ -346,33 +346,6 @@ entries:
     version: 0.1.0
   ckan:
   - apiVersion: v2
-    appVersion: 2.9.2
-    created: "2022-02-23T20:22:59.552907461Z"
-    dependencies:
-    - condition: redis.enabled
-      name: redis
-      repository: https://charts.bitnami.com/bitnami
-      version: 12.2.3
-    - condition: postgresql.enabled
-      name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 10.2.0
-    - condition: solr.enabled
-      name: solr
-      repository: https://statcan.github.io/charts
-      version: 1.5.5
-    - condition: datapusher.enabled
-      name: datapusher
-      repository: https://statcan.github.io/charts
-      version: 1.0.0
-    description: CKAN Helm chart
-    digest: edff597d5fcfbfe77439c37485bd2b96ebf53c8c8bf2947ea22b7a9b77b02780
-    name: ckan
-    type: application
-    urls:
-    - https://statcan.github.io/charts/ckan-1.0.24.tgz
-    version: 1.0.24
-  - apiVersion: v2
     appVersion: 2.9.5
     created: "2022-02-23T20:22:59.450831407Z"
     dependencies:
