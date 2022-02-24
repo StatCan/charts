@@ -69,8 +69,6 @@ ckan:
     RoDbName: datastore_default
     RoDbUser: datastorero
     RoDbPassword: pass
-  solr: "http://solr-headless:8983/solr/ckancollection"
-  redis: "redis://ckan-redis-headless:6379/0"
   spatialBackend: "solr"
   locale:
     offered: "en"
@@ -165,7 +163,6 @@ solr:
     replicationFactor: 1
     maxShardsPerNode: 10
     configsetName: ckanConfigSet
-  fullnameOverride: solr
   replicaCount: 1
   volumeClaimTemplates:
     storageSize: 5Gi
