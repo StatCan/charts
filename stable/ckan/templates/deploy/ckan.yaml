@@ -120,8 +120,8 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
 {{- if .Values.solr.enabled }}
-            - name: CKAN_SOLR_URL
-              value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+          - name: CKAN_SOLR_URL
+            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
 {{- end }}
           - name: CKAN_SOLR_INIT_NUMSHARDS
             value: "{{ .Values.solr.initialize.numShards }}"
@@ -180,8 +180,8 @@ spec:
                 name: {{ include "ckan.fullname" . }}
                 key: psqlMasterPassword
 {{- if .Values.solr.enabled }}
-            - name: CKAN_SOLR_URL
-              value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+          - name: CKAN_SOLR_URL
+            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
 {{- end }}
           - name: CKAN_SQLALCHEMY_URL
             valueFrom:
