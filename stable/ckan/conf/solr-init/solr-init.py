@@ -47,7 +47,7 @@ def check_solr_connection(solr_url, retry=None):
 
 def check_file_exists(f, in_file, out_file):
     if exists(out_file):
-        return 
+        return
     return f(in_file,out_file)
 
 
@@ -62,7 +62,7 @@ def prepare_configset(cfset_name):
     #shutil.chown("/srv/app/solr-configset",user=92,group=92)
 
     #shutil.copytree("/srv/solr-configset", "/srv/app/solr-configset")
-    check_file_exists(shutil.copyfile, "/srv/app/src/ckan/ckan/config/solr/schema.xml",
+    check_file_exists(shutil.copyfile, "/srv/app/src/ckan/ckan/config/solr/schema.solr8.xml",
                     "/srv/app/solr-configset/schema.xml")
     # shutil.copyfile("/srv/app/src/ckan/ckan/config/solr/schema.xml",
     #                 "/srv/app/solr-configset/schema.xml")
