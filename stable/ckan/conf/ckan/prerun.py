@@ -84,9 +84,9 @@ def check_solr_connection(retry=None):
         import re
         conn_info = connection.read()
         # SolrCloud
-        conn_info = re.sub(r'"zkConnected":true', '"zkConnected":True', conn_info)
-        conn_info = re.sub(r'"zkConnected":false', '"zkConnected":False', conn_info)
-        eval(conn_info)
+        # conn_info = re.sub(r'"zkConnected":true', '"zkConnected":True', conn_info)
+        # conn_info = re.sub(r'"zkConnected":false', '"zkConnected":False', conn_info)
+        # eval(conn_info)
 
 
 if __name__ == '__main__':
