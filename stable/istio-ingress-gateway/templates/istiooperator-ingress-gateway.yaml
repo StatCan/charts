@@ -6,6 +6,12 @@ metadata:
   labels:
     {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
 spec:
+  {{- if .Values.hub }}
+  hub: {{ .Values.hub }}
+  {{- end }}
+  {{- if .Values.tag }}
+  tag: {{ .Values.tag }}
+  {{- end }}
   components:
     ingressGateways:
     - enabled: {{ .Values.ingressGateway.enabled }}
