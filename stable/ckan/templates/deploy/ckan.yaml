@@ -119,8 +119,10 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+{{- if .Values.solr.enabled }}
           - name: CKAN_SOLR_URL
-            value: {{ .Values.ckan.solr }}
+            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+{{- end }}
           - name: CKAN_SOLR_INIT_NUMSHARDS
             value: "{{ .Values.solr.initialize.numShards }}"
           - name: CKAN_SOLR_INIT_REPLICATIONFACTOR
@@ -177,8 +179,10 @@ spec:
               secretKeyRef:
                 name: {{ include "ckan.fullname" . }}
                 key: psqlMasterPassword
+{{- if .Values.solr.enabled }}
           - name: CKAN_SOLR_URL
-            value: {{ .Values.ckan.solr }}
+            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+{{- end }}
           - name: CKAN_SQLALCHEMY_URL
             valueFrom:
               secretKeyRef:
@@ -339,10 +343,14 @@ spec:
                 secretKeyRef:
                   name: {{ include "ckan.fullname" . }}
                   key: ckanDatastoreReadUrl
+{{- if .Values.solr.enabled }}
             - name: CKAN_SOLR_URL
-              value: {{ .Values.ckan.solr }}
+              value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+{{- end }}
+{{- if .Values.redis.enabled }}
             - name: CKAN_REDIS_URL
-              value: {{ .Values.ckan.redis }}
+              value: redis://{{ .Release.Name }}-redis-headless:6379/0
+{{- end }}
             - name: CKANEXT_SPATIAL_SEARCH_BACKEND
               value: {{ .Values.ckan.spatialBackend }}
             - name: CKAN_LOCALES_OFFERED

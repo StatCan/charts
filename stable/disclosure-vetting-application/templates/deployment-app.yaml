@@ -63,7 +63,7 @@ spec:
           emptyDir: {}
         - name: config-volume
           configMap:
-            name: fluentd-config
+            name: vetting-fluentd-config
         - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.configmodulePy.name }}
           secret:
             secretName: {{ include "vetting-app.fullname" . }}-{{ .Values.configmodulePy.name }}-secret

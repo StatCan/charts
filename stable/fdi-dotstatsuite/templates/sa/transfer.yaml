@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "fdi-dotstatsuite.transfer.serviceAccountName" . }}-transfer
+  name: {{ include "dotstatsuite.transfer.serviceAccountName" . }}-transfer
   labels:
-    {{- include "fdi-dotstatsuite.labels" . | nindent 4 }}-transfer
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-transfer
   {{- with .Values.transfer.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

@@ -36,6 +36,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - notebook
+          env:
+            {{- range $env := .Values.extraEnv }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

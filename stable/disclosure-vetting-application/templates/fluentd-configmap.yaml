@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: fluentd-config
+  name: vetting-fluentd-config
   labels:
     app: fluentd
     kubernetes.io/cluster-service: "true"
@@ -14,24 +14,43 @@ data:
         cluster {{ .Values.vettingEnv.clusterName }}
       </record>
     </filter>
-
+    
     <match **>
-      @type elasticsearch
-      hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+      @type copy
 
-      user {{ .Values.configmodulePy.elasticSearchUsername }}
-      password {{ .Values.configmodulePy.elasticSearchPassword }}
+      <store ignore_error>
+        @type elasticsearch
+        hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+        ssl_version TLSv1_2
+        user {{ .Values.configmodulePy.elasticSearchUsername }}
+        password {{ .Values.configmodulePy.elasticSearchPassword }}
 
-      ssl_version TLSv1_2
-      pipeline "vetting requests"
-      include_timestamp true
-      index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
+        pipeline "vetting requests"
+        include_timestamp true
+        index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
 
-      time_key @timestamp
+        <buffer tag, time>
+          @type memory
+          timekey 60
+          timekey_wait 0
+        </buffer>
+      </store>
 
-      <buffer tag, time>
-        @type memory
-        timekey 60
-        timekey_wait 0
-      </buffer>
+      <store ignore_error>
+        @type elasticsearch
+        hosts https://{{ .Values.configmodulePy.elasticSearchUrl }}
+        ssl_version TLSv1_2
+        user {{ .Values.configmodulePy.elasticSearchUsername }}
+        password {{ .Values.configmodulePy.elasticSearchPassword }}
+
+        pipeline "vetting errors"
+        include_timestamp true
+        index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
+
+        <buffer tag, time>
+          @type memory
+          timekey 60
+          timekey_wait 0
+        </buffer>
+      </store>
     </match>

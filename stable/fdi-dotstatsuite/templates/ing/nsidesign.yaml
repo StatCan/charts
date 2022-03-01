@@ -1,0 +1,46 @@
+{{- if .Values.nsiDesign.enabled -}}
+{{- if .Values.nsiDesign.ingress.enabled -}}
+{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $svcPort := .Values.nsiDesign.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else -}}
+apiVersion: extensions/v1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-design
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-design
+  {{- with .Values.nsiDesign.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.nsiDesign.ingress.tls }}
+  tls:
+    {{- range .Values.nsiDesign.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.nsiDesign.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ . }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $fullName }}-design
+                port:
+                  number: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end -}}

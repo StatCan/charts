@@ -1,0 +1,140 @@
+{{- if .Values.nsiStable.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-stable
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-stable
+spec:
+{{- if not .Values.nsiStable.autoscaling.enabled }}
+  replicas: {{ .Values.nsiStable.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-stable
+  template:
+    metadata:
+      annotations:
+        traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+    {{- with .Values.nsiStable.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-stable
+    spec:
+      {{- with .Values.nsiStable.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.nsiStable.serviceAccountName" . }}-stable
+      securityContext:
+        {{- toYaml .Values.nsiStable.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-stable
+          securityContext:
+            {{- toYaml .Values.nsiStable.securityContext | nindent 12 }}
+          image: "{{ .Values.nsiStable.image.repository }}:{{ .Values.nsiStable.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.nsiStable.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.fullnameOverride }}-mssql
+            - configMapRef:
+                name: {{ .Values.fullnameOverride }}-authz
+          env:
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-db-secret
+                  key: sapassword
+            - name: STABLE_DATA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-mssql-sdmx-stable-data
+                  key: password
+            - name: STABLE_STRUCTURE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-mssql-sdmx-stable-structure
+                  key: password
+            - name: COMMON_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-mssql-common
+                  key: password
+            - name: "DotStatSuiteCoreCommonDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+            - name: SQL_SERVER
+              value: {{ template "dotstatsuite.databaseHost" . }}
+            - name: SQL_DATABASE
+              value: $(STABLE_STRUCTURE_DB)
+            - name: SQL_USER
+              value: $(STABLE_STRUCTURE_USER)
+            - name: SQL_PASSWORD
+              value: $(STABLE_STRUCTURE_PASSWORD)
+            - name: SENDER_ID
+              value: "Stable - DotStat v8"
+            - name: MA_SQL_USER
+              value: $(SA_USER)
+            - name: MA_SQL_PASSWORD
+              value: $(SA_PASSWORD)
+            - name: MA_ALWAYS_RESET
+              value: "N"            
+            - name: INSERT_NEW_ITEM_SCHEME_VALUES
+              value: "false"              
+            - name: enableReleaseManagement
+              value: "true"              
+            - name: "mappingStore__Id__Default"
+              value: "{{ .Values.nsiStable.dataspace }}"
+            - name: disseminationDbConnection__dbType
+              value: SqlServer
+            - name: "disseminationDbConnection__connectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(STABLE_DATA_USER);Password=$(STABLE_DATA_PASSWORD);"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.nsiStable.resources | nindent 12 }}
+      initContainers:
+        - name: {{ .Chart.Name }}-dbup-stable-structure
+          image: "{{ .Values.nsiStable.dbup.image.repository }}:{{ .Values.nsiStable.dbup.image.tag }}"
+          imagePullPolicy: {{ .Values.nsiStable.dbup.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: {{ .Values.fullnameOverride }}-mssql
+          env:
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.fullnameOverride }}-db-secret
+                key: sapassword
+          - name: STABLE_STRUCTURE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.fullnameOverride }}-mssql-sdmx-stable-structure
+                key: password
+          - name: READ_ONLY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.fullnameOverride }}-mssql-read-only
+                key: password
+          command: ['bash', '-c']
+          args:
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(STABLE_STRUCTURE_USER) --loginPwd $(STABLE_STRUCTURE_PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+      {{- with .Values.nsiStable.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nsiStable.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nsiStable.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}

@@ -2,10 +2,10 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: {{ template "fdi-dotstatsuite.fullname" . }}
+  name: {{ template "dotstatsuite.fullname" . }}
   labels:
-    app: {{ template "fdi-dotstatsuite.name" . }}
-    chart: {{ template "fdi-dotstatsuite.chart" . }}
+    app: {{ template "dotstatsuite.name" . }}
+    chart: {{ template "dotstatsuite.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:

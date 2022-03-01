@@ -1,3 +1,9 @@
+# The hub from which to pull images
+hub:
+# The tag to use for images.
+# Useful for using the distroless images which are: <version>-distroless
+tag:
+
 # Configurations relating to the Istio Ingress Gateway to deploy.
 ingressGateway:
   # The name of the ingress-gateway instance.

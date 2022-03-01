@@ -2,7 +2,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: authz
+  name: {{ .Values.fullnameOverride }}-authz
 data:
   auth__TokenUrl: "{{ .Values.managed.azuread.tokenUrl }}"
   auth__allowAnonymous: 'true'

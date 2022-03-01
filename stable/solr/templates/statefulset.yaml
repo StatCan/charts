@@ -190,6 +190,9 @@ spec:
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
             httpGet:
               scheme: "{{ .Values.tls.enabled | ternary "HTTPS" "HTTP" }}"
               path: /solr/admin/info/system
@@ -197,6 +200,9 @@ spec:
           readinessProbe:
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
             httpGet:
               scheme: "{{ .Values.tls.enabled | ternary "HTTPS" "HTTP" }}"
               path: /solr/admin/info/system

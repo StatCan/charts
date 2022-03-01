@@ -1,0 +1,46 @@
+{{- if .Values.nsiReset.enabled -}}
+{{- if .Values.nsiReset.ingress.enabled -}}
+{{- $fullName := include "dotstatsuite.fullname" . -}}
+{{- $svcPort := .Values.nsiReset.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else -}}
+apiVersion: extensions/v1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-reset
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-reset
+  {{- with .Values.nsiReset.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.nsiReset.ingress.tls }}
+  tls:
+    {{- range .Values.nsiReset.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.nsiReset.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ . }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $fullName }}-reset
+                port:
+                  number: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end -}}
