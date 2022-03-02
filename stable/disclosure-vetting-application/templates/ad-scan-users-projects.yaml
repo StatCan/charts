@@ -30,6 +30,11 @@ spec:
                 secretKeyRef:
                   name: ad-scan-cronjob-init
                   key: dbConnectionString
+            - name: ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ad-scan-cronjob-init
+                  key: accessToken
             - name: ELASTIC_SEARCH_URL
               valueFrom:
                 secretKeyRef:
