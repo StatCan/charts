@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: AD-scan-users-projects
+  name: ad-scan-users-projects
 spec:
   schedule: "*/1 * * * *"
   suspend: true
@@ -16,44 +16,44 @@ spec:
             app.kubernetes.io/instance: {{ .Release.Name }}
         spec:
           containers:
-          - name: AD-scan-users-projects
+          - name: ad-scan-users-projects
             image: "{{ .Values.appImageADScanCron.repository }}:{{ .Values.appImageADScanCron.tag }}"
             imagePullPolicy: "{{ .Values.appImageADScanCron.pullPolicy }}"
             env:
             - name: CAN_RUN
               valueFrom:
                 secretKeyRef:
-                  name: AD-scan-cronjob-init
+                  name: ad-scan-cronjob-init
                   key: canRun
             - name: DB_CONNECTION_STRING
               valueFrom:
                 secretKeyRef:
-                  name: AD-scan-cronjob-init
+                  name: ad-scan-cronjob-init
                   key: dbConnectionString
             - name: ELASTIC_SEARCH_URL
               valueFrom:
                 secretKeyRef:
-                  name: AD-scan-cronjob-init
+                  name: ad-scan-cronjob-init
                   key: elasticSearchUrl
             - name: ELASTIC_SEARCH_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: AD-scan-cronjob-init
+                  name: ad-scan-cronjob-init
                   key: elasticSearchUsername
             - name: ELASTIC_SEARCH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: AD-scan-cronjob-init
+                  name: ad-scan-cronjob-init
                   key: elasticSearchPassword
             - name: ELASTIC_SEARCH_LOGS_INDEX
               valueFrom:
                 secretKeyRef:
-                  name: AD-scan-cronjob-init
+                  name: ad-scan-cronjob-init
                   key: elasticSearchLogsIndex
             - name: ELASTIC_SEARCH_ERRORS_INDEX
               valueFrom:
                 secretKeyRef:
-                  name: AD-scan-cronjob-init
+                  name: ad-scan-cronjob-init
                   key: elasticSearchErrorsIndex
             volumeMounts:
               - name: {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
@@ -62,7 +62,7 @@ spec:
           volumes:
             - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
               secret:
-                secretName: {{ include "vetting-app.fullname" . }}-AD-scan-cronjob-{{ .Values.entrypointSh.name }}-secret
+                secretName: {{ include "vetting-app.fullname" . }}-ad-scan-cronjob-{{ .Values.entrypointSh.name }}-secret
                 defaultMode: 0755         
           restartPolicy: OnFailure
          
