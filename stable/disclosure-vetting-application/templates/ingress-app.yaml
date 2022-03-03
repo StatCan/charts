@@ -1,40 +1,21 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "vetting-app.fullname" . -}}
-{{- $ingressPaths := .Values.ingress.paths -}}
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
 metadata:
-  name: {{ $fullName }}
-  labels:
-    app.kubernetes.io/name: {{ include "vetting-app.name" . }}
-    helm.sh/chart: {{ include "vetting-app.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-  {{- with .Values.ingress.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+  name: disclosure-vetting-pb
+  namespace: org-ces-system
 spec:
-{{- if .Values.ingress.tls }}
-  tls:
-  {{- range .Values.ingress.tls }}
-    - hosts:
-      {{- range .hosts }}
-        - {{ . | quote }}
-      {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
-{{- end }}
-  rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ . | quote }}
-      http:
-        paths:
-	{{- range $ingressPaths }}
-          - path: {{ . }}
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: 5000
-	{{- end }}
-  {{- end }}
+  gateways:
+  - istio-system/disclosure-vetting
+  hosts:
+  - vma-agdcc.statcan.gc.ca
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: disclosure-vetting.org-ces-system.svc.cluster.local
+        port:
+          number: 5000
 {{- end }}
