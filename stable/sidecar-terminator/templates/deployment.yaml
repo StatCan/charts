@@ -4,7 +4,7 @@ metadata:
   name: {{ include "sidecar-terminator.fullname" . }}
   namespace: {{ .Values.namespace }}
   labels:
-    app.kubernetes.io/name: {{ include "sidecar-terminator.fullname" . }}
+    {{- include "sidecar-terminator.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
@@ -27,3 +27,15 @@ spec:
           limits:
             cpu: {{ .Values.resources.limits.cpu }}
             memory: {{ .Values.resources.limits.memory }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
