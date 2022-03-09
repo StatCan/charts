@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "sidecar-terminator.fullname" . }}
-  namespace: {{ .Values.namespace }}
   labels:
     {{- include "sidecar-terminator.labels" . | nindent 4 }}
 spec:
