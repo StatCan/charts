@@ -23,6 +23,9 @@ spec:
       containers:
       - image: {{ .Values.image.repository }}
         name: sidecar-terminator
+        args:
+          - '--lock-namespace'
+          - {{ .Release.Namespace }}
         resources:
           requests:
             cpu: {{ .Values.resources.requests.cpu }}
