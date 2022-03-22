@@ -25,6 +25,11 @@ spec:
                 secretKeyRef:
                   name: ad-scan-cronjob-init
                   key: canRun
+            - name: PROJECTS_IGNORE_LIST
+              valueFrom:
+                secretKeyRef:
+                  name: ad-scan-cronjob-init
+                  key: projectsIgnoreList
             - name: DB_CONNECTION_STRING
               valueFrom:
                 secretKeyRef:
