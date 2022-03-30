@@ -29,6 +29,7 @@ rules:
       - ''
     resources:
       - pods
+      - configmaps
     verbs:
       - get
       - list
@@ -107,3 +108,15 @@ rules:
     resourceNames:
       - profile-support
       - ml-pipeline
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - applications
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
