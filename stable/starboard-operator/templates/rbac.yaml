@@ -14,14 +14,8 @@ metadata:
 
 {{- if .Values.rbac.create }}
 ---
-{{- /*
-Create (Cluster)Role and (Cluster)RoleBinding depending on if the Helm chart is
-installed in a namespace different from the targetNamespace.
-*/}}
-{{- $clusterWide := not (eq .Release.Namespace (tpl .Values.targetNamespaces .)) }}
-{{- $conditionalClusterPrefix := $clusterWide | ternary "Cluster" "" }}
 apiVersion: rbac.authorization.k8s.io/v1
-kind: {{ $conditionalClusterPrefix }}Role
+kind: ClusterRole
 metadata:
   name: {{ include "starboard-operator.fullname" . }}
   labels:
@@ -30,8 +24,20 @@ rules:
   - apiGroups:
       - ""
     resources:
-      - "pods"
-      - "pods/log"
+      - pods
+      - pods/log
+      - replicationcontrollers
+      - services
+      - resourcequotas
+      - limitranges
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
     verbs:
       - get
       - list
@@ -49,45 +55,122 @@ rules:
       - create
       - update
   - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+  - apiGroups:
       - apps
-    resources: # resources that own pods are inspected
+    resources:
       - replicasets
       - statefulsets
       - daemonsets
+      - deployments
     verbs:
       - get
       - list
       - watch
   - apiGroups:
       - batch
-    resources: # jobs are inspected and directly used by the starboard-operator
+    resources:
       - jobs
+      - cronjobs
     verbs:
       - get
       - list
       - watch
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - roles
+      - rolebindings
+      - clusterroles
+      - clusterrolebindings
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
       - create
       - delete
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - networkpolicies
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - policy
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - get
+      - list
+      - watch
   - apiGroups:
       - aquasecurity.github.io
     resources:
       - vulnerabilityreports
+      - configauditreports
+      - clusterconfigauditreports
+      - ciskubebenchreports
+      - clustercompliancereports
+      - clustercompliancedetailreports
     verbs:
       - get
       - list
       - watch
       - create
       - update
+      - delete
+  - apiGroups:
+      - aquasecurity.github.io
+    resources:
+      - clustercompliancereports/status
+    verbs:
+      - update
+  {{- if gt (int .Values.operator.replicas) 1 }}
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - create
+      - get
+      - update
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: {{ $conditionalClusterPrefix }}RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: {{ include "starboard-operator.fullname" . }}
   labels:
     {{- include "starboard-operator.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: {{ $conditionalClusterPrefix }}Role
+  kind: ClusterRole
   name: {{ include "starboard-operator.fullname" . }}
 subjects:
   - kind: ServiceAccount

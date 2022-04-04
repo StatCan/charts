@@ -1,17 +1,17 @@
 apiVersion: v2
 name: starboard-operator
-description: A Helm chart for starboard-operator.
+description: Keeps security report resources updated
 type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.8.0
+version: 0.10.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 0.8.0
+appVersion: 0.15.1
 
 # kubeVersion: A SemVer range of compatible Kubernetes versions (optional)
 
@@ -19,9 +19,11 @@ keywords:
   - aquasecurity
   - starboard
   - trivy
-home: https://github.com/aquasecurity/starboard
+
+# home: https://github.com/aquasecurity/starboard
 sources:
   - https://github.com/aquasecurity/starboard
+
 # maintainers: # (optional)
 #   - name: The maintainers name (required for each maintainer)
 #     email: The maintainers email (optional for each maintainer)
@@ -29,7 +31,6 @@ sources:
 # icon: A URL to an SVG or PNG image to be used as an icon (optional).
 # annotations:
 #   example: A list of annotations keyed by name (optional).
-
 maintainers:
 - name: sylus
   email: william.hearn@canada.ca
