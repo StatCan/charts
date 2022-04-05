@@ -2,16 +2,14 @@ apiVersion: v1
 appVersion: "1.0"
 description: A Helm chart for Discolsure Vetting Application
 name: vetting
-version: 0.1.131
+version: 0.1.132
 home: https://statcan.gc.ca
 icon: https://www.python.org/static/img/python-logo
 sources:
-- https://gitlab.k8s.cloud.statcan.ca/analytics-platform/disclosure-vetting-application
+- https://github.com/StatCan/disclosure-vetting-application
 maintainers:
-  - name: Julie Dion
-    email: julie.dion@canada.ca
-  - name: Laguwaran Navaratnarajah
-    email: laguwaran.navaratnarajah@canada.ca
-  - name: Mohamed Dahrouj
-    email: mohamed.dahrouj@canada.ca
+  - name: Marc-André Ménard
+    email: marc-andre.menard@statcan.gc.ca
+  - name: Mathis Marcotte
+    email: mathis.marcotte@statcan.gc.ca
 engine: gotpl
