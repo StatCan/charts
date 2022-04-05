@@ -3,9 +3,8 @@ kind: CronJob
 metadata:
   name: ad-scan-users-projects
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "0 0 * * *"
   suspend: true
-  #schedule: "0 5 * * 1"
   jobTemplate:
     spec:
       template:
