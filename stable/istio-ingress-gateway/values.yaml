@@ -19,6 +19,7 @@ ingressGateway:
     type: LoadBalancer
     # Defines if an "internal" or "external" Azure load-balancer is deployed for the service.
     azureLoadBalancer: internal
+    azureLoadBalancerSubnet: ""
     # Specifies the IP that the LoadBalancer should use. Skipped if empty.
     loadBalancerIP:
     # Extra ports to expose on the service.

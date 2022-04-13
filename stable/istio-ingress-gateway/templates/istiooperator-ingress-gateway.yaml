@@ -54,8 +54,14 @@ spec:
         serviceAnnotations:
           {{- if eq .Values.ingressGateway.service.azureLoadBalancer "internal" }}
           service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+          {{- if .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          service.beta.kubernetes.io/azure-load-balancer-internal-subnet: {{ .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          {{- end }}
           {{- end }}
           {{- if eq .Values.ingressGateway.service.azureLoadBalancer "external" }}
           service.beta.kubernetes.io/azure-load-balancer-external: "true"
+          {{- if .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          service.beta.kubernetes.io/azure-load-balancer-external-subnet: {{ .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          {{- end }}
           {{- end }}
   profile: empty
