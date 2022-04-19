@@ -50,7 +50,7 @@ spec:
               nodePort: null
               {{- end }}
               port: 443
-              protocol: TCP.
+              protocol: TCP
               targetPort: 8443
           {{- end }}
           {{- if .Values.ingressGateway.service.ports }}
