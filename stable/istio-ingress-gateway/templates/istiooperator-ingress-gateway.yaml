@@ -34,15 +34,23 @@ spec:
           {{- if .Values.https.enabled }}
           {{- if .Values.https.httpsRedirect }}
             - name: http2
-              nodePort: 30540
+              {{- if and (or (eq .Values.ingressGateway.service.type "NodePort") (eq .Values.ingressGateway.service.type "LoadBalancer")) (not (empty .Values.ingressGateway.service.nodePorts.http)) }}
+              nodePort: {{ .Values.ingressGateway.service.nodePorts.http }}
+              {{- else if eq .Values.ingressGateway.service.type "ClusterIP" }}
+              nodePort: null
+              {{- end }}
               port: 80
               protocol: TCP
               targetPort: 8080
           {{- end }}
             - name: https
-              nodePort: 31607
+              {{- if and (or (eq .Values.ingressGateway.service.type "NodePort") (eq .Values.ingressGateway.service.type "LoadBalancer")) (not (empty .Values.ingressGateway.service.nodePorts.https)) }}
+              nodePort: {{ .Values.ingressGateway.service.nodePorts.https }}
+              {{- else if eq .Values.ingressGateway.service.type "ClusterIP" }}
+              nodePort: null
+              {{- end }}
               port: 443
-              protocol: TCP
+              protocol: TCP.
               targetPort: 8443
           {{- end }}
           {{- if .Values.ingressGateway.service.ports }}
