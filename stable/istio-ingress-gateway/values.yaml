@@ -24,6 +24,10 @@ ingressGateway:
     loadBalancerIP:
     # Extra ports to expose on the service.
     ports: []
+    # Toggle for NodePorts when deploying many ingress gateways
+    nodePorts:
+      http: 30540
+      https: 31607
 
 # Configures HTTPS on the ingress gateway.
 https:
