@@ -4,7 +4,7 @@ metadata:
   name: ad-scan-users-projects
 spec:
   schedule: "0 0 * * *"
-  suspend: true
+  #suspend: true
   jobTemplate:
     spec:
       template:
