@@ -98,3 +98,10 @@ components:
   gitea:
     # argocd namespace
     namespace: "argocd"
+
+  blobcsi:
+    config: |
+        {"name": "standard", "classification": "unclassified", "secret": "azure-secret/azure-blob-csi-system", "capacity": "100Gi", "readOnly": false}
+        {"name": "premium", "classification": "unclassified", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": false}
+        {"name": "standard-ro", "classification": "protected-b", "secret": "azure-secret/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}
+        {"name": "premium-ro", "classification": "protected-b", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}

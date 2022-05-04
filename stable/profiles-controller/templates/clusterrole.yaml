@@ -29,7 +29,10 @@ rules:
       - ''
     resources:
       - pods
+      - secrets
       - configmaps
+      - persistentvolumes
+      - persistentvolumeclaims
     verbs:
       - get
       - list
