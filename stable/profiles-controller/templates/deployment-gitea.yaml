@@ -38,6 +38,8 @@ spec:
             - gitea
             - --argocdnamespace 
             - {{ .Values.components.gitea.namespace }}
+          envFrom:
+              {{- toYaml .Values.components.gitea.envFrom | nindent 14 }}
           env:
             {{- range $env := .Values.extraEnv }}
             - name: {{ $env.name }}
