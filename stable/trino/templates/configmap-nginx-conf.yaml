@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: trino-system
+data:
+  nginx.conf.tmpl: |
+    worker_processes auto;
+
+    # Use directory writable by non-root user.
+    pid /tmp/nginx.pid;
+
+    # Log to /dev/std*: leave disk alone
+    error_log stderr;
+
+    events {
+      # Reduce from default (1024): the sidecare is for a single coordinator.
+      worker_connections 16;
+    }
+
+    http {
+      # Use directory writable by non-root user.
+      proxy_temp_path /tmp/proxy_temp;
+      client_body_temp_path /tmp/client_temp;
+      fastcgi_temp_path /tmp/fastcgi_temp;
+      uwsgi_temp_path /tmp/uwsgi_temp;
+      scgi_temp_path /tmp/scgi_temp;
+
+      log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+      access_log stdout main;
+
+      keepalive_timeout 65;
+
+      # Authenticate upstream server, trusting the Kubernetes CA.
+      proxy_ssl_verify on;
+      proxy_ssl_trusted_certificate '/run/secrets/kubernetes.io/serviceaccount/ca.crt';
+
+      server {
+        listen 8090;
+
+        # Proxy JWKS GET requests (only) to the Kubernetes API server.
+        location /openid/v1/jwks {
+          limit_except GET {
+            deny all;
+          }
+          proxy_pass 'https://kubernetes.default.svc/openid/v1/jwks';
+
+          # Authenticate using the JWT from the environment – which should be
+          # the container-mounted service account JWT.
+          proxy_set_header Authorization 'Bearer $JWT';
+        }
+      }
+    }
