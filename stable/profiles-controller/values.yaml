@@ -98,6 +98,9 @@ components:
   gitea:
     # argocd namespace
     namespace: "argocd"
+    envFrom:
+      - secretRef:
+          name: "gitea-postgres-connection-unclassified"
 
   blobcsi:
     config: |
