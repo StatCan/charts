@@ -7,8 +7,8 @@ mariadb:
   auth:
     username: hive
     database: metastore
-    rootPassword: Q1zx10EMuU21aEgAZm4kJm9DrD0EjjzIYE8y01Ea
-    password: Q1zx10EMuU21aEgAZm4kJm9DrD0EjjzIYE8y01Ea
+    rootPassword: ${ENV:SECRET_KEY}
+    password: ${ENV:SECRET_KEY}
 
 replicas: 1
 resources: {}
@@ -19,6 +19,13 @@ conf:
     # hive.metastore.warehouse.dir:
     fs.s3a.impl: org.apache.hadoop.fs.s3a.S3AFileSystem
     fs.s3a.access.key: admin
-    fs.s3a.secret.key: Q1zx10EMuU21aEgAZm4kJm9DrD0EjjzIYE8y01Ea
+    fs.s3a.secret.key: ${ENV:SECRET_KEY}
     fs.s3a.endpoint: http://minio.minio-system:9000
     fs.s3a.path.style.access: true
+
+env:
+  - name: SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: hive-metastore-secret-key
+        key: password
