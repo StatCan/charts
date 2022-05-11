@@ -28,6 +28,10 @@ spec:
               name: cpu
               targetAverageUtilization: 80
             type: Resource
+        {{- with .Values.ingressGateway.nodeSelector }}
+        nodeSelector:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         service:
           type: {{ .Values.ingressGateway.service.type }}
           ports:
@@ -58,10 +62,6 @@ spec:
           {{- end }}
           {{- if .Values.ingressGateway.service.loadBalancerIP }}
           loadBalancerIP: {{ .Values.ingressGateway.service.loadBalancerIP }}
-          {{- end }}
-          {{- with .Values.ingressGateway.nodeSelector }}
-          nodeSelector:
-            {{- toYaml . | nindent 8 }}
           {{- end }}
         serviceAnnotations:
           {{- if eq .Values.ingressGateway.service.azureLoadBalancer "internal" }}
