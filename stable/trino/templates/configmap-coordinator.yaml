@@ -72,3 +72,10 @@ data:
     {{ $configValue }}
   {{- end }}
 
+  rules.json: |
+
+
+  access-control.properties: |
+    access-control.name=file
+    security.config-file=/etc/trino/rules.json
+    security.refresh-period=1s
