@@ -10,12 +10,12 @@ image:
 
 server:
   jvm:
-    maxHeapSize: 4G # ONLY for local development!
+    maxHeapSize: 7G
     gcMethod:
       type: "UseG1GC"
       g1:
         heapRegionSize: "32M"
-  workers: 1
+  workers: 2
   node:
     environment: production
     dataDir: /data/trino
@@ -25,10 +25,10 @@ server:
       level: INFO
   config:
     memory:
-      heapHeadroomPerNode: 1GB # ONLY for local development!
+      heapHeadroomPerNode: 1GB
     query:
-      maxMemory: 2GB # ONLY for local development!
-      maxMemoryPerNode: 1GB # ONLY for local development!
+      maxMemory: 3GB
+      maxMemoryPerNode: 1GB
     path: /etc/trino
     http:
       port: 8080
