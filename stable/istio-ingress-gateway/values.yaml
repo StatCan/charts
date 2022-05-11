@@ -14,6 +14,7 @@ ingressGateway:
   enabled: true
   maxReplicas: 5
   minReplicas: 3
+  nodeSelector: {}
   service:
     # Defines the type of Service to deploy:
     type: LoadBalancer
