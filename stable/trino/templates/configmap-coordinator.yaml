@@ -73,6 +73,14 @@ data:
   {{- end }}
 
   rules.json: |
+    {
+      "tables": [
+        {
+          "user": ".*",
+          "privileges": ["SELECT", "INSERT", "DELETE", "UPDATE", "OWNERSHIP"]
+        }
+      ]
+    }
 
 
   access-control.properties: |
