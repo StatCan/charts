@@ -47,6 +47,9 @@ data:
   {{- range $configValue := .Values.additionalConfigProperties }}
     {{ $configValue }}
   {{- end }}
+  {{- range $configValue := .Values.nodeAddress }}
+    {{ $configValue }}
+  {{- end }}
   {{ .Values.server.workerExtraConfig | indent 4 }}
 
   exchange-manager.properties: |
