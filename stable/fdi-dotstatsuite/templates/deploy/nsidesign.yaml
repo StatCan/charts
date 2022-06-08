@@ -89,6 +89,22 @@ spec:
               value: SqlServer
             - name: "disseminationDbConnection__connectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(DESIGN_DATA_USER);Password=$(DESIGN_DATA_PASSWORD);"
+          {{- if index .Values.nsiDesign.enabled }}  
+            - name: "SpacesInternal__0__Id"
+              value: "{{ .Values.nsiDesign.dataspace }}"
+            - name: "SpacesInternal__0__DotStatSuiteCoreStructDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_STRUCTURE_DB);User=$(DESIGN_STRUCTURE_USER);Password=$(DESIGN_STRUCTURE_PASSWORD);"
+            - name: "SpacesInternal__0__DotStatSuiteCoreDataDbConnectionString"
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(DESIGN_DATA_USER);Password=$(DESIGN_DATA_PASSWORD);"
+            - name: "SpacesInternal__0__DataImportTimeOutInMinutes"
+              value: "5"
+            - name: "SpacesInternal__0__DatabaseCommandTimeoutInSec"
+              value: "270"
+            - name: "SpacesInternal__0__AutoLog2DB"
+              value: "true"
+            - name: "SpacesInternal__0__AutoLog2DBLogLevel"
+              value: "Info"     
+          {{- end }}
           ports:
             - name: http
               containerPort: 80
