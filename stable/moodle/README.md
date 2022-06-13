@@ -7,11 +7,11 @@ Moodle(TM) LMS is an open source online Learning Management System widely used a
 [Overview of Bitnami LMS powered by Moodle(&trade;) LMS](http://moodle.org/)
 
 Disclaimer: The respective trademarks mentioned in the offering are owned by the respective companies. We do not provide commercial license of any of these products. This listing has an open source license. Moodle(TM) LMS is run and maintained by Moodle HQ, that is a completely and separate project from Bitnami.
-                           
+
 ## TL;DR
 
 ```console
-$ helm repo add bitnami https://charts.bitnami.com/bitnami
+$ helm repo add bitnami https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
 $ helm install my-release bitnami/moodle
 ```
 
