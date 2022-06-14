@@ -37,13 +37,13 @@ spec:
           args:
             - gitea
           envFrom:
-              {{- toYaml .Values.components.giteaProtectedb.envFrom | nindent 14 }}
+              {{- toYaml .Values.components.giteaProtectedB.envFrom | nindent 14 }}
           env:
             {{- range $env := .Values.extraEnv }}
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}
-            {{- range $env := .Values.components.giteaProtectedb.env }}
+            {{- range $env := .Values.components.giteaProtectedB.env }}
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}
