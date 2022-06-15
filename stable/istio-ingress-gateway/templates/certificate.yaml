@@ -16,4 +16,6 @@ spec:
     kind: {{ .Values.https.certificate.issuerRef.kind }}
     name: {{ .Values.https.certificate.issuerRef.name }}
   secretName: {{ .Values.https.certificate.secretName }}
+  privateKey:
+    rotationPolicy: Always
 {{- end }}

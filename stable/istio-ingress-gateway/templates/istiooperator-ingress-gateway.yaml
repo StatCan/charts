@@ -28,6 +28,10 @@ spec:
               name: cpu
               targetAverageUtilization: 80
             type: Resource
+        {{- with .Values.ingressGateway.nodeSelector }}
+        nodeSelector:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         service:
           type: {{ .Values.ingressGateway.service.type }}
           ports:

@@ -24,6 +24,9 @@ data:
   {{- if .Values.operator.kubernetesBenchmarkEnabled }}
   kube-bench.imageRef: {{ required ".Values.kubeBench.imageRef is required" .Values.kubeBench.imageRef | quote }}
   {{- end }}
+  {{- if .Values.operator.clusterComplianceEnabled }}
+  compliance.failEntriesLimit: {{ required ".Values.compliance.failEntriesLimit is required" .Values.compliance.failEntriesLimit | quote }}
+  {{- end }}
 ---
 apiVersion: v1
 kind: Secret
@@ -59,7 +62,11 @@ data:
   {{- range $key, $registry := .nonSslRegistries }}
   trivy.nonSslRegistry.{{ $key }}: {{ $registry | quote }}
   {{- end }}
+  {{- range $key, $registry := .registry.mirror }}
+  trivy.registry.mirror.{{ $key }}: {{ $registry | quote }}
+  {{- end }}
   trivy.severity: {{ .severity | quote }}
+  trivy.dbRepository: {{ .dbRepository | quote }}
   {{- if .ignoreUnfixed }}
   trivy.ignoreUnfixed: {{ .ignoreUnfixed | quote }}
   {{- end }}

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "profiles-controller.fullname" . }}-gitea
+  name: {{ include "profiles-controller.fullname" . }}-gitea-unclassified
   labels:
     {{- include "profiles-controller.labels" . | nindent 4 }}
 spec:
@@ -36,10 +36,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - gitea
-            - --argocdnamespace 
-            - {{ .Values.components.gitea.namespace }}
+          envFrom:
+              {{- toYaml .Values.components.giteaUnclassified.envFrom | nindent 14 }}
           env:
             {{- range $env := .Values.extraEnv }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
+            {{- range $env := .Values.components.giteaUnclassified.env }}
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}

@@ -105,6 +105,10 @@ spec:
           - --default-configmap={{ .Values.defaultConfigmap }}
           - --interval={{ .Values.interval }}
           - --log-level={{ .Values.logLevel }}
+          - --fluentd-loglevel={{ .Values.fluentdLogLevel }}
+          {{- if not (empty .Values.bufferMountFolder) }}
+          - --buffer-mount-folder={{ .Values.bufferMountFolder }}
+          {{- end }}
           - --output-dir=/fluentd/etc
           - --templates-dir=/templates
           - --id={{ template "fluentd-router.fullname" . }}
