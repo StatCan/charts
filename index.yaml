@@ -3,7 +3,7 @@ entries:
   analytics-platform:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.200497537Z"
+    created: "2022-06-16T17:19:53.418510991Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -14,7 +14,7 @@ entries:
       repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
       version: 10.5.6
     description: The Portal for the Analytics Platform DAaaS Portal
-    digest: 054ffb14b30fb2e39fba55419485bff9cc95ab5655e02b32e1a4cf9f9954abaf
+    digest: 5d8560701b2c920524f9ab1faa3cbe88e78f5c6b1e8ccb18ebd2604471efd99d
     home: https://statcan.gc.ca
     icon: https://www.python.org/static/img/python-logo
     keywords:
@@ -36,9 +36,9 @@ entries:
   argo-controller:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.2036054Z"
+    created: "2022-06-16T17:19:53.421666642Z"
     description: A Helm chart for the Statistics Canada Argo Controller.
-    digest: 0e04fefa410f2759ee1a932d10dd994f1205d9b329ae1436aa72f0a2a1f14bc4
+    digest: 506f5b3fd203d9d909fb2bb946dcb3dc361ac7af80b60c53acd60db3ef91290d
     name: argo-controller
     type: application
     urls:
@@ -46,7 +46,7 @@ entries:
     version: 0.0.7
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.203172392Z"
+    created: "2022-06-16T17:19:53.420869726Z"
     description: A Helm chart for the Statistics Canada Argo Controller.
     digest: 1adcbaf5cdb65c3e57d377b58d14f5f799de205114c0698fe994008417c3ab9d
     name: argo-controller
@@ -56,7 +56,7 @@ entries:
     version: 0.0.6
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.202742583Z"
+    created: "2022-06-16T17:19:53.419787133Z"
     description: A Helm chart for the Statistics Canada Argo Controller.
     digest: 13e41606fc083393ed39fe6c9c0d4feb9632566a05dc996c41d59dab181c05b7
     name: argo-controller
@@ -66,7 +66,7 @@ entries:
     version: 0.0.5
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.202362075Z"
+    created: "2022-06-16T17:19:53.419554554Z"
     description: A Helm chart for the Statistics Canada Argo Controller.
     digest: 32ffd3cc235bc5f7738508a88dc52f7a253228f487c1cbd7c3e32b75003f88c0
     name: argo-controller
@@ -76,7 +76,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.201865565Z"
+    created: "2022-06-16T17:19:53.419305986Z"
     description: A Helm chart for the Statistics Canada Argo Controller.
     digest: 23d3f113c292919598a6b7d4a30bda8725d6aa0cbea9f3f140a1fab9c16e5454
     name: argo-controller
@@ -86,7 +86,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.201413456Z"
+    created: "2022-06-16T17:19:53.419041865Z"
     description: A Helm chart for the Statistics Canada Argo Controller.
     digest: 7d713f863ff01135f27d73cf35ca3b16fc3ab5ec331ec8398e009a78011e8614
     name: argo-controller
@@ -96,7 +96,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.200994647Z"
+    created: "2022-06-16T17:19:53.418787267Z"
     description: A Helm chart for the Statistics Canada Argo Controller.
     digest: 7d599fd84da910f1b71b2ddb8dc9424598732ec58e1333ba22493592bbd99a0d
     name: argo-controller
@@ -107,7 +107,30 @@ entries:
   argocd-operator:
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2022-06-16T13:46:23.227668194Z"
+    created: "2022-06-16T17:19:53.44407798Z"
+    description: A Helm chart for ArgoCD Operator
+    digest: d016feb718622b158cda82d1f2744280f4c3d77216a21cf324f71be4a9b9e556
+    home: https://argocd-operator.readthedocs.io/
+    icon: https://raw.githubusercontent.com/argoproj-labs/argocd-operator/master/deploy/argo-cd/icon.png
+    keywords:
+    - argocd
+    - cd
+    - gitops
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: zachomedia
+    name: argocd-operator
+    sources:
+    - https://github.com/argoproj-labs/argocd-operator
+    type: application
+    urls:
+    - https://statcan.github.io/charts/argocd-operator-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: v0.1.0
+    created: "2022-06-16T17:19:53.441823835Z"
     description: A Helm chart for ArgoCD Operator
     digest: b768a34a458b52dd3793d12f3213b0bb2a5079c68b9e148b12d4b2ad2a4eb879
     home: https://argocd-operator.readthedocs.io/
@@ -130,7 +153,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2022-06-16T13:46:23.224364226Z"
+    created: "2022-06-16T17:19:53.437644309Z"
     description: A Helm chart for ArgoCD Operator
     digest: 444e220aa53be3c8cdd7074dba7f16767029823fc03db1950ee6cd400e7171e3
     home: https://argocd-operator.readthedocs.io/
@@ -153,7 +176,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2022-06-16T13:46:23.220875755Z"
+    created: "2022-06-16T17:19:53.43539369Z"
     description: A Helm chart for ArgoCD Operator
     digest: c80e5dc85ad07aaa14492ce652f1c0adaf6e0bc99626ee3ade9ef53b70b093cc
     home: https://argocd-operator.readthedocs.io/
@@ -176,7 +199,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: v0.1.0
-    created: "2022-06-16T13:46:23.217447685Z"
+    created: "2022-06-16T17:19:53.433165881Z"
     description: A Helm chart for ArgoCD Operator
     digest: 6d6d026022f7436eeb544bcc32efed3d5238614db76559f56a9cd7377bd25959
     home: https://argocd-operator.readthedocs.io/
@@ -199,7 +222,7 @@ entries:
     version: 0.1.0
   - apiVersion: v2
     appVersion: v0.0.15
-    created: "2022-06-16T13:46:23.213412702Z"
+    created: "2022-06-16T17:19:53.429782445Z"
     description: A Helm chart for ArgoCD Operator
     digest: f348a20870ce980fedbe7fa810532376b46310e3c81135f44b6af0d89ec4ebc9
     home: https://argocd-operator.readthedocs.io/
@@ -222,7 +245,7 @@ entries:
     version: 0.0.6
   - apiVersion: v2
     appVersion: v0.0.15
-    created: "2022-06-16T13:46:23.211119855Z"
+    created: "2022-06-16T17:19:53.427583661Z"
     description: A Helm chart for ArgoCD Operator
     digest: a3e17371fca7f1c1ed0d9fef6a6cf4dadd5d65158a072c22ee38873058f9432f
     home: https://argocd-operator.readthedocs.io/
@@ -245,7 +268,7 @@ entries:
     version: 0.0.5
   - apiVersion: v2
     appVersion: v0.0.15
-    created: "2022-06-16T13:46:23.209382519Z"
+    created: "2022-06-16T17:19:53.426392958Z"
     description: A Helm chart for ArgoCD Operator
     digest: 0c5b8c7307fd0e37c91c9ea535742e4d3270e70707eebd98888f36bac5e6f15c
     home: https://argocd-operator.readthedocs.io/
@@ -268,7 +291,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: v0.0.15
-    created: "2022-06-16T13:46:23.20747638Z"
+    created: "2022-06-16T17:19:53.425194691Z"
     description: A Helm chart for ArgoCD Operator
     digest: 8c56946046f64347894c5743f109fdd7f8d84ea9183463d3b86c2716ad9bb034
     home: https://argocd-operator.readthedocs.io/
@@ -291,7 +314,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: v0.0.15
-    created: "2022-06-16T13:46:23.205412138Z"
+    created: "2022-06-16T17:19:53.423962186Z"
     description: A Helm chart for ArgoCD Operator
     digest: 187958b5b3743f05181f9a9c761c48fd7137ea1869e42aa57df663b12b2431dd
     home: https://argocd-operator.readthedocs.io/
@@ -315,9 +338,9 @@ entries:
   cert-manager-istio-controller:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.229052323Z"
+    created: "2022-06-16T17:19:53.444886917Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
-    digest: dae3d8190d5fd2a32692958b0a027e22c3695748dbc3127f2d546d3d1ff72e13
+    digest: b776ef97e91e78a4fd9a81d17e30294415f4fc0bacb845e6385d7a68ca7c40ca
     home: https://github.com/StatCan/cert-manager-istio-controller
     name: cert-manager-istio-controller
     type: application
@@ -326,7 +349,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.228609114Z"
+    created: "2022-06-16T17:19:53.444621864Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
     digest: 068eeb6080826576e3a91e2bd50c46b679f6d81ccadd1ffb8f82d463f0f6c467
     home: https://github.com/StatCan/cert-manager-istio-controller
@@ -336,7 +359,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.228120004Z"
+    created: "2022-06-16T17:19:53.444358108Z"
     description: Configure Istio resources for cert-manager HTTP challenges.
     digest: 130d152724d81b7d256ff3bb9c0593d21e3d1a671f58113678ae4d0f1faa7ab6
     home: https://github.com/StatCan/cert-manager-istio-controller
@@ -347,7 +370,7 @@ entries:
   ckan:
   - apiVersion: v2
     appVersion: 2.9.5
-    created: "2022-06-16T13:46:23.427507295Z"
+    created: "2022-06-16T17:19:53.599849035Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -366,7 +389,7 @@ entries:
       repository: https://statcan.github.io/charts
       version: 1.0.0
     description: CKAN Helm Chart for Kubernetes.
-    digest: 9a6784b54c09da402deecd11ba0f64ff90a677f3c093c1151057c9f8c8099500
+    digest: 5c2cf3893b3e135a8148583cc4bb77d00ad9baa06d02dcd174052583547784e5
     home: https://ckan.org/
     icon: https://ckan.org/static/img/logo.svg
     keywords:
@@ -389,7 +412,7 @@ entries:
     version: 0.0.22
   - apiVersion: v2
     appVersion: 2.9.5
-    created: "2022-06-16T13:46:23.412965496Z"
+    created: "2022-06-16T17:19:53.588781176Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -431,7 +454,7 @@ entries:
     version: 0.0.21
   - apiVersion: v2
     appVersion: 2.9.5
-    created: "2022-06-16T13:46:23.398445298Z"
+    created: "2022-06-16T17:19:53.577608518Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -473,7 +496,7 @@ entries:
     version: 0.0.20
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.371858553Z"
+    created: "2022-06-16T17:19:53.556251217Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -515,7 +538,7 @@ entries:
     version: 0.0.19
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.357199452Z"
+    created: "2022-06-16T17:19:53.544735563Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -557,7 +580,7 @@ entries:
     version: 0.0.18
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.343670274Z"
+    created: "2022-06-16T17:19:53.533473147Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -599,7 +622,7 @@ entries:
     version: 0.0.17
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.328801069Z"
+    created: "2022-06-16T17:19:53.523896678Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -641,7 +664,7 @@ entries:
     version: 0.0.16
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.316076808Z"
+    created: "2022-06-16T17:19:53.5116662Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -683,7 +706,7 @@ entries:
     version: 0.0.15
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.300685892Z"
+    created: "2022-06-16T17:19:53.500489471Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -725,7 +748,7 @@ entries:
     version: 0.0.14
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.286456901Z"
+    created: "2022-06-16T17:19:53.489206142Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -767,7 +790,7 @@ entries:
     version: 0.0.12
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.272009904Z"
+    created: "2022-06-16T17:19:53.479574951Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -809,7 +832,7 @@ entries:
     version: 0.0.11
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.258303823Z"
+    created: "2022-06-16T17:19:53.467676365Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -851,7 +874,7 @@ entries:
     version: 0.0.10
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.524039375Z"
+    created: "2022-06-16T17:19:53.675880401Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -893,7 +916,7 @@ entries:
     version: 0.0.9
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.509887185Z"
+    created: "2022-06-16T17:19:53.666462361Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -935,7 +958,7 @@ entries:
     version: 0.0.8
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.496849218Z"
+    created: "2022-06-16T17:19:53.654769384Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -977,7 +1000,7 @@ entries:
     version: 0.0.7
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.483231438Z"
+    created: "2022-06-16T17:19:53.643548609Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1019,7 +1042,7 @@ entries:
     version: 0.0.6
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.468285731Z"
+    created: "2022-06-16T17:19:53.63238389Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1061,7 +1084,7 @@ entries:
     version: 0.0.5
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.454607251Z"
+    created: "2022-06-16T17:19:53.622997817Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1103,7 +1126,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.441630385Z"
+    created: "2022-06-16T17:19:53.611056591Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1145,7 +1168,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.385081424Z"
+    created: "2022-06-16T17:19:53.56817155Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1187,7 +1210,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 2.9.2
-    created: "2022-06-16T13:46:23.243453518Z"
+    created: "2022-06-16T17:19:53.455864296Z"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -1230,7 +1253,7 @@ entries:
   cost-analyzer:
   - apiVersion: v2
     appVersion: 1.82.2
-    created: "2022-06-16T13:46:23.709764986Z"
+    created: "2022-06-16T17:19:53.82627781Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1257,7 +1280,7 @@ entries:
     version: 1.82.2
   - apiVersion: v2
     appVersion: 1.82.0
-    created: "2022-06-16T13:46:23.694244768Z"
+    created: "2022-06-16T17:19:53.813626738Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1284,7 +1307,7 @@ entries:
     version: 1.82.0
   - apiVersion: v2
     appVersion: 1.81.0
-    created: "2022-06-16T13:46:23.678382942Z"
+    created: "2022-06-16T17:19:53.800859943Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1311,7 +1334,7 @@ entries:
     version: 1.81.0
   - apiVersion: v2
     appVersion: 1.80.1
-    created: "2022-06-16T13:46:23.665032069Z"
+    created: "2022-06-16T17:19:53.788250852Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1338,7 +1361,7 @@ entries:
     version: 1.80.1
   - apiVersion: v2
     appVersion: 1.74.0
-    created: "2022-06-16T13:46:23.648802236Z"
+    created: "2022-06-16T17:19:53.775523744Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1365,7 +1388,7 @@ entries:
     version: 1.74.0+1
   - apiVersion: v2
     appVersion: 1.71.0
-    created: "2022-06-16T13:46:23.6324371Z"
+    created: "2022-06-16T17:19:53.762551212Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1390,7 +1413,7 @@ entries:
     version: 1.71.0
   - apiVersion: v2
     appVersion: 1.68.1
-    created: "2022-06-16T13:46:23.61687818Z"
+    created: "2022-06-16T17:19:53.749923938Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1415,7 +1438,7 @@ entries:
     version: 1.68.1+1
   - apiVersion: v2
     appVersion: 1.61.3
-    created: "2022-06-16T13:46:23.603658509Z"
+    created: "2022-06-16T17:19:53.738372763Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1440,7 +1463,7 @@ entries:
     version: 0.1.5
   - apiVersion: v1
     appVersion: 1.61.3
-    created: "2022-06-16T13:46:23.589284314Z"
+    created: "2022-06-16T17:19:53.727866335Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1464,7 +1487,7 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2022-06-16T13:46:23.57640605Z"
+    created: "2022-06-16T17:19:53.719145944Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1488,7 +1511,7 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2022-06-16T13:46:23.562850872Z"
+    created: "2022-06-16T17:19:53.708075635Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1512,7 +1535,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.61.1
-    created: "2022-06-16T13:46:23.550632021Z"
+    created: "2022-06-16T17:19:53.697163318Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1536,7 +1559,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.57.1
-    created: "2022-06-16T13:46:23.537257047Z"
+    created: "2022-06-16T17:19:53.687001026Z"
     dependencies:
     - name: cost-analyzer
       repository: https://kubecost.github.io/cost-analyzer/
@@ -1561,7 +1584,7 @@ entries:
   covid:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.711674626Z"
+    created: "2022-06-16T17:19:53.827397919Z"
     description: Covid-19 nodejs app built in React.
     digest: 719eca4850b779135cf4d1eb3d33459caa86db3c42d05a4652bdde9f6a556cb3
     home: https://github.com/CSSEGISandData/COVID-19
@@ -1584,7 +1607,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.711048913Z"
+    created: "2022-06-16T17:19:53.827048597Z"
     description: Covid-19 nodejs app built in React.
     digest: bb94edbbb9e316dc82f9ff642f66928fedc6d9e5c21f0ca18e54174175db2256
     home: https://github.com/CSSEGISandData/COVID-19
@@ -1607,7 +1630,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.710384399Z"
+    created: "2022-06-16T17:19:53.826674377Z"
     description: Covid-19 nodejs app built in React.
     digest: ca8e393dd7158ca1ac1949086a5a74b6736c590e1d6103f277b277ebdda3f0a2
     home: https://github.com/CSSEGISandData/COVID-19
@@ -1630,7 +1653,7 @@ entries:
   csi-vault:
   - apiVersion: v2
     appVersion: 0.2.0
-    created: "2022-06-16T13:46:23.716553826Z"
+    created: "2022-06-16T17:19:53.829630113Z"
     dependencies:
     - name: csi-vault
       repository: https://charts.appscode.com/stable/
@@ -1652,7 +1675,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2022-06-16T13:46:23.714752489Z"
+    created: "2022-06-16T17:19:53.828516825Z"
     dependencies:
     - name: csi-vault
       repository: https://charts.appscode.com/stable/
@@ -1674,9 +1697,9 @@ entries:
   datapusher:
   - apiVersion: v2
     appVersion: 0.0.17
-    created: "2022-06-16T13:46:23.717126337Z"
+    created: "2022-06-16T17:19:53.830029459Z"
     description: CKAN Datapusher helm chart
-    digest: 9ee375e5204e5efb695fdff71ef7073eed2c10cc8f8e4f5ecd0d9bdb3e49a8dd
+    digest: c91c08620d9107e87bdd7ac480e817c0220ad50dbf74c9590bd7603db3e9379c
     name: datapusher
     type: application
     urls:
@@ -1685,7 +1708,7 @@ entries:
   dotstatsuite:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-16T13:46:23.726943739Z"
+    created: "2022-06-16T17:19:53.838651407Z"
     dependencies:
     - condition: mssql-linux.enabled
       name: mssql-linux
@@ -1712,10 +1735,10 @@ entries:
     version: 0.2.8
   dremio:
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.735593916Z"
+    created: "2022-06-16T17:19:53.845276504Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
-    digest: ebed107cf35348a4dc7f33efcce0543297349e1811f94a3dda629c4102e9ceee
+    digest: 150956c72da9520299b8a51c2a57f52bbaff4f48854af9dc26b14c5dbcb00a51
     home: https://www.dremio.com/
     keywords:
     - dremio
@@ -1726,7 +1749,7 @@ entries:
     - https://statcan.github.io/charts/dremio-2.0.2.tgz
     version: 2.0.2
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.733377071Z"
+    created: "2022-06-16T17:19:53.843783332Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: e27bdb92f601dec927ccbbee345b059b270ba3107b6aa379f734fa4dd20d8ec0
@@ -1740,7 +1763,7 @@ entries:
     - https://statcan.github.io/charts/dremio-2.0.1.tgz
     version: 2.0.1
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.731185626Z"
+    created: "2022-06-16T17:19:53.842284653Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: e01bfc50fe92ddcaac313ae0de95ff51b62b6ee40f6b1f177422b01eb4dc8c3d
@@ -1755,7 +1778,7 @@ entries:
     version: 2.0.0
   - apiVersion: v2
     appVersion: 4.2.0
-    created: "2022-06-16T13:46:23.72944049Z"
+    created: "2022-06-16T17:19:53.840800394Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: 1ac8a1cb1a94335543a100d04dfa899f81e3f9391f66471d89364e78e8b76dd4
@@ -1772,7 +1795,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 4.2.0
-    created: "2022-06-16T13:46:23.728670874Z"
+    created: "2022-06-16T17:19:53.840100294Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: 27d86863c77c1b280e66288a4925dfd11dcd115a44e2d4e81ff145a0c9166689
@@ -1789,7 +1812,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 4.2.0
-    created: "2022-06-16T13:46:23.727887958Z"
+    created: "2022-06-16T17:19:53.839370025Z"
     description: 'Dremio is an open source platform providing the missing link in
       modern data. '
     digest: 7f2da76c49ba422e5b1322efede6686b1738c86a94da470d138b1f9d2c56b27e
@@ -1806,14 +1829,14 @@ entries:
   fdi-dotstatsuite:
   - apiVersion: v2
     appVersion: 7.2.0
-    created: "2022-06-16T13:46:23.76210446Z"
+    created: "2022-06-16T17:19:53.866507136Z"
     dependencies:
     - condition: mssql-linux.enabled
       name: mssql-linux
       repository: https://charts.helm.sh/stable
       version: 0.11.4
     description: fdi-dotstatsuite kube core services
-    digest: 94087f126bcc49841ddc372f22ef5e2483ad13be0b740119ab8ba1ad6651ef0b
+    digest: 9eaf94d8b093cd03c7a9a28e39874e6eba41ff2c58b5e4f2a48f45566b67d812
     home: https://statcan.gc.ca
     maintainers:
     - email: william.hearn@canada.ca
@@ -1831,7 +1854,7 @@ entries:
     version: 0.2.14
   - apiVersion: v2
     appVersion: 7.2.0
-    created: "2022-06-16T13:46:23.757795772Z"
+    created: "2022-06-16T17:19:53.864332073Z"
     dependencies:
     - condition: mssql-linux.enabled
       name: mssql-linux
@@ -1856,7 +1879,7 @@ entries:
     version: 0.2.13
   - apiVersion: v2
     appVersion: 7.2.0
-    created: "2022-06-16T13:46:23.754927113Z"
+    created: "2022-06-16T17:19:53.862164795Z"
     dependencies:
     - condition: mssql-linux.enabled
       name: mssql-linux
@@ -1881,7 +1904,7 @@ entries:
     version: 0.2.12
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-16T13:46:23.752088655Z"
+    created: "2022-06-16T17:19:53.857698664Z"
     dependencies:
     - condition: mssql-linux.enabled
       name: mssql-linux
@@ -1906,7 +1929,7 @@ entries:
     version: 0.2.11
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-16T13:46:23.749124694Z"
+    created: "2022-06-16T17:19:53.855526185Z"
     dependencies:
     - condition: mssql-linux.enabled
       name: mssql-linux
@@ -1933,7 +1956,7 @@ entries:
     version: 0.2.10
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-16T13:46:23.774439913Z"
+    created: "2022-06-16T17:19:53.876593436Z"
     dependencies:
     - condition: mssql-linux.enabled
       name: mssql-linux
@@ -1961,9 +1984,9 @@ entries:
   fluentd-operator:
   - apiVersion: v2
     appVersion: 1.16.5
-    created: "2022-06-16T13:46:23.776906064Z"
+    created: "2022-06-16T17:19:53.87820727Z"
     description: Distribution of Fluentd as K8S daemonset
-    digest: 3e324d83dc42695c20a31d83e7c14f25c3ebb3be8d1f21ca9fac2e3329416269
+    digest: c2d7131d9bcf19f7260d12c933c4d5543713854f1e5db87497118600efe654e9
     home: https://github.com/vmware/kube-fluentd-operator
     keywords:
     - fluentd
@@ -1984,7 +2007,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: 1.13.0
-    created: "2022-06-16T13:46:23.77623595Z"
+    created: "2022-06-16T17:19:53.877779597Z"
     description: Distribution of Fluentd as K8S daemonset
     digest: 99fe271f1b6e36718fa597152d47ef28bfbe2398fe34a501098bffe6eb097df9
     home: https://github.com/vmware/kube-fluentd-operator
@@ -2007,7 +2030,7 @@ entries:
     version: 0.4.4
   - apiVersion: v2
     appVersion: v1.11.0-3-ge92efff
-    created: "2022-06-16T13:46:23.775593637Z"
+    created: "2022-06-16T17:19:53.877370172Z"
     description: Distribution of Fluentd as K8S daemonset
     digest: e27289318e3a70e6dbc074e31f5ecdd51ff0e13e1946ba86cec6c3a45a27fbdf
     home: https://github.com/vmware/kube-fluentd-operator
@@ -2030,7 +2053,7 @@ entries:
     version: 0.4.3
   - apiVersion: v1
     appVersion: 0.3.1
-    created: "2022-06-16T13:46:23.774913423Z"
+    created: "2022-06-16T17:19:53.876953412Z"
     description: Distribution of Fluentd as K8S daemonset
     digest: b3d37f2dbbf5b5b9c0dc073f7ca5db85816939171b2744409cfb9948c0d045c8
     home: https://github.com/vmware/kube-fluentd-operator
@@ -2051,9 +2074,9 @@ entries:
   geoserver:
   - apiVersion: v2
     appVersion: 2.18.2
-    created: "2022-06-16T13:46:23.778122989Z"
+    created: "2022-06-16T17:19:53.879009987Z"
     description: A Helm chart for using GeoServer.
-    digest: 7418706be6c89146e8caeb40e7f9da67efb0c1166dff6d0ef72433780a8d7865
+    digest: 35079f91451d7338109167b3c121c0628eac985940517e8e176d4d90e00863ca
     home: http://geoserver.org
     maintainers:
     - email: william.hearn@canada.ca
@@ -2067,7 +2090,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 2.18.2
-    created: "2022-06-16T13:46:23.777534777Z"
+    created: "2022-06-16T17:19:53.878607659Z"
     description: A Helm chart for using GeoServer.
     digest: c31f181f0cf123e0dc65d599e0528f383d5d20e1ff1cb22572990fcfa7591d38
     home: http://geoserver.org
@@ -2084,7 +2107,7 @@ entries:
   gitlab-runner:
   - apiVersion: v1
     appVersion: bleeding
-    created: "2022-06-16T13:46:23.779229312Z"
+    created: "2022-06-16T17:19:53.8796654Z"
     description: GitLab Runner
     digest: a4570e085cfa92329a7615058fb09253b18bda59eaa700e15e28178b947eb2ae
     home: https://gitlab.com
@@ -2106,13 +2129,13 @@ entries:
   hive-metastore:
   - apiVersion: v2
     appVersion: 3.0.0
-    created: "2022-06-16T13:46:23.783896808Z"
+    created: "2022-06-16T17:19:53.882933837Z"
     dependencies:
     - name: mariadb
       repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
       version: ~10.3.6
     description: Apache Hive standalone metastore
-    digest: d40ba0765802a50a98eae953b7ba83ef63bc20c16cf55b53ba2069fa3fc995ef
+    digest: 9826d42478e40808267503464a5c58c338db046d1025037541377020c48f9645
     home: https://hive.apache.org/
     icon: https://hive.apache.org/images/hive_logo_medium.jpg
     name: hive-metastore
@@ -2122,10 +2145,10 @@ entries:
   inferenceservices-controller:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.784320916Z"
+    created: "2022-06-16T17:19:53.883196035Z"
     description: A Helm chart for the Statistics Canada Kubeflow Inferenceservices
       Controller.
-    digest: 87fe141c6e04ab2557d44c3d74d841ac852a68680a8299de4dc6a59be3457df9
+    digest: c32399ca8a3fc11680fdf5a042aa1f3061d8c5c9b934106a029752a9a1990d80
     name: inferenceservices-controller
     type: application
     urls:
@@ -2134,10 +2157,10 @@ entries:
   ingress-istio-controller:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2022-06-16T13:46:23.785725745Z"
+    created: "2022-06-16T17:19:53.886221684Z"
     description: An Ingress controller for Istio which converts Kubernetes Ingresses
       into VirtualServices.
-    digest: 535e53cb93e4ceb583ccc6b3f38bf5adc88a928b47a4f71a05fe080f6662e796
+    digest: cdae1248d7d50e823e6f20345067f4a26a8c6d2d205786e7b4e004cae60bb11f
     home: https://statcan.gc.ca
     maintainers:
     - email: william.hearn@canada.ca
@@ -2155,7 +2178,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2022-06-16T13:46:23.785035631Z"
+    created: "2022-06-16T17:19:53.884521696Z"
     description: An Ingress controller for Istio which converts Kubernetes Ingresses
       into VirtualServices.
     digest: b1015e041fbc359f5b51b93467cebb077e2a7a217f1ec96065faf6f7e9ed38b1
@@ -2176,20 +2199,20 @@ entries:
     version: 1.0.0
   istio-ingress-gateway:
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.791016454Z"
+    created: "2022-06-16T17:19:53.889675312Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
       (with automatic HTTPS redirect from HTTP if configured), however, more Gateways
       and capbabilities may be added when the need arises. '
-    digest: 4033bc36c0f31255f8d14fee3750424f7537df3c53e62a5f2bec6d6e9de17c08
+    digest: 7d98a8d40e18dc4bc1537afb81409fda817efed129e406176f95c11cf99de8ba
     name: istio-ingress-gateway
     type: application
     urls:
     - https://statcan.github.io/charts/istio-ingress-gateway-2.3.0.tgz
     version: 2.3.0
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.79036974Z"
+    created: "2022-06-16T17:19:53.889309277Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2202,7 +2225,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-2.2.0.tgz
     version: 2.2.0
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.789745128Z"
+    created: "2022-06-16T17:19:53.888940284Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2215,7 +2238,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-2.1.2.tgz
     version: 2.1.2
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.789046413Z"
+    created: "2022-06-16T17:19:53.888575728Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2228,7 +2251,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-2.1.1.tgz
     version: 2.1.1
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.788309498Z"
+    created: "2022-06-16T17:19:53.888261225Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2241,7 +2264,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-2.1.0.tgz
     version: 2.1.0
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.787840488Z"
+    created: "2022-06-16T17:19:53.887951187Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2254,7 +2277,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-2.0.0.tgz
     version: 2.0.0
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.787396579Z"
+    created: "2022-06-16T17:19:53.887648945Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2267,7 +2290,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-1.1.0.tgz
     version: 1.1.0
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.78693557Z"
+    created: "2022-06-16T17:19:53.887349086Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2280,7 +2303,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-1.0.2.tgz
     version: 1.0.2
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.786512561Z"
+    created: "2022-06-16T17:19:53.887031777Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2293,7 +2316,7 @@ entries:
     - https://statcan.github.io/charts/istio-ingress-gateway-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v2
-    created: "2022-06-16T13:46:23.786156154Z"
+    created: "2022-06-16T17:19:53.886721929Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
       certificate generation.  Currently, only HTTPS configurations are available
@@ -2308,7 +2331,7 @@ entries:
   logstash:
   - apiVersion: v2
     appVersion: 7.2.0
-    created: "2022-06-16T13:46:23.795484445Z"
+    created: "2022-06-16T17:19:53.8925519Z"
     dependencies:
     - name: logstash
       repository: https://charts.helm.sh/stable
@@ -2330,7 +2353,7 @@ entries:
     version: 3.1.0
   - apiVersion: v1
     appVersion: 7.2.0
-    created: "2022-06-16T13:46:23.793218999Z"
+    created: "2022-06-16T17:19:53.891183567Z"
     dependencies:
     - name: logstash
       repository: https://kubernetes-charts.storage.googleapis.com/
@@ -2352,14 +2375,14 @@ entries:
   matomo:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.80205068Z"
+    created: "2022-06-16T17:19:53.899175607Z"
     dependencies:
     - condition: mariadb.deployChart
       name: mariadb
       repository: https://charts.helm.sh/stable
       version: 5.11.1
     description: A Helm chart for using Matomo
-    digest: e2576d45c57b47e734e9a061753f0ba0171ddab4d6bcfaddbc63954477ab553e
+    digest: e924ac70fab8e668b8f5e96402d5d8d24265e38d9b12e761c1fef4503368109d
     home: https://matomo.org
     icon: https://bitnami.com/assets/stacks/matomo/img/matomo-stack-110x117.png
     maintainers:
@@ -2374,7 +2397,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.800015438Z"
+    created: "2022-06-16T17:19:53.897039468Z"
     dependencies:
     - condition: mariadb.deployChart
       name: mariadb
@@ -2396,7 +2419,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.797743692Z"
+    created: "2022-06-16T17:19:53.894103028Z"
     dependencies:
     - condition: mariadb.deployChart
       name: mariadb
@@ -2418,9 +2441,9 @@ entries:
   minio-operator:
   - apiVersion: v2
     appVersion: v4.1.0
-    created: "2022-06-16T13:46:23.804635333Z"
+    created: "2022-06-16T17:19:53.900514057Z"
     description: A Helm chart for MinIO Operator
-    digest: f2b27cb155f38a458d6451a46ee0358c8349f5680ef611c97ac7c871ca252a2d
+    digest: 1c232a20208e5b9993a1b37a5e014dc3b1c10c9c2d39974022150c6cb33e1264
     home: https://min.io
     icon: https://min.io/resources/img/logo/MINIO_wordmark.png
     keywords:
@@ -2440,10 +2463,10 @@ entries:
   mlflow:
   - apiVersion: v2
     appVersion: 1.7.2
-    created: "2022-06-16T13:46:23.808945221Z"
+    created: "2022-06-16T17:19:53.902843377Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
-    digest: f97fc810a2c729d9c03964f8fb5d917c7f4b9995266350132e330bd7ef04f1eb
+    digest: f974dfc9c12b4891438b888365446290ba7df033fa1ed9cc5080b0918995ad9d
     home: https://mlflow.org/
     maintainers:
     - email: william.hearn@canada.ca
@@ -2457,7 +2480,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 1.7.2
-    created: "2022-06-16T13:46:23.808202806Z"
+    created: "2022-06-16T17:19:53.902410896Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: ca848e3ad0f50a00acf9f96d2e61d1242eeb3fdf99f4ef502d1aa5dbbeb22c35
@@ -2474,7 +2497,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2022-06-16T13:46:23.807445991Z"
+    created: "2022-06-16T17:19:53.901972157Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: 383abf9932f6137bc3d818ab67405e3efeb7b77adfb3c33651b56b49dbb3f093
@@ -2490,7 +2513,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2022-06-16T13:46:23.806674975Z"
+    created: "2022-06-16T17:19:53.901492318Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: d0bcc84bfd2989660344d202e3c25110974c38d781f7b9a6c26c525703830595
@@ -2506,7 +2529,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.7.2
-    created: "2022-06-16T13:46:23.805627153Z"
+    created: "2022-06-16T17:19:53.901014498Z"
     description: '[MLFlow](https://mlflow.org/) is an open source platform specialized
       in tracking ML experiments, and packaging and deploying ML models. '
     digest: 02253d17e7c7803a9b64fbc11b30454fa04c7744ab2143444fcf24d5f47ec856
@@ -2525,7 +2548,7 @@ entries:
       category: E-Learning
     apiVersion: v2
     appVersion: 3.11.5
-    created: "2022-06-16T13:46:23.817387595Z"
+    created: "2022-06-16T17:19:53.910801565Z"
     dependencies:
     - condition: mariadb.enabled
       name: mariadb
@@ -2537,7 +2560,7 @@ entries:
     description: Moodle(TM) LMS is an open source online Learning Management System
       widely used at universities, schools, and corporations. It is modular and highly
       adaptable to any type of online learning.
-    digest: 8772d2b5041ec6df5a2da340132684b2f35285cfc492ecfa2b2d0722e45732cf
+    digest: fd8bdf1528efaaaddaaa38a16d7b64f0dc7dd1cc67538fb38ba20128603e77aa
     home: https://github.com/bitnami/charts/tree/master/bitnami/moodle
     icon: https://bitnami.com/assets/stacks/moodle/img/moodle-stack-220x234.png
     keywords:
@@ -2557,10 +2580,10 @@ entries:
   mutating-webhook:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.819378136Z"
+    created: "2022-06-16T17:19:53.912085246Z"
     description: -| A Helm chart for deploying Mutating Webhooks based on https://github.com/StatCan/mutating-webhook.
       Requires cert-manager.
-    digest: cf4264872710218771a9648a2e12f34f8aef6b75f7d01edc927429228d52e346
+    digest: 55712fdf439e780c612b507decd48a0f3e7dc7ddec981325709e9cf813417675
     home: https://statcan.gc.ca
     maintainers:
     - email: zachary.seguin@canada.ca
@@ -2577,7 +2600,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.818671421Z"
+    created: "2022-06-16T17:19:53.911683138Z"
     description: -| A Helm chart for deploying Mutating Webhooks based on https://github.com/StatCan/mutating-webhook.
       Requires cert-manager.
     digest: e8ec0223baefd1ea0ac74f848798985058ec0629ea8a98d39a5c4ed7f47e5a28
@@ -2597,7 +2620,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.818004307Z"
+    created: "2022-06-16T17:19:53.911257119Z"
     description: -| A Helm chart for deploying Mutating Webhooks. Requires cert-manager.
     digest: 906ddfca7263d6ff20117c1059a57ab20e27d37dd4b4265872dc5f8f99d3d795
     home: https://statcan.gc.ca
@@ -2617,9 +2640,9 @@ entries:
   namespace-controller:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.820389556Z"
+    created: "2022-06-16T17:19:53.912699355Z"
     description: A Helm chart for the Statistics Canada Namespace Controller.
-    digest: 7d996ea0dfa0f4cedf101115da09cc78322a1de268b51da64d877c34b76647d7
+    digest: a319e91beaf7ad9810254c70ce67112bdc55d7932daede9b02388552fe2f7672
     name: namespace-controller
     type: application
     urls:
@@ -2627,7 +2650,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.819903946Z"
+    created: "2022-06-16T17:19:53.912390865Z"
     description: A Helm chart for the Statistics Canada Namespace Controller.
     digest: bf1ebb823e7688e037b597e80bd283e28b6f6adaf89f09389fdef83b5602dbf4
     name: namespace-controller
@@ -2638,14 +2661,14 @@ entries:
   orchard-cms:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.842207604Z"
+    created: "2022-06-16T17:19:53.928700191Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
       version: 9.8.4
     description: A Helm chart for using OrchardCore cms
-    digest: 2eeb96e18613ab5554facbcab910bfd068123b76b13511ac1d9e4f69f5c69f2d
+    digest: e0e127d0c30602ec04dd56d14a44c2e9432a729266007da54af4cec94b1a58b0
     home: https://www.orchardcore.net/
     maintainers:
     - email: jean-philippe.tissot@canada.ca
@@ -2658,7 +2681,7 @@ entries:
     version: 2.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.838213122Z"
+    created: "2022-06-16T17:19:53.925705001Z"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -2677,7 +2700,7 @@ entries:
     version: 2.0.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.832669308Z"
+    created: "2022-06-16T17:19:53.922706626Z"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -2697,7 +2720,7 @@ entries:
     version: 1.2.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.828752128Z"
+    created: "2022-06-16T17:19:53.917566284Z"
     description: A Helm chart that hosts OrchardCore with PostgreSql
     digest: 2b73f930a7bb9a6b81f81c3a7b2bff49b19c101f684c8776495b8ddad7c50825
     home: https://www.orchardcore.net/
@@ -2712,7 +2735,7 @@ entries:
     version: 1.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.824167434Z"
+    created: "2022-06-16T17:19:53.914650093Z"
     dependencies:
     - name: postgresql
       repository: https://kubernetes-charts.storage.googleapis.com
@@ -2732,7 +2755,7 @@ entries:
   pachyderm:
   - apiVersion: v2
     appVersion: 1.8.6
-    created: "2022-06-16T13:46:23.845850479Z"
+    created: "2022-06-16T17:19:53.931682655Z"
     description: 'Pachyderm is a large-scale container-based workflow engine that
       offers complete version control for data and reproducible data processing '
     digest: 273e7a928d1363e6cc34a2a6eee30f33c3312e6f62a963e8bbc0292d3da30212
@@ -2760,7 +2783,7 @@ entries:
     version: 0.5.1
   - apiVersion: v2
     appVersion: 1.8.6
-    created: "2022-06-16T13:46:23.844655354Z"
+    created: "2022-06-16T17:19:53.930282642Z"
     description: 'Pachyderm is a large-scale container-based workflow engine that
       offers complete version control for data and reproducible data processing '
     digest: f488b8b75aef9091ca31e1f82f0ef6bcd9181898265bf2160708d328263137dc
@@ -2788,7 +2811,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: 1.8.6
-    created: "2022-06-16T13:46:23.843431229Z"
+    created: "2022-06-16T17:19:53.929501351Z"
     description: 'Pachyderm is a large-scale container-based workflow engine that
       offers complete version control for data and reproducible data processing '
     digest: 909fb972714604dee2b2180b340cdb1979f95a8a9fd5551363be806d550eec6c
@@ -2816,9 +2839,9 @@ entries:
   profiles-controller:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.857358215Z"
+    created: "2022-06-16T17:19:53.93984743Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
-    digest: 61e7b5121836993f4aaa8d933d454476d5e94af0fa4a0e38760502849b10f105
+    digest: e609777ee26a1efc0cea4bcb6a42368db65c6fa25a55ac19c82453f4aa9fe29b
     name: profiles-controller
     type: application
     urls:
@@ -2826,7 +2849,7 @@ entries:
     version: 0.4.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.856339994Z"
+    created: "2022-06-16T17:19:53.939245271Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: c6e7f27e70ae2bae4ac532405bbd69001007e71acae5e953e567cd08b780c228
     name: profiles-controller
@@ -2836,7 +2859,7 @@ entries:
     version: 0.3.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.855612779Z"
+    created: "2022-06-16T17:19:53.938832402Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: f44ea75412e326861bb546980d6933cc8e481c0baec9bf06dc40ff04261954df
     name: profiles-controller
@@ -2846,7 +2869,7 @@ entries:
     version: 0.3.1
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.854889164Z"
+    created: "2022-06-16T17:19:53.938389359Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 5d6839f78e0028efeeff5110c6ac9c05102d9f64356b5fa0adafa6b44862a351
     name: profiles-controller
@@ -2856,7 +2879,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.854227051Z"
+    created: "2022-06-16T17:19:53.937988571Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: a61f06700a67dafcd72d00ba3d01d5a4fb6494e458ad3dc725b09a3efeebe090
     name: profiles-controller
@@ -2866,7 +2889,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.848675937Z"
+    created: "2022-06-16T17:19:53.935226501Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 66e452627b5c652be5813eebc9e45c545468f1245c3688432023a8de77da3211
     name: profiles-controller
@@ -2876,7 +2899,7 @@ entries:
     version: 0.1.10
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.85368774Z"
+    created: "2022-06-16T17:19:53.937633987Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: b43ada5cfd674e9fff4a8a696067010a55e03e139b19d29e17bbbb86b026e81b
     name: profiles-controller
@@ -2886,7 +2909,7 @@ entries:
     version: 0.1.9
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.853186429Z"
+    created: "2022-06-16T17:19:53.937294379Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 1a7719320cd8e0c5f88a079714563fedfb11c096b672562c6a48463d887d22ee
     name: profiles-controller
@@ -2896,7 +2919,7 @@ entries:
     version: 0.1.8
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.85275512Z"
+    created: "2022-06-16T17:19:53.937009191Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 7aa51b73767aee7f27232b9c0cb66318262d90a5ff6154c6806489e27f2361be
     name: profiles-controller
@@ -2906,7 +2929,7 @@ entries:
     version: 0.1.7
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.852307111Z"
+    created: "2022-06-16T17:19:53.936714647Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 6d248cac6d089c26d6f663c8eeadd4f936a13f78c85c1138f2ce156700a9a9fb
     name: profiles-controller
@@ -2916,7 +2939,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.851235589Z"
+    created: "2022-06-16T17:19:53.936411839Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 81f630b79e2a842baf6d11b8aa116d51e7d5ad8e6de769e79021467d82e8a36e
     name: profiles-controller
@@ -2926,7 +2949,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.850569276Z"
+    created: "2022-06-16T17:19:53.936137348Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 758907618ad52b5206723226bfffc72639d2b189083b04acd02d213b5cadd08c
     name: profiles-controller
@@ -2936,7 +2959,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.849974663Z"
+    created: "2022-06-16T17:19:53.935857767Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 8cdf5cf10105ace62ee01359792da7d4bf80749927839f467d95f954b754f50b
     name: profiles-controller
@@ -2946,7 +2969,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.849088245Z"
+    created: "2022-06-16T17:19:53.935571575Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 6402e30a63b66cf300e9808564b05fc78fdcdafe8b0e4326ab95a1239f15837d
     name: profiles-controller
@@ -2956,7 +2979,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.848042824Z"
+    created: "2022-06-16T17:19:53.934832043Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: c3218186c2aea6a3945f76f6df21259703fc3e53e345616b2bae6ae5bdd75ea7
     name: profiles-controller
@@ -2966,7 +2989,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.847596015Z"
+    created: "2022-06-16T17:19:53.934517029Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: c670f65425e7232a99f375ef7d20536715efb1225c454e3b23699c75d419e946
     name: profiles-controller
@@ -2976,7 +2999,7 @@ entries:
     version: 0.1.0
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.847160806Z"
+    created: "2022-06-16T17:19:53.934049764Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: a052a3c6d5ac281c99507907816a1a369e6f1d3aaba0238a31b3ed4995de47a3
     name: profiles-controller
@@ -2986,7 +3009,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.846720697Z"
+    created: "2022-06-16T17:19:53.93310191Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: 8c063b0ccd70435be0dffec7ee176f4aec14fd4d91b54df77c76668b9b34af28
     name: profiles-controller
@@ -2996,7 +3019,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-06-16T13:46:23.846324488Z"
+    created: "2022-06-16T17:19:53.932401929Z"
     description: A Helm chart for the Statistics Canada Kubeflow Profiles Controller.
     digest: c003bfd7d1b3b71ca168e02c3064f8054e9448b30eb21b71213dd4ff84b096ec
     name: profiles-controller
@@ -3007,14 +3030,14 @@ entries:
   prometheus-operator:
   - apiVersion: v2
     appVersion: 0.38.1
-    created: "2022-06-16T13:46:23.896702622Z"
+    created: "2022-06-16T17:19:53.970748937Z"
     dependencies:
     - name: prometheus-operator
       repository: https://charts.helm.sh/stable
       version: 9.3.1
     description: An extended Helm chart derived from official Prometheus Operator
       chart.
-    digest: 35db4e6e2b850db90f3ea93ca967aab66313da55d713b3bb01dd6ce4260f21da
+    digest: 94e2e1c0f5800b4aa12dd6e46c47dadeb00f3ee7e799b79d3aab89ce77b86e73
     home: https://coreos.com/operators/prometheus/docs/latest/
     maintainers:
     - email: william.hearn@canada.ca
@@ -3028,7 +3051,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: 0.30.0
-    created: "2022-06-16T13:46:23.871099997Z"
+    created: "2022-06-16T17:19:53.950899224Z"
     dependencies:
     - name: prometheus-operator
       repository: https://kubernetes-charts.storage.googleapis.com/
@@ -3049,9 +3072,9 @@ entries:
   rotate-elasticsearch-index:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-06-16T13:46:23.897478838Z"
+    created: "2022-06-16T17:19:53.971359079Z"
     description: A Helm chart for deploying Elasticsearch index rotation
-    digest: 40e1328ee14137776292279795b15b70f0cf1397bdfa64c7b24392e1c12aeae1
+    digest: 6a2633d74b5665ecd1d910b3b4ed59364aa0bde93265240c8865497fa4e7a8d5
     home: https://github.com/kairen/rotate-elasticsearch-index
     maintainers:
     - email: k2r2.bai@gmail.com
@@ -3063,7 +3086,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-06-16T13:46:23.897115131Z"
+    created: "2022-06-16T17:19:53.971072743Z"
     description: A Helm chart for deploying Elasticsearch index rotation
     digest: 85e0dedc0212a8f4943ad45c10c3e7442940504e84efd2dfd2481d58840e22cf
     home: https://github.com/kairen/rotate-elasticsearch-index
@@ -3077,9 +3100,9 @@ entries:
   shiny:
   - apiVersion: v2
     appVersion: 3.6.0
-    created: "2022-06-16T13:46:23.899074671Z"
+    created: "2022-06-16T17:19:53.972424306Z"
     description: A Helm chart for using Shiny.
-    digest: 080e24272624432dcb29abcab3610755cb71c7fea863b3c7581a216e6944b63f
+    digest: f77f646f70342fa722e883b435e401b2f1b5ed8b43c2cffeb5e27515094639ba
     home: https://rstudio.com/products/shiny/shiny-server/
     maintainers:
     - email: william.hearn@canada.ca
@@ -3093,7 +3116,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 3.6.0
-    created: "2022-06-16T13:46:23.898516159Z"
+    created: "2022-06-16T17:19:53.972066037Z"
     description: A Helm chart for using Shiny.
     digest: 85eb28cac48255d387dba0a322dcf6cbb837ccebf227ca2870526459673e68cd
     home: https://rstudio.com/products/shiny/shiny-server/
@@ -3109,7 +3132,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 3.6.0
-    created: "2022-06-16T13:46:23.897958048Z"
+    created: "2022-06-16T17:19:53.971713605Z"
     description: A Helm chart for using Shiny.
     digest: 6ed5c3f38f47a35b48a77448c57235c5eb7d42b489d59a893b15959bf089eb44
     home: https://rstudio.com/products/shiny/shiny-server/
@@ -3125,10 +3148,10 @@ entries:
   sidecar-terminator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.900689904Z"
+    created: "2022-06-16T17:19:53.973523376Z"
     description: A chart used for easily configuring kubernetes-sidecar-terminator
       in a cluster.
-    digest: 2c6e10059b06e7665e5d39cd9344339ec011c459470e07855c78213d135cf985
+    digest: d22c93431ef579f4271b65ebef573b89b128e08dc6e84641237699a690b3925e
     home: https://www.statcan.gc.ca
     keywords:
     - sidecar-terminator
@@ -3143,7 +3166,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.900283596Z"
+    created: "2022-06-16T17:19:53.973240512Z"
     description: A chart used for easily configuring kubernetes-sidecar-terminator
       in a cluster.
     digest: c061300c62bafad87389fd2458e534e01b4788c9c6905ffc13318a54962995ff
@@ -3161,7 +3184,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.899883187Z"
+    created: "2022-06-16T17:19:53.972945536Z"
     description: A chart used for easily configuring kubernetes-sidecar-terminator
       in a cluster.
     digest: db4f5f0093cd91e0603e8afc087b42a59e19f238a5743d894afb230312e929e0
@@ -3179,7 +3202,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-16T13:46:23.899477279Z"
+    created: "2022-06-16T17:19:53.972687822Z"
     description: A chart used for easily configuring kubernetes-sidecar-terminator
       in a cluster.
     digest: 28840cea9306a641798fad6383ebca6e58d50b6d118a352570a5ad41a84bff15
@@ -3198,13 +3221,13 @@ entries:
   solr:
   - apiVersion: v2
     appVersion: 8.11.1
-    created: "2022-06-16T13:46:23.909884693Z"
+    created: "2022-06-16T17:19:53.982114682Z"
     dependencies:
     - name: zookeeper
       repository: https://charts.helm.sh/incubator
       version: 2.1.3
     description: A helm chart to install Apache Solr
-    digest: a393d64c0ba52248c3388619835c7618f6120c7ddec3c0410ffe5e1e9ccb50a6
+    digest: 831c5ac42556609462176e50459e18a08db1013a36e2d77e65a1c219293a2042
     home: http://lucene.apache.org/solr/
     keywords:
     - solr
@@ -3216,7 +3239,7 @@ entries:
     version: 1.5.8
   - apiVersion: v2
     appVersion: 8.4.0
-    created: "2022-06-16T13:46:23.907853251Z"
+    created: "2022-06-16T17:19:53.980481494Z"
     dependencies:
     - name: zookeeper
       repository: https://charts.helm.sh/incubator
@@ -3234,7 +3257,7 @@ entries:
     version: 1.5.7
   - apiVersion: v2
     appVersion: 8.4.0
-    created: "2022-06-16T13:46:23.905540304Z"
+    created: "2022-06-16T17:19:53.977831409Z"
     dependencies:
     - name: zookeeper
       repository: https://charts.helm.sh/incubator
@@ -3252,7 +3275,7 @@ entries:
     version: 1.5.6
   - apiVersion: v2
     appVersion: 8.4.0
-    created: "2022-06-16T13:46:23.903077853Z"
+    created: "2022-06-16T17:19:53.97507288Z"
     dependencies:
     - name: zookeeper
       repository: https://charts.helm.sh/incubator
@@ -3333,10 +3356,10 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v1
     appVersion: v0.2.8
-    created: "2022-06-16T13:46:23.914477787Z"
+    created: "2022-06-16T17:19:53.985532322Z"
     description: The Solr Operator enables easy management of Solr resources within
       Kubernetes.
-    digest: 09ea71ba05a28eff365cb26ca76f1c9776b038de0000bcc59becba9d7baedf0e
+    digest: d66cdfc73d09a9832e89481c449e5643e76be0306036b4bfab89c54836d3faa6
     home: https://github.com/apache/lucene-solr-operator
     icon: https://lucene.apache.org/theme/images/solr/identity/Solr_Logo_on_white.png
     keywords:
@@ -3360,9 +3383,9 @@ entries:
   starboard-operator:
   - apiVersion: v2
     appVersion: 0.15.4
-    created: "2022-06-16T13:46:23.922800758Z"
+    created: "2022-06-16T17:19:53.991697607Z"
     description: Keeps security report resources updated
-    digest: 8c9a0125823915c962141aca0b60e02db0bb346595c8bfd7694ee89078bee18d
+    digest: 073c81c0e4b6d39d93b3feb96e7864da22b26fe31298b66db8a2d52aecada4dc
     keywords:
     - aquasecurity
     - starboard
@@ -3376,7 +3399,7 @@ entries:
     version: 0.10.4
   - apiVersion: v2
     appVersion: 0.15.1
-    created: "2022-06-16T13:46:23.920148803Z"
+    created: "2022-06-16T17:19:53.989942066Z"
     description: Keeps security report resources updated
     digest: 99e74c1d4ad60aee338956a03c598359b69ebc376b1a0a5a7349a09124392f0d
     keywords:
@@ -3397,7 +3420,7 @@ entries:
     version: 0.10.1
   - apiVersion: v2
     appVersion: 0.8.0
-    created: "2022-06-16T13:46:23.925644316Z"
+    created: "2022-06-16T17:19:53.993489427Z"
     description: A Helm chart for starboard-operator.
     digest: cc7949312b64157a4e28e040d091fe509e3ab637a21281ad70f3159d337e6774
     home: https://github.com/aquasecurity/starboard
@@ -3419,7 +3442,7 @@ entries:
     version: 0.8.0
   - apiVersion: v2
     appVersion: 0.8.0
-    created: "2022-06-16T13:46:23.924701697Z"
+    created: "2022-06-16T17:19:53.992897245Z"
     description: A Helm chart for starboard-operator.
     digest: ca065f1720ccd12e258031907db7daebfaabf1500af3e64e13119595d9d18512
     home: https://github.com/aquasecurity/starboard
@@ -3441,7 +3464,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 0.8.0
-    created: "2022-06-16T13:46:23.923775078Z"
+    created: "2022-06-16T17:19:53.992304305Z"
     description: A Helm chart for starboard-operator.
     digest: 20518411699c87d4a3be80023d019ede1bb502e52ba161b511a09db4e5fd6ee6
     home: https://github.com/aquasecurity/starboard
@@ -3463,7 +3486,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 0.6.0
-    created: "2022-06-16T13:46:23.915369905Z"
+    created: "2022-06-16T17:19:53.986152843Z"
     description: A Helm chart for starboard-operator.
     digest: 1bce6693064aef685098ac66d1465949ab94797047d82fa1cc762f2a4824ebbd
     home: https://github.com/aquasecurity/starboard
@@ -3486,10 +3509,10 @@ entries:
   trino:
   - apiVersion: v2
     appVersion: "378"
-    created: "2022-06-16T13:46:23.928107767Z"
+    created: "2022-06-16T17:19:53.995129435Z"
     description: Fast distributed SQL query engine for big data analytics that helps
       you explore your data universe
-    digest: fe3cf021c4559cefda4bb75ba95ba89978c22261027772c51fc82281db0c1a73
+    digest: 7fe863973bd8ea6d4a91e6b0af809adbe7fea1c6a3a9586f089883403b54b86b
     home: https://trino.io/
     icon: https://trino.io/assets/trino.png
     maintainers:
@@ -3504,7 +3527,7 @@ entries:
     version: 1.15.0
   - apiVersion: v2
     appVersion: "372"
-    created: "2022-06-16T13:46:23.926855341Z"
+    created: "2022-06-16T17:19:53.994259525Z"
     description: Fast distributed SQL query engine for big data analytics that helps
       you explore your data universe
     digest: 3cd484a89a9a370c5960aeb304d47de80f21ff7f6d4af21f0d8e5dd5707966b2
@@ -3523,9 +3546,9 @@ entries:
   varnish:
   - apiVersion: v2
     appVersion: 6.6.0
-    created: "2022-06-16T13:46:23.932817963Z"
+    created: "2022-06-16T17:19:53.99851542Z"
     description: A Helm chart for using Varnish.
-    digest: 1f7973b604dd89a946a5b9c78557df2c6cc3b43600a3fb64187e33ad6d98cdb2
+    digest: bd3bb75ff418b0e2328edcf96e77246f25dcfea209aa49ddbaa98a57d7d546af
     home: https://www.varnish-software.com
     maintainers:
     - email: william.hearn@canada.ca
@@ -3541,7 +3564,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: 6.6.0
-    created: "2022-06-16T13:46:23.932114049Z"
+    created: "2022-06-16T17:19:53.997799868Z"
     description: A Helm chart for using Varnish.
     digest: ae4647d00f7452dd60a72e0d3cbd321c0f55a35ec437775e76b952ede2b16d72
     home: https://www.varnish-software.com
@@ -3559,7 +3582,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 6.6.0
-    created: "2022-06-16T13:46:23.931313232Z"
+    created: "2022-06-16T17:19:53.99719623Z"
     description: A Helm chart for using Varnish.
     digest: dc9ac603f210bfea8612b3f53a59d34fe6427c315f419bf9188b102872f61438
     home: https://www.varnish-software.com
@@ -3577,7 +3600,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 6.5.1
-    created: "2022-06-16T13:46:23.930812922Z"
+    created: "2022-06-16T17:19:53.996871337Z"
     description: A Helm chart for using Varnish.
     digest: 3196e45647de90af4eb34ee7b119ec5a67995f09a108260d02f957916b97560b
     home: https://www.varnish-software.com
@@ -3593,7 +3616,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 6.4.0
-    created: "2022-06-16T13:46:23.930376113Z"
+    created: "2022-06-16T17:19:53.996597108Z"
     description: A Helm chart for using Varnish.
     digest: 037534a2de78ba477160e7d9e9c55d318625b188c4bda79de24dddc8465c1e8c
     home: https://www.varnish-software.com
@@ -3609,7 +3632,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 6.4.0
-    created: "2022-06-16T13:46:23.929933004Z"
+    created: "2022-06-16T17:19:53.996329531Z"
     description: A Helm chart for using Varnish.
     digest: b07fdf813e229c4fd739b03be3acd35f882c87df714c890fa8141ee6000bda50
     home: https://www.varnish-software.com
@@ -3625,7 +3648,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2022-06-16T13:46:23.929478195Z"
+    created: "2022-06-16T17:19:53.996017829Z"
     description: A Helm chart for using Varnish.
     digest: 827b9b21d59ab10ef929f2884213e8e73cbf83804cec144cbd2a2aa27d2b9616
     home: https://www.varnish-software.com
@@ -3640,7 +3663,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2022-06-16T13:46:23.929018985Z"
+    created: "2022-06-16T17:19:53.995723924Z"
     description: A Helm chart for using Varnish.
     digest: 96ea55f8646b463290f4d1787f70acbc5912614097241d4c25ff01038594f929
     home: https://www.varnish-software.com
@@ -3655,7 +3678,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 6.4.0
-    created: "2022-06-16T13:46:23.928574676Z"
+    created: "2022-06-16T17:19:53.995443557Z"
     description: A Helm chart for using Varnish.
     digest: 4bb8cc91a5d83ed119180a2b0f46885d718b4c04447ebee49dff9281d77fa7b1
     home: https://www.varnish-software.com
@@ -3671,7 +3694,7 @@ entries:
   vault:
   - apiVersion: v2
     appVersion: 1.2.2
-    created: "2022-06-16T13:46:23.947202858Z"
+    created: "2022-06-16T17:19:54.008843388Z"
     dependencies:
     - name: vault
       repository: https://helm.releases.hashicorp.com
@@ -3693,7 +3716,7 @@ entries:
     version: 0.1.8
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2022-06-16T13:46:23.942868469Z"
+    created: "2022-06-16T17:19:54.0060249Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: 02e77b7bc3af379303a5b1d340b7ebe172c641c8d86997fe6875d1b839d7b7a6
     home: https://www.vaultproject.io
@@ -3710,7 +3733,7 @@ entries:
     version: 0.0.7
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2022-06-16T13:46:23.940298817Z"
+    created: "2022-06-16T17:19:54.004189937Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: b371038b12818d373abb7f75f8ca6bf40ee26175d392a31dccc1ab89fe11fe09
     home: https://www.vaultproject.io
@@ -3727,7 +3750,7 @@ entries:
     version: 0.0.6
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2022-06-16T13:46:23.937958269Z"
+    created: "2022-06-16T17:19:54.002667482Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: ac5af6987e345e63d16d0485d246e8e27c3d216c3d401a45e975f452fec24a3e
     home: https://www.vaultproject.io
@@ -3744,7 +3767,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 1.2.2
-    created: "2022-06-16T13:46:23.935844625Z"
+    created: "2022-06-16T17:19:54.001187926Z"
     description: An extended Helm chart derived from official Vault chart.
     digest: e943ffaa01e55a2a0986da29a69541cdec1fcc8c623c6f56f026922a135332ed
     home: https://www.vaultproject.io
@@ -3762,7 +3785,7 @@ entries:
   velero:
   - apiVersion: v2
     appVersion: 1.3.2
-    created: "2022-06-16T13:46:23.955509729Z"
+    created: "2022-06-16T17:19:54.015706511Z"
     dependencies:
     - name: velero
       repository: https://vmware-tanzu.github.io/helm-charts
@@ -3784,7 +3807,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 1.3.2
-    created: "2022-06-16T13:46:23.95265397Z"
+    created: "2022-06-16T17:19:54.013834921Z"
     dependencies:
     - name: velero
       repository: https://vmware-tanzu.github.io/helm-charts
@@ -3805,7 +3828,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.11.0
-    created: "2022-06-16T13:46:23.948619587Z"
+    created: "2022-06-16T17:19:54.009773428Z"
     dependencies:
     - name: velero
       repository: https://kubernetes-charts.storage.googleapis.com/
@@ -3825,14 +3848,14 @@ entries:
   vetting:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.140409923Z"
+    created: "2022-06-16T17:19:54.160753114Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
       version: 9.4.1
     description: A Helm chart for Discolsure Vetting Application
-    digest: a3dea0d6981c21329851004a49d875d202e09c4b18766466a5ab2ef31b0c7780
+    digest: 5f72a868e4b9e67128421158afc4fd8faab21b90db05a2ed8e78573e4a91aa85
     home: https://statcan.gc.ca
     icon: https://www.python.org/static/img/python-logo
     maintainers:
@@ -3848,7 +3871,7 @@ entries:
     version: 0.1.135
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.135832429Z"
+    created: "2022-06-16T17:19:54.157700317Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3871,7 +3894,7 @@ entries:
     version: 0.1.134
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.130985229Z"
+    created: "2022-06-16T17:19:54.15217715Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3894,7 +3917,7 @@ entries:
     version: 0.1.133
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.126975747Z"
+    created: "2022-06-16T17:19:54.14911662Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3917,7 +3940,7 @@ entries:
     version: 0.1.132
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.122841862Z"
+    created: "2022-06-16T17:19:54.146023617Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3942,7 +3965,7 @@ entries:
     version: 0.1.131
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.117652156Z"
+    created: "2022-06-16T17:19:54.140874919Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3967,7 +3990,7 @@ entries:
     version: 0.1.130
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.109776394Z"
+    created: "2022-06-16T17:19:54.134862572Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3992,7 +4015,7 @@ entries:
     version: 0.1.129
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.105153899Z"
+    created: "2022-06-16T17:19:54.131758728Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4017,7 +4040,7 @@ entries:
     version: 0.1.128
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.099977093Z"
+    created: "2022-06-16T17:19:54.12753553Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4042,7 +4065,7 @@ entries:
     version: 0.1.127
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.095496101Z"
+    created: "2022-06-16T17:19:54.123744619Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4067,7 +4090,7 @@ entries:
     version: 0.1.126
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.09152782Z"
+    created: "2022-06-16T17:19:54.120636268Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4092,7 +4115,7 @@ entries:
     version: 0.1.125
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.085922505Z"
+    created: "2022-06-16T17:19:54.117588746Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4117,7 +4140,7 @@ entries:
     version: 0.1.124
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.081960624Z"
+    created: "2022-06-16T17:19:54.112005006Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4142,7 +4165,7 @@ entries:
     version: 0.1.123
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.078018843Z"
+    created: "2022-06-16T17:19:54.108944695Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4167,7 +4190,7 @@ entries:
     version: 0.1.122
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.07301994Z"
+    created: "2022-06-16T17:19:54.105861021Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4192,7 +4215,7 @@ entries:
     version: 0.1.121
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.068364245Z"
+    created: "2022-06-16T17:19:54.101402307Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4217,7 +4240,7 @@ entries:
     version: 0.1.120
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.060019773Z"
+    created: "2022-06-16T17:19:54.094965934Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4242,7 +4265,7 @@ entries:
     version: 0.1.119
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.054894368Z"
+    created: "2022-06-16T17:19:54.091888139Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4267,7 +4290,7 @@ entries:
     version: 0.1.118
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.05058228Z"
+    created: "2022-06-16T17:19:54.086709511Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4292,7 +4315,7 @@ entries:
     version: 0.1.117
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.046112888Z"
+    created: "2022-06-16T17:19:54.08362578Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4317,7 +4340,7 @@ entries:
     version: 0.1.116
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.041784299Z"
+    created: "2022-06-16T17:19:54.080512449Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4342,7 +4365,7 @@ entries:
     version: 0.1.115
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.036815697Z"
+    created: "2022-06-16T17:19:54.07642685Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4367,7 +4390,7 @@ entries:
     version: 0.1.114
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.032019599Z"
+    created: "2022-06-16T17:19:54.072274149Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4392,7 +4415,7 @@ entries:
     version: 0.1.113
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.027432805Z"
+    created: "2022-06-16T17:19:54.069076482Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4417,7 +4440,7 @@ entries:
     version: 0.1.112
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.022849011Z"
+    created: "2022-06-16T17:19:54.06602604Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4442,7 +4465,7 @@ entries:
     version: 0.1.111
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.018000611Z"
+    created: "2022-06-16T17:19:54.06096018Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4467,7 +4490,7 @@ entries:
     version: 0.1.110
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.008833023Z"
+    created: "2022-06-16T17:19:54.054970561Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4492,7 +4515,7 @@ entries:
     version: 0.1.109
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.00428723Z"
+    created: "2022-06-16T17:19:54.051959668Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4517,7 +4540,7 @@ entries:
     version: 0.1.108
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.998616913Z"
+    created: "2022-06-16T17:19:54.047291178Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4542,7 +4565,7 @@ entries:
     version: 0.1.107
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.993957918Z"
+    created: "2022-06-16T17:19:54.044044768Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4567,7 +4590,7 @@ entries:
     version: 0.1.106
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.989489726Z"
+    created: "2022-06-16T17:19:54.041026Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4592,7 +4615,7 @@ entries:
     version: 0.1.105
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.983966213Z"
+    created: "2022-06-16T17:19:54.037921794Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4617,7 +4640,7 @@ entries:
     version: 0.1.104
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.979685825Z"
+    created: "2022-06-16T17:19:54.032612568Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4642,7 +4665,7 @@ entries:
     version: 0.1.103
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.975213833Z"
+    created: "2022-06-16T17:19:54.029594819Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4667,7 +4690,7 @@ entries:
     version: 0.1.102
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.971065548Z"
+    created: "2022-06-16T17:19:54.026561552Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4692,7 +4715,7 @@ entries:
     version: 0.1.101
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.964451912Z"
+    created: "2022-06-16T17:19:54.021645201Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4717,7 +4740,7 @@ entries:
     version: 0.1.100
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.538519792Z"
+    created: "2022-06-16T17:19:54.464413705Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4742,7 +4765,7 @@ entries:
     version: 0.1.99
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.533958998Z"
+    created: "2022-06-16T17:19:54.461498455Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4767,7 +4790,7 @@ entries:
     version: 0.1.98
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.528496686Z"
+    created: "2022-06-16T17:19:54.458539653Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4792,7 +4815,7 @@ entries:
     version: 0.1.97
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.524502604Z"
+    created: "2022-06-16T17:19:54.455546764Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4817,7 +4840,7 @@ entries:
     version: 0.1.96
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.520171615Z"
+    created: "2022-06-16T17:19:54.450987221Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4842,7 +4865,7 @@ entries:
     version: 0.1.95
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.515796525Z"
+    created: "2022-06-16T17:19:54.447579679Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4867,7 +4890,7 @@ entries:
     version: 0.1.94
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.510490817Z"
+    created: "2022-06-16T17:19:54.444608522Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4892,7 +4915,7 @@ entries:
     version: 0.1.93
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.505985124Z"
+    created: "2022-06-16T17:19:54.441618399Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4917,7 +4940,7 @@ entries:
     version: 0.1.92
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.501619635Z"
+    created: "2022-06-16T17:19:54.43716488Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4942,7 +4965,7 @@ entries:
     version: 0.1.91
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.497054441Z"
+    created: "2022-06-16T17:19:54.433701815Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4967,7 +4990,7 @@ entries:
     version: 0.1.90
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.487792651Z"
+    created: "2022-06-16T17:19:54.427844844Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -4992,7 +5015,7 @@ entries:
     version: 0.1.89
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.483549564Z"
+    created: "2022-06-16T17:19:54.422748007Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5017,7 +5040,7 @@ entries:
     version: 0.1.88
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.478056851Z"
+    created: "2022-06-16T17:19:54.419757448Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5042,7 +5065,7 @@ entries:
     version: 0.1.87
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.472730742Z"
+    created: "2022-06-16T17:19:54.416780832Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5067,7 +5090,7 @@ entries:
     version: 0.1.86
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.468324951Z"
+    created: "2022-06-16T17:19:54.413785064Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5092,7 +5115,7 @@ entries:
     version: 0.1.85
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.464005363Z"
+    created: "2022-06-16T17:19:54.409496003Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5117,7 +5140,7 @@ entries:
     version: 0.1.84
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.458668053Z"
+    created: "2022-06-16T17:19:54.405774912Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5142,7 +5165,7 @@ entries:
     version: 0.1.83
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.454233762Z"
+    created: "2022-06-16T17:19:54.402663091Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5167,7 +5190,7 @@ entries:
     version: 0.1.82
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.449793371Z"
+    created: "2022-06-16T17:19:54.399610772Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5192,7 +5215,7 @@ entries:
     version: 0.1.81
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.445469882Z"
+    created: "2022-06-16T17:19:54.394072493Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5217,7 +5240,7 @@ entries:
     version: 0.1.80
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.434701761Z"
+    created: "2022-06-16T17:19:54.38826926Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5242,7 +5265,7 @@ entries:
     version: 0.1.79
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.430704779Z"
+    created: "2022-06-16T17:19:54.383428184Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5267,7 +5290,7 @@ entries:
     version: 0.1.78
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.426880401Z"
+    created: "2022-06-16T17:19:54.38044485Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5292,7 +5315,7 @@ entries:
     version: 0.1.77
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.4219796Z"
+    created: "2022-06-16T17:19:54.37753262Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5317,7 +5340,7 @@ entries:
     version: 0.1.76
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.417187502Z"
+    created: "2022-06-16T17:19:54.374508695Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5342,7 +5365,7 @@ entries:
     version: 0.1.75
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.413070218Z"
+    created: "2022-06-16T17:19:54.370603207Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5367,7 +5390,7 @@ entries:
     version: 0.1.74
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.408931933Z"
+    created: "2022-06-16T17:19:54.366457374Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5392,7 +5415,7 @@ entries:
     version: 0.1.73
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.403269216Z"
+    created: "2022-06-16T17:19:54.363416859Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5417,7 +5440,7 @@ entries:
     version: 0.1.72
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.39907023Z"
+    created: "2022-06-16T17:19:54.360374902Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5442,7 +5465,7 @@ entries:
     version: 0.1.71
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.39464524Z"
+    created: "2022-06-16T17:19:54.355418709Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5467,7 +5490,7 @@ entries:
     version: 0.1.70
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.385235046Z"
+    created: "2022-06-16T17:19:54.349589762Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5492,7 +5515,7 @@ entries:
     version: 0.1.69
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.381246165Z"
+    created: "2022-06-16T17:19:54.346586959Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5517,7 +5540,7 @@ entries:
     version: 0.1.68
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.377076879Z"
+    created: "2022-06-16T17:19:54.341571257Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5542,7 +5565,7 @@ entries:
     version: 0.1.67
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.370570346Z"
+    created: "2022-06-16T17:19:54.338574133Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5567,7 +5590,7 @@ entries:
     version: 0.1.66
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.366369259Z"
+    created: "2022-06-16T17:19:54.335634806Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5592,7 +5615,7 @@ entries:
     version: 0.1.65
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.362075271Z"
+    created: "2022-06-16T17:19:54.332624705Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5617,7 +5640,7 @@ entries:
     version: 0.1.64
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.356760262Z"
+    created: "2022-06-16T17:19:54.328575903Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5642,7 +5665,7 @@ entries:
     version: 0.1.63
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.352867682Z"
+    created: "2022-06-16T17:19:54.324682645Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5667,7 +5690,7 @@ entries:
     version: 0.1.62
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.348497193Z"
+    created: "2022-06-16T17:19:54.321648473Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5692,7 +5715,7 @@ entries:
     version: 0.1.61
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.344283506Z"
+    created: "2022-06-16T17:19:54.318578631Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5717,7 +5740,7 @@ entries:
     version: 0.1.60
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.334939714Z"
+    created: "2022-06-16T17:19:54.310810384Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5742,7 +5765,7 @@ entries:
     version: 0.1.59
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.330547824Z"
+    created: "2022-06-16T17:19:54.307798986Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5767,7 +5790,7 @@ entries:
     version: 0.1.58
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.326071032Z"
+    created: "2022-06-16T17:19:54.304771317Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5792,7 +5815,7 @@ entries:
     version: 0.1.57
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.320929927Z"
+    created: "2022-06-16T17:19:54.300315682Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5817,7 +5840,7 @@ entries:
     version: 0.1.56
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.316834443Z"
+    created: "2022-06-16T17:19:54.296827513Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5842,7 +5865,7 @@ entries:
     version: 0.1.55
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.312611956Z"
+    created: "2022-06-16T17:19:54.293770569Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5867,7 +5890,7 @@ entries:
     version: 0.1.54
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.308263867Z"
+    created: "2022-06-16T17:19:54.290725398Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5892,7 +5915,7 @@ entries:
     version: 0.1.53
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.30353597Z"
+    created: "2022-06-16T17:19:54.286642951Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5917,7 +5940,7 @@ entries:
     version: 0.1.52
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.29819116Z"
+    created: "2022-06-16T17:19:54.282653617Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5942,7 +5965,7 @@ entries:
     version: 0.1.51
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.293629467Z"
+    created: "2022-06-16T17:19:54.27958585Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5967,7 +5990,7 @@ entries:
     version: 0.1.50
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.28354186Z"
+    created: "2022-06-16T17:19:54.271466647Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -5992,7 +6015,7 @@ entries:
     version: 0.1.49
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.278962966Z"
+    created: "2022-06-16T17:19:54.268421183Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6017,7 +6040,7 @@ entries:
     version: 0.1.48
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.274603676Z"
+    created: "2022-06-16T17:19:54.265370457Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6042,7 +6065,7 @@ entries:
     version: 0.1.47
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.269636974Z"
+    created: "2022-06-16T17:19:54.261237257Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6067,7 +6090,7 @@ entries:
     version: 0.1.46
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.264373366Z"
+    created: "2022-06-16T17:19:54.257073904Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6092,7 +6115,7 @@ entries:
     version: 0.1.45
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.259762872Z"
+    created: "2022-06-16T17:19:54.254066631Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6117,7 +6140,7 @@ entries:
     version: 0.1.44
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.255409583Z"
+    created: "2022-06-16T17:19:54.251026264Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6142,7 +6165,7 @@ entries:
     version: 0.1.41
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.245473879Z"
+    created: "2022-06-16T17:19:54.243352277Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6167,7 +6190,7 @@ entries:
     version: 0.1.38
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.241456596Z"
+    created: "2022-06-16T17:19:54.240393298Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6192,7 +6215,7 @@ entries:
     version: 0.1.37
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.237183909Z"
+    created: "2022-06-16T17:19:54.237390009Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6217,7 +6240,7 @@ entries:
     version: 0.1.36
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.232452311Z"
+    created: "2022-06-16T17:19:54.232969994Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6242,7 +6265,7 @@ entries:
     version: 0.1.35
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.227856017Z"
+    created: "2022-06-16T17:19:54.229556688Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6267,7 +6290,7 @@ entries:
     version: 0.1.34
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.223913936Z"
+    created: "2022-06-16T17:19:54.226545349Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6292,7 +6315,7 @@ entries:
     version: 0.1.33
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.219527446Z"
+    created: "2022-06-16T17:19:54.223514749Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6317,7 +6340,7 @@ entries:
     version: 0.1.32
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.213498623Z"
+    created: "2022-06-16T17:19:54.217941706Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6342,7 +6365,7 @@ entries:
     version: 0.1.31
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.209029031Z"
+    created: "2022-06-16T17:19:54.214933724Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6367,7 +6390,7 @@ entries:
     version: 0.1.30
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.204498838Z"
+    created: "2022-06-16T17:19:54.211911921Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6392,7 +6415,7 @@ entries:
     version: 0.1.29
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.199319532Z"
+    created: "2022-06-16T17:19:54.207432892Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6417,7 +6440,7 @@ entries:
     version: 0.1.28
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.195783159Z"
+    created: "2022-06-16T17:19:54.204320482Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6442,7 +6465,7 @@ entries:
     version: 0.1.27
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.192314988Z"
+    created: "2022-06-16T17:19:54.201379241Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6467,7 +6490,7 @@ entries:
     version: 0.1.26
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.188494509Z"
+    created: "2022-06-16T17:19:54.198409373Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6492,7 +6515,7 @@ entries:
     version: 0.1.25
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.183590609Z"
+    created: "2022-06-16T17:19:54.193461527Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6517,7 +6540,7 @@ entries:
     version: 0.1.24
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.179922434Z"
+    created: "2022-06-16T17:19:54.190503452Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6542,7 +6565,7 @@ entries:
     version: 0.1.23
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.175746948Z"
+    created: "2022-06-16T17:19:54.18744327Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6567,7 +6590,7 @@ entries:
     version: 0.1.22
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.172157574Z"
+    created: "2022-06-16T17:19:54.184509468Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6592,7 +6615,7 @@ entries:
     version: 0.1.21
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.166762864Z"
+    created: "2022-06-16T17:19:54.180167882Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6617,7 +6640,7 @@ entries:
     version: 0.1.20
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.162438075Z"
+    created: "2022-06-16T17:19:54.176946727Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6642,7 +6665,7 @@ entries:
     version: 0.1.19
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.158405492Z"
+    created: "2022-06-16T17:19:54.174123485Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6667,7 +6690,7 @@ entries:
     version: 0.1.17
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.154769217Z"
+    created: "2022-06-16T17:19:54.171229911Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6692,7 +6715,7 @@ entries:
     version: 0.1.16
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.148975899Z"
+    created: "2022-06-16T17:19:54.16651405Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6717,7 +6740,7 @@ entries:
     version: 0.1.15
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.14466561Z"
+    created: "2022-06-16T17:19:54.163645251Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6742,7 +6765,7 @@ entries:
     version: 0.1.14
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.113984681Z"
+    created: "2022-06-16T17:19:54.137749773Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6767,7 +6790,7 @@ entries:
     version: 0.1.13
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.06422636Z"
+    created: "2022-06-16T17:19:54.097773148Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6792,7 +6815,7 @@ entries:
     version: 0.1.12
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.012929907Z"
+    created: "2022-06-16T17:19:54.057967456Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6817,7 +6840,7 @@ entries:
     version: 0.1.11
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:23.959821917Z"
+    created: "2022-06-16T17:19:54.01856847Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6842,7 +6865,7 @@ entries:
     version: 0.1.10
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.491436026Z"
+    created: "2022-06-16T17:19:54.430683926Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6867,7 +6890,7 @@ entries:
     version: 0.1.9
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.440433579Z"
+    created: "2022-06-16T17:19:54.391047999Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6892,7 +6915,7 @@ entries:
     version: 0.1.8
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.389588236Z"
+    created: "2022-06-16T17:19:54.35242264Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6917,7 +6940,7 @@ entries:
     version: 0.1.7
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.339079999Z"
+    created: "2022-06-16T17:19:54.313635076Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -6942,7 +6965,7 @@ entries:
     version: 0.1.6
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.289183876Z"
+    created: "2022-06-16T17:19:54.276468345Z"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -6966,7 +6989,7 @@ entries:
     version: 0.1.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2022-06-16T13:46:24.249336358Z"
+    created: "2022-06-16T17:19:54.246158735Z"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -6988,4 +7011,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.4.tgz
     version: 0.1.4
-generated: "2022-06-16T13:46:23.191552753Z"
+generated: "2022-06-16T17:19:53.414390624Z"
