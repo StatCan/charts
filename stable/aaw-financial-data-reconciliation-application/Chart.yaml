@@ -1,0 +1,13 @@
+apiVersion: v1
+appVersion: "1.0"
+description: A Helm chart for AAW Financial Data Reconciliation
+name: vetting
+version: 0.1.0
+home: https://statcan.gc.ca
+icon: https://www.python.org/static/img/python-logo
+sources:
+- https://github.com/StatCan/aaw-financial-data-reconciliation
+maintainers:
+  - name: Marc-André Ménard
+    email: marc-andre.menard@statcan.gc.ca
+engine: gotpl
