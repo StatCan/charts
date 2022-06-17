@@ -1,0 +1,63 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: aaw-financial-data-reconciliation-job
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            aadpodidbinding: "{{ .Values.managedIdentityName }}"
+            app.kubernetes.io/name: ad-scan-app.name
+            app.kubernetes.io/instance: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: aaw-financial-data-reconciliation-job
+            image: "{{ .Values.appImage.repository }}:{{ .Values.appImage.tag }}"
+            imagePullPolicy: "{{ .Values.appImage.pullPolicy }}"
+            env:
+            - name: ELASTIC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticUrl
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticPassword
+            - name: ELASTIC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticUsername
+            - name: ELASTIC_ERROR_INDEX
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticErrorIndex
+            - name: API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: apiUrl
+            - name: STORAGE_ACCOUNT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: storageAccountName
+            - name: STORAGE_ACCOUNT_RESOURCE_GROUP
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: storageAccountResourceGroup
+            - name: STORAGE_CONTAINER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: storageContainerName                  
+                        
+          restartPolicy: OnFailure
+         
