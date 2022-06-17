@@ -19,8 +19,9 @@ ingress:
     kubernetes.io/ingress.class: istio
   hosts:
     - host: chart-example.local
-      paths:
-        - '/*'
+      paths: 
+        - "/"
+  pathType: "ImplementationSpecific"
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

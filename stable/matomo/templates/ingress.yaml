@@ -32,7 +32,8 @@ spec:
     - host: {{ . | quote }}
       http:
         paths:
-          - backend:
+          - pathType: $.Values.ingress.pathType
+            backend:
               service:
                 name: {{ $fullName }}
                 port:

@@ -31,7 +31,8 @@ spec:
         paths:
         {{- range .paths }}
           - path: {{ . }}
-            backend:
+            pathType: {{ $.Values.ingress.pathType }}
+            backend: 
               service:
                 name: {{ $fullName }}
                 port: 

@@ -32,6 +32,7 @@ spec:
         paths:
         {{- range .paths }}
           - path: {{ . }}
+            pathType: { $.Values.ingress.pathType }}
             backend:
               service: 
                 name: {{ $fullName }}-portal
