@@ -40,15 +40,21 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - blob-csi
-          volumeMounts:
-            - name: blob-csi-config
-              mountPath: /instances.json
-              subPath: instances.json
+          envFrom:
+              {{- toYaml .Values.components.blobcsi.envFrom | nindent 14 }}
           env:
             {{- range $env := .Values.extraEnv }}
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}
+            {{- range $env := .Values.components.blobcsi.env }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
+          volumeMounts:
+            - name: blob-csi-config
+              mountPath: /instances.json
+              subPath: instances.json
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

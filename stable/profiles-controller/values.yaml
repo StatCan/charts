@@ -157,3 +157,35 @@ components:
         {"name": "premium", "classification": "unclassified", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": false}
         {"name": "standard-ro", "classification": "protected-b", "secret": "azure-secret/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}
         {"name": "premium-ro", "classification": "protected-b", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}
+    envFrom:
+      - secretRef:
+          name: "azure-blob-csi-fdi-unclassified"
+      - secretRef:
+          name: "azure-blob-csi-fdi-protected-b"
+    env:
+    - name: BLOB_CSI_FDI_OPA_DAEMON_TICKER_MILLIS
+      value: 2000
+    - name: BLOB_CSI_FDI_UNCLASS_OPA_ENDPOINT
+      value: "http://minio-gateway-opa.fdi-gateway-unclassified-system.svc.cluster.local:8181/v1/data"
+    - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAME
+      value: "azure-blob-csi-fdi-unclassified-spn"
+    - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAMESPACE
+      value: "azure-blob-csi-system"
+    - name: BLOB_CSI_FDI_UNCLASS_PV_STORAGE_CAP
+      value: "100Gi"
+    - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AUTH_TYPE
+      value: "spn"
+    - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AAD_ENDPOINT
+      value: "https://login.microsoftonline.com"
+    - name: BLOB_CSI_FDI_PROTECTED_B_OPA_ENDPOINT
+      value: "http://minio-gateway-opa.fdi-gateway-protected-b-system.svc.cluster.local:8181/v1/data"
+    - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAME
+      value: "azure-blob-csi-fdi-protected-b-spn"
+    - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAMESPACE
+      value: "azure-blob-csi-system"
+    - name: BLOB_CSI_FDI_PROTECTED_B_PV_STORAGE_CAP
+      value: "100Gi"
+    - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AUTH_TYPE
+      value: "spn"
+    - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AAD_ENDPOINT
+      value: "https://login.microsoftonline.com"
