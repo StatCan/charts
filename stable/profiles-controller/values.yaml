@@ -178,7 +178,7 @@ components:
     - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AAD_ENDPOINT
       value: "https://login.microsoftonline.com"
     - name: BLOB_CSI_FDI_PROTECTED_B_OPA_ENDPOINT
-      value: http://minio-gateway-opa.fdi-gateway-protected-b-system.svc.cluster.local:8181/v1/data
+      value: "http://minio-gateway-opa.fdi-gateway-protected-b-system.svc.cluster.local:8181/v1/data"
     - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAME
       value: "azure-blob-csi-fdi-protected-b-spn"
     - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAMESPACE
