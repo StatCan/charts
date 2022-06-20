@@ -48,11 +48,11 @@ spec:
                 secretKeyRef:
                   name: cronjob-secret
                   key: storageAccountName
-            - name: STORAGE_ACCOUNT_RESOURCE_GROUP
+            - name: STORAGE_ACCOUNT_RESOURCE_GROUP_NAME
               valueFrom:
                 secretKeyRef:
                   name: cronjob-secret
-                  key: storageAccountResourceGroup
+                  key: storageAccountResourceGroupName
             - name: STORAGE_CONTAINER_NAME
               valueFrom:
                 secretKeyRef:
