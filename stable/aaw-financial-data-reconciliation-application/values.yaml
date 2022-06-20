@@ -23,17 +23,7 @@ appConfig:
   storageAccountResourceName: ""
   storageContainerName: ""
 
-
-entrypointSh:
-  name: entrypointsh
-  mountPath: /app/entrypoint.sh
-  subPath: entrypoint.sh
-
 managedIdentityName: "aaw-financial-data-reconciliation"
-
-service:
-  type: ClusterIP
-  port: 5000
 
 
 resources: {}
