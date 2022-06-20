@@ -10,7 +10,7 @@ spec:
         metadata:
           labels:
             aadpodidbinding: "{{ .Values.managedIdentityName }}"
-            app.kubernetes.io/name: ad-scan-app.name
+            app.kubernetes.io/name: aaw-app.name
             app.kubernetes.io/instance: {{ .Release.Name }}
         spec:
           containers:
