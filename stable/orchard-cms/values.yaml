@@ -36,6 +36,7 @@ ingress:
   annotations: {}
   hosts:
     - orchard-cms.local
+  pathType: ImplementationSpecific
   tls: []
 
 environmentVariables:
