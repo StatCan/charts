@@ -35,6 +35,14 @@ spec:
             {{- toYaml .Values.nsiDesign.securityContext | nindent 12 }}
           image: "{{ .Values.nsiDesign.image.repository }}:{{ .Values.nsiDesign.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nsiDesign.image.pullPolicy }}
+          volumeMounts: 
+            {{- if .Values.nsiDesign.sdmx_logs.enabled}}
+            - mountPath: "/app/logs"
+              name: "sdmx-logs"
+            - mountPath: /app/config/log4net.config
+              name: nsidesign-log4net
+              subPath: log4net.config
+            {{- end }} 
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -99,6 +107,16 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.nsiDesign.resources | nindent 12 }}
+      volumes: 
+        {{- if .Values.nsiDesign.sdmx_logs.enabled}}
+        - azureFile: 
+            secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
+            shareName: {{.Values.nsiDesign.sdmx_logs.logShareName}}
+          name: "sdmx-logs"
+        - name: nsidesign-log4net
+          configMap:
+            name: nsidesign-log4net
+        {{- end}}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-design-structure
           image: "{{ .Values.nsiDesign.dbup.image.repository }}:{{ .Values.nsiDesign.dbup.image.tag }}"
