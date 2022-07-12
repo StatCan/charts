@@ -36,17 +36,11 @@ spec:
             {{- toYaml .Values.nsiReset.securityContext | nindent 12 }}
           image: "{{ .Values.nsiReset.image.repository }}:{{ .Values.nsiReset.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nsiReset.image.pullPolicy }}
-          {{- if or .Values.nsiReset.sdmx_logs.enabled .Values.nsiReset.sdmx_config.enabled }}
           volumeMounts: 
             {{- if .Values.nsiReset.sdmx_logs.enabled}}
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.nsiReset.sdmx_config.enabled }}
-            - mountPath: "/app/config"
-              name: "sdmx-logs-config"
-            {{- end }} 
-          {{- end }} 
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql

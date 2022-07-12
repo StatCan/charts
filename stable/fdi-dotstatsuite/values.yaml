@@ -55,7 +55,6 @@ authz:
   sdmx_logs: 
     enabled: false 
     logShareName: "sdmx-logs" #will need to change
-    config: |-
 
   ingress:
     enabled: true
@@ -518,7 +517,7 @@ nsiDesign:
 # NSI STAGING
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
 
-nsistaginglog4netconfig: # |-
+nsistaginglog4netconfig: {} # |-
 #     <log4net>
 #       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
 #         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
