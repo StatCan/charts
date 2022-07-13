@@ -327,7 +327,9 @@ nsiStable:
 
   affinity: {}
 
-nsidesignlog4netconfig: {} #|4+
+nsidesignlog4netconfig: 
+  enableConfig: false
+  data: #|4+
 #     <log4net>
 #       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
 #         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
@@ -517,7 +519,9 @@ nsiDesign:
 # NSI STAGING
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
 
-nsistaginglog4netconfig: {} # |-
+nsistaginglog4netconfig: 
+  enableConfig: false
+  data:  # |-
 #     <log4net>
 #       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
 #         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>

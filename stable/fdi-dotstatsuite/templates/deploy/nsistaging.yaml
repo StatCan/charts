@@ -39,6 +39,8 @@ spec:
             {{- if .Values.nsiStaging.sdmx_logs.enabled}}
             - mountPath: "/app/logs"
               name: "sdmx-logs"
+            {{- end}}
+            {{- if .Values.nsistaginglog4netconfig.enableConfig}}
             - mountPath: /app/config/log4net.config
               name: nsistaging-log4net
               subPath: log4net.config
