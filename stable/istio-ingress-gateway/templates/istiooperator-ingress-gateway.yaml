@@ -6,6 +6,12 @@ metadata:
   labels:
     {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
 spec:
+  {{- if .Values.hub }}
+  hub: {{ .Values.hub }}
+  {{- end }}
+  {{- if .Values.tag }}
+  tag: {{ .Values.tag }}
+  {{- end }}
   components:
     ingressGateways:
     - enabled: {{ .Values.ingressGateway.enabled }}
@@ -22,19 +28,31 @@ spec:
               name: cpu
               targetAverageUtilization: 80
             type: Resource
+        {{- with .Values.ingressGateway.nodeSelector }}
+        nodeSelector:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         service:
           type: {{ .Values.ingressGateway.service.type }}
           ports:
           {{- if .Values.https.enabled }}
           {{- if .Values.https.httpsRedirect }}
             - name: http2
-              nodePort: 30540
+              {{- if and (or (eq .Values.ingressGateway.service.type "NodePort") (eq .Values.ingressGateway.service.type "LoadBalancer")) (not (empty .Values.ingressGateway.service.nodePorts.http)) }}
+              nodePort: {{ .Values.ingressGateway.service.nodePorts.http }}
+              {{- else if eq .Values.ingressGateway.service.type "ClusterIP" }}
+              nodePort: null
+              {{- end }}
               port: 80
               protocol: TCP
               targetPort: 8080
           {{- end }}
             - name: https
-              nodePort: 31607
+              {{- if and (or (eq .Values.ingressGateway.service.type "NodePort") (eq .Values.ingressGateway.service.type "LoadBalancer")) (not (empty .Values.ingressGateway.service.nodePorts.https)) }}
+              nodePort: {{ .Values.ingressGateway.service.nodePorts.https }}
+              {{- else if eq .Values.ingressGateway.service.type "ClusterIP" }}
+              nodePort: null
+              {{- end }}
               port: 443
               protocol: TCP
               targetPort: 8443
@@ -48,8 +66,14 @@ spec:
         serviceAnnotations:
           {{- if eq .Values.ingressGateway.service.azureLoadBalancer "internal" }}
           service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+          {{- if .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          service.beta.kubernetes.io/azure-load-balancer-internal-subnet: {{ .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          {{- end }}
           {{- end }}
           {{- if eq .Values.ingressGateway.service.azureLoadBalancer "external" }}
           service.beta.kubernetes.io/azure-load-balancer-external: "true"
+          {{- if .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          service.beta.kubernetes.io/azure-load-balancer-external-subnet: {{ .Values.ingressGateway.service.azureLoadBalancerSubnet }}
+          {{- end }}
           {{- end }}
   profile: empty

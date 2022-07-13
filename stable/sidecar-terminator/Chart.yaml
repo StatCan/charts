@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: "1.0.0"
+description: |-
+  A chart used for easily configuring kubernetes-sidecar-terminator in a cluster.
+name: sidecar-terminator
+version: 1.2.0
+keywords:
+- sidecar-terminator
+sources:
+- https://gitlab.k8s.cloud.statcan.ca/cloudnative/terraform/modules/terraform-kubernetes-sidecar-terminator
+maintainers:
+- name: Mohamed Dahrouj
+  email: mohamed.dahrouj@statcan.gc.ca
+home: https://www.statcan.gc.ca

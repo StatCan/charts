@@ -63,10 +63,14 @@ spec:
                 secretKeyRef:
                   name: {{ include "ckan.fullname" . }}
                   key: ckanDatastoreReadUrl
+{{- if .Values.solr.enabled }}
             - name: CKAN_SOLR_URL
-              value: {{ .Values.ckan.solr }}
-            - name: CKAN__REDIS__URL
-              value: {{ .Values.ckan.redis }}
+              value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+{{- end }}
+{{- if .Values.redis.enabled }}
+            - name: CKAN_REDIS_URL
+              value: redis://{{ .Release.Name }}-redis-headless:6379/0
+{{- end }}
             - name: CKAN__DATAPUSHER__URL
               value: {{ .Values.ckan.datapusherUrl }}
             - name: CKAN___SMTP__SERVER

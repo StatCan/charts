@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "sidecar-terminator.fullname" . }}
+  labels:
+    {{- include "sidecar-terminator.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+- apiGroups:
+  - coordination.k8s.io
+  resourceNames:
+  - sidecar-terminator
+  resources:
+  - leases
+  verbs:
+  - get
+  - update
+  - watch
+  - patch

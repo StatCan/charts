@@ -37,7 +37,12 @@ spec:
           args:
             - rbac
             - --support-groups
-            - {{ join "," .Values.components.rbac.supportGroups }}
+            - "{{ join "," .Values.components.rbac.supportGroups }}"
+          env:
+            {{- range $env := .Values.extraEnv }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

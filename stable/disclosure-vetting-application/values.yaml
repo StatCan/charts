@@ -11,6 +11,18 @@ reportsCronJob:
   elasticSearchLogsIndex: ""
   elasticSearchErrorsIndex: ""
 
+ADScanCronJob:
+  canRun: false
+  projectsIgnoreList: ""
+  elasticSearchLogsIndex: ""
+  elasticSearchErrorsIndex: ""
+  accessToken: ""
+
+appImageADScanCron:
+  repository: statcan/disclosure-vetting-app
+  tag: 0.1.1
+  pullPolicy: Always
+
 appImageReportCron:
   repository: statcan/disclosure-vetting-app
   tag: 0.1.1
@@ -30,6 +42,9 @@ appImage:
 
 imagePullSecrets:
   name: artifactory-prod
+
+vettingEnv:
+  clusterName: ""
 
 external:
   enabled: false
@@ -63,6 +78,7 @@ configmodulePy:
   clientID: ""
   tenantID: ""
   appReleaseDate: ""
+  appReleaseHash: ""
   appReleaseVersion: ""
   storageAnalystName: ""
   storageResearcherName: ""

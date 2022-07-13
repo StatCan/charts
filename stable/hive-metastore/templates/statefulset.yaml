@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "hiveMetastore.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "hiveMetastore.name" . }}
+    app.kubernetes.io/component: metastore
+    {{- include "hiveMetastore.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "hiveMetastore.name" . }}
+      app.kubernetes.io/component: metastore
+      app.kubernetes.io/instance: {{ .Release.Name | quote }}
+  serviceName: {{ include "hiveMetastore.fullname" . }}
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "hiveMetastore.name" . }}
+        app.kubernetes.io/component: metastore
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    spec:
+      containers:
+      - name: metastore
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        # command:
+        # - "/bin/sh"
+        # - "-c"
+        # - "/opt/hive/bin/hive --service metastore"
+        env:
+          - name: METASTORE_DB_HOSTNAME
+            value: {{ .Release.Name }}-mariadb
+        # - name: HADOOP_CLASSPATH
+        #   value: /opt/hadoop-2.7.4/share/hadoop/tools/lib/*
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 16010
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 2
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 16010
+        #   initialDelaySeconds: 10
+        #   timeoutSeconds: 2
+        volumeMounts:
+        - name: hive-config
+          mountPath: /opt/apache-hive-metastore-3.0.0-bin/conf
+      volumes:
+      - name: hive-config
+        configMap:
+          name: {{ include "hiveMetastore.fullname" . }}

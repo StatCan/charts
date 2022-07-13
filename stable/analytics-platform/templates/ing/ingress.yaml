@@ -1,7 +1,7 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "analytics-platform.fullname" . -}}
 {{- $port := .Values.portal.service.port -}}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -32,9 +32,12 @@ spec:
         paths:
         {{- range .paths }}
           - path: {{ . }}
+            pathType: {{ $.Values.ingress.pathType }}
             backend:
-              serviceName: {{ $fullName }}-portal
-              servicePort: {{ $port }}
+              service: 
+                name: {{ $fullName }}-portal
+                port:
+                  number: {{ $port }}
         {{- end }}
   {{- end }}
 {{- end }}

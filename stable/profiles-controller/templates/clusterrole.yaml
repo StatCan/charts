@@ -29,6 +29,10 @@ rules:
       - ''
     resources:
       - pods
+      - secrets
+      - configmaps
+      - persistentvolumes
+      - persistentvolumeclaims
     verbs:
       - get
       - list
@@ -74,6 +78,19 @@ rules:
       - patch
       - delete
   - apiGroups:
+      - networking.istio.io
+    resources:
+      - serviceentries
+      - virtualservices
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
       - networking.k8s.io
     resources:
       - networkpolicies
@@ -107,3 +124,15 @@ rules:
     resourceNames:
       - profile-support
       - ml-pipeline
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - applications
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete

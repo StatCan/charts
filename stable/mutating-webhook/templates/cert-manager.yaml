@@ -27,3 +27,5 @@ spec:
   issuerRef:
     name: {{ include "mutating-webhook.fullname" . }}-issuer
     kind: Issuer
+  privateKey:
+    rotationPolicy: Always  
