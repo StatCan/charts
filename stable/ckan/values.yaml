@@ -51,7 +51,7 @@ ckan:
   siteTitle: "Site Title here"
   siteId: "site-id-here"
   siteUrl: "http://localhost:5000"
-  ckanPlugins: "image_view text_view recline_view datastore datapusher"
+  ckanPlugins: "stats text_view image_view recline_view harvest ckan_harvester ccei"
   storagePath: "/var/lib/ckan/default"
   activityStreamsEmailNotifications: "true"
   debug: "false"
