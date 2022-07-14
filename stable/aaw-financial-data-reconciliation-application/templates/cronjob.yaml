@@ -38,6 +38,11 @@ spec:
                 secretKeyRef:
                   name: cronjob-secret
                   key: elasticErrorIndex
+            - name: SUBSCRIPTION_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: subscriptionId
             - name: API_URL
               valueFrom:
                 secretKeyRef:
