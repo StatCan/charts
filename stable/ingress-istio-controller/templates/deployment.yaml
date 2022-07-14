@@ -33,7 +33,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
           {{- if or .Values.controller.defaultGateway (and .Values.gateway.deploy .Values.gateway.isControllerDefault) }}
-            - "--default-gateway" 
+            - "--default-gateway"
             {{- if .Values.gateway.isControllerDefault }}
             - {{ printf "%s/%s" .Release.Namespace (include "ingress-istio-controller.fullname" .) | quote }}
             {{- else }}
@@ -59,6 +59,9 @@ spec:
           {{- if .Values.controller.clusterDomain }}
             - "--cluster-domain"
             - {{ .Values.controller.clusterDomain | quote }}
+          {{- end }}
+          {{- if .Values.controller.scopedGateways }}
+            - "--scoped-gateways={{ .Values.controller.scopedGateways }}"
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
