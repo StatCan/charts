@@ -35,6 +35,11 @@ spec:
             {{- toYaml .Values.authz.securityContext | nindent 12 }}
           image: "{{ .Values.authz.image.repository }}:{{ .Values.authz.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.authz.image.pullPolicy }}
+          volumeMounts: 
+            {{- if .Values.authz.sdmx_logs.enabled}}
+            - mountPath: "/app/logs"
+              name: "sdmx-logs"
+            {{- end}}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -62,6 +67,13 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.authz.resources | nindent 12 }}
+      volumes: 
+        {{- if .Values.authz.sdmx_logs.enabled}}
+        - azureFile: 
+            secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
+            shareName: {{.Values.authz.sdmx_logs.logShareName}}
+          name: "sdmx-logs"
+        {{- end}}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-common
           image: "{{ .Values.authz.dbup.image.repository }}:{{ .Values.authz.dbup.image.tag }}"

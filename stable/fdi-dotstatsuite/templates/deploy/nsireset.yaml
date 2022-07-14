@@ -29,12 +29,18 @@ spec:
       serviceAccountName: {{ include "dotstatsuite.nsiReset.serviceAccountName" . }}-reset
       securityContext:
         {{- toYaml .Values.nsiReset.podSecurityContext | nindent 8 }}
+
       containers:
         - name: {{ .Chart.Name }}-reset
           securityContext:
             {{- toYaml .Values.nsiReset.securityContext | nindent 12 }}
           image: "{{ .Values.nsiReset.image.repository }}:{{ .Values.nsiReset.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nsiReset.image.pullPolicy }}
+          volumeMounts: 
+            {{- if .Values.nsiReset.sdmx_logs.enabled}}
+            - mountPath: "/app/logs"
+              name: "sdmx-logs"
+            {{- end}}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -99,6 +105,13 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.nsiReset.resources | nindent 12 }}
+      volumes: 
+        {{- if .Values.nsiReset.sdmx_logs.enabled}}
+        - azureFile: 
+            secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
+            shareName: {{.Values.nsiReset.sdmx_logs.logShareName}}
+          name: "sdmx-logs"
+        {{- end}}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-reset-structure
           image: "{{ .Values.nsiReset.dbup.image.repository }}:{{ .Values.nsiReset.dbup.image.tag }}"
