@@ -43,6 +43,21 @@ spec:
                 secretKeyRef:
                   name: cronjob-secret
                   key: subscriptionId
+            - name: SUBSCRIPTION_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: subscriptionName
+            - name: CLUSTER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: clusterName
+            - name: RESOURCE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: resourceId
             - name: API_URL
               valueFrom:
                 secretKeyRef:
