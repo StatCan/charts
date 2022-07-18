@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "ingress-istio-controller.fullname" . }}
-  labels: 
+  labels:
     {{- include "ingress-istio-controller.labels" . | nindent 4 }}
 rules:
 - apiGroups:
@@ -17,16 +17,30 @@ rules:
     - update
     - delete
 - apiGroups:
+  - networking.istio.io
+  resources:
+  - gateways
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingresses
 {{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/IngressClass" }}
   - ingressclasses
-{{- end }}  
+{{- end }}
   verbs:
   - get
   - list
   - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses/status
+  verbs:
+  - update
 - apiGroups:
   - ''
   resources:
