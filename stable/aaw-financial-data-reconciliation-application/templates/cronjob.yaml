@@ -43,6 +43,21 @@ spec:
                 secretKeyRef:
                   name: cronjob-secret
                   key: subscriptionId
+            - name: BATCH_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: batchMode
+            - name: BATCH_START
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: batchStart
+            - name: BATCH_END
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: batchEnd
             - name: SUBSCRIPTION_NAME
               valueFrom:
                 secretKeyRef:
