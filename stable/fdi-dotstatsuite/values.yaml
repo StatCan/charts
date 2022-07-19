@@ -27,8 +27,6 @@ managed:
   sdmx_log:
     azurestorageaccountname: ""
     azurestorageaccountkey: ""
-    
-    
 
 image: &image
   repository: &repository siscc/sdmxri-nsi-maapi
@@ -54,7 +52,7 @@ authz:
 
   sdmx_logs: 
     enabled: false 
-    logShareName: "sdmx-logs" #will need to change
+    logShareName: "sdmx-logs"
 
   ingress:
     enabled: true
@@ -154,9 +152,8 @@ nsiReset:
 
   sdmx_logs: 
     enabled: false 
-    logShareName: "sdmx-logs" #will need to change
+    logShareName: "sdmx-logs"
 
-    
   ingress:
     enabled: true
     annotations:
@@ -249,7 +246,7 @@ nsiStable:
   
   sdmx_logs: 
     enabled: false 
-    logShareName: "sdmx-logs" #will need to change
+    logShareName: "sdmx-logs"
 
   ingress:
     enabled: true
@@ -329,7 +326,8 @@ nsiStable:
 
 nsidesignlog4netconfig: 
   enableConfig: false
-  data: #|4+
+  data:
+#|4+
 #     <log4net>
 #       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
 #         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
@@ -437,8 +435,7 @@ nsiDesign:
   
   sdmx_logs: 
     enabled: false 
-    logShareName: "sdmx-logs" #will need to change
-
+    logShareName: "sdmx-logs"
 
   ingress:
     enabled: true
@@ -521,7 +518,8 @@ nsiDesign:
 
 nsistaginglog4netconfig: 
   enableConfig: false
-  data:  # |-
+  data:
+# |-
 #     <log4net>
 #       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
 #         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
@@ -625,8 +623,7 @@ nsiStaging:
 
   sdmx_logs: 
     enabled: false 
-    logShareName: "sdmx-logs" #will need to change
-
+    logShareName: "sdmx-logs"
 
   ingress:
     enabled: true
@@ -715,8 +712,7 @@ transfer:
   
   sdmx_logs: 
     enabled: false 
-    logShareName: "sdmx-logs" #will need to change
-
+    logShareName: "sdmx-logs"
 
   ingress:
     enabled: true
