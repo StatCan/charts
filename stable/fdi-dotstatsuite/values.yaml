@@ -50,8 +50,8 @@ authz:
   common_user: "commonUser"
   read_only_user: "readOnlyUser"
 
-  sdmx_logs: 
-    enabled: false 
+  sdmx_logs:
+    enabled: false
     logShareName: "sdmx-logs"
 
   ingress:
@@ -150,8 +150,8 @@ nsiReset:
   reset_structure_user: sdmxResetStructureUser
 
 
-  sdmx_logs: 
-    enabled: false 
+  sdmx_logs:
+    enabled: false
     logShareName: "sdmx-logs"
 
   ingress:
@@ -243,9 +243,9 @@ nsiStable:
   stable_structure_db: sdmxStableStructureDb
   stable_structure_user: sdmxStableStructureUser
 
-  
-  sdmx_logs: 
-    enabled: false 
+
+  sdmx_logs:
+    enabled: false
     logShareName: "sdmx-logs"
 
   ingress:
@@ -324,7 +324,7 @@ nsiStable:
 
   affinity: {}
 
-nsidesignlog4netconfig: 
+nsidesignlog4netconfig:
   enableConfig: false
   data:
 #|4+
@@ -432,9 +432,9 @@ nsiDesign:
   design_structure_user: sdmxDesignStructureUser
 
 
-  
-  sdmx_logs: 
-    enabled: false 
+
+  sdmx_logs:
+    enabled: false
     logShareName: "sdmx-logs"
 
   ingress:
@@ -516,7 +516,7 @@ nsiDesign:
 # NSI STAGING
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
 
-nsistaginglog4netconfig: 
+nsistaginglog4netconfig:
   enableConfig: false
   data:
 # |-
@@ -621,8 +621,8 @@ nsiStaging:
   staging_structure_db: sdmxStagingStructureDb
   staging_structure_user: sdmxStagingStructureUser
 
-  sdmx_logs: 
-    enabled: false 
+  sdmx_logs:
+    enabled: false
     logShareName: "sdmx-logs"
 
   ingress:
@@ -709,9 +709,9 @@ transfer:
   replicaCount: 1
 
 
-  
-  sdmx_logs: 
-    enabled: false 
+
+  sdmx_logs:
+    enabled: false
     logShareName: "sdmx-logs"
 
   ingress:
