@@ -325,8 +325,9 @@ nsiStable:
   affinity: {}
 
 nsidesignlog4netconfig:
+  name: "nsidesign-log4net"
   enableConfig: false
-  data:
+  data: ""
 #|4+
 #     <log4net>
 #       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
@@ -516,8 +517,9 @@ nsiDesign:
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
 
 nsistaginglog4netconfig:
+  name: "nsistaging-log4net"
   enableConfig: false
-  data:
+  data: ""
 # |-
 #     <log4net>
 #       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
