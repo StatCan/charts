@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.chartname }}
+  name: {{ .Values.name }}
   labels:
     app: fluentd
     kubernetes.io/cluster-service: "true"
