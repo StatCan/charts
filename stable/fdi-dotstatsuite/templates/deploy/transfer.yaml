@@ -35,6 +35,11 @@ spec:
             {{- toYaml .Values.transfer.securityContext | nindent 12 }}
           image: "{{ .Values.transfer.image.repository }}:{{ .Values.transfer.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.transfer.image.pullPolicy }}
+          volumeMounts: 
+            {{- if .Values.transfer.sdmx_logs.enabled}}
+            - mountPath: "/app/logs"
+              name: "sdmx-logs"
+            {{- end}}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -204,6 +209,13 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.transfer.resources | nindent 12 }}
+      volumes: 
+        {{- if .Values.transfer.sdmx_logs.enabled}}
+        - azureFile: 
+            secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
+            shareName: {{.Values.transfer.sdmx_logs.logShareName}}
+          name: "sdmx-logs"
+        {{- end}}
       initContainers:
 {{- if index .Values.nsiStable.enabled }}        
         - name: dbup-{{ template "dotstatsuite.fullname" . }}-stable-data

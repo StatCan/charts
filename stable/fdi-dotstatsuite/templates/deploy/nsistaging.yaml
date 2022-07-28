@@ -28,13 +28,23 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "dotstatsuite.nsiStaging.serviceAccountName" . }}-staging
       securityContext:
-        {{- toYaml .Values.nsiStaging.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.nsiStaging.podSecurityContext | nindent 8 }}        
       containers:
         - name: {{ .Chart.Name }}-staging
           securityContext:
             {{- toYaml .Values.nsiStaging.securityContext | nindent 12 }}
           image: "{{ .Values.nsiStaging.image.repository }}:{{ .Values.nsiStaging.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nsiStaging.image.pullPolicy }}
+          volumeMounts: 
+            {{- if .Values.nsiStaging.sdmx_logs.enabled}}
+            - mountPath: "/app/logs"
+              name: "sdmx-logs"
+            {{- end}}
+            {{- if .Values.nsistaginglog4netconfig.enableConfig}}
+            - mountPath: /app/config/log4net.config
+              name: nsistaging-log4net
+              subPath: log4net.config
+            {{- end}}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -99,6 +109,16 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.nsiStaging.resources | nindent 12 }}
+      volumes: 
+        {{- if .Values.nsiStaging.sdmx_logs.enabled}}
+        - azureFile: 
+            secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
+            shareName: {{.Values.nsiStaging.sdmx_logs.logShareName}}
+          name: "sdmx-logs"
+        - name: nsistaging-log4net
+          configMap:
+            name: nsistaging-log4net
+        {{- end}}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-staging-structure
           image: "{{ .Values.nsiStaging.dbup.image.repository }}:{{ .Values.nsiStaging.dbup.image.tag }}"
