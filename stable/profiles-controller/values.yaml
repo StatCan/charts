@@ -155,10 +155,10 @@ components:
       value: "https://kubeflow.aaw-dev.cloud.statcan.ca"
   blobcsi:
     config: |
-        {"name": "standard", "classification": "unclassified", "secret": "azure-secret/azure-blob-csi-system", "capacity": "100Gi", "readOnly": false}
-        {"name": "premium", "classification": "unclassified", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": false}
-        {"name": "standard-ro", "classification": "protected-b", "secret": "azure-secret/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}
-        {"name": "premium-ro", "classification": "protected-b", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}
+        {"name": "standard", "classification": "unclassified", "secret": "azure-secret/azure-blob-csi-system", "capacity": 10, "readOnly": false}
+        {"name": "premium", "classification": "unclassified", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": 10, "readOnly": false}
+        {"name": "standard-ro", "classification": "protected-b", "secret": "azure-secret/azure-blob-csi-system", "capacity": 10, "readOnly": true}
+        {"name": "premium-ro", "classification": "protected-b", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": 10, "readOnly": true}
     envFrom:
       - secretRef:
           name: "azure-blob-csi-fdi-unclassified"
@@ -174,7 +174,7 @@ components:
     - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAMESPACE
       value: "azure-blob-csi-system"
     - name: BLOB_CSI_FDI_UNCLASS_PV_STORAGE_CAP
-      value: "100Gi"
+      value: 10
     - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AUTH_TYPE
       value: "spn"
     - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AAD_ENDPOINT
@@ -186,7 +186,7 @@ components:
     - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAMESPACE
       value: "azure-blob-csi-system"
     - name: BLOB_CSI_FDI_PROTECTED_B_PV_STORAGE_CAP
-      value: "100Gi"
+      value: 10
     - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AUTH_TYPE
       value: "spn"
     - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AAD_ENDPOINT
