@@ -41,10 +41,10 @@ dbup: &dbup
     tag: &tag master
 
 autoscaling: &autoscaling
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 10
-    targetCPUUtilizationPercentage: 80
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
 
 authzlog4net-config: ""
 # Authz
@@ -174,7 +174,6 @@ nsiReset:
 
   image: *image
   dbup: *dbup
-  autoscaling: *autoscaling
 
   serviceAccount:
     # Specifies whether a service account should be created
