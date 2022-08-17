@@ -40,6 +40,13 @@ dbup: &dbup
     pullPolicy: &pullPolicy Always
     tag: &tag master
 
+autoscaling: &autoscaling
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+authzlog4net-config: ""
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
 authz:
@@ -123,11 +130,7 @@ authz:
     #   cpu: 100m
     #   memory: 128Mi
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
+  autoscaling: *autoscaling
     # targetMemoryUtilizationPercentage: 80
 
   nodeSelector: {}
@@ -217,11 +220,7 @@ nsiReset:
     #   cpu: 100m
     #   memory: 128Mi
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
+  autoscaling: *autoscaling
     # targetMemoryUtilizationPercentage: 80
 
   nodeSelector: {}
@@ -265,6 +264,7 @@ nsiStable:
 
   image: *image
   dbup: *dbup
+  autoscaling: *autoscaling
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -311,11 +311,6 @@ nsiStable:
     #   cpu: 100m
     #   memory: 128Mi
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
 
   nodeSelector: {}
@@ -500,11 +495,7 @@ nsiDesign:
     #   cpu: 100m
     #   memory: 128Mi
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
+  autoscaling: *autoscaling
     # targetMemoryUtilizationPercentage: 80
 
   nodeSelector: {}
@@ -689,11 +680,7 @@ nsiStaging:
     #   cpu: 100m
     #   memory: 128Mi
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
+  autoscaling: *autoscaling
     # targetMemoryUtilizationPercentage: 80
 
   nodeSelector: {}
@@ -705,6 +692,8 @@ nsiStaging:
 
 # Transfer
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
+transferlog4net-config: ""
+
 transfer:
   enabled: true
   replicaCount: 1
@@ -782,11 +771,7 @@ transfer:
     #   cpu: 100m
     #   memory: 128Mi
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
+  autoscaling: *autoscaling
     # targetMemoryUtilizationPercentage: 80
 
   nodeSelector: {}
