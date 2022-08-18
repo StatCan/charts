@@ -40,8 +40,6 @@ https:
   httpsRedirect: true
   # Configure allowed cipher suites.
   cipherSuites:
-    - TLS_AES_256_GCM_SHA384
-    - TLS_AES_128_GCM_SHA256
     - ECDHE-RSA-AES256-GCM-SHA384
     - ECDHE-RSA-AES128-GCM-SHA256
   # Configures if HSTS headers should be added to all responses which do not have it.
