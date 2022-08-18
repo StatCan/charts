@@ -40,6 +40,11 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
+            {{- if .Values.transferlog4netconfig.enableConfig}}
+            - mountPath: /app/config/log4net.config
+              name: transfer-log4net
+              subPath: log4net.config
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -215,6 +220,11 @@ spec:
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
             shareName: {{.Values.transfer.sdmx_logs.logShareName}}
           name: "sdmx-logs"
+        {{- end}}
+        {{- if .Values.transferlog4netconfig.enableConfig}}
+        - name: transfer-log4net
+          configMap:
+            name: {{ .Values.transferlog4netconfig.name}}
         {{- end}}
       initContainers:
 {{- if index .Values.nsiStable.enabled }}        

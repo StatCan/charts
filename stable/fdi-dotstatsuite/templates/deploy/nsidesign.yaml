@@ -115,9 +115,11 @@ spec:
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
             shareName: {{.Values.nsiDesign.sdmx_logs.logShareName}}
           name: "sdmx-logs"
+        {{- end}}
+        {{- if .Values.nsidesignlog4netconfig.enableConfig}}
         - name: nsidesign-log4net
           configMap:
-            name: nsidesign-log4net
+            name: {{.Values.nsidesignlog4netconfig.name}}
         {{- end}}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-design-structure

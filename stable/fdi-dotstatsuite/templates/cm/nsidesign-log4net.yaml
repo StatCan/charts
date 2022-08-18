@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{.Values.nsidesignlog4netconfig.name}}
 data:
-  log4net.config: {{ .Values.nsidesignlog4netconfig.data | indent 4}}
+  log4net.config: {{ .Values.nsidesignlog4netconfig.data | indent 4 }}

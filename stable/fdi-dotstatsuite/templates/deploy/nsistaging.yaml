@@ -115,9 +115,11 @@ spec:
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
             shareName: {{.Values.nsiStaging.sdmx_logs.logShareName}}
           name: "sdmx-logs"
+        {{- end}}
+        {{- if .Values.nsistaginglog4netconfig.enableConfig}}
         - name: nsistaging-log4net
           configMap:
-            name: nsistaging-log4net
+            name: {{ .Values.nsistaginglog4netconfig.name}}
         {{- end}}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-staging-structure

@@ -40,6 +40,11 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
+            {{- if .Values.authzlog4netconfig.enableConfig}}
+            - mountPath: /app/config/log4net.config
+              name: authz-log4net
+              subPath: log4net.config
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -73,6 +78,11 @@ spec:
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
             shareName: {{.Values.authz.sdmx_logs.logShareName}}
           name: "sdmx-logs"
+        {{- end}}
+        {{- if .Values.authzlog4netconfig.enableConfig}}
+        - name: authz-log4net
+          configMap:
+            name: {{ .Values.authzlog4netconfig.name}}
         {{- end}}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-common

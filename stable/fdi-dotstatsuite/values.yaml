@@ -46,7 +46,10 @@ autoscaling: &autoscaling
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
 
-authzlog4net-config: ""
+authzlog4net-config:
+  name: "authz-log4net"
+  enableConfig: false
+  data: ""
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
 authz:
@@ -692,7 +695,10 @@ nsiStaging:
 
 # Transfer
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-transferlog4net-config: ""
+transferlog4net-config:
+  name: "authz-log4net"
+  enableConfig: false
+  data: ""
 
 transfer:
   enabled: true
