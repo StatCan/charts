@@ -35,7 +35,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            - Trino
+            - trino
           env:
             {{- range $env := .Values.extraEnv }}
             - name: {{ $env.name }}
