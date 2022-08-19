@@ -705,6 +705,12 @@ transfer:
   replicaCount: 1
 
 
+  dataImportTimeOutInMinutes: 30
+  databaseCommandTimeoutInSec: 1800
+
+  autoLog2DB: "true"
+  autoLog2DBLogLevel: "Notice"
+
   sdmx_logs:
     enabled: false
     logShareName: "sdmx-logs"
