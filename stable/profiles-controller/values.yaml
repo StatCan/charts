@@ -191,3 +191,20 @@ components:
       value: "spn"
     - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AAD_ENDPOINT
       value: "https://login.microsoftonline.com"
+
+  s3proxy:
+    env:
+    - name: S3PROXY_ARGOCD_NAMESPACE
+      value: profiles-argocd-system
+    - name: S3PROXY_ARGOCD_SOURCE_REPO_URL
+      value: https://github.com/StatCan/aaw-argocd-manifests.git
+    - name: S3PROXY_ARGOCD_SOURCE_TARGET_REVISION
+      value: aaw-dev-cc-00
+    - name: S3PROXY_ARGOCD_SOURCE_PATH
+      value: profiles-argocd-system/template/s3proxy
+    - name: S3PROXY_ARGOCD_PROJECT
+      value: default
+    - name: S3PROXY_KUBEFLOW_ROOT_URL
+      value: https://kubeflow.aaw-dev.cloud.statcan.ca
+    - name: S3PROXY_KUBEFLOW_PREFIX
+      value: s3
