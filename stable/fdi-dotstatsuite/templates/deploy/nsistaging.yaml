@@ -36,15 +36,15 @@ spec:
           image: "{{ .Values.nsiStaging.image.repository }}:{{ .Values.nsiStaging.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nsiStaging.image.pullPolicy }}
           volumeMounts: 
-            {{- if .Values.nsiStaging.sdmx_logs.enabled}}
+            {{- if .Values.nsiStaging.sdmx_logs.enabled }}
             - mountPath: "/app/logs"
               name: "sdmx-logs"
-            {{- end}}
-            {{- if .Values.nsistaginglog4netconfig.enableConfig}}
-            - mountPath: /app/config/log4net.config
-              name: nsistaging-log4net
-              subPath: log4net.config
-            {{- end}}
+            {{- end }}
+            {{- if .Values.nsiStagingLog4netConfig.enableConfig }}
+            - mountPath: "/app/config/log4net.config"
+              name: "nsistaging-log4net"
+              subPath: "log4net.config"
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -110,17 +110,17 @@ spec:
           resources:
             {{- toYaml .Values.nsiStaging.resources | nindent 12 }}
       volumes: 
-        {{- if .Values.nsiStaging.sdmx_logs.enabled}}
+        {{- if .Values.nsiStaging.sdmx_logs.enabled }}
         - azureFile: 
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
-            shareName: {{.Values.nsiStaging.sdmx_logs.logShareName}}
+            shareName: {{ .Values.nsiStaging.sdmx_logs.logShareName }}
           name: "sdmx-logs"
-        {{- end}}
-        {{- if .Values.nsistaginglog4netconfig.enableConfig}}
+        {{- end }}
+        {{- if .Values.nsiStagingLog4netConfig.enableConfig }}
         - name: nsistaging-log4net
           configMap:
-            name: {{ .Values.nsistaginglog4netconfig.name}}
-        {{- end}}
+            name: {{ .Values.nsiStagingLog4netConfig.name }}
+        {{- end }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-staging-structure
           image: "{{ .Values.nsiStaging.dbup.image.repository }}:{{ .Values.nsiStaging.dbup.image.tag }}"
