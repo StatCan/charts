@@ -74,19 +74,3 @@ data:
   {{- range $configValue := .Values.additionalLogProperties }}
     {{ $configValue }}
   {{- end }}
-
-  rules.json: |
-    {
-      "tables": [
-        {
-          "user": ".*",
-          "privileges": ["SELECT", "INSERT", "DELETE", "UPDATE", "OWNERSHIP"]
-        }
-      ]
-    }
-
-
-  access-control.properties: |
-    access-control.name=file
-    security.config-file=/etc/trino/rules.json
-    security.refresh-period=1s

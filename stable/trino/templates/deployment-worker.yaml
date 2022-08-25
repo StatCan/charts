@@ -25,12 +25,24 @@ spec:
     spec:
       serviceAccountName: {{ include "trino.serviceAccountName" . }}
       volumes:
+        - name: storage-config
+          secret:
+            secretName: core-site
+        - name: rules-volume
+          projected:
+            sources:
+              - configMap:
+                  name: trino-prob-rules
+              - configMap:
+                  name: trino-unclassified-rules  
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
         - name: catalog-volume
           configMap:
             name: {{ template "trino.catalog" . }}
+        - name: cache-volume
+          emptyDir: {}
       {{- if .Values.initContainers.worker }}
       initContainers:
       {{-  tpl (toYaml .Values.initContainers.worker) . | nindent 6 }}
@@ -44,10 +56,16 @@ spec:
           env:
             {{- toYaml .Values.env | nindent 12 }}
           volumeMounts:
+            - mountPath: /etc/hadoop/conf/
+              name: storage-config
+            - mountPath: /etc/catalog
+              name: rules-volume
             - mountPath: {{ .Values.server.config.path }}
               name: config-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
+            - mountPath: /opt/hive-cache
+              name: cache-volume
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
