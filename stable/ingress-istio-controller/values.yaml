@@ -22,6 +22,8 @@ controller:
   virtualServiceWeight:
   # The ingress class annotation to monitor (empty string to skip checking annotation).
   ingressClass:
+  # Gateways are scoped to the same namespace they exist within. This will limit the Service search for Load Balancer status. In istiod, this is controlled via the PILOT_SCOPE_GATEWAY_TO_NAMESPACE environment variable.
+  scopedGateways: false
 
 # Settings relating to the IngressClass for this controller
 ingressClass:

@@ -38,6 +38,10 @@ https:
   hosts: []
   # Enables an HTTP server that redirects all traffic to an HTTPS endpoint
   httpsRedirect: true
+  # Configure allowed cipher suites.
+  cipherSuites:
+    - ECDHE-RSA-AES256-GCM-SHA384
+    - ECDHE-RSA-AES128-GCM-SHA256
   # Configures if HSTS headers should be added to all responses which do not have it.
   hsts:
     enabled: true

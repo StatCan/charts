@@ -1,7 +1,7 @@
 name: ckan
 apiVersion: v2
 type: application
-version: 0.0.22
+version: 0.0.23
 appVersion: 2.9.5
 description: CKAN Helm Chart for Kubernetes.
 keywords:
@@ -23,11 +23,11 @@ engine: gotpl
 dependencies:
   - name: redis
     version: 12.10.1
-    repository: https://charts.bitnami.com/bitnami
+    repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
     condition: redis.enabled
   - name: postgresql
     version: 10.2.0
-    repository: https://charts.bitnami.com/bitnami
+    repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
     condition: postgresql.enabled
   - name: solr
     version: 1.5.8

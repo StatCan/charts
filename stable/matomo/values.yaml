@@ -22,6 +22,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
   #  - matomo.local
+  pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

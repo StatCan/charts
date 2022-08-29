@@ -1,0 +1,98 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: aaw-financial-data-reconciliation-job
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            aadpodidbinding: "{{ .Values.managedIdentityName }}"
+            app.kubernetes.io/name: aaw-app.name
+            app.kubernetes.io/instance: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: aaw-financial-data-reconciliation-job
+            image: "{{ .Values.appImage.repository }}:{{ .Values.appImage.tag }}"
+            imagePullPolicy: "{{ .Values.appImage.pullPolicy }}"
+            env:
+            - name: ELASTIC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticUrl
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticPassword
+            - name: ELASTIC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticUsername
+            - name: ELASTIC_ERROR_INDEX
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: elasticErrorIndex
+            - name: SUBSCRIPTION_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: subscriptionId
+            - name: BATCH_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: batchMode
+            - name: BATCH_START
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: batchStart
+            - name: BATCH_END
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: batchEnd
+            - name: SUBSCRIPTION_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: subscriptionName
+            - name: CLUSTER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: clusterName
+            - name: RESOURCE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: resourceId
+            - name: API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: apiUrl
+            - name: STORAGE_ACCOUNT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: storageAccountName
+            - name: STORAGE_ACCOUNT_RESOURCE_GROUP_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: storageAccountResourceGroupName
+            - name: STORAGE_CONTAINER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cronjob-secret
+                  key: storageContainerName                  
+                        
+          restartPolicy: OnFailure
+         
