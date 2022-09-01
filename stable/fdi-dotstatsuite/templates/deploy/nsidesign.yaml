@@ -40,10 +40,10 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end }} 
-            {{- if .Values.nsidesignlog4netconfig.enableConfig}}
-            - mountPath: /app/config/log4net.config
-              name: nsidesign-log4net
-              subPath: log4net.config
+            {{- if .Values.nsiDesignLog4netConfig.enableConfig }}
+            - mountPath: "/app/config/log4net.config"
+              name: "nsidesign-log4net"
+              subPath: "log4net.config"
             {{- end }} 
           envFrom:
             - configMapRef:
@@ -110,15 +110,17 @@ spec:
           resources:
             {{- toYaml .Values.nsiDesign.resources | nindent 12 }}
       volumes: 
-        {{- if .Values.nsiDesign.sdmx_logs.enabled}}
+        {{- if .Values.nsiDesign.sdmx_logs.enabled }}
         - azureFile: 
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
-            shareName: {{.Values.nsiDesign.sdmx_logs.logShareName}}
+            shareName: {{ .Values.nsiDesign.sdmx_logs.logShareName }}
           name: "sdmx-logs"
-        - name: nsidesign-log4net
+        {{- end }}
+        {{- if .Values.nsiDesignLog4netConfig.enableConfig }}
+        - name: "nsidesign-log4net"
           configMap:
-            name: nsidesign-log4net
-        {{- end}}
+            name: {{ .Values.nsiDesignLog4netConfig.name }}
+        {{- end }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-design-structure
           image: "{{ .Values.nsiDesign.dbup.image.repository }}:{{ .Values.nsiDesign.dbup.image.tag }}"

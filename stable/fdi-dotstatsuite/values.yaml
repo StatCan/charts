@@ -46,7 +46,10 @@ autoscaling: &autoscaling
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
 
-authzlog4net-config: ""
+authzLog4netConfig:
+  name: "authz-log4net"
+  enableConfig: false
+  data: ""
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
 authz:
@@ -319,7 +322,7 @@ nsiStable:
 
   affinity: {}
 
-nsidesignlog4netconfig:
+nsiDesignLog4netConfig:
   name: "nsidesign-log4net"
   enableConfig: false
   data: ""
@@ -507,7 +510,7 @@ nsiDesign:
 # NSI STAGING
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
 
-nsistaginglog4netconfig:
+nsiStagingLog4netConfig:
   name: "nsistaging-log4net"
   enableConfig: false
   data: ""
@@ -692,12 +695,21 @@ nsiStaging:
 
 # Transfer
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-transferlog4net-config: ""
+transferLog4netConfig:
+  name: "transfer-log4net"
+  enableConfig: false
+  data: ""
 
 transfer:
   enabled: true
   replicaCount: 1
 
+
+  dataImportTimeOutInMinutes: 30
+  databaseCommandTimeoutInSec: 1800
+
+  autoLog2DB: "true"
+  autoLog2DBLogLevel: "Notice"
 
   sdmx_logs:
     enabled: false

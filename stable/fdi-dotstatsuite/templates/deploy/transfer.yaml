@@ -36,10 +36,15 @@ spec:
           image: "{{ .Values.transfer.image.repository }}:{{ .Values.transfer.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.transfer.image.pullPolicy }}
           volumeMounts: 
-            {{- if .Values.transfer.sdmx_logs.enabled}}
+            {{- if .Values.transfer.sdmx_logs.enabled }}
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
+            {{- if .Values.transferLog4netConfig.enableConfig }}
+            - mountPath: /app/config/log4net.config
+              name: transfer-log4net
+              subPath: log4net.config
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -139,13 +144,13 @@ spec:
             - name: "SpacesInternal__0__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(STABLE_DATA_USER);Password=$(STABLE_DATA_PASSWORD);"
             - name: "SpacesInternal__0__DataImportTimeOutInMinutes"
-              value: "5"
+              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__0__DatabaseCommandTimeoutInSec"
-              value: "270"
+              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
             - name: "SpacesInternal__0__AutoLog2DB"
-              value: "true"
+              value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__0__AutoLog2DBLogLevel"
-              value: "Notice"
+              value: "{{ .Values.transfer.autoLog2DBLogLevel }}"
 {{- end }}
 {{- if index .Values.nsiReset.enabled }}  
             - name: "SpacesInternal__1__Id"
@@ -155,13 +160,13 @@ spec:
             - name: "SpacesInternal__1__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_DATA_DB);User=$(RESET_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
             - name: "SpacesInternal__1__DataImportTimeOutInMinutes"
-              value: "5"
+              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__1__DatabaseCommandTimeoutInSec"
-              value: "270"
+              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
             - name: "SpacesInternal__1__AutoLog2DB"
-              value: "true"
+              value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__1__AutoLog2DBLogLevel"
-              value: "Notice"     
+              value: "{{ .Values.transfer.autoLog2DBLogLevel }} "   
 {{- end }}      
 {{- if index .Values.nsiDesign.enabled }}  
             - name: "SpacesInternal__2__Id"
@@ -171,13 +176,13 @@ spec:
             - name: "SpacesInternal__2__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(DESIGN_DATA_USER);Password=$(DESIGN_DATA_PASSWORD);"
             - name: "SpacesInternal__2__DataImportTimeOutInMinutes"
-              value: "5"
+              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__2__DatabaseCommandTimeoutInSec"
-              value: "270"
+              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
             - name: "SpacesInternal__2__AutoLog2DB"
-              value: "true"
+              value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__2__AutoLog2DBLogLevel"
-              value: "Notice"     
+              value: "{{ .Values.transfer.autoLog2DBLogLevel }} "   
 {{- end }}  
 {{- if index .Values.nsiStaging.enabled }}  
             - name: "SpacesInternal__3__Id"
@@ -187,13 +192,13 @@ spec:
             - name: "SpacesInternal__3__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(STAGING_DATA_USER);Password=$(STAGING_DATA_PASSWORD);"
             - name: "SpacesInternal__3__DataImportTimeOutInMinutes"
-              value: "5"
+              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__3__DatabaseCommandTimeoutInSec"
-              value: "270"
+              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
             - name: "SpacesInternal__3__AutoLog2DB"
-              value: "true"
+              value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__3__AutoLog2DBLogLevel"
-              value: "Notice"     
+              value: "{{ .Values.transfer.autoLog2DBLogLevel }} "    
 {{- end }}                
           ports:
             - name: http
@@ -210,12 +215,17 @@ spec:
           resources:
             {{- toYaml .Values.transfer.resources | nindent 12 }}
       volumes: 
-        {{- if .Values.transfer.sdmx_logs.enabled}}
+        {{- if .Values.transfer.sdmx_logs.enabled }}
         - azureFile: 
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
-            shareName: {{.Values.transfer.sdmx_logs.logShareName}}
+            shareName: {{ .Values.transfer.sdmx_logs.logShareName }}
           name: "sdmx-logs"
-        {{- end}}
+        {{- end }}
+        {{- if .Values.transferLog4netConfig.enableConfig }}
+        - name: transfer-log4net
+          configMap:
+            name: {{ .Values.transferLog4netConfig.name }}
+        {{- end }}
       initContainers:
 {{- if index .Values.nsiStable.enabled }}        
         - name: dbup-{{ template "dotstatsuite.fullname" . }}-stable-data
