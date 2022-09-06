@@ -5,8 +5,8 @@ operator:
   nsToWatch: "argo-cd-system"
   nsClusterConfig: ""
   image:
-    repository: statcan/argocd-operator
-    tag: v0.1.0
+    repository: quay.io/argoprojlabs/argocd-operator
+    tag: v0.4.0
     pullPolicy: IfNotPresent
   imagePullSecrets: []
   podAnnotations: {}
@@ -14,8 +14,13 @@ operator:
   # extraEnv: []
   replicaCount: 1
   securityContext:
+    capabilities:
+      drop:
+      - ALL
     runAsUser: 1000
     runAsGroup: 1000
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
     runAsNonRoot: true
     fsGroup: 1000
   resources:
@@ -37,21 +42,20 @@ vault:
     # NOTE: The namespace will have "-"s replaced with "_"s
     rolePrefix: argocd_
 
-pluginConfig: &pluginConfig |
-  # If the argocd-vault-plugin is not enabled,
-  # then obviously these will not work.
-  - name: argocd-vault-plugin
-    generate:
-      command: ["argocd-vault-plugin"]
-      args: ["-s", "argocd-vault-secret", "generate", "./"]
-  - name: argocd-vault-plugin-helm
-    generate:
-      command: ["sh", "-c"]
-      args: ["helm template . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
-  - name: argocd-vault-plugin-kustomize
-    generate:
-      command: ["sh", "-c"]
-      args: ["kustomize build . > all.yaml && argocd-vault-plugin -s argocd-vault-secret generate all.yaml"]
+  pluginConfig: &pluginConfig |
+    # If the argocd-vault-plugin is not enabled,
+    # then obviously these will not work.
+    - name: argocd-vault-plugin
+      generate:
+        command: ["argocd-vault-plugin"]
+        args: ["generate", "./"]
+    - name: argocd-vault-plugin-helm
+      init:
+        command: ["sh", "-c"]
+        args: ["helm dependency build"]
+      generate:
+        command: ["bash", "-c"]
+        args: ['helm template "\$ARGOCD_APP_NAME" . --include-crds -f <(echo "\$HELM_VALUES") | argocd-vault-plugin generate -']
 
 # ## ArgoCD Projects Definition
 # projects:
