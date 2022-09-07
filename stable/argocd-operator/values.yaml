@@ -65,6 +65,8 @@ vault:
 #     podAnnotations: {}
 #     podLabels: {}
 #     spec:
+#       version: "v2.2.8"
+#       applicationInstanceLabelKey: "platform.statcan.gc.ca/application-name"
 #       oidcConfig: |
 #         name: myoidc
 #         issuer: OIDC_FQDN
@@ -92,6 +94,8 @@ vault:
 #     podAnnotations: {}
 #     podLabels: {}
 #     spec:
+#       version: "v2.2.8"
+#       applicationInstanceLabelKey: "platform.statcan.gc.ca/application-name"
 #       oidcConfig: |
 #         name: myoidc
 #         issuer: OIDC_FQDN
