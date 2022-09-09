@@ -1,0 +1,53 @@
+{{- range $clusterName, $config := .Values.clusters }}
+{{- $labels := dict }}
+---
+
+# Merge global + cluster labels
+{{- if $config.labels }}
+{{- $labels = merge $config.labels $.Values.labels }}
+{{- else }}
+{{- $labels = $.Values.labels }}
+{{- end }}
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "solution-{{ $.Release.Name }}-{{ $clusterName }}-namespace"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: namespace
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+spec:
+  project: {{ $.Values.global.project }}
+  source:
+    chart: {{ default "statcan-namespace" $.Values.global.helm.chart }}
+    {{- if $.Values.global.helm.repository }}
+    repoURL: {{ default $.Values.global.helm.repository $.Values.global.helm.repository }}
+    {{- else }}
+    repoURL: {{ default "https://artifactory.cloud.statcan.ca/artifactory/cwmd-cns-poc-helm-local" $.Values.global.helm.repository }}
+    {{- end }}
+    targetRevision: {{ default "0.0.2" $.Values.global.helm.targetRevision }}
+    helm:
+      releaseName: {{ $.Release.Name }}
+      values: |
+        namespace:
+          labels:
+            finance.statcan.gc.ca/workload-id: "{{ default "unknown" $.Values.wid }}"
+            namespace.statcan.gc.ca/purpose: solution
+            {{- if $labels }}
+            {{- toYaml $labels | nindent 12 }}
+            {{- end }}
+
+        {{- if $.Values.admins }}
+        admins:
+          {{- toYaml $.Values.admins | nindent 10 }}
+        {{- end }}
+  destination:
+    name: {{ $clusterName }}
+    namespace: {{ $.Release.Name }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

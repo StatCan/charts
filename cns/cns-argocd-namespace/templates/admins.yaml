@@ -1,0 +1,16 @@
+{{- if .Values.admins.groups }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: namespace-admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: namespace-admin
+subjects:
+{{- range .Values.admins.groups }}
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: "{{ . }}"
+{{- end }}
+{{- end }}

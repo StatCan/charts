@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "{{ .Values.global.cluster }}-istio-ingress"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  source:
+    chart: {{ default "gateway" .Values.components.istio.ingress.helm.chart }}
+    {{- if .Values.global.helm.repository }}
+    repoURL: {{ default .Values.components.istio.ingress.helm.repository .Values.global.helm.repository }}
+    {{- else }}
+    repoURL: {{ default "https://istio-release.storage.googleapis.com/charts" .Values.components.istio.ingress.helm.repository }}
+    {{- end }}
+    targetRevision: {{ default "1.13.2" .Values.components.istio.ingress.helm.targetRevision }}
+    helm:
+      releaseName: istio-ingress
+      values: |
+        autoscaling:
+          enabled: false
+  destination:
+    name: '{{ .Values.global.cluster }}'
+    namespace: istio-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "{{ .Values.global.cluster }}-fluentd-operator"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  source:
+    chart: {{ default "fluentd-operator" .Values.components.fluentd.helm.chart }}
+    {{- if .Values.global.helm.repository }}
+    repoURL: {{ default .Values.components.fluentd.helm.repository .Values.global.helm.repository }}
+    {{- else }}
+    repoURL: {{ default "https://statcan.github.io/charts" .Values.components.fluentd.helm.repository }}
+    {{- end }}
+    targetRevision: {{ default "0.4.4" .Values.components.fluentd.helm.targetRevision }}
+    helm:
+      releaseName: fluentd-operator
+      values: |
+        image:
+          {{- toYaml .Values.components.fluentd.image | nindent 10 }}
+        fluentd:
+          resources:
+            {{- toYaml .Values.components.fluentd.resources | nindent 12 }}
+        nodeSelector:
+          kubernetes.io/os: linux
+        tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+        rbac:
+          create: yes
+  destination:
+    name: {{ .Values.global.cluster }}
+    namespace: fluentd-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
