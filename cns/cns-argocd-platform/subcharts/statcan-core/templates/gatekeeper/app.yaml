@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "{{ .Values.global.cluster }}-gatekeeper"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  source:
+    chart: {{ default "gatekeeper" .Values.components.gatekeeper.helm.chart }}
+    {{- if .Values.global.helm.repository }}
+    repoURL: {{ default .Values.components.gatekeeper.helm.repository .Values.global.helm.repository }}
+    {{- else }}
+    repoURL: {{ default "https://open-policy-agent.github.io/gatekeeper/charts" .Values.components.gatekeeper.helm.repository }}
+    {{- end }}
+    targetRevision: {{ default "3.7.0" .Values.components.gatekeeper.helm.targetRevision }}
+    helm:
+      releaseName: gatekeeper
+      values: |
+        validatingWebhookFailurePolicy: Fail
+  destination:
+    name: {{ .Values.global.cluster }}
+    namespace: gatekeeper-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

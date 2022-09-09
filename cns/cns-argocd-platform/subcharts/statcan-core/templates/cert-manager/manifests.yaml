@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "{{ .Values.global.cluster }}-cert-manager-manifests"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  source:
+    chart: {{ default "raw" .Values.helpers.raw.helm.chart }}
+    {{- if .Values.global.helm.repository }}
+    repoURL: {{ default .Values.helpers.raw.helm.repository .Values.global.helm.repository }}
+    {{- else }}
+    repoURL: {{ default "https://artifactory.cloud.statcan.ca/artifactory/cwmd-cns-poc-helm-local" .Values.helpers.raw.helm.repository }}
+    {{- end }}
+    targetRevision: {{ default "0.2.5+1" .Values.helpers.raw.helm.targetRevision }}
+    helm:
+      releaseName: cert-manager-manifests
+      values: |
+        resources:
+          - apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: cert-manager-system
+              labels:
+                namespace.statcan.gc.ca/purpose: platform
+  destination:
+    name: {{ .Values.global.cluster }}
+    namespace: platform-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

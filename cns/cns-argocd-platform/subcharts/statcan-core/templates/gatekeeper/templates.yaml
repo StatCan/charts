@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "{{ .Values.global.cluster }}-gatekeeper-templates"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  source:
+    repoURL: {{ default "https://github.com/StatCan/gatekeeper-policies.git" .Values.components.gatekeeper.templates.targetRevision }}
+    path: {{ default "." .Values.components.gatekeeper.templates.path }}
+    targetRevision: {{ default "master" .Values.components.gatekeeper.templates.targetRevision }}
+  destination:
+    name: {{ .Values.global.cluster }}
+    namespace: gatekeeper-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

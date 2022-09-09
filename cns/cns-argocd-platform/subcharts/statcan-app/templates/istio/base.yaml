@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "{{ .Values.global.cluster }}-istio-base"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.global.project }}
+  source:
+    chart: {{ default "base" .Values.components.istio.base.helm.chart }}
+    {{- if .Values.global.helm.repository }}
+    repoURL: {{ default .Values.components.istio.base.helm.repository .Values.global.helm.repository }}
+    {{- else }}
+    repoURL: {{ default "https://istio-release.storage.googleapis.com/charts" .Values.components.istio.base.helm.repository }}
+    {{- end }}
+    targetRevision: {{ default "1.13.2" .Values.components.istio.base.helm.targetRevision }}
+    helm:
+      releaseName: istio-base
+  destination:
+    name: '{{ .Values.global.cluster }}'
+    namespace: istio-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  ignoreDifferences:
+  # The webhook's failurePolicy changes from Ignore to Fail
+  # afer the deployment has completed.
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    name: istiod-default-validator
+    jsonPointers:
+    - /webhooks/0/failurePolicy
