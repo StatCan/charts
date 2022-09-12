@@ -14,13 +14,8 @@ operator:
   # extraEnv: []
   replicaCount: 1
   securityContext:
-    capabilities:
-      drop:
-      - ALL
     runAsUser: 1000
     runAsGroup: 1000
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
     runAsNonRoot: true
     fsGroup: 1000
   resources:
