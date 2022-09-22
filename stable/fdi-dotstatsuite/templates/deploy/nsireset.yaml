@@ -43,7 +43,7 @@ spec:
             {{- end}}
             {{- if .Values.nsiResetLog4netConfig.enableConfig }}
             - mountPath: /app/config/log4net.config
-              name: reset-log4net
+              name: nsireset-log4net
               subPath: log4net.config
             {{- end }}
           envFrom:
