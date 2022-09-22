@@ -95,16 +95,116 @@ components:
     # comma seperated vault mounts, e.g. "minio_standard,minio_premium"
     instances: ""
 
-  gitea:
-    # argocd namespace
-    namespace: "argocd"
+  giteaUnclassified:
     envFrom:
       - secretRef:
           name: "gitea-postgres-connection-unclassified"
-
+    env:
+    - name: GITEA_CLASSIFICATION
+      value: "unclassified"
+    - name: GITEA_SERVICE_URL
+      value: "gitea-unclassified-http"
+    - name: GITEA_URL_PREFIX
+      value: "gitea-unclassified"
+    - name: GITEA_SERVICE_PORT
+      value: 80
+    - name: GITEA_BANNER_CONFIGMAP_NAME
+      value: "gitea-banner-unclassified"
+    - name: GITEA_ARGOCD_NAMESPACE
+      value: "profiles-argocd-system"
+    - name: GITEA_ARGOCD_SOURCE_REPO_URL
+      value: https://github.com/StatCan/aaw-argocd-manifests.git
+    - name: GITEA_ARGOCD_SOURCE_TARGET_REVISION
+      value: "aaw-dev-cc-00"
+    - name: GITEA_ARGOCD_SOURCE_PATH
+      value: "profiles-argocd-system/template/gitea/unclassified"
+    - name: GITEA_ARGOCD_PROJECT
+      value: "default"
+    - name: GITEA_SOURCE_CONTROL_ENABLED_LABEL
+      value: "sourcecontrol.statcan.gc.ca/enabled"
+    - name: GITEA_KUBEFLOW_ROOT_URL
+      value: "https://kubeflow.aaw-dev.cloud.statcan.ca"
+  giteaProtectedB:
+    envFrom:
+      - secretRef:
+          name: "gitea-postgres-connection-protected-b"
+    env:
+    - name: GITEA_CLASSIFICATION
+      value: "protected-b"
+    - name: GITEA_SERVICE_URL
+      value: "gitea-protected-b-http"
+    - name: GITEA_URL_PREFIX
+      value: "gitea-protected-b"
+    - name: GITEA_SERVICE_PORT
+      value: 80
+    - name: GITEA_BANNER_CONFIGMAP_NAME
+      value: "gitea-banner-protected-b"
+    - name: GITEA_ARGOCD_NAMESPACE
+      value: "profiles-argocd-system"
+    - name: GITEA_ARGOCD_SOURCE_REPO_URL
+      value: https://github.com/StatCan/aaw-argocd-manifests.git
+    - name: GITEA_ARGOCD_SOURCE_TARGET_REVISION
+      value: "aaw-dev-cc-00"
+    - name: GITEA_ARGOCD_SOURCE_PATH
+      value: "profiles-argocd-system/template/gitea/protected-b"
+    - name: GITEA_ARGOCD_PROJECT
+      value: "default"
+    - name: GITEA_SOURCE_CONTROL_ENABLED_LABEL
+      value: "sourcecontrol.statcan.gc.ca/enabled"
+    - name: GITEA_KUBEFLOW_ROOT_URL
+      value: "https://kubeflow.aaw-dev.cloud.statcan.ca"
   blobcsi:
     config: |
-        {"name": "standard", "classification": "unclassified", "secret": "azure-secret/azure-blob-csi-system", "capacity": "100Gi", "readOnly": false}
-        {"name": "premium", "classification": "unclassified", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": false}
-        {"name": "standard-ro", "classification": "protected-b", "secret": "azure-secret/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}
-        {"name": "premium-ro", "classification": "protected-b", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": "100Gi", "readOnly": true}
+        {"name": "standard", "classification": "unclassified", "secret": "azure-secret/azure-blob-csi-system", "capacity": 10, "readOnly": false}
+        {"name": "premium", "classification": "unclassified", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": 10, "readOnly": false}
+        {"name": "standard-ro", "classification": "protected-b", "secret": "azure-secret/azure-blob-csi-system", "capacity": 10, "readOnly": true}
+        {"name": "premium-ro", "classification": "protected-b", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": 10, "readOnly": true}
+    envFrom:
+      - secretRef:
+          name: "azure-blob-csi-fdi-unclassified"
+      - secretRef:
+          name: "azure-blob-csi-fdi-protected-b"
+    env:
+    - name: BLOB_CSI_FDI_OPA_DAEMON_TICKER_MILLIS
+      value: 2000
+    - name: BLOB_CSI_FDI_UNCLASS_OPA_ENDPOINT
+      value: "http://minio-gateway-opa.fdi-gateway-unclassified-system.svc.cluster.local:8181/v1/data"
+    - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAME
+      value: "azure-blob-csi-fdi-unclassified-spn"
+    - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAMESPACE
+      value: "azure-blob-csi-system"
+    - name: BLOB_CSI_FDI_UNCLASS_PV_STORAGE_CAP
+      value: 10
+    - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AUTH_TYPE
+      value: "spn"
+    - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AAD_ENDPOINT
+      value: "https://login.microsoftonline.com"
+    - name: BLOB_CSI_FDI_PROTECTED_B_OPA_ENDPOINT
+      value: "http://minio-gateway-opa.fdi-gateway-protected-b-system.svc.cluster.local:8181/v1/data"
+    - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAME
+      value: "azure-blob-csi-fdi-protected-b-spn"
+    - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAMESPACE
+      value: "azure-blob-csi-system"
+    - name: BLOB_CSI_FDI_PROTECTED_B_PV_STORAGE_CAP
+      value: 10
+    - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AUTH_TYPE
+      value: "spn"
+    - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AAD_ENDPOINT
+      value: "https://login.microsoftonline.com"
+
+  s3proxy:
+    env:
+    - name: S3PROXY_ARGOCD_NAMESPACE
+      value: profiles-argocd-system
+    - name: S3PROXY_ARGOCD_SOURCE_REPO_URL
+      value: https://github.com/StatCan/aaw-argocd-manifests.git
+    - name: S3PROXY_ARGOCD_SOURCE_TARGET_REVISION
+      value: aaw-dev-cc-00
+    - name: S3PROXY_ARGOCD_SOURCE_PATH
+      value: profiles-argocd-system/template/s3proxy
+    - name: S3PROXY_ARGOCD_PROJECT
+      value: default
+    - name: S3PROXY_KUBEFLOW_ROOT_URL
+      value: https://kubeflow.aaw-dev.cloud.statcan.ca
+    - name: S3PROXY_KUBEFLOW_PREFIX
+      value: s3

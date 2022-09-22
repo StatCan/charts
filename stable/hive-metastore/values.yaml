@@ -1,31 +1,12 @@
 image:
-  repository: bitsondatadev/hive-metastore
-  tag: latest
+  repository: k8scc01covidacr.azurecr.io/hive-metastore
+  tag: ced726f8061b94dac24de2a798bba8e3207d10cf
   pullPolicy: IfNotPresent
 
-mariadb:
-  auth:
-    username: hive
-    database: metastore
-    rootPassword: ${ENV:SECRET_KEY}
-    password: ${ENV:SECRET_KEY}
 
 replicas: 1
 resources: {}
 conf:
   hiveSite:
     hive_metastore_uris: thrift://hive-metastore:9083
-    # if not set, default hive.metastore.warehouse.dir is default to: "hdfs://{{.Release.Name}}-hdfs:8020/user/hive/warehouse"
-    # hive.metastore.warehouse.dir:
-    fs.s3a.impl: org.apache.hadoop.fs.s3a.S3AFileSystem
-    fs.s3a.access.key: admin
-    fs.s3a.secret.key: ${ENV:SECRET_KEY}
-    fs.s3a.endpoint: http://minio.minio-system:9000
-    fs.s3a.path.style.access: true
-
-env:
-  - name: SECRET_KEY
-    valueFrom:
-      secretKeyRef:
-        name: hive-metastore-secret-key
-        key: password
+    hive.metastore.warehouse.dir: /user/hive/warehouse

@@ -6,7 +6,7 @@ image:
   repository: trinodb/trino
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: latest
+  tag: 389
 
 server:
   jvm:
@@ -55,9 +55,9 @@ additionalConfigProperties:
 
 coordinatorExtraConfig:
   - http-server.process-forwarded=true
-  - http-server.authentication.type=JWT
-  - http-server.authentication.jwt.key-file=http://localhost:8090/openid/v1/jwks
-  - http-server.authentication.jwt.user-mapping.pattern=^system:serviceaccount:([^:]+):default$
+  # - http-server.authentication.type=JWT
+  # - http-server.authentication.jwt.key-file=http://localhost:8090/openid/v1/jwks
+  # - http-server.authentication.jwt.user-mapping.pattern=^system:serviceaccount:([^:]+):default$
 
 additionalLogProperties: {}
 
@@ -67,50 +67,33 @@ nodeAddress:
   - node.internal-address=trino-headless.trino-system.svc.cluster.local
 
 additionalCatalogs:
-  postgresql: |
-    connector.name=postgresql
-    connection-url=jdbc:postgresql://postgresql-datasource.postgresql-datasource:5432/autos
-    connection-user=${ENV:TRINO_USERNAME}
-    connection-password=${ENV:TRINO_PASSWORD}
-  minio: |
-    connector.name=hive-hadoop2
+  unclassified: |
+    connector.name=hive
     hive.metastore.uri=thrift://hive-metastore.hive-system:9083
-    hive.s3.path-style-access=true
-    hive.s3.endpoint=http://minio.minio-system:9000
-    hive.s3.aws-access-key=${ENV:MINIO_USERNAME}
-    hive.s3.aws-secret-key=${ENV:MINIO_PASSWORD}
-    hive.non-managed-table-writes-enabled=true
-    hive.s3select-pushdown.enabled=true
     hive.storage-format=ORC
+    hive.non-managed-table-writes-enabled=false
+    hive.non-managed-table-creates-enabled=false
+    hive.security=FILE
+    security.config-file=/etc/catalog/trino-unclassified-rules.json
+    security.refresh-period=1s
+    hive.config.resources=/etc/hadoop/conf/core-site.xml
+    hive.cache.enabled=true
+    hive.cache.location=/opt/hive-cache
+    hive.cache.ttl=7d
+    hive.cache.disk-usage-percentage=80
+
+  prob: |
+    connector.name=hive
+    hive.metastore.uri=thrift://hive-metastore.hive-system:9083
+    hive.storage-format=ORC
+    hive.non-managed-table-writes-enabled=false
+    hive.non-managed-table-creates-enabled=false
+    hive.security=FILE
+    security.refresh-period=1s
+    security.config-file=/etc/catalog/trino-prob-rules.json
+    hive.config.resources=/etc/hadoop/conf/core-site.xml
 
 
-# Array of EnvVar (https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envvar-v1-core)
-env:
-  - name: MINIO_USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: trino-minio-secret
-        key: user
-  - name: MINIO_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: trino-minio-secret
-        key: password
-  - name: TRINO_USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: trino-secret
-        key: user
-  - name: TRINO_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: trino-secret
-        key: password
-  - name: TRINO_SHARED_SECRET
-    valueFrom:
-      secretKeyRef:
-        name: trino-shared-secret
-        key: shared-secret
 initContainers: {}
   # coordinator:
   #   - name: init-coordinator
@@ -128,6 +111,15 @@ labels:
 securityContext:
   runAsUser: 1000
   runAsGroup: 1000
+
+
+# Array of EnvVar (https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envvar-v1-core)
+env:
+  - name: TRINO_SHARED_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: trino-shared-secret
+        key: shared-secret
 
 service:
   type: ClusterIP
