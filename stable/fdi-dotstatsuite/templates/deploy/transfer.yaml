@@ -40,9 +40,9 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.transferLog4netConfig.enableConfig }}
+            {{- if .Values.nsiTransferLog4netConfig.enableConfig }}
             - mountPath: /app/config/log4net.config
-              name: transfer-log4net
+              name: nsitransfer-log4net
               subPath: log4net.config
             {{- end }}
           envFrom:
@@ -221,10 +221,10 @@ spec:
             shareName: {{ .Values.transfer.sdmx_logs.logShareName }}
           name: "sdmx-logs"
         {{- end }}
-        {{- if .Values.transferLog4netConfig.enableConfig }}
-        - name: transfer-log4net
+        {{- if .Values.nsiTransferLog4netConfig.enableConfig }}
+        - name: nsitransfer-log4net
           configMap:
-            name: {{ .Values.transferLog4netConfig.name }}
+            name: {{ .Values.nsiTransferLog4netConfig.name }}
         {{- end }}
       initContainers:
 {{- if index .Values.nsiStable.enabled }}        
