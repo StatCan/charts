@@ -1,6 +1,8 @@
+{{- if .Values.authzLog4netConfig.enableConfig -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.authzLog4netConfig.name }}
 data:
   log4net.config: {{ .Values.authzLog4netConfig.data | indent 4 }}
+{{- end -}}
