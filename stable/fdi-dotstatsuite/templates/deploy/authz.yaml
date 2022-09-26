@@ -16,6 +16,7 @@ spec:
     metadata:
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+        sidecar.istio.io/logLevel: 'warning'
     {{- with .Values.authz.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
