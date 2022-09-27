@@ -16,6 +16,8 @@ spec:
     metadata:
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+        sidecar.istio.io/logLevel: 'warning'
+        sidecar.istio.io/componentLogLevel: 'warning'
     {{- with .Values.nsiStable.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -40,6 +42,11 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
+            {{- if .Values.nsiStableLog4netConfig.enableConfig }}
+            - mountPath: /app/config/log4net.config
+              name: nsistable-log4net
+              subPath: log4net.config
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Values.fullnameOverride }}-mssql
@@ -111,6 +118,11 @@ spec:
             shareName: {{.Values.nsiStable.sdmx_logs.logShareName}}
           name: "sdmx-logs"
         {{- end}}
+        {{- if .Values.nsiResetLog4netConfig.enableConfig }}
+        - name: "nsistable-log4net"
+          configMap:
+            name: {{ .Values.nsiResetLog4netConfig.name }}
+        {{- end }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-stable-structure
           image: "{{ .Values.nsiStable.dbup.image.repository }}:{{ .Values.nsiStable.dbup.image.tag }}"

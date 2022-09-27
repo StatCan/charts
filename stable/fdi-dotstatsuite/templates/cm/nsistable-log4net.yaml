@@ -1,0 +1,8 @@
+{{- if .Values.nsiStableLog4netConfig.enableConfig -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.nsiStableLog4netConfig.name }}
+data:
+  log4net.config: {{ .Values.nsiStableLog4netConfig.data | indent 4 }}
+{{- end -}}
