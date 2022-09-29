@@ -9,10 +9,10 @@ extraEnv:
     value: "5"
 
 image:
-  repository: StatCan/profiles-controller
+  repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: c6b1ecb05f47cc972dd24d090cf64b94e6e7c879
 
 imagePullSecrets: []
 nameOverride: ""
