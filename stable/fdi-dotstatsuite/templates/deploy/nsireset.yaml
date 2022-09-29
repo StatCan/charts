@@ -43,7 +43,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.nsiReset.log4net_config.enableConfig }}
+            {{- if .Values.nsiReset.log4net_config.enabled }}
             - mountPath: /app/config/log4net.config
               name: nsireset-log4net
               subPath: log4net.config
