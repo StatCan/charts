@@ -86,6 +86,14 @@ rules:
   verbs:
   - '*'
 - apiGroups:
+  - config.openshift.io
+  resources:
+  - clusterversions
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - monitoring.coreos.com
   resources:
   - prometheuses
@@ -98,6 +106,18 @@ rules:
   - ingresses
   verbs:
   - '*'
+- apiGroups:
+  - oauth.openshift.io
+  resources:
+  - oauthclients
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:
@@ -116,5 +136,13 @@ rules:
   resources:
   - routes
   - routes/custom-host
+  verbs:
+  - '*'
+- apiGroups:
+  - template.openshift.io
+  resources:
+  - templateconfigs
+  - templateinstances
+  - templates
   verbs:
   - '*'
