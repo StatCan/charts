@@ -42,7 +42,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.authzLog4netConfig.enableConfig }}
+            {{- if .Values.authz.log4net_config.enabled }}
             - mountPath: /app/config/log4net.config
               name: authz-log4net
               subPath: log4net.config
@@ -81,10 +81,10 @@ spec:
             shareName: {{ .Values.authz.sdmx_logs.logShareName }}
           name: "sdmx-logs"
         {{- end }}
-        {{- if .Values.authzLog4netConfig.enableConfig }}
+        {{- if .Values.authz.log4net_config.enabled }}
         - name: authz-log4net
           configMap:
-            name: {{ .Values.authzLog4netConfig.name }}
+            name: {{ .Values.authz.log4net_config.name }}
         {{- end }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-common
