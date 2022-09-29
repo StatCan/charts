@@ -145,6 +145,10 @@ authz:
 
   affinity: {}
 
+nsiResetLog4netConfig:
+  name: "nsireset-log4net"
+  enableConfig: false
+  data: ""
 # NSI RESET
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
 #fdiResetCcei:
@@ -240,6 +244,10 @@ nsiReset:
 
   affinity: {}
 
+nsiStableLog4netConfig:
+  name: "nsistable-log4net"
+  enableConfig: false
+  data: ""
 # NSI STABLE
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-stable-siscc.yaml
 #fdiStableCcei:
