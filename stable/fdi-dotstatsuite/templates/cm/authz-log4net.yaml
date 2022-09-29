@@ -1,8 +1,183 @@
-{{- if .Values.authzLog4netConfig.enableConfig -}}
+{{- if .Values.authz.log4net_config.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.authzLog4netConfig.name }}
+  name: {{ .Values.authz.log4net_config.name }}
 data:
-  log4net.config: {{ .Values.authzLog4netConfig.data | indent 4 }}
+  log4net.config: |
+    <?xml version="1.0" encoding="utf-8"?>
+
+    <log4net>
+      <appender name="CommonAppender" type="MicroKnights.Logging.AdoNetAppender, MicroKnights.Log4NetAdoNetAppender">
+        <bufferSize value="1" />
+        <useTransactions value="false" />
+        <connectionType
+          value="System.Data.SqlClient.SqlConnection, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+        <commandText
+          value="INSERT INTO [dbo].Logs ([Date],[Thread],[Level],[Server],[Application],[Logger],[Message],[Exception],[UrlReferrer],[HttpMethod],[RequestPath],[QueryString]) VALUES (@log_date, @thread, @log_level, @server, @app
+    lication, @Logger, @message, @exception,@urlReferrer,@httpMethod,@requestPath,@queryString)" />
+        <parameter>
+          <parameterName value="@log_date" />
+          <dbType value="DateTime" />
+          <layout type="log4net.Layout.RawTimeStampLayout" />
+        </parameter>
+        <parameter>
+          <parameterName value="@thread" />
+          <dbType value="String" />
+          <size value="255" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%thread" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@log_level" />
+          <dbType value="String" />
+          <size value="50" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%level" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@server" />
+          <dbType value="String" />
+          <size value="50" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%property{server}" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@application" />
+          <dbType value="String" />
+          <size value="255" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%property{application}" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@Logger" />
+          <dbType value="String" />
+          <size value="255" />
+          <layout type="log4net.Layout.RawPropertyLayout">
+            <key value="Logger" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@message" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%message" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@exception" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.ExceptionLayout" />
+        </parameter>
+        <parameter>
+          <parameterName value="@UrlReferrer" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.RawPropertyLayout">
+            <key value="UrlReferrer" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@HttpMethod" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.RawPropertyLayout">
+            <key value="HttpMethod" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@RequestPath" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.RawPropertyLayout">
+            <key value="RequestPath" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@QueryString" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.RawPropertyLayout">
+            <key value="QueryString" />
+          </layout>
+        </parameter>
+      </appender>
+
+      <appender name="DataspaceAppender" type="MicroKnights.Logging.AdoNetAppender, MicroKnights.Log4NetAdoNetAppender">
+        <useTransactions value="false" />
+        <bufferSize value="1" />
+        <connectionType value="System.Data.SqlClient.SqlConnection, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+        <commandText value="INSERT INTO [Management].LOGS ([TRANSACTION_ID],[DATE],[LEVEL],[SERVER],[LOGGER],[MESSAGE],[EXCEPTION]) VALUES (@transactionId, @log_date, @log_level, @server, @Logger, @message, @exception)" />
+        <connectionStringName value="ConnectionString1" />
+        <parameter>
+          <parameterName value="@TransactionId" />
+          <dbType value="Int32" />
+          <layout type="log4net.Layout.RawPropertyLayout">
+            <key value="TransactionId" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@log_date" />
+          <dbType value="DateTime" />
+          <layout type="log4net.Layout.RawTimeStampLayout" />
+        </parameter>
+        <parameter>
+          <parameterName value="@log_level" />
+          <dbType value="String" />
+          <size value="50" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%level" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@server" />
+          <dbType value="String" />
+          <size value="50" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%property{server}" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@Logger" />
+          <dbType value="String" />
+          <size value="255" />
+          <layout type="log4net.Layout.RawPropertyLayout">
+            <key value="Logger" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@message" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%message" />
+          </layout>
+        </parameter>
+        <parameter>
+          <parameterName value="@exception" />
+          <dbType value="String" />
+          <size value="-1" />
+          <layout type="log4net.Layout.ExceptionLayout" />
+        </parameter>
+      </appender>
+
+      <root>
+        <level value="{{ .Values.authz.log4net_config.log4net_root_level }}" />
+      </root>
+
+      <logger name="CommonLogger" additivity="false">
+        <level value="{{ .Values.authz.log4net_config.log4net_common_level }}"/>
+        <appender-ref ref="CommonAppender"/>
+      </logger>
+
+      <logger name="DataspaceLogger" additivity="false">
+        <level value="{{ .Values.authz.log4net_config.log4net_dataspace_level }}"/>
+        <appender-ref ref="DataspaceAppender"/>
+      </logger>
 {{- end -}}

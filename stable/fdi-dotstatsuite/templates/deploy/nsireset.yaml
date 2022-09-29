@@ -43,7 +43,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.nsiResetLog4netConfig.enableConfig }}
+            {{- if .Values.nsiReset.log4net_config.enableConfig }}
             - mountPath: /app/config/log4net.config
               name: nsireset-log4net
               subPath: log4net.config
@@ -119,10 +119,10 @@ spec:
             shareName: {{.Values.nsiReset.sdmx_logs.logShareName}}
           name: "sdmx-logs"
         {{- end}}
-        {{- if .Values.nsiResetLog4netConfig.enableConfig }}
+        {{- if .Values.nsiReset.log4net_config.enabled }}
         - name: "nsireset-log4net"
           configMap:
-            name: {{ .Values.nsiResetLog4netConfig.name }}
+            name: {{ .Values.nsiReset.log4net_config.name }}
         {{- end }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-reset-structure
