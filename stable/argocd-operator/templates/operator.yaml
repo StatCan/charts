@@ -43,5 +43,8 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "argocd-operator"
+            {{- if .Values.operator.extraEnv }}
+            {{- toYaml .Values.operator.extraEnv | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.operator.resources | nindent 12 }}

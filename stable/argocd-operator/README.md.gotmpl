@@ -1,57 +1,20 @@
-## ArgoCD Operator
+{{ template "chart.header" . }}
+{{ template "chart.badgesSection" . }}
 
-This is a **community maintained** chart. It installs the [argocd-operator](https://argocd-operator.readthedocs.io/) for managing ArgoCD clusters.
+{{ template "chart.description" . }}
 
-To regenerate this document, from the root of this chart directory run:
+{{ template "chart.homepageLine" . }}
 
-```shell
-docker run --rm --volume "$(pwd):/helm-docs" -u $(id -u) jnorwood/helm-docs:latest
-```
+{{ template "chart.maintainersSection" . }}
 
-## Notes on CRD Installation
+{{ template "chart.sourcesSection" . }}
 
-Some users would prefer to install the CRDs _outside_ of the chart. You can disable the CRD installation of this chart by using `--skip-crds` when installing the chart.
+{{ template "chart.requirementsSection" . }}
 
-You can install the CRDs manually from `crds` folder.
+## Prerequisites
 
-## Values
+- Kubernetes 1.20+
+- Helm v3.7.0+
 
-### General parameters
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-{{- range .Values }}
-  {{- if hasPrefix "operator" .Key }}
-| {{ .Key }} | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
-  {{- end }}
-{{- end }}
-
-### Vault
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-{{- range .Values }}
-  {{- if hasPrefix "vault" .Key }}
-| {{ .Key }} | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
-  {{- end }}
-{{- end }}
-
-### Plugin Configuration
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-{{- range .Values }}
-  {{- if hasPrefix "plugin" .Key }}
-| {{ .Key }} | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
-  {{- end }}
-{{- end }}
-
-### Projects
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-{{- range .Values }}
-  {{- if hasPrefix "projects" .Key }}
-| {{ .Key }} | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
-  {{- end }}
-{{- end }}
+{{ template "chart.valuesSection" . }}
+{{ template "helm-docs.versionFooter" . }}
