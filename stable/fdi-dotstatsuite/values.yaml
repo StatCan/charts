@@ -56,7 +56,7 @@ authz:
   common_user: "commonUser"
   read_only_user: "readOnlyUser"
 
-  log4net_config: 
+  log4net_config:
     enabled: false
     name: "authz-log4net"
     log4net_root_level: INFO
@@ -145,10 +145,6 @@ authz:
 
   affinity: {}
 
-nsiResetLog4netConfig:
-  name: "nsireset-log4net"
-  enableConfig: false
-  data: ""
 # NSI RESET
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
 #fdiResetCcei:
@@ -162,7 +158,7 @@ nsiReset:
   reset_structure_db: sdmxResetStructureDb
   reset_structure_user: sdmxResetStructureUser
 
-  log4net_config: 
+  log4net_config:
     enabled: false
     name: "nsireset-log4net"
     log4net_sqlquerylogger_level: "OFF"
@@ -244,10 +240,6 @@ nsiReset:
 
   affinity: {}
 
-nsiStableLog4netConfig:
-  name: "nsistable-log4net"
-  enableConfig: false
-  data: ""
 # NSI STABLE
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-stable-siscc.yaml
 #fdiStableCcei:
@@ -261,7 +253,7 @@ nsiStable:
   stable_structure_db: sdmxStableStructureDb
   stable_structure_user: sdmxStableStructureUser
 
-  log4net_config: 
+  log4net_config:
     enabled: false
     name: "nsistable-log4net"
     log4net_sqlquerylogger_level: "OFF"
@@ -355,7 +347,7 @@ nsiDesign:
   design_structure_db: sdmxDesignStructureDb
   design_structure_user: sdmxDesignStructureUser
 
-  log4net_config: 
+  log4net_config:
     enabled: false
     name: "nsidesign-log4net"
     log4net_sqlquerylogger_level: "OFF"
@@ -450,7 +442,7 @@ nsiStaging:
   staging_structure_db: sdmxStagingStructureDb
   staging_structure_user: sdmxStagingStructureUser
 
-  log4net_config: 
+  log4net_config:
     enabled: false
     name: "nsistaging-log4net"
     log4net_sqlquerylogger_level: "OFF"
@@ -547,7 +539,7 @@ transfer:
   autoLog2DB: "true"
   autoLog2DBLogLevel: "Notice"
 
-  log4net_config: 
+  log4net_config:
     enabled: false
     name: "transfer-log4net"
     log4net_sqlquerylogger_level: "OFF"
