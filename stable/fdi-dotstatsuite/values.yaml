@@ -46,10 +46,6 @@ autoscaling: &autoscaling
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
 
-authzLog4netConfig:
-  name: "authz-log4net"
-  enableConfig: false
-  data: ""
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
 authz:
@@ -59,6 +55,13 @@ authz:
   common_db: "commonDb"
   common_user: "commonUser"
   read_only_user: "readOnlyUser"
+
+  log4net_config:
+    enabled: false
+    name: "authz-log4net"
+    log4net_root_level: INFO
+    log4net_common_level: INFO
+    log4net_dataspace_level: INFO
 
   sdmx_logs:
     enabled: false
@@ -142,10 +145,6 @@ authz:
 
   affinity: {}
 
-nsiResetLog4netConfig:
-  name: "nsireset-log4net"
-  enableConfig: false
-  data: ""
 # NSI RESET
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
 #fdiResetCcei:
@@ -159,6 +158,11 @@ nsiReset:
   reset_structure_db: sdmxResetStructureDb
   reset_structure_user: sdmxResetStructureUser
 
+  log4net_config:
+    enabled: false
+    name: "nsireset-log4net"
+    log4net_sqlquerylogger_level: "OFF"
+    log4net_root_level: INFO
 
   sdmx_logs:
     enabled: false
@@ -236,10 +240,6 @@ nsiReset:
 
   affinity: {}
 
-nsiStableLog4netConfig:
-  name: "nsistable-log4net"
-  enableConfig: false
-  data: ""
 # NSI STABLE
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-stable-siscc.yaml
 #fdiStableCcei:
@@ -253,6 +253,11 @@ nsiStable:
   stable_structure_db: sdmxStableStructureDb
   stable_structure_user: sdmxStableStructureUser
 
+  log4net_config:
+    enabled: false
+    name: "nsistable-log4net"
+    log4net_sqlquerylogger_level: "OFF"
+    log4net_root_level: INFO
 
   sdmx_logs:
     enabled: false
@@ -330,102 +335,6 @@ nsiStable:
 
   affinity: {}
 
-nsiDesignLog4netConfig:
-  name: "nsidesign-log4net"
-  enableConfig: false
-  data: ""
-#|4+
-#     <log4net>
-#       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
-#         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
-#         <rollingStyle value="Date"/>
-#         <datePattern value="yyyyMMdd"/>
-#         <maxSizeRollBackups value="10" />
-#         <maximumFileSize value="100MB" />
-#         <staticLogFileName value="true" />
-#         <appendToFile value="true"/>
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%logger|%message|%exception%newline" />
-#         </layout>
-#         <!--Filter system activity-->
-#         <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware">
-#         </filter>
-#       </appender>
-#       <appender name="UserActivityAppender" type="log4net.Appender.RollingFileAppender">
-#         <!--Output file -->
-#         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-user-%processid.log"/>
-#         <rollingStyle value="Date"/>
-#         <datePattern value="yyyyMMdd"/>
-#         <maxSizeRollBackups value="10" />
-#         <maximumFileSize value="100MB" />
-#         <staticLogFileName value="true" />
-#         <appendToFile value="true"/>
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%property{Application}|%logger|%property{User}|%message|%exception%newline" />
-#         </layout>
-#         <!--Log level WARNNING -->
-#         <!--Threshold value="INFO" -->
-#         <!--Filter user activity-->
-#         <!-- <filter type="log4net.Filter.PropertyFilter">
-#           <key value="User" />
-#           <StringToMatch value="null" />
-#           <acceptOnMatch value="false" />
-#         </filter> -->
-#           <!--<filter type="log4net.Filter.LevelMatchFilter">
-#           <LevelToMatch value="INFO" />
-#           <acceptOnMatch value="false" />
-#         </filter>-->
-#       </appender>
-#       <appender name="DataflowLogger" type="log4net.Appender.RollingFileAppender">
-#         <file type="log4net.Util.PatternString" value="/app/logs/dataflow_logging.csv"/>
-#         <rollingStyle value="Date"/>
-#         <maximumFileSize value="100MB" />
-#         <maxSizeRollBackups value="10" />
-#         <datePattern value="yyyyMMdd"/>
-#         <appendToFile value="true"/>
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%d{yyyy-MM-dd HH:mm:ss,fff};|%logger|%property{User}|%property{MemberName}|%P{sourceMember}|%m%n"/>
-#         </layout>
-#         <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware">
-#         </filter>
-#         <Threshold value="INFO"/>
-#         <filter type="log4net.Filter.PropertyFilter">
-#             <key value="HttpMethod" />
-#             <StringToMatch value="GET" />
-#             <acceptOnMatch value="false" />
-#           </filter>
-#           <filter type="log4net.Filter.PropertyFilter">
-#             <key value="HttpMethod" />
-#             <StringToMatch value="POST" />
-#             <acceptOnMatch value="false" />
-#           </filter>
-#       </appender>
-#       <appender name="SQLQueryLoger" type="log4net.Appender.RollingFileAppender">
-#         <file value="/app/logs/sql_statement_logging.csv"/>
-#         <appendToFile value="false"/>
-#         <!-- <lockingModel type="log4net.Appender.FileAppender+MinimalLock" /> -->
-#         <rollingStyle value="Size"/>
-#         <maximumFileSize value="100MB" />
-#         <maxSizeRollBackups value="10" />
-#         <datePattern value="yyyyMMdd"/>-->
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%d{ISO8601};%P{elapsed};&quot;%m&quot;;%P{dbparams};%P{sourceMember};%P{sourceFile};%P{sourceLine};%n"/>
-#         </layout>
-#       </appender>
-#       <logger name="org.estat.sri.sqlquerylogger" additivity="false">
-#         <!-- Change calue to "INFO" from "OFF" to enable -->
-#         <level value="OFF"/>
-#         <!-- Uncomment to enable -->
-#         <!-- <appender-ref ref="SQLQueryLoger" /> -->
-#       </logger>
-#       <root>
-#         <!-- Options are "ALL", "DEBUG", "INFO", "WARN", "ERROR", "FATAL" and "OFF". -->
-#         <level value="DEBUG"/>
-#         <appender-ref ref="SystemActivityAppender"/>
-#         <appender-ref ref="UserActivityAppender"/>
-#         <appender-ref ref="DataflowLogger"/>
-#       </root>
-#     </log4net>
 # NSI DESIGN
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-design-oecd.yaml
 nsiDesign:
@@ -438,6 +347,11 @@ nsiDesign:
   design_structure_db: sdmxDesignStructureDb
   design_structure_user: sdmxDesignStructureUser
 
+  log4net_config:
+    enabled: false
+    name: "nsidesign-log4net"
+    log4net_sqlquerylogger_level: "OFF"
+    log4net_root_level: INFO
 
   sdmx_logs:
     enabled: false
@@ -518,102 +432,6 @@ nsiDesign:
 # NSI STAGING
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/nsi-staging-oecd.yaml
 
-nsiStagingLog4netConfig:
-  name: "nsistaging-log4net"
-  enableConfig: false
-  data: ""
-# |-
-#     <log4net>
-#       <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
-#         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
-#         <rollingStyle value="Date"/>
-#         <datePattern value="yyyyMMdd"/>
-#         <maxSizeRollBackups value="10" />
-#         <maximumFileSize value="100MB" />
-#         <staticLogFileName value="true" />
-#         <appendToFile value="true"/>
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%logger|%message|%exception%newline" />
-#         </layout>
-#         <!--Filter system activity-->
-#         <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware">
-#         </filter>
-#       </appender>
-#       <appender name="UserActivityAppender" type="log4net.Appender.RollingFileAppender">
-#         <!--Output file -->
-#         <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-user-%processid.log"/>
-#         <rollingStyle value="Date"/>
-#         <datePattern value="yyyyMMdd"/>
-#         <maxSizeRollBackups value="10" />
-#         <maximumFileSize value="100MB" />
-#         <staticLogFileName value="true" />
-#         <appendToFile value="true"/>
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%property{Application}|%logger|%property{User}|%message|%exception%newline" />
-#         </layout>
-#         <!--Log level WARNNING -->
-#         <!--Threshold value="INFO" -->
-#         <!--Filter user activity-->
-#         <!-- <filter type="log4net.Filter.PropertyFilter">
-#           <key value="User" />
-#           <StringToMatch value="null" />
-#           <acceptOnMatch value="false" />
-#         </filter> -->
-#           <!--<filter type="log4net.Filter.LevelMatchFilter">
-#           <LevelToMatch value="INFO" />
-#           <acceptOnMatch value="false" />
-#         </filter>-->
-#       </appender>
-#       <appender name="DataflowLogger" type="log4net.Appender.RollingFileAppender">
-#         <file type="log4net.Util.PatternString" value="/app/logs/dataflow_logging.csv"/>
-#         <rollingStyle value="Date"/>
-#         <maximumFileSize value="100MB" />
-#         <maxSizeRollBackups value="10" />
-#         <datePattern value="yyyyMMdd"/>
-#         <appendToFile value="true"/>
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%d{yyyy-MM-dd HH:mm:ss,fff};|%logger|%property{User}|%property{MemberName}|%P{sourceMember}|%m%n"/>
-#         </layout>
-#         <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware">
-#         </filter>
-#         <Threshold value="INFO"/>
-#         <filter type="log4net.Filter.PropertyFilter">
-#             <key value="HttpMethod" />
-#             <StringToMatch value="GET" />
-#             <acceptOnMatch value="false" />
-#           </filter>
-#           <filter type="log4net.Filter.PropertyFilter">
-#             <key value="HttpMethod" />
-#             <StringToMatch value="POST" />
-#             <acceptOnMatch value="false" />
-#           </filter>
-#       </appender>
-#       <appender name="SQLQueryLoger" type="log4net.Appender.RollingFileAppender">
-#         <file value="/app/logs/sql_statement_logging.csv"/>
-#         <appendToFile value="false"/>
-#         <!-- <lockingModel type="log4net.Appender.FileAppender+MinimalLock" /> -->
-#         <rollingStyle value="Size"/>
-#         <maximumFileSize value="100MB" />
-#         <maxSizeRollBackups value="10" />
-#         <datePattern value="yyyyMMdd"/>-->
-#         <layout type="log4net.Layout.PatternLayout">
-#           <conversionPattern value="%d{ISO8601};%P{elapsed};&quot;%m&quot;;%P{dbparams};%P{sourceMember};%P{sourceFile};%P{sourceLine};%n"/>
-#         </layout>
-#       </appender>
-#       <logger name="org.estat.sri.sqlquerylogger" additivity="false">
-#         <!-- Change calue to "INFO" from "OFF" to enable -->
-#         <level value="OFF"/>
-#         <!-- Uncomment to enable -->
-#         <!-- <appender-ref ref="SQLQueryLoger" /> -->
-#       </logger>
-#       <root>
-#         <!-- Options are "ALL", "DEBUG", "INFO", "WARN", "ERROR", "FATAL" and "OFF". -->
-#         <level value="DEBUG"/>
-#         <appender-ref ref="SystemActivityAppender"/>
-#         <appender-ref ref="UserActivityAppender"/>
-#         <appender-ref ref="DataflowLogger"/>
-#       </root>
-#     </log4net>
 nsiStaging:
   enabled: true
   replicaCount: 1
@@ -623,6 +441,12 @@ nsiStaging:
   staging_data_user: sdmxStagingDataUser
   staging_structure_db: sdmxStagingStructureDb
   staging_structure_user: sdmxStagingStructureUser
+
+  log4net_config:
+    enabled: false
+    name: "nsistaging-log4net"
+    log4net_sqlquerylogger_level: "OFF"
+    log4net_root_level: INFO
 
   sdmx_logs:
     enabled: false
@@ -703,10 +527,6 @@ nsiStaging:
 
 # Transfer
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-transferLog4netConfig:
-  name: "transfer-log4net"
-  enableConfig: false
-  data: ""
 
 transfer:
   enabled: true
@@ -718,6 +538,12 @@ transfer:
 
   autoLog2DB: "true"
   autoLog2DBLogLevel: "Notice"
+
+  log4net_config:
+    enabled: false
+    name: "transfer-log4net"
+    log4net_sqlquerylogger_level: "OFF"
+    log4net_root_level: INFO
 
   sdmx_logs:
     enabled: false

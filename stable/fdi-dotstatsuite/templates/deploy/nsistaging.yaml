@@ -42,7 +42,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end }}
-            {{- if .Values.nsiStagingLog4netConfig.enableConfig }}
+            {{- if .Values.nsiStaging.log4net_config.enabled }}
             - mountPath: "/app/config/log4net.config"
               name: "nsistaging-log4net"
               subPath: "log4net.config"
@@ -118,10 +118,10 @@ spec:
             shareName: {{ .Values.nsiStaging.sdmx_logs.logShareName }}
           name: "sdmx-logs"
         {{- end }}
-        {{- if .Values.nsiStagingLog4netConfig.enableConfig }}
+        {{- if .Values.nsiStaging.log4net_config.enabled }}
         - name: nsistaging-log4net
           configMap:
-            name: {{ .Values.nsiStagingLog4netConfig.name }}
+            name: {{ .Values.nsiStaging.log4net_config.name }}
         {{- end }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-staging-structure
