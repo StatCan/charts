@@ -9,10 +9,10 @@ extraEnv:
     value: "5"
 
 image:
-  repository: StatCan/profiles-controller
+  repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: 5bdf13cec577015a30eb7b715878dd78f3c87cc5
 
 imagePullSecrets: []
 nameOverride: ""
@@ -155,10 +155,9 @@ components:
       value: "https://kubeflow.aaw-dev.cloud.statcan.ca"
   blobcsi:
     config: |
-        {"name": "standard", "classification": "unclassified", "secret": "azure-secret/azure-blob-csi-system", "capacity": 10, "readOnly": false}
-        {"name": "premium", "classification": "unclassified", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": 10, "readOnly": false}
-        {"name": "standard-ro", "classification": "protected-b", "secret": "azure-secret/azure-blob-csi-system", "capacity": 10, "readOnly": true}
-        {"name": "premium-ro", "classification": "protected-b", "secret": "azure-secret-premium/azure-blob-csi-system", "capacity": 10, "readOnly": true}
+          {"name": "unclassified", "classification": "unclassified", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
+          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
+          {"name": "protected-b", "classification": "protected-b", "secretRef": "aawdevcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
     envFrom:
       - secretRef:
           name: "azure-blob-csi-fdi-unclassified"

@@ -1,0 +1,17 @@
+{{- if .Values.dlm.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-dlm
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-dlm
+spec:
+  type: {{ .Values.dlm.service.type }}
+  ports:
+    - port: {{ .Values.dlm.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http-dlm
+  selector:
+    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-dlm
+{{- end }}

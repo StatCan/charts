@@ -1,6 +1,62 @@
+{{- if .Values.transfer.log4net_config.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.transferLog4netConfig.name }}
+  name: {{ .Values.transfer.log4net_config.name }}
 data:
-  log4net.config: {{ .Values.transferLog4netConfig.data | indent 4 }}
+  log4net.config: |
+    <?xml version="1.0" encoding="utf-8"?>
+    <log4net>
+      <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
+        <!--Output file -->
+        <file type="log4net.Util.PatternString" value="logs/dotstatsuite-core-transfer-system.log"/>
+        <rollingStyle value="Date"/>
+        <datePattern value="yyyyMMdd"/>
+        <!--enable the following setting to keep a max number of backup log files.-->
+        <!--<maxSizeRollBackups value="10" />-->
+        <maximumFileSize value="100MB" />
+        <staticLogFileName value="true" />
+        <appendToFile value="true"/>
+        <layout type="log4net.Layout.PatternLayout">
+          <!--Add of remove fields to adjust the logging information, note that "|" is being used as delimiter-->
+          <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%logger|%message|%exception%newline" />
+        </layout>
+        <!--Filter system activity-->
+        <filter type="log4net.Filter.PropertyFilter">
+          <key value="DataSpaceId" />
+          <StringToMatch value="null" />
+        </filter>
+        <filter type="log4net.Filter.DenyAllFilter" />
+      </appender>
+      <appender name="UserActivityAppender" type="log4net.Appender.RollingFileAppender">
+        <!--Output file-->
+        <file type="log4net.Util.PatternString" value="logs/dotstatsuite-core-transfer-user.log"/>
+        <rollingStyle value="Date"/>
+        <datePattern value="yyyyMMdd"/>
+        <!--enable the following setting to keep a max number of backup log files.-->
+        <!--<maxSizeRollBackups value="10" />-->
+        <maximumFileSize value="100MB" />
+        <staticLogFileName value="true" />
+        <appendToFile value="true"/>
+        <layout type="log4net.Layout.PatternLayout">
+          <!--Add of remove fields to adjust the logging information, note that "|" is being used as delimiter-->
+          <conversionPattern value="%date|[%thread]|%property{DataSpaceId}|%property{TransactionId}|%-5level|%property{log4net:HostName}|%property{Application}|%logger|%message|%exception|%property{UrlReferrer}|%property{HttpMet
+    hod}|%property{RequestPath}|%property{QueryString}%newline" />
+        </layout>
+        <!--Log level WARNNING-->
+        <Threshold value="{{ .Values.transfer.log4net_config.log4net_sqlquerylogger_level }}" />
+        <!--Filter user activity-->
+        <filter type="log4net.Filter.PropertyFilter">
+          <key value="DataSpaceId" />
+          <StringToMatch value="null" />
+          <acceptOnMatch value="false" />
+        </filter>
+      </appender>
+      <root>
+        <!-- Options are "ALL", "DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL" and "OFF". -->
+        <level value="{{ .Values.transfer.log4net_config.log4net_root_level }}"/>
+        <appender-ref ref="SystemActivityAppender"/>
+        <appender-ref ref="UserActivityAppender"/>
+      </root>
+    </log4net>
+{{- end -}}
