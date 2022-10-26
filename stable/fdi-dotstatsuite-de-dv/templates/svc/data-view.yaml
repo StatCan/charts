@@ -1,0 +1,17 @@
+{{- if .Values.dataview.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-dataview
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-dataview
+spec:
+  type: {{ .Values.dataview.service.type }}
+  ports:
+    - port: {{ .Values.dataview.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http-dataview
+  selector:
+    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-dataview
+{{- end }}

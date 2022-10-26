@@ -16,6 +16,8 @@ spec:
     metadata:
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+        sidecar.istio.io/logLevel: 'warning'
+        sidecar.istio.io/componentLogLevel: 'warning'
     {{- with .Values.transfer.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -40,7 +42,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.transferLog4netConfig.enableConfig }}
+            {{- if .Values.transfer.log4net_config.enabled }}
             - mountPath: /app/config/log4net.config
               name: transfer-log4net
               subPath: log4net.config
@@ -221,10 +223,10 @@ spec:
             shareName: {{ .Values.transfer.sdmx_logs.logShareName }}
           name: "sdmx-logs"
         {{- end }}
-        {{- if .Values.transferLog4netConfig.enableConfig }}
+        {{- if .Values.transfer.log4net_config.enabled }}
         - name: transfer-log4net
           configMap:
-            name: {{ .Values.transferLog4netConfig.name }}
+            name: {{ .Values.transfer.log4net_config.name }}
         {{- end }}
       initContainers:
 {{- if index .Values.nsiStable.enabled }}        

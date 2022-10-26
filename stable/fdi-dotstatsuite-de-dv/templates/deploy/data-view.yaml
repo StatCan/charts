@@ -1,0 +1,58 @@
+{{- if .Values.dataview.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-dataview
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-dataview
+spec:
+{{- if not .Values.dataview.autoscaling.enabled }}
+  replicas: {{ .Values.dataview.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-dataview
+  template:
+    metadata:
+    {{- with .Values.dataview.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-dataview
+    spec:
+      {{- with .Values.dataview.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.dataview.serviceAccountName" . }}-dataview
+      securityContext:
+        {{- toYaml .Values.dataview.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-dataview
+          securityContext:
+            {{- toYaml .Values.dataview.securityContext | nindent 12 }}
+          image: "{{ .Values.dataview.image.repository }}:{{ .Values.dataview.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.dataview.image.pullPolicy }}
+          env:
+          - name: SERVER_PORT
+            value: "80"
+          - name: CONFIG_URL
+            value: "http://{{ .Chart.Name }}-config"
+          - name: AUTH_SERVER_URL
+            value: https://sdmx-keycloak.dev.cloud.statcan.ca
+          - name: AUTH_PROVIDER
+            value: "AAD"
+          - name: GA_TOKEN
+            value: UA-29060297-2
+          - name: ROBOTS_POLICY
+            value: "none"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/healthcheck
+              port: http
+{{- end -}}
