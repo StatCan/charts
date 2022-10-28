@@ -27,7 +27,7 @@ data:
 
         pipeline "vetting requests"
         include_timestamp true
-        index_name "vetting-logs-{{ .Values.vettingEnv.clusterName }}"
+        index_name "vetting-logs-{{ .Values.fluentd.elasticSearchVettingLogIndex }}"
 
         <buffer tag, time>
           @type memory
@@ -45,7 +45,7 @@ data:
 
         pipeline "vetting errors"
         include_timestamp true
-        index_name "vetting-error-logs-{{ .Values.vettingEnv.clusterName }}"
+        index_name "vetting-error-logs-{{ .Values.fluentd.elasticSearchVettingErrorIndex }}"
 
         <buffer tag, time>
           @type memory
