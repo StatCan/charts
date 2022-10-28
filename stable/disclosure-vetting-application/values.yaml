@@ -93,6 +93,10 @@ configmodulePy:
   senderEmail: ""
   scope: ""
 
+fluentd:
+  elasticSearchVettingErrorIndex: ""
+  elasticSearchVettingLogIndex: ""
+  
 entrypointSh:
   name: entrypointsh
   mountPath: /app/entrypoint.sh
