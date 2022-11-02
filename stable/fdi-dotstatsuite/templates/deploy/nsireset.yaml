@@ -122,7 +122,7 @@ spec:
           configMap:
             name: {{ .Values.nsiReset.log4net_config.name }}
         {{- end }}
-      {{- if .Values.reset.init_database }}
+      {{- if .Values.nsiReset.init_database }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-reset-structure
           image: "{{ .Values.nsiReset.dbup.image.repository }}:{{ .Values.nsiReset.dbup.image.tag }}"
