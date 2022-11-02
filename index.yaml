@@ -2331,6 +2331,29 @@ entries:
   fluentd-operator:
   - apiVersion: v2
     appVersion: 1.16.5
+    created: "2022-11-02T18:27:02.290112702Z"
+    description: Distribution of Fluentd as K8S daemonset
+    digest: d127defb931a1831492f6ad2bdbb2bf19bac93aeb8b302c46d12425488d14834
+    home: https://github.com/vmware/kube-fluentd-operator
+    keywords:
+    - fluentd
+    - operator
+    maintainers:
+    - email: william.hearn@statcan.gc.ca
+      name: sylus
+    - email: zachary.seguin@statcan.gc.ca
+      name: Zachary Seguin
+    - email: julie.dion@statcan.gc.ca
+      name: Julie Dion
+    name: fluentd-operator
+    sources:
+    - https://github.com/vmware/kube-fluentd-operator
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fluentd-operator-0.5.1/fluentd-operator-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
+    appVersion: 1.16.5
     created: "2022-09-27T18:22:11.717046723Z"
     description: Distribution of Fluentd as K8S daemonset
     digest: 86eca37532a2a272653dcc7c59b8515d8e6dc4a160e1974b247efe982e0b821e
@@ -7912,4 +7935,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-28T16:52:51.688437416Z"
+generated: "2022-11-02T18:27:02.292010923Z"
