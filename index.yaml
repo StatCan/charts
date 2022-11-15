@@ -2080,6 +2080,31 @@ entries:
   fdi-dotstatsuite:
   - apiVersion: v2
     appVersion: 7.2.0
+    created: "2022-11-15T15:31:26.762267614Z"
+    dependencies:
+    - condition: mssql-linux.enabled
+      name: mssql-linux
+      repository: https://charts.helm.sh/stable
+      version: 0.11.4
+    description: fdi-dotstatsuite kube core services
+    digest: 25ee351e5632e38ec4a96a914102f4c9725767d9e41e41f12e4c77ca3bfcfeb0
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: Zachary Seguin
+    - email: tim.raizenne@canada.ca
+      name: Tim Raizenne
+    name: fdi-dotstatsuite
+    sources:
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-0.2.17/fdi-dotstatsuite-0.2.17.tgz
+    version: 0.2.17
+  - apiVersion: v2
+    appVersion: 7.2.0
     created: "2022-10-13T13:30:17.494756034Z"
     dependencies:
     - condition: mssql-linux.enabled
@@ -7965,4 +7990,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-07T14:41:30.400422782Z"
+generated: "2022-11-15T15:31:26.764752655Z"
