@@ -155,9 +155,9 @@ components:
       value: "https://kubeflow.aaw-dev.cloud.statcan.ca"
   blobcsi:
     config: |
-          {"name": "unclassified", "classification": "unclassified", "secretRef": "aawprodcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
-          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawprodcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
-          {"name": "protected-b", "classification": "protected-b", "secretRef": "aawprodcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
+          {"name": "unclassified", "classification": "unclassified", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
+          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
+          {"name": "protected-b", "classification": "protected-b", "secretRef": "aawdevcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
     envFrom:
       - secretRef:
           name: "azure-blob-csi-fdi-unclassified"
