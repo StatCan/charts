@@ -52,6 +52,8 @@ authz:
   enabled: true
   replicaCount: 1
 
+  init_database: false
+
   common_db: "commonDb"
   common_user: "commonUser"
   read_only_user: "readOnlyUser"
@@ -152,6 +154,8 @@ nsiReset:
   enabled: true
   replicaCount: 1
 
+  init_database: false
+
   dataspace: "reset"
   reset_data_db: sdmxResetDataDb
   reset_data_user: sdmxResetDataUser
@@ -247,6 +251,8 @@ nsiStable:
   enabled: true
   replicaCount: 1
 
+  init_database: false
+
   dataspace: "stable"
   stable_data_db: sdmxStableDataDb
   stable_data_user: sdmxStableDataUser
@@ -340,6 +346,8 @@ nsiStable:
 nsiDesign:
   enabled: true
   replicaCount: 1
+
+  init_database: false
 
   dataspace: "design"
   design_data_db: sdmxDesignDataDb
@@ -435,6 +443,8 @@ nsiDesign:
 nsiStaging:
   enabled: true
   replicaCount: 1
+
+  init_database: false
 
   dataspace: "staging"
   staging_data_db: sdmxStagingDataDb
@@ -532,6 +542,7 @@ transfer:
   enabled: true
   replicaCount: 1
 
+  init_database: false
 
   dataImportTimeOutInMinutes: 30
   databaseCommandTimeoutInSec: 1800

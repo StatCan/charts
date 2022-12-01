@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: fluentd-operator
-version: 0.5.0
+version: 0.5.1
 appVersion: 1.16.5
 description: Distribution of Fluentd as K8S daemonset
 keywords:
@@ -12,9 +12,9 @@ sources:
 - https://github.com/vmware/kube-fluentd-operator
 maintainers:
 - name: sylus
-  email: william.hearn@canada.ca
+  email: william.hearn@statcan.gc.ca
 - name: Zachary Seguin
-  email: zachary.seguin@canada.ca
+  email: zachary.seguin@statcan.gc.ca
 - name: Julie Dion
-  email: julie.dion@canada.ca
+  email: julie.dion@statcan.gc.ca
 engine: gotpl
