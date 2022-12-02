@@ -12,7 +12,7 @@ image:
   repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 5bdf13cec577015a30eb7b715878dd78f3c87cc5
+  tag: 35b2ae0326fbadac38068ee353191b046e54aaa1
 
 imagePullSecrets: []
 nameOverride: ""
@@ -168,8 +168,6 @@ components:
       value: 2000
     - name: BLOB_CSI_FDI_UNCLASS_OPA_ENDPOINT
       value: "http://minio-gateway-opa.fdi-gateway-unclassified-system.svc.cluster.local:8181/v1/data"
-    - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAME
-      value: "azure-blob-csi-fdi-unclassified-spn"
     - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAMESPACE
       value: "azure-blob-csi-system"
     - name: BLOB_CSI_FDI_UNCLASS_PV_STORAGE_CAP
@@ -180,8 +178,6 @@ components:
       value: "https://login.microsoftonline.com"
     - name: BLOB_CSI_FDI_PROTECTED_B_OPA_ENDPOINT
       value: "http://minio-gateway-opa.fdi-gateway-protected-b-system.svc.cluster.local:8181/v1/data"
-    - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAME
-      value: "azure-blob-csi-fdi-protected-b-spn"
     - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAMESPACE
       value: "azure-blob-csi-system"
     - name: BLOB_CSI_FDI_PROTECTED_B_PV_STORAGE_CAP

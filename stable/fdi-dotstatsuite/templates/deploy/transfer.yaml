@@ -16,8 +16,6 @@ spec:
     metadata:
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
-        sidecar.istio.io/logLevel: 'warning'
-        sidecar.istio.io/componentLogLevel: 'warning'
     {{- with .Values.transfer.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -228,8 +226,9 @@ spec:
           configMap:
             name: {{ .Values.transfer.log4net_config.name }}
         {{- end }}
+      {{- if .Values.transfer.init_database }}
       initContainers:
-{{- if index .Values.nsiStable.enabled }}        
+        {{- if index .Values.nsiStable.enabled }}        
         - name: dbup-{{ template "dotstatsuite.fullname" . }}-stable-data
           image: "{{ .Values.nsiStable.dbup.image.repository }}:{{ .Values.nsiStable.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiStable.dbup.image.pullPolicy }}
@@ -336,7 +335,8 @@ spec:
           command: ['bash', '-c']
           args:
             - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(STAGING_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
-{{- end }} 
+        {{- end }} 
+      {{- end }}
       {{- with .Values.transfer.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

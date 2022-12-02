@@ -16,8 +16,6 @@ spec:
     metadata:
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
-        sidecar.istio.io/logLevel: 'warning'
-        sidecar.istio.io/componentLogLevel: 'warning'
     {{- with .Values.authz.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -86,6 +84,7 @@ spec:
           configMap:
             name: {{ .Values.authz.log4net_config.name }}
         {{- end }}
+      {{- if .Values.authz.init_database }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-common
           image: "{{ .Values.authz.dbup.image.repository }}:{{ .Values.authz.dbup.image.tag }}"
@@ -107,6 +106,7 @@ spec:
           command: ['bash', '-c']
           args:
             - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force
+      {{- end }}
       {{- with .Values.authz.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

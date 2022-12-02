@@ -16,8 +16,6 @@ spec:
     metadata:
       annotations:
         traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
-        sidecar.istio.io/logLevel: 'warning'
-        sidecar.istio.io/componentLogLevel: 'warning'
     {{- with .Values.nsiDesign.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -123,6 +121,7 @@ spec:
           configMap:
             name: {{ .Values.nsiDesign.log4net_config.name }}
         {{- end }}
+      {{- if .Values.nsiDesign.init_database }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-design-structure
           image: "{{ .Values.nsiDesign.dbup.image.repository }}:{{ .Values.nsiDesign.dbup.image.tag }}"
@@ -149,6 +148,7 @@ spec:
           command: ['bash', '-c']
           args:
             - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(DESIGN_STRUCTURE_USER) --loginPwd $(DESIGN_STRUCTURE_PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+      {{- end }}
       {{- with .Values.nsiDesign.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
