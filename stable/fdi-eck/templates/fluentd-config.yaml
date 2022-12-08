@@ -1,32 +1,39 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.name }}
-  namespace: {{ .Values.namespace }}
-  labels:
-    app: fluentd
-    kubernetes.io/cluster-service: "true"
-data:
-  fluent.conf: |
-    <filter **>
-      @type record_transformer
-      <record>
-        cluster {{ .Values.clusterName }}
-      </record>
-    </filter>
+#<filter **>
+# @type record_transformer
+ #<record>
+ #   cluster aaw-dev-cc-00-aks
+ #</record>
+#</filter>
 
-    <match **>
-      @type elasticsearch
-      hosts https://{{ .Values.elasticSearchUrl }}
-      ssl_version TLSv1_2
-      user {{ .Values.elasticSearchUsername }}
-      password {{ .Values.elasticSearchPassword }}
-      include_timestamp true
-      index_name "k8s-logs-%Y.%m.%d"
-      
-      <buffer tag, time>
-        @type memory
-        timekey 60
-        timekey_wait 0
-      </buffer>
-    </match>
+<filter **>
+    {{.Values.filtercontainer}}
+    {{.Values.filterlog}}
+ </filter>
+
+<match **>
+  @type elasticsearch
+  hosts https://org-fdi-system-portal-es.aaw-dev.cloud.statcan.ca
+  ssl_version TLSv1_2
+  user elastic
+  password jNo8fu4N58ut79l16G32tlaa
+
+  #include_timestamp false
+  #index_name "k8s-logs-dev"
+
+  logstash_prefix k8s-logs-pattern16-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
+  logstash_format true
+  logstash_dateformat %Y
+  
+  #must have space after comma
+  <buffer tag, $.kubernetes.namespace_name, $.kubernetes.container_name>
+      @type file
+      path /var/log/fluentd-buffers/kubernetes.system.buffer
+      flush_mode interval
+      retry_type exponential_backoff
+      flush_thread_count 2
+      flush_interval 5s
+      retry_forever
+      retry_max_interval 30
+      overflow_action block
+  </buffer>
+</match>
