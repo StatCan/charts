@@ -4,18 +4,17 @@ nameSpace: "org-fdi-system"
 elasticSearchUrl: "elasticSearchUrl"
 elasticSearchUsername: "elastic"
 elasticSearchPassword: ""
-filtercontainer: 
+filtercontainer:
       | 
       @type grep
-       <regexp>
-         key  $.kubernetes.container_name
-         pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)
+      <regexp>
+        key $.kubernetes.container_name
+        pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)
       </regexp>
 
-filterlog: 
-        |
-        <exclude>
-          key log
-          pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*\/health.*$|^.*\/live.*$|^.*Request finished in.*$)
-        </exclude>
-        
+filterlog:
+      |
+      <exclude>
+        key log
+        pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*\/health.*$|^.*\/live.*$|^.*Request finished in.*$)
+      </exclude>
