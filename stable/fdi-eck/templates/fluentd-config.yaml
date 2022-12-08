@@ -1,40 +1,42 @@
-#<filter **>
-# @type record_transformer
- #<record>
- #   cluster aaw-dev-cc-00-aks
- #</record>
-#</filter>
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: fluentd
+    kubernetes.io/cluster-service: "true"
+data:
+  fluent.conf: |
+    <filter **>
+        {{ .Values.filtercontainer | indent 4 }}
+        {{ .Values.filterlog | indent 4 }}
+    </filter>
 
-<filter **>
-    {{.Values.filtercontainer}}
-    {{.Values.filterlog}}
- </filter>
+    <match **>
+      @type elasticsearch
+      hosts https://org-fdi-system-portal-es.aaw-dev.cloud.statcan.ca
+      ssl_version TLSv1_2
+      user elastic
+      password jNo8fu4N58ut79l16G32tlaa
 
-<match **>
-  @type elasticsearch
-  hosts https://org-fdi-system-portal-es.aaw-dev.cloud.statcan.ca
-  ssl_version TLSv1_2
-  user elastic
-  password jNo8fu4N58ut79l16G32tlaa
+      #include_timestamp false
+      #index_name "k8s-logs-dev"
 
-  #include_timestamp false
-  #index_name "k8s-logs-dev"
-
-  logstash_prefix k8s-logs-pattern16-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
-  logstash_format true
-  logstash_dateformat %Y
-  
-  #must have space after comma
-  <buffer tag, $.kubernetes.namespace_name, $.kubernetes.container_name>
-      @type file
-      path /var/log/fluentd-buffers/kubernetes.system.buffer
-      flush_mode interval
-      retry_type exponential_backoff
-      flush_thread_count 2
-      flush_interval 5s
-      retry_forever
-      retry_max_interval 30
-      overflow_action block
-  </buffer>
-</match>
-
+      logstash_prefix k8s-logs-pattern16-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
+      logstash_format true
+      logstash_dateformat %Y
+      
+      #must have space after comma
+      <buffer tag, $.kubernetes.namespace_name, $.kubernetes.container_name>
+          @type file
+          path /var/log/fluentd-buffers/kubernetes.system.buffer
+          flush_mode interval
+          retry_type exponential_backoff
+          flush_thread_count 2
+          flush_interval 5s
+          retry_forever
+          retry_max_interval 30
+          overflow_action block
+      </buffer>
+    </match>
