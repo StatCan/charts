@@ -5,14 +5,17 @@ elasticSearchUrl: "elasticSearchUrl"
 elasticSearchUsername: "elastic"
 elasticSearchPassword: ""
 filtercontainer: 
-       @type grep
+      | 
+      @type grep
        <regexp>
          key  $.kubernetes.container_name
          pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)
       </regexp>
-filterlog:
+
+filterlog: 
+        |
         <exclude>
           key log
           pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*\/health.*$|^.*\/live.*$|^.*Request finished in.*$)
-       </exclude>
- 
+        </exclude>
+        
