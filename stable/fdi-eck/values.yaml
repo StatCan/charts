@@ -1,19 +1,21 @@
-ci_slug: "fdi-meta"
-namespace: "fdi"
-configMap:
-  name: "daaas-fdi-fluentd-config" #fdi namespace use daaas-fdi-fluentd-config aaw use org-fdi-system-fluentd-config
-  elasticSearchUrl: "elasticSearchUrl"
-  elasticSearchUsername: "elastic"
-  elasticSearchPassword: ""
-  filter: |
-    <filter **>
-        @type grep<regexp>  key $.kubernetes.container_name  pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)</regexp>
-        <exclude>  key log  pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*/health.*$|^.*/live.*$|^.*Request finished in.*$)</exclude>
-    </filter>
-elastic:
-  version: "8.3.3"
-  host: "fdi-meta-elasticsearch.dev.cloud.statcan.ca"
-kibana:
-  host: "fdi-meta-kibana.dev.cloud.statcan.ca"
-destinationrule:
-  enable: false
+name: "fdi-fluentd-config"
+clusterName: ""
+nameSpace: "org-fdi-system"
+elasticSearchUrl: "elasticSearchUrl"
+elasticSearchUsername: "elastic"
+elasticSearchPassword: ""
+filtercontainer: 
+      | 
+      @type grep
+       <regexp>
+         key  $.kubernetes.container_name
+         pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)
+      </regexp>
+
+filterlog: 
+        |
+        <exclude>
+          key log
+          pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*\/health.*$|^.*\/live.*$|^.*Request finished in.*$)
+        </exclude>
+        
