@@ -5,7 +5,7 @@ elasticSearchUrl: "elasticSearchUrl"
 elasticSearchUsername: "elastic"
 elasticSearchPassword: ""
 filtercontainer:
-      | 
+      |
       @type grep
       <regexp>
         key $.kubernetes.container_name
