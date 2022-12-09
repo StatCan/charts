@@ -11,10 +11,10 @@ data:
     {{ .Values.configMap.filter | indent 4 }}
     <match **>
       @type elasticsearch
-      hosts https://org-fdi-system-portal-es.aaw-dev.cloud.statcan.ca
+      hosts {{ .Values.configMapelasticSearchUrl }} 
       ssl_version TLSv1_2
-      user elastic
-      password jNo8fu4N58ut79l16G32tlaa
+      user {{ .Values.configMap.elasticSearchUsername }}
+      password {{ .Values.configMap.elasticSearchPassword }}
       #include_timestamp false
       #index_name "k8s-logs-dev"
       logstash_prefix k8s-logs-pattern16-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
