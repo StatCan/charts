@@ -91,7 +91,11 @@ configmodulePy:
   elasticSearchErrorsIndex: ""
   smtpServer: ""
   senderEmail: ""
+  scope: ""
 
+fluentd:
+  elasticSearchVettingErrorIndex: ""
+  elasticSearchVettingLogIndex: ""
 
 entrypointSh:
   name: entrypointsh
