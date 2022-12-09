@@ -1,6 +1,20 @@
-name: "fdi-fluentd-config"
-clusterName: ""
+ci_slug: "fdi-meta"
 nameSpace: "org-fdi-system"
-elasticSearchUrl: "elasticSearchUrl"
-elasticSearchUsername: "elastic"
-elasticSearchPassword: ""
+
+configMap:
+  name: "fdi-fluentd-config"
+  clusterName: ""
+  elasticSearchUrl: "elasticSearchUrl"
+  elasticSearchUsername: "elastic"
+  elasticSearchPassword: ""
+  filter: |
+    <filter **>
+        @type grep<regexp>  key $.kubernetes.container_name  pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)</regexp>
+        <exclude>  key log  pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*/health.*$|^.*/live.*$|^.*Request finished in.*$)</exclude>
+    </filter>
+
+elastic:
+  version: "8.3.3"
+  host: "fdi-meta-elasticsearch.dev.cloud.statcan.ca"
+kibana:
+  host: "fdi-meta-kibana.dev.cloud.statcan.ca"

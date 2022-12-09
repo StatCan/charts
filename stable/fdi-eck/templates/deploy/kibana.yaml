@@ -1,0 +1,19 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: {{ .Values.ci_slug }}
+  namespace: fdi
+spec:
+  version: {{ .Values.elastic.version }}
+  count: 1
+  elasticsearchRef:
+    name: {{ .Values.ci_slug }}
+  enterpriseSearchRef:
+    name: ''
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  podTemplate:
+    spec:
+      automountServiceAccountToken: true

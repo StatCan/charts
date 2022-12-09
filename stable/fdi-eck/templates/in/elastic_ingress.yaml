@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ci_slug }}-elasticsearch
+  namespace: fdi
+spec:
+  ingressClassName: ingress-istio-controller
+  rules:
+  - host: {{ .Values.es_ingress }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: {{ .Values.ci_slug }}-es-http
+            port:
+              number: 9200
+
+
+              
