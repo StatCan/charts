@@ -8,10 +8,7 @@ metadata:
     kubernetes.io/cluster-service: "true"
 data:
   fluent.conf: |
-    <filter **>
-      {{ include "toYaml" .Values.configMap.filtercontainer | indent 4 }}
-      {{ include "toYaml" .Values.configMap.filterlog | indent 4 }}
-    </filter>
+    {{ .Values.configMap.filter | indent 4 }}
     <match **>
       @type elasticsearch
       hosts https://org-fdi-system-portal-es.aaw-dev.cloud.statcan.ca
