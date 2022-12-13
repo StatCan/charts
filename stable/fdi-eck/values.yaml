@@ -12,7 +12,6 @@ configMap:
         @type grep<regexp>  key $.kubernetes.container_name  pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)</regexp>
         <exclude>  key log  pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*/health.*$|^.*/live.*$|^.*Request finished in.*$)</exclude>
     </filter>
-
 elastic:
   version: "8.3.3"
   host: "fdi-meta-elasticsearch.dev.cloud.statcan.ca"
