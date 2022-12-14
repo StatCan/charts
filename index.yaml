@@ -2325,6 +2325,24 @@ entries:
     urls:
     - https://statcan.github.io/charts/fdi-dotstatsuite-de-0.2.0.tgz
     version: 0.2.0
+  fdi-dotstatsuite-de-dv:
+  - apiVersion: v2
+    appVersion: v14.0.0
+    created: "2022-12-14T22:10:06.636146052Z"
+    description: fdi-dotstatsuite helm chart for the Data Explorer and Data Viewer
+    digest: 326ed23a0e688fe00bbf1863654141b19db405df63cc180251be4d5e79a4270f
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: tim.raizenne@statcan.gc.ca
+      name: Timothy Raizenne
+    name: fdi-dotstatsuite-de-dv
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-de-dv-0.2.0/fdi-dotstatsuite-de-dv-0.2.0.tgz
+    version: 0.2.0
   fdi-dotstatsuite-dlm:
   - apiVersion: v2
     appVersion: v14.0.0
@@ -2344,6 +2362,15 @@ entries:
     - https://statcan.github.io/charts/fdi-dotstatsuite-dlm-0.2.0.tgz
     version: 0.2.0
   fdi-eck-configmap:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-12-14T22:10:06.978096661Z"
+    description: Helm chart for fluentd configmap
+    digest: b383e73a9320b2d2d23358dc547e9a86d4f1bbabe7ea2713a451211e2a02e593
+    name: fdi-eck-configmap
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-eck-configmap-0.3.0/fdi-eck-configmap-0.3.0.tgz
+    version: 0.3.0
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-12-08T20:45:44.442386152Z"
@@ -8148,4 +8175,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-08T20:45:44.444394875Z"
+generated: "2022-12-14T22:10:06.980261355Z"
