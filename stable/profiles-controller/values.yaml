@@ -8,6 +8,7 @@ extraEnv:
   - name: REQUEUE_TIME
     value: "5"
 
+
 image:
   repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
