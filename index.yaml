@@ -2328,6 +2328,23 @@ entries:
   fdi-dotstatsuite-de-dv:
   - apiVersion: v2
     appVersion: v14.0.0
+    created: "2022-12-19T13:10:19.736595249Z"
+    description: fdi-dotstatsuite helm chart for the Data Explorer and Data Viewer
+    digest: 2ddd9ae5b1e169341a001df2448d4a19d0795a503f73df856b94f7749e997f5f
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: tim.raizenne@statcan.gc.ca
+      name: Timothy Raizenne
+    name: fdi-dotstatsuite-de-dv
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-de-dv-0.3.0/fdi-dotstatsuite-de-dv-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: v14.0.0
     created: "2022-12-14T22:10:06.636146052Z"
     description: fdi-dotstatsuite helm chart for the Data Explorer and Data Viewer
     digest: 326ed23a0e688fe00bbf1863654141b19db405df63cc180251be4d5e79a4270f
@@ -2344,6 +2361,23 @@ entries:
     - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-de-dv-0.2.0/fdi-dotstatsuite-de-dv-0.2.0.tgz
     version: 0.2.0
   fdi-dotstatsuite-dlm:
+  - apiVersion: v2
+    appVersion: v14.0.0
+    created: "2022-12-19T13:10:19.905863301Z"
+    description: fdi-dotstatsuite helm chart for the Data Lifecycle Manager
+    digest: c793956f878a12f005fb3332ed68ab3c4b73b7b33119955fc1f913509932e99f
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: tim.raizenne@statcan.gc.ca
+      name: Timothy Raizenne
+    name: fdi-dotstatsuite-dlm
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-dlm-0.3.0/fdi-dotstatsuite-dlm-0.3.0.tgz
+    version: 0.3.0
   - apiVersion: v2
     appVersion: v14.0.0
     created: "2022-09-27T18:22:11.713910983Z"
@@ -8175,4 +8209,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-14T22:10:06.980261355Z"
+generated: "2022-12-19T13:10:20.095706179Z"
