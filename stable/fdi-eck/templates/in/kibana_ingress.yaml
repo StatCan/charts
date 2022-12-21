@@ -1,6 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  namespace: {{.Values.namespace }}
   name: {{ .Values.ci_slug }}-kibana
 spec:
   ingressClassName: ingress-istio-controller

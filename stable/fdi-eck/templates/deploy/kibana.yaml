@@ -1,7 +1,8 @@
 apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
-  name: {{ .Values.ci_slug }}-kibana
+  namespace: {{.Values.namespace }}
+  name: {{ .Values.ci_slug }}
 spec:
   version: {{ .Values.elastic.version }}
   count: 1

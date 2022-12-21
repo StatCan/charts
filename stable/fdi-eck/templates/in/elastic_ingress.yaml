@@ -1,11 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  namespace: {{.Values.namespace }}
   name: {{ .Values.ci_slug }}-elasticsearch
 spec:
   ingressClassName: ingress-istio-controller
   rules:
-  - host: {{ .Values.es_ingress }}
+  - host: {{ .Values.elastic.host }}
     http:
       paths:
       - pathType: Prefix
