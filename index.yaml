@@ -2080,6 +2080,31 @@ entries:
   fdi-dotstatsuite:
   - apiVersion: v2
     appVersion: 7.2.0
+    created: "2022-12-21T18:08:00.696737545Z"
+    dependencies:
+    - condition: mssql-linux.enabled
+      name: mssql-linux
+      repository: https://charts.helm.sh/stable
+      version: 0.11.4
+    description: fdi-dotstatsuite kube core services
+    digest: 017e162e3da6acca0677b8540074da3b4060ae4f8c1d87ea9774422f9b52b839
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: Zachary Seguin
+    - email: tim.raizenne@canada.ca
+      name: Tim Raizenne
+    name: fdi-dotstatsuite
+    sources:
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-0.2.18/fdi-dotstatsuite-0.2.18.tgz
+    version: 0.2.18
+  - apiVersion: v2
+    appVersion: 7.2.0
     created: "2022-11-15T15:31:26.762267614Z"
     dependencies:
     - condition: mssql-linux.enabled
@@ -2396,6 +2421,15 @@ entries:
     - https://statcan.github.io/charts/fdi-dotstatsuite-dlm-0.2.0.tgz
     version: 0.2.0
   fdi-eck-configmap:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-12-21T18:08:00.937238398Z"
+    description: Helm chart for fluentd configmap
+    digest: 700d5d00e26cb710218af87d70a32c04e459390a06849088493c2c57a5fa340f
+    name: fdi-eck-configmap
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-eck-configmap-0.3.1/fdi-eck-configmap-0.3.1.tgz
+    version: 0.3.1
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-12-14T22:10:06.978096661Z"
@@ -8219,4 +8253,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-19T19:52:51.017338497Z"
+generated: "2022-12-21T18:08:00.939951625Z"
