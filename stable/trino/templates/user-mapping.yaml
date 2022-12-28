@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-mapping-cm
+data:
+  user-mapping.json: |
+    {
+        "rules": [
+            {
+                "pattern": "^system:serviceaccount:([^:]+):default$",
+                "user": "Rohan Katkar"
+            }
+        ]
+    }

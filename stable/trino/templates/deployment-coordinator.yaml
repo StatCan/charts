@@ -45,7 +45,7 @@ spec:
               - configMap:
                   name: trino-unclassified-rules
               - configMap:
-                  name: trino-prob-rules                 
+                  name: unclassified-lsddp-rules
         - name: catalog-volume
           configMap:
             name: {{ template "trino.catalog" . }}
@@ -56,6 +56,9 @@ spec:
           configMap:
             name: nginx-init
             defaultMode: 0755
+        - name: user-mapping
+          configMap:
+            name: user-mapping-cm
         - name: cache-volume
           emptyDir: {}
 
@@ -79,6 +82,8 @@ spec:
           volumeMounts:
             - mountPath: /etc/hadoop/conf/
               name: storage-config
+            - mountPath: /etc/mapping/
+              name: user-mapping
             - mountPath: /etc/catalog
               name: rules-volume
             - mountPath: {{ .Values.server.config.path }}
