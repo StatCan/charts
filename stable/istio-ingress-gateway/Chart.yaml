@@ -1,7 +1,7 @@
 apiVersion: v2
 name: istio-ingress-gateway
 description: |
-  This chart deploys an opinionated Istio ngress-gateway. It uses the Istio Operator to deploy the Istio components and cert-manager to handle certificate generation.
+  This chart deploys an opinionated Istio ingress-gateway. The Gateway Helm Chart is utilized as a subchart to deploy a single gateway and configures HSTS and Wildcard Certificates
 
   Currently, only HTTPS configurations are available (with automatic HTTPS redirect from HTTP if configured), however, more Gateways and capbabilities may be added when the need arises.
 
@@ -18,4 +18,10 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2.5.1
+version: 3.0.0
+
+dependencies:
+  - name: gateway
+    version: 1.14.3
+    repository: https://istio-release.storage.googleapis.com/charts
+    condition: gateway.enabled

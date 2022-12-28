@@ -1,34 +1,36 @@
-# The hub from which to pull images
-hub:
-# The tag to use for images.
-# Useful for using the distroless images which are: <version>-distroless
-tag:
-
 # Configurations relating to the Istio Ingress Gateway to deploy.
-ingressGateway:
-  # The name of the ingress-gateway instance.
-  # If left blank, will use the Release name.
-  name:
-  # Toggles if the ingress gateway is enabled or not.
-  # If disabled, the Istio Operator will remove the deployment and service.
-  enabled: true
-  maxReplicas: 5
-  minReplicas: 3
-  nodeSelector: {}
+gateway:
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 80
   service:
-    # Defines the type of Service to deploy:
+    # Defines the type of Service to deploy
     type: LoadBalancer
-    # Defines if an "internal" or "external" Azure load-balancer is deployed for the service.
-    azureLoadBalancer: internal
-    azureLoadBalancerSubnet: ""
+    annotations:
+      # Defines if an "internal" or "external" Azure load-balancer is deployed for the service.
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+      service.beta.kubernetes.io/azure-load-balancer-internal-subnet: ""
     # Specifies the IP that the LoadBalancer should use. Skipped if empty.
-    loadBalancerIP:
-    # Extra ports to expose on the service.
-    ports: []
+    loadBalancerIP: ""
     # Toggle for NodePorts when deploying many ingress gateways
-    nodePorts:
-      http: 30540
-      https: 31607
+    ports:
+      - name: status-port
+        protocol: TCP
+        port: 15021
+        targetPort: 15021
+        nodePort: 31813
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 80
+        nodePort: 30540
+      - name: https
+        protocol: TCP
+        port: 443
+        targetPort: 443
+        nodePort: 31607
 
 # Configures HTTPS on the ingress gateway.
 https:
