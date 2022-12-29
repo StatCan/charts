@@ -30,7 +30,7 @@ spec:
       securityContext:
         {{- toYaml .Values.nsiStaging.podSecurityContext | nindent 8 }}        
       containers:
-        - name: {{ .Chart.Name }}-staging
+        - name: {{ include "dotstatsuite.fullname" . }}-staging
           securityContext:
             {{- toYaml .Values.nsiStaging.securityContext | nindent 12 }}
           image: "{{ .Values.nsiStaging.image.repository }}:{{ .Values.nsiStaging.image.tag | default .Chart.AppVersion }}"
