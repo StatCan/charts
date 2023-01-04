@@ -31,5 +31,5 @@ spec:
             end
   workloadSelector:
     labels:
-      {{- include "istio-ingress-gateway.selectorLabels" . | nindent 6 }}
+      {{- include "istio-ingress-gateway.gatewaySelectorLabels" . | nindent 6 }}
 {{- end }}

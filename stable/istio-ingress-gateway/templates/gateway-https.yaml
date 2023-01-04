@@ -8,7 +8,7 @@ metadata:
     {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
 spec:
   selector:
-    {{- include "istio-ingress-gateway.selectorLabels" . | nindent 4 }}
+    {{- include "istio-ingress-gateway.gatewaySelectorLabels" . | nindent 4 }}
   servers:
   {{- if .Values.https.httpsRedirect }}
   - hosts: {{ .Values.https.hosts | toYaml | nindent 6 }}

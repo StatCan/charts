@@ -51,6 +51,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Istio Gateway Selector labels
+*/}}
+{{- define "istio-ingress-gateway.gatewaySelectorLabels" -}}
+app: {{ include "istio-ingress-gateway.name" . }}
+istio: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "istio-ingress-gateway.serviceAccountName" -}}
