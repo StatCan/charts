@@ -54,7 +54,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Istio Gateway Selector labels
 */}}
 {{- define "istio-ingress-gateway.gatewaySelectorLabels" -}}
-app: {{ include "istio-ingress-gateway.name" . }}
+app: {{ .Release.Name }}
 istio: {{ .Release.Name }}
 {{- end }}
 
