@@ -32,9 +32,9 @@ spec:
           projected:
             sources:
               - configMap:
-                  name: trino-prob-rules
+                  name: trino-unclassified-rules
               - configMap:
-                  name: trino-unclassified-rules  
+                  name: unclassified-lsddp-rules
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
