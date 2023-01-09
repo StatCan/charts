@@ -31,7 +31,7 @@ spec:
         {{- toYaml .Values.nsiReset.podSecurityContext | nindent 8 }}
 
       containers:
-        - name: {{ .Chart.Name }}-reset
+        - name: {{ include "dotstatsuite.fullname" . }}-reset
           securityContext:
             {{- toYaml .Values.nsiReset.securityContext | nindent 12 }}
           image: "{{ .Values.nsiReset.image.repository }}:{{ .Values.nsiReset.image.tag | default .Chart.AppVersion }}"
