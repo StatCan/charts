@@ -1,7 +1,7 @@
 ci_slug: "fdi-meta"
 namespace: "fdi"
 configMap:
-  name: "fdi-fluentd-config"
+  name: "daaas-fdi-fluentd-config" #fdi namespace use daaas-fdi-fluentd-config aaw use org-fdi-system-fluentd-config
   elasticSearchUrl: "elasticSearchUrl"
   elasticSearchUsername: "elastic"
   elasticSearchPassword: ""
@@ -15,3 +15,5 @@ elastic:
   host: "fdi-meta-elasticsearch.dev.cloud.statcan.ca"
 kibana:
   host: "fdi-meta-kibana.dev.cloud.statcan.ca"
+destinationrule:
+  enable: false

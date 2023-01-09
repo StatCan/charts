@@ -2,27 +2,48 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: {{.Values.namespace }}
-  name: {{ .Values.ci_slug }}-config-map
+  name: {{ .Values.configMap.name }}
   labels:
     app: fluentd
     kubernetes.io/cluster-service: "true"
 data:
   fluent.conf: |
-    #fluent.conf
-    {{ .Values.configMap.filter | indent 4 }}
+    #we send the logs to Elasticsearch
+    <filter **>
+      @type record_transformer
+      <record>
+        cluster k8s-cancentral-01-development
+        #kuber_namespace ${record["kubernetes"]["namespace_name"]} 
+      </record>
+      
+    </filter>
+    <filter **>
+      @type grep
+      <regexp>
+        key  $.kubernetes.container_name
+        pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)
+      </regexp>
+
+      <exclude>
+        key log
+        pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*\/health.*$|^.*\/live.*$|^.*Request finished in.*$)
+      </exclude>
+    </filter>
+
     <match **>
       @type elasticsearch
-      hosts {{ .Values.configMap.elasticSearchUrl }} 
+      hosts https://fdi-meta-elasticsearch.dev.cloud.statcan.ca
       ssl_version TLSv1_2
-      user {{ .Values.configMap.elasticSearchUsername }}
-      password {{ .Values.configMap.elasticSearchPassword }}
+      user elastic
+      password 05kcU5Ff59uxP3498ZozD6QA 
+      #p2F0p8e3P4E518e41KySQGxq
       #include_timestamp false
       #index_name "k8s-logs-dev"
-      logstash_prefix k8s-logs-pattern16-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
+      logstash_prefix k8slogsfilter-phil-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
       logstash_format true
       logstash_dateformat %Y
       
-      #must have space after comma
+      #must have spae after comma
       <buffer tag, $.kubernetes.namespace_name, $.kubernetes.container_name>
           @type file
           path /var/log/fluentd-buffers/kubernetes.system.buffer

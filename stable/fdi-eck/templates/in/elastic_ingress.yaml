@@ -1,3 +1,4 @@
+{{- if not .Values.destinationrule.enable -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -16,6 +17,7 @@ spec:
             name: {{ .Values.ci_slug }}-es-http
             port:
               number: 9200
+{{- end}}
 
 
               
