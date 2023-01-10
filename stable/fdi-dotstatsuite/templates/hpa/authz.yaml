@@ -1,6 +1,6 @@
 {{- if .Values.authz.enabled -}}
 {{- if .Values.authz.autoscaling.enabled }}
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "dotstatsuite.fullname" . }}-authz
@@ -18,13 +18,17 @@ spec:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.authz.autoscaling.targetCPUUtilizationPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.authz.autoscaling.targetCPUUtilizationPercentage }}
   {{- end }}
   {{- if .Values.authz.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.authz.autoscaling.targetMemoryUtilizationPercentage }}
+        target: 
+          type: Utilization
+          averageUtilization: {{ .Values.authz.autoscaling.targetMemoryUtilizationPercentage }}
   {{- end }}
 {{- end }}
 {{- end -}}

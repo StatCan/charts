@@ -6,8 +6,6 @@
 nameOverride: "fdi-dotstatsuite"
 fullnameOverride: "fdi-dotstatsuite"
 
-# dlm
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
 dlm:
   enabled: true
   replicaCount: 1
@@ -94,9 +92,10 @@ dlm:
 
   affinity: {}
 
+  config_url: "http://fdi-dotstatsuite-config.dev.cloud.statcan.ca/"
 
 # Destination Rule
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
 destinationRule:
-  enabled: true
+  enabled: false
   mode: DISABLE

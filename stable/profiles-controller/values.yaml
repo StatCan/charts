@@ -8,11 +8,12 @@ extraEnv:
   - name: REQUEUE_TIME
     value: "5"
 
+
 image:
   repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: b91f71762101561fbe1746d8877edd9e36ef335b
+  tag: 798c100b91f48f43802021cf7fcdb0eaeaf59d76
 
 imagePullSecrets: []
 nameOverride: ""
