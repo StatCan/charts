@@ -2,12 +2,20 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount:
+  default: 1
+  buckets: 1
+  blobcsi: 0
+  cloudmain: 1
+  gitea: 0
+  giteab: 0
+  s3proxy: 0
+  trino: 1
+  trinoschema: 1
 
 extraEnv:
   - name: REQUEUE_TIME
     value: "5"
-
 
 image:
   repository: k8scc01covidacr.azurecr.io/profiles-controller
