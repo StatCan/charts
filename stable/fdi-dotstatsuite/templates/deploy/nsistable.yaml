@@ -148,8 +148,8 @@ spec:
           command: ['bash', '-c']
           args:
             - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(STABLE_STRUCTURE_USER) --loginPwd $(STABLE_STRUCTURE_PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
-      {{- with .Values.nsiStable.nodeSelector }}
       {{- end }}
+      {{- with .Values.nsiStable.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
