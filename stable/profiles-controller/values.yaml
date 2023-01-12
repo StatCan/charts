@@ -70,6 +70,7 @@ serviceAccount:
 
 vaultagent:
   enabled: false
+  internalAddress: "http://vault.vault-system:8200"
   config: |
     "auto_auth" = {
       "method" = {
