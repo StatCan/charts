@@ -1,6 +1,6 @@
 {{- if .Values.nsiDesign.enabled -}}
 {{- if .Values.nsiDesign.autoscaling.enabled }}
-apiVersion: autoscaling/v2beta1
+apiVersion: {{ .Values.authz.autoscaling.appversion }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "dotstatsuite.fullname" . }}-design
