@@ -40,6 +40,11 @@ appImage:
   tag: 0.1.1
   pullPolicy: Always
 
+appImageStaticError:
+  repository: statcan/disclosure-vetting-app
+  tag: 0.1.1
+  pullPolicy: Always
+
 imagePullSecrets:
   name: artifactory-prod
 
