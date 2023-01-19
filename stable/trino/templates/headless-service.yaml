@@ -6,7 +6,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   name: trino-headless
-  namespace: trino-system
 spec:
   clusterIP: None
   clusterIPs:

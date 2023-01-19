@@ -1,0 +1,21 @@
+{{- if .Values.destinationrule.enable -}}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: es
+  namespace: {{.Values.namespace}}
+spec:
+  gateways:
+  - ingress-general-system/general-istio-ingress-gateway-https
+  hosts:
+  - {{.Values.elastic.host}}
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: {{.Values.ci_slug}}-es-http.{{.Values.namespace}}.svc.cluster.local
+        port:
+          number: 9200
+{{- end}}
