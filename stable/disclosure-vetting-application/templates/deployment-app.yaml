@@ -55,15 +55,6 @@ spec:
               mountPath: /app/app/logs
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-
-        - name: {{ .Chart.Name }}-static-error
-          image: "{{ .Values.appImageStaticError.repository }}:{{ .Values.appImageStaticError.tag }}"
-          imagePullPolicy: {{ .Values.appImageStaticError.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 5000
-              protocol: TCP
-
       imagePullSecrets:              
         - name: {{ .Values.imagePullSecrets.name }}     
       volumes:
