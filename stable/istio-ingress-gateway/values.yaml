@@ -51,6 +51,7 @@ https:
   # Configures a cert-manager Certificate for automated certificate generation.
   certificate:
     # Defines the name of the secret that will contain the certificates.
+    # Will automatically be generated if left blank.
     secretName:
     # Defines list of DNS names for the certificate.
     # Note: The first entry is set as the common name.
