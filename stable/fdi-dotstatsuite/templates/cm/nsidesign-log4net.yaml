@@ -6,7 +6,6 @@ metadata:
 data:
   log4net.config: |
     <?xml version="1.0" encoding="utf-8"?>
-      
       <log4net>
         <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
           <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
@@ -35,18 +34,17 @@ data:
           <layout type="log4net.Layout.PatternLayout">
             <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%property{Application}|%logger|%property{User}|%message|%exception%newline" />
           </layout>
-          <!--Log level WARNNING -->
-          <!--Threshold value="INFO" -->
+          <Threshold value="INFO"/>
           <!--Filter user activity-->
-          <!-- <filter type="log4net.Filter.PropertyFilter">
+          <filter type="log4net.Filter.PropertyFilter">
             <key value="User" />
             <StringToMatch value="null" />
             <acceptOnMatch value="false" />
           </filter> -->
-            <!--<filter type="log4net.Filter.LevelMatchFilter">
+          <filter type="log4net.Filter.LevelMatchFilter">
             <LevelToMatch value="INFO" />
             <acceptOnMatch value="false" />
-          </filter>-->
+          </filter>
         </appender>
         <appender name="HTTPRequestLogs" type="log4net.Appender.RollingFileAppender">
           <file type="log4net.Util.PatternString" value="/app/logs/httpRequestLogs.csv"/>
@@ -58,19 +56,18 @@ data:
           <layout type="log4net.Layout.PatternLayout">
             <conversionPattern value="%d{yyyy-MM-dd HH:mm:ss,fff};|%logger|%property{User}|%property{MemberName}|%P{sourceMember}|%m%n"/>
           </layout>
-          <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware">
-          </filter>
+          <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware"/>
           <Threshold value="INFO"/>
           <filter type="log4net.Filter.PropertyFilter">
-              <key value="HttpMethod" />
-              <StringToMatch value="GET" />
-              <acceptOnMatch value="false" />
-            </filter>
-            <filter type="log4net.Filter.PropertyFilter">
-              <key value="HttpMethod" />
-              <StringToMatch value="POST" />
-              <acceptOnMatch value="false" />
-            </filter>
+            <key value="HttpMethod" />
+            <StringToMatch value="GET" />
+            <acceptOnMatch value="false" />
+          </filter>
+          <filter type="log4net.Filter.PropertyFilter">
+            <key value="HttpMethod" />
+            <StringToMatch value="POST" />
+            <acceptOnMatch value="false" />
+          </filter>
         </appender>
         <appender name="SQLQueryLoger" type="log4net.Appender.RollingFileAppender">
           <file value="/app/logs/sql_statement_logging.csv"/>

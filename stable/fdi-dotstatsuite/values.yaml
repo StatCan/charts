@@ -45,6 +45,7 @@ autoscaling: &autoscaling
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
+  appversion: "autoscaling/v2" #prod uses autoscaling/v2beta1
 
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
