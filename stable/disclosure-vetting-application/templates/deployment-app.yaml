@@ -55,7 +55,6 @@ spec:
               mountPath: /app/app/logs
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-
       imagePullSecrets:              
         - name: {{ .Values.imagePullSecrets.name }}     
       volumes:
