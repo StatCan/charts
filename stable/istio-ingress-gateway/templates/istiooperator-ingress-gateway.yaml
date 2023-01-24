@@ -23,11 +23,6 @@ spec:
         hpaSpec:
           minReplicas: {{ .Values.ingressGateway.minReplicas }}
           maxReplicas: {{ .Values.ingressGateway.maxReplicas }}
-          metrics:
-          - resource:
-              name: cpu
-              targetAverageUtilization: 80
-            type: Resource
         {{- with .Values.ingressGateway.nodeSelector }}
         nodeSelector:
           {{- toYaml . | nindent 10 }}

@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "profiles-controller.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount.cloudmain }}
   selector:
     matchLabels:
       {{- include "profiles-controller.selectorLabels" . | nindent 6 }}

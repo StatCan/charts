@@ -1,16 +1,14 @@
-# Default values for argo-controller.
+# Default values for cnp-controller.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: statcan/argo-controller
+  repository: statcan/cnp-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "28819cceb71f890a9baeb3673761faff8b137823"
-
-componentsImagePullSecretName: "image-pull-secret"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -30,8 +28,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-storageAccount:
-  existingSecret: ""
+cnp:
+  secretName: ""
+  secretDockerConfigJson: ""
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

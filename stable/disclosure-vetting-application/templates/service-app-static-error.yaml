@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vetting-app.fullname" . }}-static-error
+  labels:
+    app.kubernetes.io/name: {{ include "vetting-app.name" . }}-static-error
+    helm.sh/chart: {{ include "vetting-app.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "vetting-app.name" . }}-static-error
+    app.kubernetes.io/instance: {{ .Release.Name }}
