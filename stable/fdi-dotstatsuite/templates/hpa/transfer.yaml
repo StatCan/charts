@@ -1,6 +1,6 @@
 {{- if .Values.transfer.enabled -}}
 {{- if .Values.transfer.autoscaling.enabled }}
-apiVersion: {{ .Values.authz.autoscaling.appversion }}
+apiVersion: {{ .Values.autoscaling.appversion }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "dotstatsuite.fullname" . }}-transfer

@@ -1,6 +1,6 @@
 {{- if .Values.nsiReset.enabled -}}
 {{- if .Values.nsiReset.autoscaling.enabled }}
-apiVersion: {{ .Values.authz.autoscaling.appversion }}
+apiVersion: {{ .Values.autoscaling.appversion }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "dotstatsuite.fullname" . }}-reset
