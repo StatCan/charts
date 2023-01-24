@@ -2111,6 +2111,31 @@ entries:
   fdi-dotstatsuite:
   - apiVersion: v2
     appVersion: 7.2.0
+    created: "2023-01-24T19:47:49.882245503Z"
+    dependencies:
+    - condition: mssql-linux.enabled
+      name: mssql-linux
+      repository: https://charts.helm.sh/stable
+      version: 0.11.4
+    description: fdi-dotstatsuite kube core services
+    digest: bf5e0bd85490ab494b6f686a3109d1e6f969e91f0313799bf4829ad0059db128
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: Zachary Seguin
+    - email: tim.raizenne@canada.ca
+      name: Tim Raizenne
+    name: fdi-dotstatsuite
+    sources:
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-0.2.19/fdi-dotstatsuite-0.2.19.tgz
+    version: 0.2.19
+  - apiVersion: v2
+    appVersion: 7.2.0
     created: "2022-12-21T18:08:00.696737545Z"
     dependencies:
     - condition: mssql-linux.enabled
@@ -2417,6 +2442,23 @@ entries:
     - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-de-dv-0.2.0/fdi-dotstatsuite-de-dv-0.2.0.tgz
     version: 0.2.0
   fdi-dotstatsuite-dlm:
+  - apiVersion: v2
+    appVersion: v14.0.0
+    created: "2023-01-24T19:47:50.198722118Z"
+    description: fdi-dotstatsuite helm chart for the Data Lifecycle Manager
+    digest: 31b8914b8b0d940d41bd63388bbb9f2153edc173938d6be8249e81912b239264
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: tim.raizenne@statcan.gc.ca
+      name: Timothy Raizenne
+    name: fdi-dotstatsuite-dlm
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-dlm-0.3.1/fdi-dotstatsuite-dlm-0.3.1.tgz
+    version: 0.3.1
   - apiVersion: v2
     appVersion: v14.0.0
     created: "2022-12-19T13:10:19.905863301Z"
@@ -8558,4 +8600,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-24T16:38:16.289621875Z"
+generated: "2023-01-24T19:47:50.379268439Z"
