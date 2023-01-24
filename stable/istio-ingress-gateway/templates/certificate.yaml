@@ -15,7 +15,7 @@ spec:
   issuerRef:
     kind: {{ .Values.https.certificate.issuerRef.kind }}
     name: {{ .Values.https.certificate.issuerRef.name }}
-  secretName: {{ .Values.https.certificate.secretName }}
+  secretName: {{ .Values.https.certificate.secretName | default (include "istio-ingress-gateway.fullname" .) | quote }}
   privateKey:
     rotationPolicy: Always
 {{- end }}
