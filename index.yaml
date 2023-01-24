@@ -2931,6 +2931,19 @@ entries:
     - https://github.com/StatCan/charts/releases/download/istio-ingress-gateway-3.0.0/istio-ingress-gateway-3.0.0.tgz
     version: 3.0.0
   - apiVersion: v2
+    created: "2023-01-24T20:02:14.119121876Z"
+    description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
+      the Istio Operator to deploy the Istio components and cert-manager to handle
+      certificate generation.  Currently, only HTTPS configurations are available
+      (with automatic HTTPS redirect from HTTP if configured), however, more Gateways
+      and capbabilities may be added when the need arises. '
+    digest: 9f6efe4049ea0f14498b0cfafa04b829ca044734176e85dd0b82205297506d74
+    name: istio-ingress-gateway
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/istio-ingress-gateway-2.5.4/istio-ingress-gateway-2.5.4.tgz
+    version: 2.5.4
+  - apiVersion: v2
     created: "2023-01-24T16:38:16.286934517Z"
     description: 'This chart deploys an opinionated Istio ngress-gateway. It uses
       the Istio Operator to deploy the Istio components and cert-manager to handle
@@ -8600,4 +8613,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-24T19:47:50.379268439Z"
+generated: "2023-01-24T20:02:14.12152055Z"
