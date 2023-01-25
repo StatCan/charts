@@ -18,7 +18,7 @@ spec:
             subFilter:
               name: envoy.filters.http.router
     patch:
-      operation: INSERT_BEFORE
+      operation: ADD
       value:
         name: envoy.lua
         typed_config:

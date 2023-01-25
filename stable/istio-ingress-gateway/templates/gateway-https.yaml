@@ -26,7 +26,7 @@ spec:
       protocol: HTTPS
     tls:
       cipherSuites: {{ .Values.https.cipherSuites | toYaml | nindent 8 }}
-      credentialName: {{ .Values.https.certificate.secretName }}
+      credentialName: {{ .Values.https.certificate.secretName | default (include "istio-ingress-gateway.fullname" .) | quote }}
       maxProtocolVersion: TLSV1_2
       minProtocolVersion: TLSV1_2
       mode: SIMPLE
