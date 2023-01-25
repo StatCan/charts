@@ -8,18 +8,6 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/instance
-              operator: In
-              values:
-              - disclosure-vetting
-          topologyKey: topology.kubernetes.io/zone
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -31,6 +19,18 @@ spec:
         app.kubernetes.io/name: {{ include "vetting-app.name" . }}-static-error
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                  - disclosure-vetting
+              topologyKey: topology.kubernetes.io/zone
       containers:
         - name: {{ .Chart.Name }}-static-error
           image: "{{ .Values.appImageStaticError.repository }}:{{ .Values.appImageStaticError.tag }}"
