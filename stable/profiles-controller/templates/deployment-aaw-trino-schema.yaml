@@ -41,6 +41,10 @@ spec:
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}
+            {{- range $env := .Values.components.blobcsi.env }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
