@@ -213,7 +213,7 @@ components:
       value: https://kubeflow.aaw-dev.cloud.statcan.ca
     - name: S3PROXY_KUBEFLOW_PREFIX
       value: s3
-  Trino:
+  trino-schema:
     env:
     - name: TRINO_UNCLASSIFIED_SCHEMA_NAME
       value: unclassified
