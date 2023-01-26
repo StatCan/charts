@@ -35,11 +35,12 @@ data:
       hosts https://fdi-meta-elasticsearch.dev.cloud.statcan.ca
       ssl_version TLSv1_2
       user elastic
-      password 05kcU5Ff59uxP3498ZozD6QA 
+      password password
       #p2F0p8e3P4E518e41KySQGxq
       #include_timestamp false
       #index_name "k8s-logs-dev"
       logstash_prefix k8slogsfilter-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
+      #logstash_prefix k8slogs-${$.kubernetes.container_name} 
       logstash_format true
       logstash_dateformat %Y
       
