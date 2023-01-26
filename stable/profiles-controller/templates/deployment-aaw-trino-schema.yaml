@@ -41,7 +41,7 @@ spec:
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}
-            {{- range $env := .Values.components.blobcsi.env }}
+            {{- range $env := .Values.components.trino-schema.env }}
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}
