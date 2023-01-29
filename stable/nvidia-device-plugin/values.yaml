@@ -25,7 +25,7 @@ config:
   # Default config name within the ConfigMap
   default: ""
   # List of fallback strategies to attempt if no config is selected and no default is provided
-  fallbackStrategies: ["named" , "single"]
+  fallbackStrategies: ["named", "single"]
 
 legacyDaemonsetAPI: null
 compatWithCPUManager: null
