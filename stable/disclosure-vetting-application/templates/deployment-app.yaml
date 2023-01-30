@@ -20,6 +20,18 @@ spec:
         app.kubernetes.io/name: {{ include "vetting-app.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                    - disclosure-vetting
+                topologyKey: topology.kubernetes.io/zone
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.appImage.repository }}:{{ .Values.appImage.tag }}"
