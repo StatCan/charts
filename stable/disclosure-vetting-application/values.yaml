@@ -113,6 +113,12 @@ service:
   type: ClusterIP
   port: 5000
 
+manifest:
+  host: ""
+  metadataNamespace: ""
+  metadataName: ""
+  gateway: ""
+
 ingress:
   enabled: true
   annotations:

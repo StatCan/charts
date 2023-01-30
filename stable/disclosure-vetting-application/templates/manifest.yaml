@@ -1,0 +1,64 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: allow-postgresql-vetting
+  namespace: org-ces-system
+spec:
+  exportTo:
+    - .
+  hosts:
+    - daaasvettingprod.postgres.database.azure.com
+  ports:
+    - name: tcp-pgsql
+      number: 5432
+      protocol: TCP
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Values.manifest.metadataName }}
+  namespace: {{ .Values.manifest.namespaceName }}
+spec:
+  gateways:
+  - ingress-general-system/general-istio-ingress-gateway-https
+  hosts:
+  - {{ .Values.manifest.host }}
+  http:
+    - match:
+      - uri:
+          prefix: /error
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: disclosure-vetting-static-error.org-ces-system.svc.cluster.local
+            port:
+              number: 5000
+    - route:
+      - destination:
+          host: {{ .Values.manifest.metadataName }}.{{ .Values.manifest.namespaceName }}.svc.cluster.local
+          port:
+            number: 5000
+          weight: 100
+      - destination:
+          host: disclosure-vetting-static-error.{{ .Values.manifest.namespaceName }}.svc.cluster.local
+          port:
+            number: 5000
+          weight: 0
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ .Values.manifest.metadataName }}
+  namespace: {{ .Values.manifest.namespaceName }}
+spec:
+  host: {{ .Values.manifest.metadataName }}.{{ .Values.manifest.namespaceName }}.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: DISABLE
