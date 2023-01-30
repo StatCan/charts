@@ -21,7 +21,7 @@ config:
   # ConfigMap name if pulling from an external ConfigMap
   name: ""
   # Set of named configs to build an integrated ConfigMap from
-   map:
+  map:
      default: |-
        version: v1
        flags:
