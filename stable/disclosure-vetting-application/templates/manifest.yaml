@@ -24,12 +24,12 @@ spec:
           host: {{ .Values.manifest.metadataName }}.{{ .Values.manifest.namespaceName }}.svc.cluster.local
           port:
             number: 5000
-          weight: 100
+        weight: 100
       - destination:
           host: disclosure-vetting-static-error.{{ .Values.manifest.namespaceName }}.svc.cluster.local
           port:
             number: 5000
-          weight: 0
+        weight: 0
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
