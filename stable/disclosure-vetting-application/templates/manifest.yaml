@@ -16,17 +16,17 @@ spec:
         uri: /
       route:
         - destination:
-            host: disclosure-vetting-static-error. {{- .Values.manifest.namespaceName -}} .svc.cluster.local
+            host: {{ .Values.manifest.serviceDestinationStaticError }}.svc.cluster.local
             port:
               number: 5000
     - route:
       - destination:
-          host: {{ .Values.manifest.metadataName }}. {{- .Values.manifest.namespaceName -}} .svc.cluster.local
+          host: {{ .Values.manifest.serviceDestinationVetting }}.svc.cluster.local
           port:
             number: 5000
         weight: 100
       - destination:
-          host: disclosure-vetting-static-error. {{- .Values.manifest.namespaceName -}} .svc.cluster.local
+          host: {{ .Values.manifest.serviceDestinationStaticError }}.svc.cluster.local
           port:
             number: 5000
         weight: 0
@@ -37,7 +37,7 @@ metadata:
   name: {{ .Values.manifest.metadataName }}
   namespace: {{ .Values.manifest.namespaceName }}
 spec:
-  host: {{ .Values.manifest.metadataName -}} . {{- .Values.manifest.namespaceName -}} .svc.cluster.local
+  host: {{ .Values.manifest.destinationRuleHost -}}.svc.cluster.local
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
