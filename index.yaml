@@ -5110,6 +5110,29 @@ entries:
   vetting:
   - apiVersion: v2
     appVersion: "2.0"
+    created: "2023-01-31T14:14:26.280799569Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 9.4.1
+    description: A Helm chart for Disclosure Vetting Application
+    digest: 9046f710020e5963b5c646180ef574b776535b123a8a9530625f9b4f7fbd3025
+    home: https://statcan.gc.ca
+    icon: https://www.python.org/static/img/python-logo
+    maintainers:
+    - email: marc-andre.menard@statcan.gc.ca
+      name: Marc-André Ménard
+    - email: mathis.marcotte@statcan.gc.ca
+      name: Mathis Marcotte
+    name: vetting
+    sources:
+    - https://github.com/StatCan/disclosure-vetting-application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/vetting-0.1.161/vetting-0.1.161.tgz
+    version: 0.1.161
+  - apiVersion: v2
+    appVersion: "2.0"
     created: "2023-01-31T13:48:37.114995904Z"
     dependencies:
     - condition: postgresql.enabled
@@ -8795,4 +8818,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-31T13:48:37.117200824Z"
+generated: "2023-01-31T14:14:26.284089884Z"
