@@ -37,7 +37,7 @@ metadata:
   name: {{ .Values.manifest.metadataName }}
   namespace: {{ .Values.manifest.namespaceName }}
 spec:
-  host: {{ .Values.manifest.metadataName | join('.') }}{{ .Values.manifest.namespaceName }}.svc.cluster.local
+  host: {{ .Values.manifest.metadataName }}"."{{ .Values.manifest.namespaceName }}.svc.cluster.local
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
