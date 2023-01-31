@@ -33,7 +33,7 @@ spec:
             value: - name: SECRET_PASSWORD
             valueFrom:
               secretKeyRef: 
-              name: elasticsecret
+              name: elastic-secret
               key: password
               optional: false # same as default; "mysecret" must exist
           name: elasticsearch
