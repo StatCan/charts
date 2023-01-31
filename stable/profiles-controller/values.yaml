@@ -21,7 +21,7 @@ image:
   repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 861a98b1692cb4da6926e6812a99d71105462eda
+  tag: 14371f9f13131f459336ec0109dc5b755c89ad95
 
 imagePullSecrets: []
 nameOverride: ""
@@ -213,3 +213,19 @@ components:
       value: https://kubeflow.aaw-dev.cloud.statcan.ca
     - name: S3PROXY_KUBEFLOW_PREFIX
       value: s3
+  trinoschema:
+    env:
+    - name: TRINO_UNCLASSIFIED_SCHEMA_NAME
+      value: unclassified
+    - name: TRINO_PROTECTEDB_SCHEMA_NAME
+      value: protb
+    - name: TRINO_STORAGE_ACCOUNT_PREFIX
+      value: aawdevcc00
+    - name: TRINO_UNCLASSIFIED_CLUSTER_URL
+      value: https://trino.aaw-dev.cloud.statcan.ca/v1/statement
+    - name: TRINO_PROTECTEDB_CLUSTER_URL
+      value: https://trino-protb.aaw-dev.cloud.statcan.ca/v1/statement
+    - name: TRINO_UNCLASSIFIED_SA
+      value: samgpremium
+    - name: TRINO_PROTECTEDB_SA
+      value: samgprotb
