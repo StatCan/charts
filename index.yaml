@@ -3520,6 +3520,30 @@ entries:
     urls:
     - https://statcan.github.io/charts/namespace-controller-0.0.1.tgz
     version: 0.0.1
+  nvidia-device-plugin:
+  - apiVersion: v2
+    appVersion: 0.13.0
+    created: "2023-01-31T13:48:36.933277009Z"
+    dependencies:
+    - alias: nfd
+      condition: nfd.enabled,gfd.enabled
+      name: node-feature-discovery
+      repository: ""
+      version: 0.11.0
+    - alias: gfd
+      condition: gfd.enabled
+      name: gpu-feature-discovery
+      repository: ""
+      version: 0.7.0
+    description: A Helm chart for the nvidia-device-plugin on Kubernetes
+    digest: 7c5de624b38ad289bf875fd525f89c22ddf1d0c2a52c61e2a197dcb945110f9b
+    home: https://github.com/NVIDIA/k8s-device-plugin
+    kubeVersion: '>= 1.10.0-0'
+    name: nvidia-device-plugin
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/nvidia-device-plugin-0.13.0/nvidia-device-plugin-0.13.0.tgz
+    version: 0.13.0
   orchard-cms:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -5084,6 +5108,29 @@ entries:
     - https://statcan.github.io/charts/velero-0.0.2.tgz
     version: 0.0.2
   vetting:
+  - apiVersion: v2
+    appVersion: "2.0"
+    created: "2023-01-31T13:48:37.114995904Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 9.4.1
+    description: A Helm chart for Disclosure Vetting Application
+    digest: fec49e779fe95869f90212d58ce1db644ac2a1dd4ea1d0c79c64c6bfed95450f
+    home: https://statcan.gc.ca
+    icon: https://www.python.org/static/img/python-logo
+    maintainers:
+    - email: marc-andre.menard@statcan.gc.ca
+      name: Marc-André Ménard
+    - email: mathis.marcotte@statcan.gc.ca
+      name: Mathis Marcotte
+    name: vetting
+    sources:
+    - https://github.com/StatCan/disclosure-vetting-application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/vetting-0.1.160/vetting-0.1.160.tgz
+    version: 0.1.160
   - apiVersion: v2
     appVersion: "2.0"
     created: "2023-01-25T20:36:23.64268563Z"
@@ -8748,4 +8795,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-27T13:51:41.61370487Z"
+generated: "2023-01-31T13:48:37.117200824Z"
