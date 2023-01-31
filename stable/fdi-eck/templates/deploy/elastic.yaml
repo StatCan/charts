@@ -30,7 +30,12 @@ spec:
           - name: ES_JAVA_OPTS
             value: -Xms4g -Xmx4g
           - name: ELASTIC_PASSWORD
-            value: 
+            value: - name: SECRET_PASSWORD
+            valueFrom:
+              secretKeyRef: 
+              name: elasticsecret
+              key: password
+              optional: false # same as default; "mysecret" must exist
           name: elasticsearch
           resources:
             limits:
