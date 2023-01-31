@@ -16,7 +16,7 @@ spec:
         uri: /
       route:
         - destination:
-            host: disclosure-vetting-static-error.org-ces-system.svc.cluster.local
+            host: disclosure-vetting-static-error.{{ .Values.manifest.namespaceName }}.svc.cluster.local
             port:
               number: 5000
     - route:
@@ -37,7 +37,7 @@ metadata:
   name: {{ .Values.manifest.metadataName }}
   namespace: {{ .Values.manifest.namespaceName }}
 spec:
-  host: {{ .Values.manifest.metadataName }}.{{ .Values.manifest.namespaceName }}.svc.cluster.local
+  host: "{{ .Values.manifest.metadataName }}.{{ .Values.manifest.namespaceName }}.svc.cluster.local"
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
