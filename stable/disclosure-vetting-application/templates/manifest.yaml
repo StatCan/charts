@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.manifest.namespaceName }}
 spec:
   gateways:
-  - ingress-general-system/general-istio-ingress-gateway-https
+  - {{ .Values.manifest.gateway }}
   hosts:
   - {{ .Values.manifest.host }}
   http:
