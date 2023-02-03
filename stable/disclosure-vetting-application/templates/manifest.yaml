@@ -12,8 +12,6 @@ spec:
     - match:
       - uri:
           prefix: /error
-      rewrite:
-        uri: /
       route:
         - destination:
             host: {{ .Values.manifest.serviceDestinationStaticError }}.svc.cluster.local
