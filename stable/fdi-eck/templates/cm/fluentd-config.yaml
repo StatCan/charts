@@ -12,7 +12,7 @@ data:
     <filter **>
       @type record_transformer
       <record>
-        cluster k8s-cancentral-01-development
+        cluster {{ .Values.configmap.cluster }}
         #kuber_namespace ${record["kubernetes"]["namespace_name"]} 
       </record>
       
@@ -32,15 +32,11 @@ data:
 
     <match **>
       @type elasticsearch
-      hosts https://fdi-meta-elasticsearch.dev.cloud.statcan.ca
+      hosts {{ .Values.elastic.host }}
       ssl_version TLSv1_2
       user elastic
       password password
-      #p2F0p8e3P4E518e41KySQGxq
-      #include_timestamp false
-      #index_name "k8s-logs-dev"
-      logstash_prefix k8slogsfilter-${$.kubernetes.namespace_name}-${$.kubernetes.container_name}
-      #logstash_prefix k8slogs-${$.kubernetes.container_name} 
+      logstash_prefix k8slogsfilter-${$.kubernetes.namespace_name}-${$.kubernetes.container_name} 
       logstash_format true
       logstash_dateformat %Y
       

@@ -1,15 +1,16 @@
 ci_slug: "fdi-meta"
-namespace: "fdi"
+namespace: "kube-system"
 configMap:
   name: "daaas-fdi-fluentd-config" #fdi namespace use daaas-fdi-fluentd-config aaw use org-fdi-system-fluentd-config
   elasticSearchUrl: "elasticSearchUrl"
   elasticSearchUsername: "elastic"
-  elasticSearchPassword: ""
+  elasticSearchPassword: "k8s-cancentral-01-development"
   filter: |
     <filter **>
         @type grep<regexp>  key $.kubernetes.container_name  pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)</regexp>
         <exclude>  key log  pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*/health.*$|^.*/live.*$|^.*Request finished in.*$)</exclude>
     </filter>
+  cluster: ""
 elastic:
   password: "elasticPassword"
   version: "8.3.3"
