@@ -11,9 +11,10 @@ configMap:
         <exclude>  key log  pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*/health.*$|^.*/live.*$|^.*Request finished in.*$)</exclude>
     </filter>
 elastic:
+  password: "password123"
   version: "8.3.3"
   host: "fdi-meta-elasticsearch.test.cloud.statcan.ca"
 kibana:
   host: "fdi-meta-kibana.test.cloud.statcan.ca"
 destinationrule:
-  enable: false
+  enable: true
