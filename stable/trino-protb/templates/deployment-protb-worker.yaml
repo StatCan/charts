@@ -1,0 +1,91 @@
+{{- if gt (int .Values.server.workers) 0 }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trino-protb-worker
+  labels:
+    app: {{ template "trino.name" . }}
+    chart: {{ template "trino.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: worker
+spec:
+  replicas: {{ .Values.server.workers }}
+  selector:
+    matchLabels:
+      app: {{ template "trino.name" . }}
+      release: {{ .Release.Name }}
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: {{ template "trino.name" . }}
+        release: {{ .Release.Name }}
+        component: worker
+    spec:
+      serviceAccountName: {{ include "trino.serviceAccountName" . }}
+      volumes:
+        - name: storage-config
+          secret:
+            secretName: core-site
+        - name: rules-volume
+          configMap:
+            name: trino-protb-rules  
+        - name: config-volume
+          configMap:
+            name: {{ template "trino.worker" . }}
+        - name: catalog-volume
+          configMap:
+            name: {{ template "trino.catalog" . }}
+        - name: cache-volume
+          emptyDir: {}
+      {{- if .Values.initContainers.worker }}
+      initContainers:
+      {{-  tpl (toYaml .Values.initContainers.worker) . | nindent 6 }}
+      {{- end }}
+      imagePullSecrets:
+        - name: registry-credentials
+      containers:
+        - name: {{ .Chart.Name }}-worker
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/hadoop/conf/
+              name: storage-config
+            - mountPath: /etc/catalog
+              name: rules-volume
+            - mountPath: {{ .Values.server.config.path }}
+              name: config-volume
+            - mountPath: {{ .Values.server.config.path }}/catalog
+              name: catalog-volume
+            - mountPath: /opt/hive-cache
+              name: cache-volume
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

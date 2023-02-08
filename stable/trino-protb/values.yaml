@@ -1,0 +1,180 @@
+# Default values for trino.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: trinodb/trino
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart version.
+  tag: 403
+
+server:
+  jvm:
+    maxHeapSize: 7G
+    gcMethod:
+      type: "UseG1GC"
+      g1:
+        heapRegionSize: "32M"
+  workers: 2
+  node:
+    environment: production
+    dataDir: /data/trino
+    pluginDir: /usr/lib/trino/plugin
+  log:
+    trino:
+      level: DEBUG
+  config:
+    memory:
+      heapHeadroomPerNode: 1GB
+    query:
+      maxMemory: 3GB
+      maxMemoryPerNode: 1GB
+    path: /etc/trino
+    http:
+      port: 8080
+    https:
+      enabled: false
+      port: 8443
+      keystore:
+        path: ""
+  exchangeManager:
+    name: "filesystem"
+    baseDir: "/tmp/trino-local-file-system-exchange-manager"
+  workerExtraConfig: ""
+  autoscaling:
+    enabled: false
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+
+additionalNodeProperties: {}
+
+additionalJVMConfig: {}
+
+additionalConfigProperties:
+  - internal-communication.shared-secret=${ENV:TRINO_SHARED_SECRET}
+
+coordinatorExtraConfig:
+  - http-server.process-forwarded=true
+  - http-server.authentication.type=oauth2,JWT
+  - web-ui.authentication.type=oauth2
+  - http-server.authentication.oauth2.access-token-issuer=https://sts.windows.net/${ENV:TRINO_OAUTH_TENANT_ID}/
+  - http-server.authentication.oauth2.issuer=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/v2.0
+  - http-server.authentication.oauth2.auth-url=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/oauth2/v2.0/authorize
+  - http-server.authentication.oauth2.token-url=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/oauth2/v2.0/token
+  - http-server.authentication.oauth2.jwks-url=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/discovery/v2.0/keys
+  - http-server.authentication.oauth2.client-id=${ENV:TRINO_OAUTH_CLIENT_ID}
+  - http-server.authentication.oauth2.client-secret=${ENV:TRINO_OAUTH_CLIENT_SECRET}
+  - http-server.authentication.oauth2.additional-audiences=api://${ENV:TRINO_OAUTH_CLIENT_ID}
+  - http-server.authentication.oauth2.scopes=api://${ENV:TRINO_OAUTH_CLIENT_ID}/trino,openid
+  - http-server.authentication.oauth2.principal-field=upn
+  - http-server.authentication.oauth2.oidc.use-userinfo-endpoint=false
+  - http-server.authentication.oauth2.refresh-tokens=true
+  - http-server.authentication.oauth2.refresh-tokens.issued-token.timeout=15m
+  - http-server.authentication.jwt.key-file=http://localhost:8090/openid/v1/jwks
+  - http-server.authentication.jwt.user-mapping.file=/etc/mapping/user-mapping.json
+
+
+additionalLogProperties: {}
+
+additionalExchangeManagerProperties: {}
+
+nodeAddress:
+  - node.internal-address=trino-protb-headless.trino-protb-system.svc.cluster.local
+
+additionalCatalogs:
+  protb: |
+    connector.name=hive
+    hive.metastore.uri=thrift://hive-metastore.hive-system:9083
+    hive.storage-format=ORC
+    hive.non-managed-table-writes-enabled=false
+    hive.non-managed-table-creates-enabled=false
+    hive.config.resources=/etc/hadoop/conf/core-site.xml
+    hive.security=FILE
+    hive.cache.enabled=true
+    hive.cache.location=/opt/hive-cache
+    hive.metastore-cache-ttl=1440s
+    hive.cache.disk-usage-percentage=80
+    hive.metastore-refresh-interval=10m
+    hive.cache.start-server-on-coordinator=true
+    security.config-file=/etc/catalog/trino-protb-rules.json
+    security.refresh-period=1s
+
+  jmx: |
+    connector.name=jmx
+    jmx.dump-tables=java.lang:type=Runtime,trino.execution.scheduler:name=NodeScheduler
+    jmx.dump-period=10s
+    jmx.max-entries=86400
+
+initContainers: {}
+  # coordinator:
+  #   - name: init-coordinator
+  #     image: busybox:1.28
+  #     imagePullPolicy: IfNotPresent
+  #     command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+  # worker:
+  #   - name: init-worker
+  #     image: busybox:1.28
+  #     command: ['sh', '-c', 'echo The worker is running! && sleep 3600']
+
+labels:
+  allowTrue: true
+
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+
+
+# Array of EnvVar (https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#envvar-v1-core)
+env:
+  - name: TRINO_SHARED_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: trino-shared-secret
+        key: shared-secret
+  - name: TRINO_OAUTH_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: trino-oauth-client-id
+        key: clientid
+  - name: TRINO_OAUTH_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: trino-oauth-client-id
+        key: clientsecret
+  - name: TRINO_OAUTH_TENANT_ID
+    valueFrom:
+      secretKeyRef:
+        name: trino-oauth-client-id
+        key: tenantid
+service:
+  type: ClusterIP
+  port: 8080
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # Annotations to add to the service account
+  annotations: {}
+
+secretMounts: []
