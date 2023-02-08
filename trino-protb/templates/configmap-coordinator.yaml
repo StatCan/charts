@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "trino.coordinator" . }}
+  name: trino-protb-coordinator
   labels:
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}
@@ -31,8 +31,6 @@ data:
     -XX:ReservedCodeCacheSize=512M
     -XX:PerMethodRecompilationCutoff=10000
     -XX:PerBytecodeRecompilationCutoff=10000
-    -XX:+UnlockDiagnosticVMOptions
-    -XX:+UseAESCTRIntrinsics
     -Djdk.nio.maxCachedBufferSize=2000000
     -Dcom.sun.management.jmxremote=true
     -Dcom.sun.management.jmxremote.rmi.port=9081
