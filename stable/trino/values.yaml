@@ -116,8 +116,6 @@ additionalCatalogs:
     jmx.dump-period=10s
     jmx.max-entries=86400
 
-
-
 initContainers: {}
   # coordinator:
   #   - name: init-coordinator
@@ -191,4 +189,3 @@ serviceAccount:
   annotations: {}
 
 secretMounts: []
-
