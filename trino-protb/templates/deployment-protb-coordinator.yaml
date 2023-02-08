@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "trino.coordinator" . }}
+  name: trino-protb-coordinator
   labels:
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}
@@ -9,7 +9,6 @@ metadata:
     heritage: {{ .Release.Service }}
     component: coordinator
     # Label to determine Trino Env
-    trino-version: dev
 spec:
   selector:
     matchLabels:
@@ -34,29 +33,23 @@ spec:
       {{- end }}
       volumes:
         - name: config-volume
-          projected:
-            sources:
-              - configMap:
-                  name: {{ template "trino.coordinator" . }}
+          configMap:
+            name: {{ template "trino.coordinator" . }}
         - name: storage-config
           secret:
             secretName: core-site
         - name: rules-volume
-          projected:
-            sources:
-              - configMap:
-                  name: trino-unclassified-rules
-              - configMap:
-                  name: unclassified-lsddp-rules
+          configMap:
+            name: trino-protb-rules
         - name: catalog-volume
           configMap:
-            name: {{ template "trino.catalog" . }}
+            name: trino-protb-catalog
         - name: nginx-conf
           configMap:
-            name: nginx-conf
+            name: nginx-prob-conf
         - name: nginx-init
           configMap:
-            name: nginx-init
+            name: nginx-prob-init
             defaultMode: 0755
         - name: user-mapping
           configMap:

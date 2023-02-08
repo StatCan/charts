@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "trino.worker" . }}
+  name: trino-protb-worker
   labels:
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}
@@ -29,12 +29,8 @@ spec:
           secret:
             secretName: core-site
         - name: rules-volume
-          projected:
-            sources:
-              - configMap:
-                  name: trino-unclassified-rules
-              - configMap:
-                  name: unclassified-lsddp-rules
+          configMap:
+            name: trino-protb-rules  
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
@@ -64,7 +60,7 @@ spec:
               name: config-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
-            - mountPath: /opt/hive-cache/fcache
+            - mountPath: /opt/hive-cache
               name: cache-volume
           ports:
             - name: http
