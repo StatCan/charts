@@ -105,7 +105,7 @@ df_table
 jovyan@jupyter-pat-0:~$ trino --version
 Trino CLI 377
 
-jovyan@jupyter-pat-0:~$ trino --user 'Pat Ledgerwood'
+jovyan@jupyter-pat-0:~$ trino --user 'pat.ledgerwood@cloud.statcan.ca'
 trino>
 
 trino> show catalogs;
@@ -162,6 +162,7 @@ trino:patledgerwood> select * from private_test_new;
 
 ## Python basic usage example (from Juypter notebook)
 ```shell
+pip config set global.index-url 'https://jfrog.aaw.cloud.statcan.ca/artifactory/api/pypi/pypi-remote/simple'
 pip install trino
 ```
 
@@ -174,7 +175,7 @@ conn = connect(
     host="trino.aaw-dev.cloud.statcan.ca",
     http_scheme="https",
     port="443",
-    user="Pat Ledgerwood",
+    user="pat.ledgerwood@cloud.statcan.ca",
     auth=OAuth2Authentication(),
     catalog="unclassified",
     schema="patledgerwood",
