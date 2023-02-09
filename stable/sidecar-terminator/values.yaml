@@ -4,8 +4,13 @@
 
 replicaCount: 1
 
+# Annotations to add to the Pod
+podAnnotations: {}
+# Labels to add to the Pod
+podLabels: {}
+
 image:
-  repository: zachomedia/kubernetes-sidecar-terminator
+  repository: statcan/kubernetes-sidecar-terminator
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
