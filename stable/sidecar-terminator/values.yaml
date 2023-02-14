@@ -15,6 +15,30 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+sidecarTerminator:
+  # A list of namespace names to watch.
+  # An empty list will watch all namespaces.
+  namespaces: []
+    # - kube-system
+    # - sidecar-terminator
+
+  # A list of sidecars to terminate.
+  sidecars: {}
+    #  # The name of the sidecar container.
+    #- name: istio-proxy
+    #  # The signal number to use when ending the process.
+    #  # Defaults to 15 when not set.
+    #  signalNumber:
+    #- name: example
+    #  signalNumber: 9
+
+  # The image to use for terminating sidecars.
+  # Notes:
+  #   Requires the kill command.
+  #   Requires the image to be available without authentication
+  #     unless pods with sidecars already have access to the registry.
+  terminatorImage: ""
+
 imagePullSecrets: {}
 
 nameOverride: ""
