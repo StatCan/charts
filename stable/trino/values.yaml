@@ -7,7 +7,6 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
   tag: 405
-
 server:
   jvm:
     maxHeapSize: 8G
@@ -78,7 +77,7 @@ additionalLogProperties: {}
 additionalExchangeManagerProperties: {}
 
 nodeAddress:
-  - node.internal-address=trino-headless.trino-system.svc.cluster.local
+  - node.internal-address=trino-headless.daaas-system.svc.cluster.local
 
 additionalCatalogs:
   unclassified: |
@@ -98,17 +97,6 @@ additionalCatalogs:
     hive.metastore-refresh-interval=10m
     hive.cache.start-server-on-coordinator=true
 
-
-  lsddp: |
-    connector.name=hive
-    hive.metastore.uri=thrift://hive-metastore.hive-system:9083
-    hive.storage-format=ORC
-    hive.non-managed-table-writes-enabled=false
-    hive.non-managed-table-creates-enabled=false
-    hive.security=FILE
-    security.config-file=/etc/catalog/unclassified-lsddp-rules.json
-    security.refresh-period=1s
-    hive.config.resources=/etc/hadoop/conf/core-site.xml
 
   jmx: |
     connector.name=jmx

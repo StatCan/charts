@@ -46,8 +46,6 @@ spec:
             sources:
               - configMap:
                   name: trino-unclassified-rules
-              - configMap:
-                  name: unclassified-lsddp-rules
         - name: catalog-volume
           configMap:
             name: {{ template "trino.catalog" . }}
