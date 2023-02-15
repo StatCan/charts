@@ -1,15 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "trino.coordinator" . }}
+  {{- if .Values.server.protb "true" }}
+    name: trino-protb-coordinator
+  {{- else }}
+    name: {{ template "trino.coordinator" . }}
+  {{ end }}
   labels:
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: coordinator
-    # Label to determine Trino Env
-    trino-version: dev
 spec:
   selector:
     matchLabels:
@@ -45,10 +47,18 @@ spec:
           projected:
             sources:
               - configMap:
+                {{- if .Values.server.protb "true" }}
+                  name: trino-protb-rules
+                {{- else }}
                   name: trino-unclassified-rules
+                {{ end }}
         - name: catalog-volume
           configMap:
+          {{- if .Values.server.protb "true" }}
+            name: trino-protb-catalog
+          {{- else }}
             name: {{ template "trino.catalog" . }}
+          {{ end  }}
         - name: nginx-conf
           configMap:
             name: nginx-conf

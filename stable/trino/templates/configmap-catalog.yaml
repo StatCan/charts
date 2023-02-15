@@ -1,7 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "trino.catalog" . }}
+  {{- if .Values.server.protb "true" }}
+    name: trino-protb-catalog
+  {{- else }}
+    name: {{ template "trino.catalog" . }}
+  {{ end }}
   labels:
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}

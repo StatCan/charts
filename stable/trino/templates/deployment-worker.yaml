@@ -2,7 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "trino.worker" . }}
+  {{- if .Values.server.protb "true" }}
+    name: trino-protb-worker
+  {{- else }}
+    name: {{ template "trino.worker" . }}
+  {{ end }}
   labels:
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}
@@ -32,13 +36,21 @@ spec:
           projected:
             sources:
               - configMap:
+                {{- if .Values.server.protb "true" }}
+                  name: trino-protb-rules
+                {{- else }}
                   name: trino-unclassified-rules
+                {{ end }}
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
         - name: catalog-volume
           configMap:
+          {{- if .Values.server.protb "true" }}
+            name: trino-protb-catalog
+          {{- else }}
             name: {{ template "trino.catalog" . }}
+          {{ end  }}
         - name: cache-volume
           emptyDir: {}
       {{- if .Values.initContainers.worker }}
