@@ -3,9 +3,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   {{- if .Values.server.protb }}
-    name: trino-protb-worker
+  name: trino-protb-worker
   {{- else }}
-    name: {{ template "trino.worker" . }}
+  name: {{ template "trino.worker" . }}
   {{ end }}
   labels:
     app: {{ template "trino.name" . }}
@@ -47,9 +47,9 @@ spec:
         - name: catalog-volume
           configMap:
           {{- if .Values.server.protb }}
-            name: trino-protb-catalog
+          name: trino-protb-catalog
           {{- else }}
-            name: {{ template "trino.catalog" . }}
+          name: {{ template "trino.catalog" . }}
           {{ end  }}
         - name: cache-volume
           emptyDir: {}

@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   {{- if .Values.server.protb }}
-    name: trino-protb-coordinator
+  name: trino-protb-coordinator
   {{- else }}
-    name: {{ template "trino.coordinator" . }}
+  name: {{ template "trino.coordinator" . }}
   {{ end }}
   labels:
     app: {{ template "trino.name" . }}
@@ -48,16 +48,16 @@ spec:
             sources:
               - configMap:
                 {{- if .Values.server.protb }}
-                  name: trino-protb-rules
+                name: trino-protb-rules
                 {{- else }}
-                  name: trino-unclassified-rules
+                name: trino-unclassified-rules
                 {{ end }}
         - name: catalog-volume
           configMap:
           {{- if .Values.server.protb }}
-            name: trino-protb-catalog
+          name: trino-protb-catalog
           {{- else }}
-            name: {{ template "trino.catalog" . }}
+          name: {{ template "trino.catalog" . }}
           {{ end  }}
         - name: nginx-conf
           configMap:
