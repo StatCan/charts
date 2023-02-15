@@ -46,7 +46,7 @@ spec:
             name: {{ template "trino.worker" . }}
         - name: catalog-volume
           configMap:
-          {{- .Values.server.protb }}
+          {{- if .Values.server.protb }}
             name: trino-protb-catalog
           {{- else }}
             name: {{ template "trino.catalog" . }}
