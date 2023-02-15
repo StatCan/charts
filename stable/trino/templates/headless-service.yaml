@@ -8,7 +8,7 @@ metadata:
     {{- if .Values.server.protb }}
     name: trino-protb-headless
     {{- else }}
-      name: trino-headless
+    name: trino-headless
     {{ end  }}
 spec:
   clusterIP: None
