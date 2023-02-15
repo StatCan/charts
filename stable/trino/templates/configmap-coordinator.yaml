@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  {{- if eq .Values.server.protb "true" }}
+  {{- if .Values.server.protb }}
     name: trino-protb-coordinator
   {{- else }}
     name: {{ template "trino.coordinator" . }}
