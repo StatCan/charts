@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  {{- if .Values.server.protb "true" }}
+  {{- if eq .Values.server.protb "true" }}
     name: trino-protb-coordinator
   {{- else }}
     name: {{ template "trino.coordinator" . }}
@@ -47,14 +47,14 @@ spec:
           projected:
             sources:
               - configMap:
-                {{- if .Values.server.protb "true" }}
+                {{- if eq .Values.server.protb "true" }}
                   name: trino-protb-rules
                 {{- else }}
                   name: trino-unclassified-rules
                 {{ end }}
         - name: catalog-volume
           configMap:
-          {{- if .Values.server.protb "true" }}
+          {{- if eq .Values.server.protb "true" }}
             name: trino-protb-catalog
           {{- else }}
             name: {{ template "trino.catalog" . }}
