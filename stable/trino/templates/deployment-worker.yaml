@@ -33,8 +33,6 @@ spec:
             sources:
               - configMap:
                   name: trino-unclassified-rules
-              - configMap:
-                  name: unclassified-lsddp-rules
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
