@@ -70,10 +70,11 @@ spec:
           configMap:
           {{- if .Values.server.protb }}
             name: nginx-init-protb
+            defaultMode: 0755
           {{- else }}
             name: nginx-init
+            defaultMode: 0755
           {{ end }}
-          defaultMode: 0755
         - name: user-mapping
           configMap:
           {{- if .Values.server.protb }}
