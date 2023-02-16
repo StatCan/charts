@@ -65,19 +65,22 @@ spec:
           name: nginx-conf-protb
           {{- else }}
           name: nginx-conf
+          {{ end }}
         - name: nginx-init
           configMap:
           {{- if .Values.server.protb }}
           name: nginx-init-protb
           {{- else }}
-            name: nginx-init
-            defaultMode: 0755
+          name: nginx-init
+          {{ end }}
+          defaultMode: 0755
         - name: user-mapping
           configMap:
           {{- if .Values.server.protb }}
           name: user-mapping-protb-cm
           {{- else }}
           name: user-mapping-cm
+          {{ end }}
         - name: cache-volume
           emptyDir: {}
 

@@ -5,6 +5,7 @@ metadata:
   name: user-mapping-protb-cm
   {{- else }}
   name: user-mapping-cm
+  {{ end }}
 data:
   user-mapping.json: |
     {
