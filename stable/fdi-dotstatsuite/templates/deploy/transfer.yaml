@@ -208,10 +208,6 @@ spec:
             httpGet:
               path: /live
               port: http
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: http
           resources:
             {{- toYaml .Values.transfer.resources | nindent 12 }}
       volumes: 
@@ -228,7 +224,8 @@ spec:
         {{- end }}
       {{- if .Values.transfer.init_database }}
       initContainers:
-        {{- if index .Values.nsiStable.enabled }}        
+        {{- if index .Values.nsiStable.enabled }}
+        {{- if index .Values.nsiStable.init_database }}   
         - name: dbup-{{ template "dotstatsuite.fullname" . }}-stable-data
           image: "{{ .Values.nsiStable.dbup.image.repository }}:{{ .Values.nsiStable.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiStable.dbup.image.pullPolicy }}
@@ -253,9 +250,11 @@ spec:
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(STABLE_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}       
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(STABLE_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}       
 {{- end }}     
-{{- if index .Values.nsiReset.enabled }}          
+{{- end }}
+{{- if index .Values.nsiReset.enabled }}    
+{{- if index .Values.nsiReset.init_database }}         
         - name: dbup-{{ template "dotstatsuite.fullname" .  }}-reset-data
           image: "{{ .Values.nsiReset.dbup.image.repository }}:{{ .Values.nsiReset.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiReset.dbup.image.pullPolicy }}
@@ -280,9 +279,11 @@ spec:
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(RESET_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(RESET_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
 {{- end }}     
-{{- if index .Values.nsiDesign.enabled }}          
+{{- end }}
+{{- if index .Values.nsiDesign.enabled }}    
+{{- if index .Values.nsiDesign.init_database }}       
         - name: dbup-{{ template "dotstatsuite.fullname" .  }}-design-data
           image: "{{ .Values.nsiDesign.dbup.image.repository }}:{{ .Values.nsiDesign.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiDesign.dbup.image.pullPolicy }}
@@ -307,9 +308,11 @@ spec:
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(DESIGN_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(DESIGN_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
 {{- end }} 
-{{- if index .Values.nsiStaging.enabled }}          
+{{- end }}
+{{- if index .Values.nsiStaging.enabled }}   
+{{- if index .Values.nsiStaging.init_database }}        
         - name: dbup-{{ template "dotstatsuite.fullname" .  }}-staging-data
           image: "{{ .Values.nsiStaging.dbup.image.repository }}:{{ .Values.nsiStaging.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiStaging.dbup.image.pullPolicy }}
@@ -334,7 +337,8 @@ spec:
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(STAGING_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(STAGING_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+        {{- end }}
         {{- end }} 
       {{- end }}
       {{- with .Values.transfer.nodeSelector }}
