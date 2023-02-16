@@ -9,7 +9,7 @@ metadata:
     name: trino-protb-headless
     {{- else }}
     name: trino-headless
-    {{ end  }}
+    {{ end }}
 spec:
   clusterIP: None
   clusterIPs:
