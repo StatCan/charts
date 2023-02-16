@@ -5,6 +5,7 @@ metadata:
   name: nginx-conf-protb
   {{- else }}
   name: nginx-conf
+  {{ end }}
 data:
   nginx.conf.tmpl: |
     worker_processes auto;
