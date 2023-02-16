@@ -127,7 +127,7 @@ authz:
   imagePullSecrets:
     - name: registry-pull-secret
 
-  resources: 
+  resources:
     limits:
       cpu: 100m
       memory: 128Mi
@@ -230,7 +230,7 @@ nsiReset:
   imagePullSecrets:
     - name: registry-pull-secret
 
-  resources: 
+  resources:
     limits:
       cpu: 200m
       memory: 16Gi
@@ -334,7 +334,7 @@ nsiStable:
   imagePullSecrets:
     - name: registry-pull-secret
 
-  resources: 
+  resources:
     limits:
       cpu: 200m
       memory: 16Gi
@@ -435,7 +435,7 @@ nsiDesign:
   imagePullSecrets:
     - name: registry-pull-secret
 
-  resources: 
+  resources:
     limits:
       cpu: 200m
       memory: 16Gi
@@ -538,7 +538,7 @@ nsiStaging:
   imagePullSecrets:
     - name: registry-pull-secret
 
-  resources: 
+  resources:
     limits:
       cpu: 200m
       memory: 16Gi
@@ -647,7 +647,7 @@ transfer:
   imagePullSecrets:
     - name: registry-pull-secret
 
-  resources: 
+  resources:
     limits:
       cpu: 200m
       memory: 16Gi
