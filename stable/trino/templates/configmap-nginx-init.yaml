@@ -5,6 +5,7 @@ metadata:
   name: nginx-init-protb
   {{- else }}
   name: nginx-init
+  {{ end }}
 data:
   envsubst-conf.sh: |
     #id; echo; cat /etc/passwd; ls -l /etc/nginx;
