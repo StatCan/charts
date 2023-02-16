@@ -48,38 +48,38 @@ spec:
             sources:
               - configMap:
                 {{- if .Values.server.protb }}
-                name: trino-protb-rules
+                  name: trino-protb-rules
                 {{- else }}
-                name: trino-unclassified-rules
+                  name: trino-unclassified-rules
                 {{ end }}
         - name: catalog-volume
           configMap:
           {{- if .Values.server.protb }}
-          name: trino-protb-catalog
+            name: trino-protb-catalog
           {{- else }}
-          name: {{ template "trino.catalog" . }}
+            name: {{ template "trino.catalog" . }}
           {{ end  }}
         - name: nginx-conf
           configMap:
           {{- if .Values.server.protb }}
-          name: nginx-conf-protb
+            name: nginx-conf-protb
           {{- else }}
-          name: nginx-conf
+            name: nginx-conf
           {{ end }}
         - name: nginx-init
           configMap:
           {{- if .Values.server.protb }}
-          name: nginx-init-protb
+            name: nginx-init-protb
           {{- else }}
-          name: nginx-init
+            name: nginx-init
           {{ end }}
           defaultMode: 0755
         - name: user-mapping
           configMap:
           {{- if .Values.server.protb }}
-          name: user-mapping-protb-cm
+            name: user-mapping-protb-cm
           {{- else }}
-          name: user-mapping-cm
+            name: user-mapping-cm
           {{ end }}
         - name: cache-volume
           emptyDir: {}
