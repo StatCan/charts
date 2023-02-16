@@ -5,7 +5,11 @@ metadata:
     app: {{ template "trino.name" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-  name: trino-headless
+    {{- if .Values.server.protb }}
+    name: trino-protb-headless
+    {{- else }}
+    name: trino-headless
+    {{ end  }}
 spec:
   clusterIP: None
   clusterIPs:
