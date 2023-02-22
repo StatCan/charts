@@ -5,7 +5,7 @@
 replicaCount:
   default: 1
   buckets: 1
-  blobcsi: 0
+  blobcsi: 1
   cloudmain: 1
   gitea: 0
   giteab: 0
@@ -21,7 +21,7 @@ image:
   repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 14371f9f13131f459336ec0109dc5b755c89ad95
+  tag: 5a1c0d0c9cd26dcebe6a118ffabf0315f93aa219
 
 imagePullSecrets: []
 nameOverride: ""
@@ -166,7 +166,7 @@ components:
   blobcsi:
     config: |
           {"name": "unclassified", "classification": "unclassified", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
-          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
+          {"name": "unclassified-ro", "classification": "unclassified", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
           {"name": "protected-b", "classification": "protected-b", "secretRef": "aawdevcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
     envFrom:
       - secretRef:
