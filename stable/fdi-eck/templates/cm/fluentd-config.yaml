@@ -12,7 +12,7 @@ data:
     <filter **>
       @type record_transformer
       <record>
-        cluster {{ .Values.configmap.cluster }}
+        cluster {{ .Values.configMap.cluster }}
         #kuber_namespace ${record["kubernetes"]["namespace_name"]} 
       </record>
       
