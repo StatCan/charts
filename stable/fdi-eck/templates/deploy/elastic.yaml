@@ -34,16 +34,16 @@ spec:
               #   value: "password"
               - name: ELASTIC_PASSWORD
                 valueFrom:
-                  secretKeyRef: 
+                  secretKeyRef:
                     name: elastic-secret
                     key: password
                     optional: false # same as default; "mysecret" must exist
             resources:
               limits:
-                cpu: "4"
-                memory: 8Gi
+                cpu: 200m
+                memory: 16Gi
               requests:
-                cpu: "2"
+                cpu: 100m
                 memory: 8Gi
     volumeClaimTemplates:
     - metadata:
@@ -55,6 +55,3 @@ spec:
         resources:
           requests:
             storage: 128Gi
-
-
-      
