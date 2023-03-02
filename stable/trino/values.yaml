@@ -90,19 +90,6 @@ additionalCatalogs:
     security.config-file=/etc/catalog/trino-unclassified-rules.json
     security.refresh-period=1s
     hive.config.resources=/etc/hadoop/conf/core-site.xml
-    hive.cache.enabled=true
-    hive.cache.location=/opt/hive-cache
-    hive.metastore-cache-ttl=1440s
-    hive.cache.disk-usage-percentage=80
-    hive.metastore-refresh-interval=10m
-    hive.cache.start-server-on-coordinator=true
-
-
-  jmx: |
-    connector.name=jmx
-    jmx.dump-tables=java.lang:type=Runtime,trino.execution.scheduler:name=NodeScheduler
-    jmx.dump-period=10s
-    jmx.max-entries=86400
 
 initContainers: {}
   # coordinator:
