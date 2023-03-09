@@ -6,6 +6,7 @@ configMap:
 elastic:
   version: "8.3.3"
   host: "fdi-meta-elasticsearch.test.cloud.statcan.ca"
+  store: "32Gi"
 kibana:
   host: "fdi-meta-kibana.test.cloud.statcan.ca"
 destinationrule:
