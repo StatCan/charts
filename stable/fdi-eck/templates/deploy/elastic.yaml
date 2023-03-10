@@ -32,12 +32,7 @@ spec:
                 value: -Xms4g -Xmx4g
               # - name: ELASTIC_PASSWORD
               #   value: "password"
-              - name: ELASTIC_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: elastic-secret
-                    key: password
-                    optional: false # same as default; "mysecret" must exist
+              
             resources:
               limits:
                 cpu: 200m
