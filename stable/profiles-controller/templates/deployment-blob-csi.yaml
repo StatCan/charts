@@ -4,6 +4,8 @@ metadata:
   name: {{ include "profiles-controller.fullname" . }}-blob-csi
   labels:
     {{- include "profiles-controller.labels" . | nindent 4 }}
+  annotations:
+    checksum/config: {{ include ("mylibchart.configmap") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicaCount.blobcsi }}
   selector:
@@ -28,10 +30,13 @@ spec:
       serviceAccountName: {{ include "profiles-controller.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      volumes:                                 
+      volumes:
         - name: blob-csi-config
-          configMap: 
+          configMap:
             name: {{ include "profiles-controller.fullname" . }}-blob-csi-config
+        - configMap:
+            name: fdi-aaw-configuration
+          name: blob-config-data
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -55,6 +60,8 @@ spec:
             - name: blob-csi-config
               mountPath: /instances.json
               subPath: instances.json
+            - name: blob-config-data
+              mountPath: /config
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

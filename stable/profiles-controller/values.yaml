@@ -166,7 +166,7 @@ components:
   blobcsi:
     config: |
           {"name": "unclassified", "classification": "unclassified", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
-          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
+          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawdevcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
           {"name": "protected-b", "classification": "protected-b", "secretRef": "aawdevcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
     envFrom:
       - secretRef:
