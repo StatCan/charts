@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "profiles-controller.labels" . | nindent 4 }}
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/fdi-aaw-configuration.yaml") . | sha256sum }}
+    checksum/config: {{ .Files.Get "fdi-aaw-configuration.yaml" | sha256sum }}
 spec:
   replicas: {{ .Values.replicaCount.blobcsi }}
   selector:
