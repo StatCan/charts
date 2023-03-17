@@ -27,5 +27,6 @@ data:
   jmx.properties: |
     connector.name=jmx
     jmx.dump-tables=java.lang:type=Runtime,trino.execution.scheduler:name=NodeScheduler
-    jmx.dump-period=10s jmx.max-entries=86400
+    jmx.dump-period=10s
+    jmx.max-entries=86400
 {{- end }}
