@@ -11,8 +11,8 @@ replicaCount: 1
 imagePullSecrets:
   - name: image
 elasticsearch:
-  es_connections: [['connections']]
-  passwords: ['password']
+  es_connections: ""
+  passwords: ""
 
 ingress:
   enabled: true
