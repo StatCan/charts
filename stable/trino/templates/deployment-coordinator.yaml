@@ -45,11 +45,11 @@ spec:
             secretName: core-site
         - name: rules-volume
           projected:
+          {{- if .Values.server.protb }}
             sources:
               - configMap:
-                {{- if .Values.server.protb }}
                   name: trino-protb-rules
-                {{ end }}
+          {{ end }}
               - configMap:
                   name: trino-unclassified-rules
         - name: catalog-volume
