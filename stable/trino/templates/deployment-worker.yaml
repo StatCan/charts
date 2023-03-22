@@ -35,8 +35,8 @@ spec:
         - name: rules-volume
           projected:
             sources:
+             {{- if .Values.server.protb }}
               - configMap:
-                {{- if .Values.server.protb }}
                   name: trino-protb-rules
                 {{ end }}
               - configMap:
