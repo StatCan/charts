@@ -1,0 +1,20 @@
+name: fdi-search-api
+apiVersion: v1
+version: 1.0.0
+appVersion: 0.0.1
+description: The api for the search and discovery
+keywords:
+- flask
+- python
+home: https://statcan.gc.ca
+icon: https://www.python.org/static/img/python-logo
+sources:
+- https://gitlab.k8s.cloud.statcan.ca/fdi-search-api/fdi-idf/metadata/fdi-search-direcovery-api.git
+maintainers:
+- name: sylus
+  email: william.hearn@canada.ca
+- name: zachomedia
+  email: zachary.seguin@canada.ca
+- name: justmbert
+  email: justin.bertrand@canada.ca
+engine: gotpl
