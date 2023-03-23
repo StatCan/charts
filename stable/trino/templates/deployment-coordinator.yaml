@@ -45,8 +45,8 @@ spec:
             secretName: core-site
         - name: rules-volume
           projected:
-          {{- if .Values.server.protb }}
             sources:
+            {{- if .Values.server.protb }}
               - configMap:
                   name: trino-protb-rules
           {{ end }}
