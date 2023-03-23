@@ -2576,6 +2576,30 @@ entries:
     urls:
     - https://statcan.github.io/charts/fdi-eck-configmap-0.1.0.tgz
     version: 0.1.0
+  fdi-search-api:
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: "2023-03-23T11:24:44.67513459Z"
+    description: The api for the search and discovery
+    digest: 18dab006ae97d2500ad94a8e2002bbd2dbaf3c9aa57beb3ac84b3cb875d50abc
+    home: https://statcan.gc.ca
+    icon: https://www.python.org/static/img/python-logo
+    keywords:
+    - flask
+    - python
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: zachomedia
+    - email: justin.bertrand@canada.ca
+      name: justmbert
+    name: fdi-search-api
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/fdi-search-api/fdi-idf/metadata/fdi-search-direcovery-api.git
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-search-api-1.0.0/fdi-search-api-1.0.0.tgz
+    version: 1.0.0
   fluentd-operator:
   - apiVersion: v2
     appVersion: 1.16.5
@@ -9284,4 +9308,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-22T20:28:28.34807922Z"
+generated: "2023-03-23T11:24:44.677617745Z"
