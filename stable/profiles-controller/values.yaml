@@ -5,7 +5,7 @@
 replicaCount:
   default: 1
   buckets: 1
-  blobcsi: 0
+  blobcsi: 1
   cloudmain: 1
   gitea: 0
   giteab: 0
@@ -21,7 +21,7 @@ image:
   repository: k8scc01covidacr.azurecr.io/profiles-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 14371f9f13131f459336ec0109dc5b755c89ad95
+  tag: 0e5c1167ed9e3607d6a6af0496d795959970db8d
 
 imagePullSecrets: []
 nameOverride: ""
@@ -166,7 +166,7 @@ components:
   blobcsi:
     config: |
           {"name": "unclassified", "classification": "unclassified", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
-          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawdevcc00samgpremium/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
+          {"name": "unclassified-ro", "classification": "protected-b", "secretRef": "aawdevcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": true, "owner": "AAW"}
           {"name": "protected-b", "classification": "protected-b", "secretRef": "aawdevcc00samgprotb/azure-blob-csi-system", "capacity": 10, "readOnly": false, "owner": "AAW"}
     envFrom:
       - secretRef:
@@ -174,28 +174,18 @@ components:
       - secretRef:
           name: "azure-blob-csi-fdi-protected-b"
     env:
-    - name: BLOB_CSI_FDI_OPA_DAEMON_TICKER_MILLIS
-      value: 2000
-    - name: BLOB_CSI_FDI_UNCLASS_OPA_ENDPOINT
-      value: "http://minio-gateway-opa.fdi-gateway-unclassified-system.svc.cluster.local:8181/v1/data"
     - name: BLOB_CSI_FDI_UNCLASS_SPN_SECRET_NAMESPACE
       value: "azure-blob-csi-system"
     - name: BLOB_CSI_FDI_UNCLASS_PV_STORAGE_CAP
       value: 10
     - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AUTH_TYPE
       value: "spn"
-    - name: BLOB_CSI_FDI_UNCLASS_AZURE_STORAGE_AAD_ENDPOINT
-      value: "https://login.microsoftonline.com"
-    - name: BLOB_CSI_FDI_PROTECTED_B_OPA_ENDPOINT
-      value: "http://minio-gateway-opa.fdi-gateway-protected-b-system.svc.cluster.local:8181/v1/data"
     - name: BLOB_CSI_FDI_PROTECTED_B_SPN_SECRET_NAMESPACE
       value: "azure-blob-csi-system"
     - name: BLOB_CSI_FDI_PROTECTED_B_PV_STORAGE_CAP
       value: 10
     - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AUTH_TYPE
       value: "spn"
-    - name: BLOB_CSI_FDI_PROTECTED_B_AZURE_STORAGE_AAD_ENDPOINT
-      value: "https://login.microsoftonline.com"
 
   s3proxy:
     env:

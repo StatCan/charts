@@ -1,14 +1,13 @@
 # Default values for trino.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 image:
   repository: trinodb/trino
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: 400
-
+  tag: 405
 server:
+  protb: false
   jvm:
     maxHeapSize: 8G
     gcMethod:
@@ -55,29 +54,30 @@ additionalConfigProperties:
 
 coordinatorExtraConfig:
   - http-server.process-forwarded=true
-  - http-server.authentication.type=JWT,oauth2
+  - http-server.authentication.type=oauth2,JWT
   - web-ui.authentication.type=oauth2
-  ## USE ENV FOR TENANTID
+  - http-server.authentication.oauth2.access-token-issuer=https://sts.windows.net/${ENV:TRINO_OAUTH_TENANT_ID}/
   - http-server.authentication.oauth2.issuer=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/v2.0
   - http-server.authentication.oauth2.auth-url=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/oauth2/v2.0/authorize
   - http-server.authentication.oauth2.token-url=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/oauth2/v2.0/token
   - http-server.authentication.oauth2.jwks-url=https://login.microsoftonline.com/${ENV:TRINO_OAUTH_TENANT_ID}/discovery/v2.0/keys
   - http-server.authentication.oauth2.client-id=${ENV:TRINO_OAUTH_CLIENT_ID}
   - http-server.authentication.oauth2.client-secret=${ENV:TRINO_OAUTH_CLIENT_SECRET}
+  - http-server.authentication.oauth2.additional-audiences=api://${ENV:TRINO_OAUTH_CLIENT_ID}
+  - http-server.authentication.oauth2.scopes=api://${ENV:TRINO_OAUTH_CLIENT_ID}/trino,openid
+  - http-server.authentication.oauth2.principal-field=upn
+  - http-server.authentication.oauth2.oidc.use-userinfo-endpoint=false
   - http-server.authentication.oauth2.refresh-tokens=true
-  - http-server.authentication.oauth2.principal-field=name
-  - http-server.authentication.oauth2.refresh-tokens.issued-token.timeout=5m
-  - node.internal-address=trino-headless.trino-system.svc.cluster.local
+  - http-server.authentication.oauth2.refresh-tokens.issued-token.timeout=15m
   - http-server.authentication.jwt.key-file=http://localhost:8090/openid/v1/jwks
   - http-server.authentication.jwt.user-mapping.file=/etc/mapping/user-mapping.json
-
 
 additionalLogProperties: {}
 
 additionalExchangeManagerProperties: {}
 
 nodeAddress:
-  - node.internal-address=trino-headless.trino-system.svc.cluster.local
+  - node.internal-address=trino-headless.daaas-system.svc.cluster.local
 
 additionalCatalogs:
   unclassified: |
@@ -90,18 +90,6 @@ additionalCatalogs:
     security.config-file=/etc/catalog/trino-unclassified-rules.json
     security.refresh-period=1s
     hive.config.resources=/etc/hadoop/conf/core-site.xml
-
-  lsddp: |
-    connector.name=hive
-    hive.metastore.uri=thrift://hive-metastore.hive-system:9083
-    hive.storage-format=ORC
-    hive.non-managed-table-writes-enabled=false
-    hive.non-managed-table-creates-enabled=false
-    hive.security=FILE
-    security.config-file=/etc/catalog/unclassified-lsddp-rules.json
-    security.refresh-period=1s
-    hive.config.resources=/etc/hadoop/conf/core-site.xml
-
 
 initContainers: {}
   # coordinator:

@@ -35,7 +35,6 @@ Common labels
 */}}
 {{- define "sidecar-terminator.labels" -}}
 helm.sh/chart: {{ include "sidecar-terminator.chart" . }}
-app.kubernetes.io/name: {{ include "sidecar-terminator.fullname" . }}
 {{ include "sidecar-terminator.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

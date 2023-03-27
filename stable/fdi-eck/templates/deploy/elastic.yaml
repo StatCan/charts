@@ -26,17 +26,20 @@ spec:
       spec:
         automountServiceAccountToken: true
         containers:
-        - env:
-          - name: ES_JAVA_OPTS
-            value: -Xms4g -Xmx4g
-          name: elasticsearch
-          resources:
-            limits:
-              cpu: "4"
-              memory: 8Gi
-            requests:
-              cpu: "2"
-              memory: 8Gi
+          - name: elasticsearch
+            env:
+              - name: ES_JAVA_OPTS
+                value: -Xms4g -Xmx4g
+              # - name: ELASTIC_PASSWORD
+              #   value: "password"
+              
+            resources:
+              limits:
+                cpu: 200m
+                memory: 16Gi
+              requests:
+                cpu: 100m
+                memory: 8Gi
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
@@ -46,4 +49,4 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 128Gi
+            storage: {{ .Values.elastic.store }}

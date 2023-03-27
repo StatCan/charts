@@ -2,18 +2,12 @@ ci_slug: "fdi-meta"
 namespace: "fdi"
 configMap:
   name: "daaas-fdi-fluentd-config" #fdi namespace use daaas-fdi-fluentd-config aaw use org-fdi-system-fluentd-config
-  elasticSearchUrl: "elasticSearchUrl"
-  elasticSearchUsername: "elastic"
-  elasticSearchPassword: ""
-  filter: |
-    <filter **>
-        @type grep<regexp>  key $.kubernetes.container_name  pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)</regexp>
-        <exclude>  key log  pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*/health.*$|^.*/live.*$|^.*Request finished in.*$)</exclude>
-    </filter>
+  cluster: ""
 elastic:
   version: "8.3.3"
-  host: "fdi-meta-elasticsearch.dev.cloud.statcan.ca"
+  host: "fdi-meta-elasticsearch.test.cloud.statcan.ca"
+  store: "32Gi"
 kibana:
-  host: "fdi-meta-kibana.dev.cloud.statcan.ca"
+  host: "fdi-meta-kibana.test.cloud.statcan.ca"
 destinationrule:
   enable: false

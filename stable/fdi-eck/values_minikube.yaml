@@ -1,0 +1,12 @@
+ci_slug: "fdi-meta"
+namespace: "default"
+configMap:
+  name: "daaas-fdi-fluentd-config" #fdi namespace use daaas-fdi-fluentd-config aaw use org-fdi-system-fluentd-config
+  cluster: ""
+elastic:
+  version: "8.3.3"
+  host: "fdi-meta-elasticsearch.test.cloud.statcan.ca"
+kibana:
+  host: "fdi-meta-kibana.test.cloud.statcan.ca"
+destinationrule:
+  enable: false
