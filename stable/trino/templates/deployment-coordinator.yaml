@@ -49,9 +49,10 @@ spec:
             {{- if .Values.server.protb }}
               - configMap:
                   name: trino-protb-rules
-          {{ end }}
+            {{ else }}
               - configMap:
                   name: trino-unclassified-rules
+            {{ end }}
         - name: catalog-volume
           configMap:
           {{- if .Values.server.protb }}

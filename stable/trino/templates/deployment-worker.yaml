@@ -35,12 +35,13 @@ spec:
         - name: rules-volume
           projected:
             sources:
-             {{- if .Values.server.protb }}
+            {{- if .Values.server.protb }}
               - configMap:
                   name: trino-protb-rules
-                {{ end }}
+            {{- else }}
               - configMap:
                   name: trino-unclassified-rules
+            {{ end }}
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
