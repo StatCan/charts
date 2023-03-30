@@ -79,18 +79,6 @@ additionalExchangeManagerProperties: {}
 nodeAddress:
   - node.internal-address=trino-headless.daaas-system.svc.cluster.local
 
-additionalCatalogs:
-  unclassified: |
-    connector.name=hive
-    hive.metastore.uri=thrift://hive-metastore.hive-system:9083
-    hive.storage-format=ORC
-    hive.non-managed-table-writes-enabled=false
-    hive.non-managed-table-creates-enabled=false
-    hive.security=FILE
-    security.config-file=/etc/catalog/trino-unclassified-rules.json
-    security.refresh-period=1s
-    hive.config.resources=/etc/hadoop/conf/core-site.xml
-
 initContainers: {}
   # coordinator:
   #   - name: init-coordinator
