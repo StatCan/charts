@@ -8,9 +8,9 @@ metadata:
 {{- end }}
   name: {{ include "ckan.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "ckan.name" . }}
+    app.kubernetes.io/name: {{ include "ckan.fullname" . }}
     helm.sh/chart: {{ include "ckan.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   accessModes:
