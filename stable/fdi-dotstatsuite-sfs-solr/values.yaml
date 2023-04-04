@@ -7,7 +7,6 @@ nameOverride: "fdi-dotstatsuite-sfs-solr"
 fullnameOverride: "fdi-dotstatsuite-sfs-solr"
 
 
-
 # sfs
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
 sfs:
@@ -244,7 +243,7 @@ mongo:
     name: ""
 
   podAnnotations: {
-     sidecar.istio.io/inject: 'false'
+    sidecar.istio.io/inject: 'false'
   }
 
   podSecurityContext: {}
@@ -310,7 +309,6 @@ mongo:
   tolerations: []
 
   affinity: {}
-
 
 
 # Destination Rule
