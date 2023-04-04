@@ -2511,6 +2511,24 @@ entries:
     urls:
     - https://statcan.github.io/charts/fdi-dotstatsuite-dlm-0.2.0.tgz
     version: 0.2.0
+  fdi-dotstatsuite-sfs-solr:
+  - apiVersion: v2
+    appVersion: v14.0.0
+    created: "2023-04-04T15:37:37.680932923Z"
+    description: fdi-dotstatsuite helm chart for the Data Explorer and Data Viewer
+    digest: 960088cd976289cd9cf371239f45ca99f5a4dc9d7c26087a2076347f0c8be2ef
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: Jianlong.qian@statcan.gc.ca
+      name: Jianlong Qian
+    name: fdi-dotstatsuite-sfs-solr
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-sfs-solr-1.0.0/fdi-dotstatsuite-sfs-solr-1.0.0.tgz
+    version: 1.0.0
   fdi-eck:
   - apiVersion: v2
     appVersion: 1.2.0
@@ -9395,4 +9413,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-30T13:16:56.367422118Z"
+generated: "2023-04-04T15:37:37.683863945Z"
