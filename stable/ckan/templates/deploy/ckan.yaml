@@ -3,22 +3,22 @@ kind: Deployment
 metadata:
   name: {{ include "ckan.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "ckan.name" . }}
+    app.kubernetes.io/name: {{ include "ckan.fullname" . }}
     helm.sh/chart: {{ include "ckan.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "ckan.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ include "ckan.fullname" . }}
+      app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
       tier: ckan
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "ckan.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "ckan.fullname" . }}
+        app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
         tier: ckan
     spec:
     {{- with .Values.imagePullSecrets }}
@@ -29,24 +29,24 @@ spec:
       securityContext:
         {{- toYaml .Values.ckan.podSecurityContext | nindent 8 }}
       volumes:
-        - name: ckan-ini-overlay-configmap
+        - name: ckan-{{ include "ckan.fullname" . }}-ini-overlay-configmap
           configMap:
-            name: ckan-ini-overlay-configmap
-        - name: ckan-prerun-configmap
+            name: ckan-{{ include "ckan.fullname" . }}-ini-overlay-configmap
+        - name: ckan-{{ include "ckan.fullname" . }}-prerun-configmap
           configMap:
-            name: ckan-prerun-configmap
+            name: ckan-{{ include "ckan.fullname" . }}-prerun-configmap
       {{ if .Values.solr.initialize.enabled }}
-        - name: solr-init-configmap
+        - name: solr-{{ include "ckan.fullname" . }}-init-configmap
           configMap:
-            name: solr-init-configmap
-        - name: solr-configset-configmap
+            name: solr-{{ include "ckan.fullname" . }}-init-configmap
+        - name: solr-{{ include "ckan.fullname" . }}-configset-configmap
           configMap:
-            name: solr-configset-configmap
+            name: solr-{{ include "ckan.fullname" . }}-configset-configmap
       {{ end }}
       {{ if .Values.ckan.psql.initialize }}
-        - name: psql-init-configmap
+        - name: psql-{{ include "ckan.fullname" . }}-init-configmap
           configMap:
-            name: psql-init-configmap
+            name: psql-{{ include "ckan.fullname" . }}-init-configmap
       {{ end }}
       {{ if .Values.pgbouncer.enabled }}
         - name: configfiles
@@ -121,7 +121,7 @@ spec:
           env:
 {{- if .Values.solr.enabled }}
           - name: CKAN_SOLR_URL
-            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+            value: http://{{ include "ckan.fullname" . }}-solr-headless:8983/solr/ckancollection
 {{- end }}
           - name: CKAN_SOLR_INIT_NUMSHARDS
             value: "{{ .Values.solr.initialize.numShards }}"
@@ -131,6 +131,7 @@ spec:
             value: "{{ .Values.solr.initialize.maxShardsPerNode }}"
           - name: CKAN_SOLR_INIT_CONFIGSETNAME
             value: "{{ .Values.solr.initialize.configsetName }}"
+  
           command:
           - /bin/bash
           - -c
@@ -143,10 +144,10 @@ spec:
             echo "Solr Initialized"
             sleep infinity
           volumeMounts:
-          - name: solr-init-configmap
+          - name: solr-{{ include "ckan.fullname" . }}-init-configmap
             mountPath: /srv/solr-init
             readOnly: false
-          - name: solr-configset-configmap
+          - name: solr-{{ include "ckan.fullname" . }}-configset-configmap
             mountPath: /srv/solr-configset
             readOnly: false
           - name: ckan-config
@@ -181,7 +182,7 @@ spec:
                 key: psqlMasterPassword
 {{- if .Values.solr.enabled }}
           - name: CKAN_SOLR_URL
-            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+            value: http://{{ include "ckan.fullname" . }}-solr-headless:8983/solr/ckancollection
 {{- end }}
           - name: CKAN_SQLALCHEMY_URL
             valueFrom:
@@ -222,7 +223,7 @@ spec:
           - name: ckan-config
             mountPath: /srv/app
             readOnly: false
-          - name: psql-init-configmap
+          - name: psql-{{ include "ckan.fullname" . }}-init-configmap
             mountPath: /tmp/psql-init
       {{ end }}
         - name: {{ .Chart.Name }}
@@ -245,7 +246,7 @@ spec:
                 if getenv(v):
                     print(f"{k} = {getenv(v)}")
             EOF
-            ckan config-tool /srv/app/production.ini "ckan.plugins = ${CKAN_PLUGINS}"
+            ckan config-tool /srv/app/production.ini "ckan.site_title = ${CKAN_SITE_TITLE}"
             echo "Applying the production.ini overlay..."
             ckan config-tool /srv/app/production.ini -f /config/production.ini
             ckan -c /srv/app/production.ini db init
@@ -310,6 +311,18 @@ spec:
               value: {{ .Values.ckan.siteUrl }}
             - name: CKAN_PLUGINS
               value: {{ .Values.ckan.ckanPlugins }}
+            - name: CKAN_SCHEMING_DATASETS_SCHEMAS
+              value: {{ .Values.ckan.scheming.dataset_schemas }}
+            - name: CKAN_SCHEMING_PRESETS
+              value: {{ .Values.ckan.scheming.presets }}
+            - name: CKAN_SCHEMING_GROUP_SCHEMAS
+              value: {{ .Values.ckan.scheming.group_schemas }}
+            - name: CKAN_SCHEMING_ORGANIZATION_SCHEMAS
+              value: {{ .Values.ckan.scheming.organization_schemas }}
+            - name: CKAN_SCHEMING_DATASET_FALLBACK
+              value: "{{ .Values.ckan.scheming.dataset_fallback }}"
+            - name: ACTIVITY_STREAM_EMAIL_NOTIFICAYIONS
+              value: "{{ .Values.ckan.activityStreamsEmailNotifications }}"
             - name: CKAN_STORAGE_PATH
               value: {{ .Values.ckan.storagePath }}
             {{- if .Values.external.enabled }}
@@ -345,11 +358,11 @@ spec:
                   key: ckanDatastoreReadUrl
 {{- if .Values.solr.enabled }}
             - name: CKAN_SOLR_URL
-              value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+              value: http://{{ include "ckan.fullname" . }}-solr-headless:8983/solr/ckancollection
 {{- end }}
 {{- if .Values.redis.enabled }}
             - name: CKAN_REDIS_URL
-              value: redis://{{ .Release.Name }}-redis-headless:6379/0
+              value: redis://ckan-redis-headless:6379/0
 {{- end }}
             - name: CKANEXT_SPATIAL_SEARCH_BACKEND
               value: {{ .Values.ckan.spatialBackend }}
@@ -395,9 +408,9 @@ spec:
             failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
             timeoutSeconds: {{ .Values.ckan.liveness.timeoutSeconds }}
           volumeMounts:
-          - name: ckan-prerun-configmap
+          - name: ckan-{{ include "ckan.fullname" . }}-prerun-configmap
             mountPath: /srv/prerun
-          - name: ckan-ini-overlay-configmap
+          - name: ckan-{{ include "ckan.fullname" . }}-ini-overlay-configmap
             mountPath: /config/
           - name: ckan-config
             mountPath: /srv/app
