@@ -2,11 +2,11 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: ckan-email-notifications
+  name: {{ include "ckan.fullname" . }}-email-notifications
   labels:
-    app.kubernetes.io/name: {{ include "ckan.name" . }}
+    app.kubernetes.io/name: {{ include "ckan.fullname" . }}
     helm.sh/chart: {{ include "ckan.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   schedule: "*/15 * * * *"
@@ -16,7 +16,7 @@ spec:
       template:
         spec:
           containers:
-          - name: ckan-email-notifications
+          - name: {{ include "ckan.fullname" . }}-email-notifications
             securityContext:
               {{- toYaml .Values.ckan.securityContext | nindent 14 }}
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -65,11 +65,11 @@ spec:
                   key: ckanDatastoreReadUrl
 {{- if .Values.solr.enabled }}
             - name: CKAN_SOLR_URL
-              value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+              value: http://{{ include "ckan.fullname" . }}-solr-headless:8983/solr/ckancollection
 {{- end }}
 {{- if .Values.redis.enabled }}
             - name: CKAN_REDIS_URL
-              value: redis://{{ .Release.Name }}-redis-headless:6379/0
+              value: redis://ckan-redis-headless:6379/0
 {{- end }}
             - name: CKAN__DATAPUSHER__URL
               value: {{ .Values.ckan.datapusherUrl }}

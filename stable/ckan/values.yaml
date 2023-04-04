@@ -11,7 +11,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "ckan"
+fullnameOverride: ""
 
 ## Configure Ingress resource that allow you to access the Drupal installation
 ## Set up the URL
@@ -51,7 +51,14 @@ ckan:
   siteTitle: "Site Title here"
   siteId: "site-id-here"
   siteUrl: "http://localhost:5000"
-  ckanPlugins: "stats text_view image_view recline_view harvest ckan_harvester ccei"
+  ckanPlugins: ""
+  scheming:
+    organization_schemas:
+    group_schemas:
+    dataset_schemas:
+    presets: 
+    dataset_fallback: false
+    resource_proxy_timeouts: 5
   storagePath: "/var/lib/ckan/default"
   activityStreamsEmailNotifications: "true"
   debug: "false"
@@ -59,22 +66,22 @@ ckan:
   psql:
     initialize: true
   db:
-    ckanDbName: ckan_default
-    ckanDbUser: ckan_default
-    ckanDbPassword: pass
+    ckanDbName: ckan
+    ckanDbUser: ckan
+    ckanDbPassword: ""
   datastore:
     RwDbName: datastore_default
     RwDbUser: datastorerw
-    RwDbPassword: pass
+    RwDbPassword: ""
     RoDbName: datastore_default
     RoDbUser: datastorero
-    RoDbPassword: pass
+    RoDbPassword: ""
   spatialBackend: "solr"
   locale:
     offered: "en"
     default: "en"
   datapusherUrl: "http://datapusher-headless:8000"
-  datapusherCallbackUrlBase: http://ckan
+  datapusherCallbackUrlBase: http://ckan-qol
   smtp:
     server: "smtpServerURLorIP:port"
     user: "smtpUser"
@@ -141,17 +148,6 @@ ckan:
     name:
 
 ## Configuration values for DataPusher
-datapusher:
-  enabled: true
-  fullnameOverride: datapusher
-  datapusher:
-    maxContentLength: "102400000"
-    chunkSize: "10240000"
-    insertRows: "50000"
-    downloadTimeout: "300"
-    datapusherSslVerify: "False"
-    datapusherRewriteResources: "True"
-    datapusherRewriteUrl: http://ckan
 
 ## Configuration values for Solr
 ## ToDo: Switch to Solr Operator sub-chart
@@ -240,7 +236,7 @@ postgresql:
 ## Configuration values for PGBouncer
 pgbouncer:
   enabled: false
-  host: pgserver.postgres.database.azure.com
+  host: postgres
   user: username@hostname
   password: password
   poolSize: 50
