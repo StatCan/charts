@@ -1,0 +1,67 @@
+{{- if .Values.sfs.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-sfs
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-sfs
+spec:
+{{- if not .Values.sfs.autoscaling.enabled }}
+  replicas: {{ .Values.sfs.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-sfs
+  template:
+    metadata:
+    {{- with .Values.sfs.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-sfs
+    spec:
+      {{- with .Values.sfs.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.sfs.serviceAccountName" . }}-sfs
+      securityContext:
+        {{- toYaml .Values.sfs.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-sfs
+          securityContext:
+            {{- toYaml .Values.sfs.securityContext | nindent 12 }}
+          image: "{{ .Values.sfs.image.repository }}:{{ .Values.sfs.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.sfs.image.pullPolicy }}
+          env:
+          - name: LOGGING_DRIVER
+            value: "file"
+          - name: LOGGING_PROJECT_ID
+            value: "{{ include "dotstatsuite.fullname" . }}-sfs"
+          - name: LOGGING_LOGNAME
+            value: "{{ include "dotstatsuite.fullname" . }}-sfs-app-log"
+          - name: LOGGING_LEVEL
+            value: "info"
+          - name: SOLR_HOST
+            value: "{{ .Values.sfs.solr.host }}:{{ .Values.sfs.solr.port }}"
+          - name: MONGODB_URL
+            value: "mongodb://{{ include "dotstatsuite.fullname" . }}-mongo:27017"
+          - name: MONGODB_DATABASE
+            value: "sfs"
+          - name: CONFIG_URL
+            value: "{{ .Values.sfs.config.host }}"
+          - name: API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "dotstatsuite.fullname" . }}-api-key-secret
+                key: api-key
+          ports:
+            - name: readiness-http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: readiness-http
+{{- end -}}
