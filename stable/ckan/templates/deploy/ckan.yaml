@@ -321,8 +321,6 @@ spec:
               value: {{ .Values.ckan.scheming.organization_schemas }}
             - name: CKAN_SCHEMING_DATASET_FALLBACK
               value: "{{ .Values.ckan.scheming.dataset_fallback }}"
-            - name: ACTIVITY_STREAM_EMAIL_NOTIFICAYIONS
-              value: "{{ .Values.ckan.activityStreamsEmailNotifications }}"
             - name: CKAN_STORAGE_PATH
               value: {{ .Values.ckan.storagePath }}
             {{- if .Values.external.enabled }}
@@ -389,7 +387,7 @@ spec:
               value: {{ .Values.ckan.smtp.tls }}
             - name: CKAN_SMTP_STARTTLS
               value: {{ .Values.ckan.smtp.starttls | quote }}
-            - name: CKAN__ACTIVITY_STREAMS_EMAIL_NOTIFICATIONS
+            - name: CKAN_ACTIVITY_STREAMS_EMAIL_NOTIFICATIONS
               value: {{ .Values.ckan.activityStreamsEmailNotifications | quote }}
             - name: CKANEXT_ISSUES_SEND_EMAIL_NOTIFICATIONS
               value: {{ .Values.ckan.issues.sendEmailNotifications | quote }}

@@ -1,0 +1,28 @@
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: fdi-{{ .Values.vs.name }}-tenant-vs
+spec:
+  gateways:
+    - ingress-general-system/general-istio-ingress-gateway-https
+  hosts:
+    - {{ .Values.vs.host }}
+  http:
+    - match:
+        - uri:
+            prefix: /
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: {{ .Values.vs.destination }}
+            port:
+              number: 80
+          headers:
+            request:
+              set:
+                x-tenant: {{ .Values.vs.tenant }}
+
+
+          

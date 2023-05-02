@@ -1,4 +1,4 @@
-{{- if eq .Values.ckan.activityStreamsEmailNotifications "true" -}}
+{{- if eq .Values.ckan.activityStreamsEmailNotifications_jobs "true" -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
