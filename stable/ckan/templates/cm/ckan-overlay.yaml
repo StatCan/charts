@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ckan-{{ include "ckan.fullname" . }}-ini-overlay-configmap
+  name: {{ include "ckan.name" . }}-ini-overlay-configmap
 data:
   production.ini: |
 {{ .Files.Get "conf/ckan/overlay-production.ini" | indent 4 }}

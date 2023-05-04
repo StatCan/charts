@@ -11,7 +11,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "ckan-scheming"
 
 ## Configure Ingress resource that allow you to access the Drupal installation
 ## Set up the URL
@@ -56,12 +56,12 @@ ckan:
     organization_schemas:
     group_schemas:
     dataset_schemas:
-    presets:
+    presets: 
     dataset_fallback: false
     resource_proxy_timeouts: 5
   storagePath: "/var/lib/ckan/default"
   activityStreamsEmailNotifications: "true"
-  activityStreamsEmailNotifications_jobs: 'false'
+  activityStreamsEmailNotifications_jobs: "false"
   debug: "false"
   maintenanceMode: "false"
   psql:
@@ -82,7 +82,7 @@ ckan:
     offered: "en"
     default: "en"
   datapusherUrl: "http://datapusher-headless:8000"
-  datapusherCallbackUrlBase: http://ckan-qol
+  datapusherCallbackUrlBase: http://ckan-scheming
   smtp:
     server: "smtpServerURLorIP:port"
     user: "smtpUser"
@@ -91,7 +91,7 @@ ckan:
     tls: "enabled"
     starttls: "true"
   issues:
-    sendEmailNotifications: "true"
+    sendEmailNotifications: 'false'
   # ckan.extraEnv -- An array to add extra environment variables
   # For example:
   # extraEnv:
@@ -116,6 +116,9 @@ ckan:
   podSecurityContext: {}
     # fsGroup: 2000
   securityContext: {}
+  podAnnotations: {
+    traffic.sidecar.istio.io/excludeOutboundPorts: '5432'
+  }
     # capabilities:
     #   drop:
     #   - ALL
@@ -185,7 +188,7 @@ redis:
     # clientInterface: PhpRedis
   cluster:
     enabled: true
-    slaveCount: 2
+    slaveCount: 1
   sentinel:
     enabled: false
   master:

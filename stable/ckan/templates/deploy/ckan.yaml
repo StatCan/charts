@@ -3,23 +3,27 @@ kind: Deployment
 metadata:
   name: {{ include "ckan.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "ckan.fullname" . }}
+    app.kubernetes.io/name: {{ include "ckan.name" . }}
     helm.sh/chart: {{ include "ckan.chart" . }}
-    app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "ckan.fullname" . }}
-      app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
+      app.kubernetes.io/name: {{ include "ckan.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
       tier: ckan
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "ckan.fullname" . }}
-        app.kubernetes.io/instance: {{ include "ckan.fullname" . }}
+        app.kubernetes.io/name: {{ include "ckan.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
         tier: ckan
+      annotations:
+    {{- with .Values.ckan.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -29,12 +33,12 @@ spec:
       securityContext:
         {{- toYaml .Values.ckan.podSecurityContext | nindent 8 }}
       volumes:
-        - name: ckan-{{ include "ckan.fullname" . }}-ini-overlay-configmap
+        - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
           configMap:
-            name: ckan-{{ include "ckan.fullname" . }}-ini-overlay-configmap
-        - name: ckan-{{ include "ckan.fullname" . }}-prerun-configmap
+            name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
+        - name: {{ include "ckan.fullname" . }}-prerun-configmap
           configMap:
-            name: ckan-{{ include "ckan.fullname" . }}-prerun-configmap
+            name: {{ include "ckan.fullname" . }}-prerun-configmap
       {{ if .Values.solr.initialize.enabled }}
         - name: solr-{{ include "ckan.fullname" . }}-init-configmap
           configMap:
@@ -226,7 +230,7 @@ spec:
           - name: psql-{{ include "ckan.fullname" . }}-init-configmap
             mountPath: /tmp/psql-init
       {{ end }}
-        - name: {{ .Chart.Name }}
+        - name: {{ include "ckan.name" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -246,7 +250,7 @@ spec:
                 if getenv(v):
                     print(f"{k} = {getenv(v)}")
             EOF
-            ckan config-tool /srv/app/production.ini "ckan.site_title = ${CKAN_SITE_TITLE}"
+            ckan config-tool /srv/app/production.ini "ckan.plugins = ${CKAN_PLUGINS}"
             echo "Applying the production.ini overlay..."
             ckan config-tool /srv/app/production.ini -f /config/production.ini
             ckan -c /srv/app/production.ini db init
@@ -310,15 +314,15 @@ spec:
             - name: CKAN_SITE_URL
               value: {{ .Values.ckan.siteUrl }}
             - name: CKAN_PLUGINS
-              value: {{ .Values.ckan.ckanPlugins }}
+              value: {{ .Values.ckan.ckanPlugins | quote }}
             - name: CKAN_SCHEMING_DATASETS_SCHEMAS
-              value: {{ .Values.ckan.scheming.dataset_schemas }}
+              value: {{ .Values.ckan.scheming.dataset_schemas | quote }}
             - name: CKAN_SCHEMING_PRESETS
-              value: {{ .Values.ckan.scheming.presets }}
+              value: {{ .Values.ckan.scheming.presets | quote }}
             - name: CKAN_SCHEMING_GROUP_SCHEMAS
-              value: {{ .Values.ckan.scheming.group_schemas }}
+              value: {{ .Values.ckan.scheming.group_schemas | quote }}
             - name: CKAN_SCHEMING_ORGANIZATION_SCHEMAS
-              value: {{ .Values.ckan.scheming.organization_schemas }}
+              value: {{ .Values.ckan.scheming.organization_schemas | quote }}
             - name: CKAN_SCHEMING_DATASET_FALLBACK
               value: "{{ .Values.ckan.scheming.dataset_fallback }}"
             - name: CKAN_STORAGE_PATH
@@ -406,9 +410,9 @@ spec:
             failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
             timeoutSeconds: {{ .Values.ckan.liveness.timeoutSeconds }}
           volumeMounts:
-          - name: ckan-{{ include "ckan.fullname" . }}-prerun-configmap
+          - name: {{ include "ckan.fullname" . }}-prerun-configmap
             mountPath: /srv/prerun
-          - name: ckan-{{ include "ckan.fullname" . }}-ini-overlay-configmap
+          - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
             mountPath: /config/
           - name: ckan-config
             mountPath: /srv/app
