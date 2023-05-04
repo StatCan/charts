@@ -56,7 +56,7 @@ ckan:
     organization_schemas:
     group_schemas:
     dataset_schemas:
-    presets: 
+    presets:
     dataset_fallback: false
     resource_proxy_timeouts: 5
   storagePath: "/var/lib/ckan/default"
@@ -69,14 +69,14 @@ ckan:
   db:
     ckanDbName: ckan
     ckanDbUser: ckan
-    ckanDbPassword: ""
+    ckanDbPassword: "888"
   datastore:
     RwDbName: datastore_default
     RwDbUser: datastorerw
     RwDbPassword: ""
     RoDbName: datastore_default
     RoDbUser: datastorero
-    RoDbPassword: ""
+    RoDbPassword: "999"
   spatialBackend: "solr"
   locale:
     offered: "en"
