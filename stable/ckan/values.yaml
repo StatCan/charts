@@ -44,7 +44,7 @@ extensions:
 
 ## Configuration values for CKAN
 ckan:
-  sysadminName: "ckan_admin"
+  sysadminName: ""
   sysadminPassword: "PasswordHere"
   sysadminApiToken: "replace_this_with_generated_api_token_for_sysadmin"
   sysadminEmail: "admin@domain.com"
@@ -67,8 +67,8 @@ ckan:
   psql:
     initialize: true
   db:
-    ckanDbName: ckan
-    ckanDbUser: ckan
+    ckanDbName: ""
+    ckanDbUser: ""
     ckanDbPassword: ""
   datastore:
     RwDbName: datastore_default
@@ -255,6 +255,6 @@ external:
   port: 5432
   host: pgserver.postgres.database.azure.com
   # Credentials
-  database: ckan
+  database: ""
   user: username@hostname
   password: password
