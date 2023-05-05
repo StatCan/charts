@@ -67,16 +67,16 @@ ckan:
   psql:
     initialize: true
   db:
-    ckanDbName: ckan
-    ckanDbUser: ckan
-    ckanDbPassword: "888"
+    ckanDbName: ""
+    ckanDbUser: ""
+    ckanDbPassword: ""
   datastore:
     RwDbName: datastore_default
     RwDbUser: datastorerw
     RwDbPassword: ""
     RoDbName: datastore_default
     RoDbUser: datastorero
-    RoDbPassword: "999"
+    RoDbPassword: ""
   spatialBackend: "solr"
   locale:
     offered: "en"
@@ -253,8 +253,8 @@ external:
   # CKAN DB driver
   driver: pgsql
   port: 5432
-  host: pgserver.postgres.database.azure.com
+  host: ""
   # Credentials
-  database: ckan
+  database: ""
   user: username@hostname
   password: password
