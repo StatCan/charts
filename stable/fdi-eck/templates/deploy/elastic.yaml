@@ -1,7 +1,6 @@
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
-  namespace: {{.Values.namespace }}
   name: {{ .Values.ci_slug }}
 spec:
   http:
