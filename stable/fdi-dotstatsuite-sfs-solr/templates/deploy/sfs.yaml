@@ -44,7 +44,9 @@ spec:
           - name: LOGGING_LEVEL
             value: "info"
           - name: SOLR_HOST
-            value: "{{ .Values.sfs.solr.host }}:{{ .Values.sfs.solr.port }}"
+            value: "{{ .Values.sfs.solr.host }}"
+          - name: SOLR_PORT
+            value: "{{ .Values.sfs.solr.port }}"
           - name: MONGODB_URL
             value: "mongodb://{{ include "dotstatsuite.fullname" . }}-mongo:27017"
           - name: MONGODB_DATABASE
