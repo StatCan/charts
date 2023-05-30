@@ -93,6 +93,8 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+          - name: NO_DBA_SCRIPTS
+            value: {{ .Values.managed.no_dba_scripts }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -105,7 +107,7 @@ spec:
                 key: password
           command: ['bash', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force $(NO_DBA_SCRIPTS)
       {{- end }}
       {{- with .Values.authz.nodeSelector }}
       nodeSelector:
