@@ -235,8 +235,10 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+      {{- if .Values.managed.no_dba_scripts }}          
           - name: NO_DBA_SCRIPTS
-            value: {{ .Values.managed.no_dba_scripts }}
+            value: "--{{ .Values.managed.no_dba_scripts }}"
+        {{- end }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
