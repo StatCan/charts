@@ -27,7 +27,7 @@ managed:
   sdmx_log:
     azurestorageaccountname: ""
     azurestorageaccountkey: ""
-
+  no_dba_scripts: "--withoutDbaScripts"
 image: &image
   repository: &repository siscc/sdmxri-nsi-maapi
   pullPolicy: &pullPolicy Always
