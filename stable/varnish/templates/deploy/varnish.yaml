@@ -53,6 +53,8 @@ spec:
           - feature=+http2
           - -s
           - malloc,{{ .Values.memorySize }}
+          - -n
+          - /tmp/varnish_workdir
           volumeMounts:
             - name: varnish-config
               mountPath: /etc/varnish/default.vcl
