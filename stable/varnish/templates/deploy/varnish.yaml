@@ -67,7 +67,7 @@ spec:
 {{- end }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
 {{- if .Values.admin.enabled }}
             - name: tcp-admin
