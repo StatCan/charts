@@ -5424,6 +5424,24 @@ entries:
   varnish:
   - apiVersion: v2
     appVersion: 6.6.0
+    created: "2023-06-10T19:28:08.793560853Z"
+    description: A Helm chart for using Varnish.
+    digest: f350ce6bbc9f34e21763b31f095306604c2e1b59d78e2abfa745666a64cf66b4
+    home: https://www.varnish-software.com
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: zachomedia
+    name: varnish
+    sources:
+    - https://github.com/varnish
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/varnish-0.2.5/varnish-0.2.5.tgz
+    version: 0.2.5
+  - apiVersion: v2
+    appVersion: 6.6.0
     created: "2023-06-10T19:13:36.738738672Z"
     description: A Helm chart for using Varnish.
     digest: 596317156d26b3ea5563fcd646dc16358fd5548f7e479676a4c6a469eef3ab9e
@@ -9631,4 +9649,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-06-10T19:13:36.741359307Z"
+generated: "2023-06-10T19:28:08.796724199Z"
