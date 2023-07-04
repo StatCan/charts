@@ -1,3 +1,4 @@
+{{- if eq .Values.ckan.activityStreamsEmailNotifications_jobs "true" -}}
 {{- if semverCompare "<1.21" .Capabilities.KubeVersion.GitVersion }}
 apiVersion: batch/v1beta1
 {{- else }}
