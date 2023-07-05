@@ -3,6 +3,22 @@ entries:
   aaw-financial-data-reconciliation:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-07-05T14:18:10.783722139Z"
+    description: A Helm chart for AAW Financial Data Reconciliation
+    digest: 5e724e0506dbbbb52219798679a1b46ec12dffbf0acfa149a0d9acb572096619
+    home: https://statcan.gc.ca
+    icon: https://www.python.org/static/img/python-logo
+    maintainers:
+    - email: marc-andre.menard@statcan.gc.ca
+      name: Marc-André Ménard
+    name: aaw-financial-data-reconciliation
+    sources:
+    - https://github.com/StatCan/aaw-financial-data-reconciliation
+    urls:
+    - https://github.com/StatCan/charts/releases/download/aaw-financial-data-reconciliation-0.1.6/aaw-financial-data-reconciliation-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2022-09-27T18:22:10.999235745Z"
     description: A Helm chart for AAW Financial Data Reconciliation
     digest: e28971378aa06a4f3788b0c9b1f4ab3ce85e8c17a0a7f55eb22e7582e98bc59e
@@ -586,6 +602,46 @@ entries:
     - https://statcan.github.io/charts/cert-manager-istio-controller-0.1.0.tgz
     version: 0.1.0
   ckan:
+  - apiVersion: v2
+    appVersion: 2.9.5
+    created: "2023-07-05T14:18:10.993595373Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 12.10.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 10.2.0
+    - condition: solr.enabled
+      name: solr
+      repository: https://statcan.github.io/charts
+      version: 1.5.8
+    - condition: datapusher.enabled
+      name: datapusher
+      repository: https://statcan.github.io/charts
+      version: 1.0.0
+    description: CKAN Helm Chart for Kubernetes.
+    digest: 9c1dfb11c9acffc751e3145f41dc80bb3bcfee6201661ccead5d301d5d8cfb70
+    home: https://ckan.org/
+    icon: https://ckan.org/static/img/logo.svg
+    keywords:
+    - ckan
+    - http
+    - web
+    - application
+    - python
+    maintainers:
+    - email: jianlong.qian@canada.ca
+      name: Jianlong
+    name: ckan
+    sources:
+    - https://github.com/drupalwxt/wxt
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/ckan-0.0.26/ckan-0.0.26.tgz
+    version: 0.0.26
   - apiVersion: v2
     appVersion: 2.9.5
     created: "2023-05-16T20:11:22.994138477Z"
@@ -4697,6 +4753,20 @@ entries:
   rotate-elasticsearch-index:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2023-07-05T14:18:11.204013406Z"
+    description: A Helm chart for deploying Elasticsearch index rotation
+    digest: 594f48d8c0c368a99fb0e635231caca4ab335aea24917bd7bd0312a8881bf85f
+    home: https://github.com/kairen/rotate-elasticsearch-index
+    maintainers:
+    - email: k2r2.bai@gmail.com
+      name: Kyle Bai
+    name: rotate-elasticsearch-index
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/rotate-elasticsearch-index-0.2.1/rotate-elasticsearch-index-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2022-09-27T18:22:11.876268681Z"
     description: A Helm chart for deploying Elasticsearch index rotation
     digest: ba4936c5e75629424041ac04ac4c541f47990d3a3e47784fe36a097adfc47248
@@ -5778,6 +5848,29 @@ entries:
     - https://statcan.github.io/charts/velero-0.0.2.tgz
     version: 0.0.2
   vetting:
+  - apiVersion: v2
+    appVersion: "2.0"
+    created: "2023-07-05T14:18:11.408167552Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 9.4.1
+    description: A Helm chart for Disclosure Vetting Application
+    digest: 4cf61148e3306c53c8626079e1a2348f5833c98737114c00beb7f9588888f924
+    home: https://statcan.gc.ca
+    icon: https://www.python.org/static/img/python-logo
+    maintainers:
+    - email: marc-andre.menard@statcan.gc.ca
+      name: Marc-André Ménard
+    - email: mathis.marcotte@statcan.gc.ca
+      name: Mathis Marcotte
+    name: vetting
+    sources:
+    - https://github.com/StatCan/disclosure-vetting-application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/vetting-0.1.170/vetting-0.1.170.tgz
+    version: 0.1.170
   - apiVersion: v2
     appVersion: "2.0"
     created: "2023-03-27T14:52:44.192555052Z"
@@ -9649,4 +9742,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-06-10T19:28:08.796724199Z"
+generated: "2023-07-05T14:18:11.411542345Z"
