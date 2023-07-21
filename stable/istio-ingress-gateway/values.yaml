@@ -71,3 +71,9 @@ https:
     # Extra labels to add to the ClusterRole
     # Can be used for ClusterRole Aggregation
     labels: {}
+
+# Configures telemetry on the ingress gateway.
+telemetry:
+  accessLogging:
+    enabled: true
+    labels: {}  
