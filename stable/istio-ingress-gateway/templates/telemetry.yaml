@@ -10,7 +10,6 @@ metadata:
     {{- end }}
 spec:
   accessLogging:
-  - disabled: false  
   - providers:
     - name: envoy
 {{- end }}
