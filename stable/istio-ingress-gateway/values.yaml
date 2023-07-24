@@ -72,8 +72,10 @@ https:
     # Can be used for ClusterRole Aggregation
     labels: {}
 
-# Configures telemetry on the ingress gateway.
+# Configures Telemetry on the ingress gateway.
 telemetry:
+  # Enable access logging for the entire mesh
   accessLogging:
     enabled: true
+    # Extra labels to add to Telemetry 
     labels: {}  

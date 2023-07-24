@@ -3,6 +3,7 @@ apiVersion: telemetry.istio.io/v1alpha1
 kind: Telemetry
 metadata:
   name: {{ include "istio-ingress-gateway.fullname" . }}-telemetry
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
     {{- if .Values.telemetry.accessLogging.labels }}
