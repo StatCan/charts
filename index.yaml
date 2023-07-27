@@ -3164,6 +3164,24 @@ entries:
     version: 1.0.0
   istio-ingress-gateway:
   - apiVersion: v2
+    created: "2023-07-27T13:02:27.171285501Z"
+    dependencies:
+    - condition: gateway.enabled
+      name: gateway
+      repository: https://istio-release.storage.googleapis.com/charts
+      version: 1.14.3
+    description: 'This chart deploys an opinionated Istio ingress-gateway. The Gateway
+      Helm Chart is utilized as a subchart to deploy a single gateway and configures
+      HSTS and Wildcard Certificates  Currently, only HTTPS configurations are available
+      (with automatic HTTPS redirect from HTTP if configured), however, more Gateways
+      and capbabilities may be added when the need arises. '
+    digest: e8c47522b88841f50395210b3ad25fd6e4ae5825d4446ae1fedc4c1b4bb36371
+    name: istio-ingress-gateway
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/istio-ingress-gateway-3.1.0/istio-ingress-gateway-3.1.0.tgz
+    version: 3.1.0
+  - apiVersion: v2
     created: "2023-02-13T15:15:26.394404498Z"
     dependencies:
     - condition: gateway.enabled
@@ -9755,4 +9773,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-24T18:05:11.244414592Z"
+generated: "2023-07-27T13:02:27.17432581Z"
