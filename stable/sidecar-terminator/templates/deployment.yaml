@@ -8,7 +8,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "sidecar-terminator.fullname" . }}
+      {{- include "sidecar-terminator.selectorLabels" . | nindent 6 }}
   strategy: {}
   template:
     metadata:
@@ -31,8 +31,20 @@ spec:
       - image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         name: sidecar-terminator
         args:
-          - '--lock-namespace'
-          - {{ .Release.Namespace }}
+          - '--lock-namespace={{ .Release.Namespace }}'
+          {{- with .Values.sidecarTerminator.namespaces }}
+          {{- range . }}
+          - --namespaces={{ . }}
+          {{- end }}
+          {{- end }}
+          {{- with .Values.sidecarTerminator.sidecars }}
+          {{- range . }}
+          - --sidecars={{ .name }}{{ if .signalNumber }}={{ .signalNumber }}{{ end }}
+          {{- end }}
+          {{- end }}
+          {{- with .Values.sidecarTerminator.terminatorImage }}
+          - --terminator-image={{ . }}
+          {{- end }}
         resources:
           requests:
             cpu: {{ .Values.resources.requests.cpu }}
