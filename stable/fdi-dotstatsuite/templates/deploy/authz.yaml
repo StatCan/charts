@@ -105,7 +105,7 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-common
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
             - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force $(NO_DBA_SCRIPTS)
       {{- end }}

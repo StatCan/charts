@@ -148,7 +148,7 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-read-only
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
             - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(RESET_STRUCTURE_USER) --loginPwd $(RESET_STRUCTURE_PASSWORD) --force --dropDb --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD} $(NO_DBA_SCRIPTS)
       {{- end }}
