@@ -73,13 +73,13 @@ gateway:
           privateKey: sds
           serverCertificate: sds
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: statcan/ingress-istio-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: "v1.0.0"
+  # tag: "v1.4.0"
 
 imagePullSecrets: {}
 

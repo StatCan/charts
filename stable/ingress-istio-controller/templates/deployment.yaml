@@ -65,6 +65,15 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: "LOCK_IDENTITY"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: "LOCK_NAMESPACE"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
