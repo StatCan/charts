@@ -10,5 +10,5 @@ roleRef:
   name: {{ include "ingress-istio-controller.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "ingress-istio-controller.fullname" . }}
+  name: {{ include "ingress-istio-controller.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
