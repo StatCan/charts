@@ -14,7 +14,7 @@ rules:
 - apiGroups:
   - coordination.k8s.io
   resourceNames:
-  - istio-ingress-controller # lock-name configuration
+  - ingress-istio-controller # lock-name configuration
   resources:
   - leases
   verbs:
