@@ -3067,6 +3067,27 @@ entries:
     version: 0.0.1
   ingress-istio-controller:
   - apiVersion: v2
+    appVersion: 1.4.0
+    created: "2023-11-03T13:02:15.242395111Z"
+    description: An Ingress controller for Istio which converts Kubernetes Ingresses
+      into VirtualServices.
+    digest: 5ccedf9a3d71104d220c1a8c5ad886ead8a84cf6d3eb1e395faa28944dc42ca1
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: Zachary Seguin
+    - email: justin.bertrand@canada.ca
+      name: Justin Bertrand
+    name: ingress-istio-controller
+    sources:
+    - https://github.com/StatCan/ingress-istio-controller
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/ingress-istio-controller-1.3.0/ingress-istio-controller-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
     appVersion: v1.3.2
     created: "2023-01-03T20:54:50.770521411Z"
     description: An Ingress controller for Istio which converts Kubernetes Ingresses
@@ -9894,4 +9915,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-02T15:39:50.082584019Z"
+generated: "2023-11-03T13:02:15.244546926Z"
