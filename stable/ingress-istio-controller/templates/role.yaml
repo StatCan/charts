@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "ingress-istio-controller.fullname" . }}
+  labels:
+    {{- include "ingress-istio-controller.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+- apiGroups:
+  - coordination.k8s.io
+  resourceNames:
+  - ingress-istio-controller # lock-name configuration
+  resources:
+  - leases
+  verbs:
+  - get
+  - update
+  - watch
+  - patch
