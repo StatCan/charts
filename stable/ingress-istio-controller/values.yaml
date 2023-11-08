@@ -97,6 +97,9 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
+## PriorityClassName indicates the Pod priority and hence importance of a Pod relative to other Pods.
+priorityClassName: ""
+
 securityContext: {}
   # capabilities:
   #   drop:
