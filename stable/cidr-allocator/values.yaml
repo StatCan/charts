@@ -1,0 +1,104 @@
+# -- number of replicas to create for the controller
+replicaCount: 2
+
+# -- enable webhooks for validation of `CIDRAllocation` CRs
+# -- if not set, will be 'false'
+webhooksEnabled: false
+
+image:
+  # -- the source image repository
+  repository: statcan/cidr-allocator
+  # -- the image pull policy
+  # -- can be one of "Always", "IfNotPresent", "Never"
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion.
+  # tag: "v0.4.2"
+
+# -- specifies credentials for a private registry to pull source image
+imagePullSecrets: []
+  # - name: image-pull-secret-name
+
+# -- override name
+nameOverride: ""
+# -- override full name
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+## PriorityClassName indicates the Pod priority and hence importance of a Pod relative to other Pods.
+priorityClassName: ""
+
+# -- the pod security context which defines privilege and access control settings for the controller Pod
+securityContext:
+  runAsNonRoot: true
+
+podLabels: {}
+podAnnotations: {}
+
+rbac:
+  # -- Specifies whether RBAC resources should be created (recommended)
+  create: true
+
+# -- resource limits/requests for created resources
+resources: {}
+  # limits:
+  #   cpu: 400m
+  #   memory: 500Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 100Mi
+
+# -- any additional environment vars to pass to container (manager)
+envVars: []
+
+# -- node selector to apply to scheduling of pods
+nodeSelector: {}
+  # kubernetes.io/os: linux
+
+# -- specifies configuration for prometheus integration
+prometheus:
+  # -- specifies whether to enable prometheus metrics export via a ServiceMonitor
+  enabled: false
+  # -- used for both port and target for metrics-related services
+  port: 9003
+  # -- path used to get metrics from operator
+  path: "/metrics"
+
+  # -- Scrape interval. If not set, the Prometheus default scrape interval is used.
+  interval: "60s"
+  # -- the metrics endpoint scheme
+  scheme: https
+  # -- the metrics scaping timeout
+  scrapeTimeout: 30s
+
+# -- a list of node tolerations to apply to the deployment
+tolerations:
+  - operator: Exists
+#  - key: CriticalAddonsOnly
+#    operator: Exists
+#  - key: node.cloudprovider.kubernetes.io/shutdown
+#    operator: Exists
+#  - key: node.kubernetes.io/not-ready
+#    operator: Exists
+#  - key: node.kubernetes.io/unschedulable
+#    operator: Exists
+#  - key: node.kubernetes.io/network-unavailable
+#    operator: Exists
+
+# -- any particular affinities to apply to the created deployment
+affinity: {}
+  # podAntiAffinity:
+  #   preferredDuringSchedulingIgnoredDuringExecution:
+  #   - weight: 1
+  #     podAffinityTerm:
+  #       topologyKey: kubernetes.io/hostname
+  #       labelSelector:
+  #         matchLabels:
+  #           app.kubernetes.io/name: cidr-allocator

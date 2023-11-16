@@ -1,0 +1,130 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.1
+  labels:
+    app.kubernetes.io/managed-by: helm
+    helm.sh/chart: cidr-allocator-1.0.2
+    app.kubernetes.io/name: cidr-allocator
+  creationTimestamp: null
+  name: nodecidrallocations.networking.statcan.gc.ca
+spec:
+  group: networking.statcan.gc.ca
+  names:
+    kind: NodeCIDRAllocation
+    listKind: NodeCIDRAllocationList
+    plural: nodecidrallocations
+    singular: nodecidrallocation
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: NodeCIDRAllocation creation timestamp
+      jsonPath: .metadata.creationTimestamp
+      name: Created
+      type: date
+    - description: NodeCIDRAllocation Address Pools
+      jsonPath: .spec.addressPools
+      name: Pools
+      type: string
+    - description: NodeCIDRAllocation NodeSelector value
+      jsonPath: .spec.nodeSelector
+      name: NodeSelector
+      type: string
+    - description: Current NodeCIDRAllocation resource Health
+      jsonPath: .status.health
+      name: Health
+      type: string
+    - description: Expected number of Node allocations
+      jsonPath: .status.expected
+      name: Expected
+      type: integer
+    - description: Completed Node allocations
+      jsonPath: .status.completed
+      name: Completed
+      type: integer
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: This is a CRD that defines a NodeCIDRAllocation resource which
+          allows for the allocation of node pod ranges to be assigned to nodes in
+          a cluster. This is implemented using a list of network CIDRs as blocks of
+          available address space that can be allocated to nodes using a node selector
+          to filter the nodes upon which to apply the Pod CIDRs.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NodeCIDRAllocationSpec defines the desired state of NodeCIDRAllocation
+              This CRD defines an allocation of Node Pod ranges to be assigned to
+              nodes in the cluster
+            properties:
+              addressPools:
+                description: AddressPools represents a list of basic address pools
+                  in the form of a list of network CIDRs that can be allocated to
+                  nodes running in the cluster. These pools exist as a base subnet
+                  for the allocation of dynamically sized and positioned podCIDRs
+                  which will be applied to Nodes that match the provided node selector
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              nodeSelector:
+                additionalProperties:
+                  type: string
+                description: 'NodeSelector represents a Kubernetes node selector to
+                  filter nodes from the cluster for which to apply Pod CIDRs onto.
+                  NOTE: Nodes that are selected through the node selector MUST specify
+                  a maximum number of pods in order to help identify the correct size
+                  for the NodeCIDRAllocation Controller to allocate to it. If none
+                  is specified a subnet WILL NOT be allocated for the Node.'
+                type: object
+                x-kubernetes-map-type: atomic
+            type: object
+          status:
+            description: NodeCIDRAllocationStatus defines the observed state of NodeCIDRAllocation
+              Nodes matching the supplied .Spec.NodeSelector are tracked by watching
+              *corev1.Node resources in the cluster Actual state in the cluster is
+              calculated at runtime using information from the matching Node resources
+              The Status for NodeCIDRAllocation will be used for reporting purposes
+              ONLY and may not always be up-to-date with the actual state of the cluster
+            properties:
+              completed:
+                description: CompletedAllocations tracks the total number of Nodes
+                  being tracked that have successfully completed a CIDR allocation
+                  using this NodeCIDRAllocation resource
+                format: int32
+                type: integer
+              expected:
+                description: ExpectedAllocations tracks the total number of Nodes
+                  being tracked for CIDR allocations using this NodeCIDRAllocation
+                  resource
+                format: int32
+                type: integer
+              health:
+                description: 'Health represents the current health of the NodeCIDRAllocation
+                  resource Health status can be one of: v1alpha1.HealthStatusHealthy       -
+                  Represents a NodeCIDRAllocation resource that has performed all
+                  allocations and none have failed or are in a failing state v1alpha1.HealthStatusProgressing   -
+                  Represents a NodeCIDRAllocation resource that is progressing or
+                  otherwise does not have a determined health state v1alpha1.HealthStatusUnhealthy     -
+                  Represents a NodeCIDRAllocation resource that is currently tracking
+                  failed node allocations or failure to calculate the correct state
+                  of the cluster'
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

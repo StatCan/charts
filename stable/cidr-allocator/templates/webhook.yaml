@@ -1,0 +1,44 @@
+{{- if .Values.webhooksEnabled }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  labels:
+    {{- include "cidr-allocator.labels" . | nindent 4 }}
+  name: {{ include "cidr-allocator.fullname" . }}-webhook
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: {{ include "cidr-allocator.fullname" .}}-webhook
+      path: /validate-networking-statcan-gc-ca-v1alpha1-NodeCIDRAllocation
+  failurePolicy: Fail
+  name: vNodeCIDRAllocation.kb.io
+  rules:
+  - apiGroups:
+    - networking.statcan.gc.ca
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - NodeCIDRAllocations
+  sideEffects: None
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "cidr-allocator.labels" . | nindent 4 }}
+  name: {{ include "cidr-allocator.fullname" .}}-webhook
+spec:
+  ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 9443
+  selector:
+    {{- include "cidr-allocator.selectorLabels" . | nindent 4 }}
+{{- end }}
