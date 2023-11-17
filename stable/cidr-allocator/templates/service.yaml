@@ -1,0 +1,18 @@
+{{- if .Values.prometheus.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "cidr-allocator.labels" . | nindent 4 }}
+  name: {{ include "cidr-allocator.fullname" . }}
+spec:
+  # make service headless
+  clusterIP: "None"
+  ports:
+  - name: "tcp-{{ include "cidr-allocator.fullname" . }}-servicemonitor"
+    port: {{ .Values.prometheus.port }}
+    targetPort: {{ .Values.prometheus.port }}
+    protocol: TCP
+  selector:
+    {{- include "cidr-allocator.selectorLabels" . | nindent 4 }}
+{{- end }}

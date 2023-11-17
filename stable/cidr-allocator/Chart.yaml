@@ -1,0 +1,13 @@
+apiVersion: v2
+name: cidr-allocator
+home: https://statcan.gc.ca
+description: A Helm chart to deploy the STATCAN CIDR-Allocator Controller and CRDs to a Kubernetes Cluster
+type: application
+keywords:
+  - Kubernetes
+  - Networking
+  - Node
+
+version: 1.0.2
+kubeVersion: ">= 1.16.0-0"
+appVersion: "v0.4.2"
