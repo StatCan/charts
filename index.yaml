@@ -611,6 +611,24 @@ entries:
     urls:
     - https://statcan.github.io/charts/cert-manager-istio-controller-0.1.0.tgz
     version: 0.1.0
+  cidr-allocator:
+  - apiVersion: v2
+    appVersion: v0.4.2
+    created: "2023-11-17T15:23:27.863564148Z"
+    description: A Helm chart to deploy the STATCAN CIDR-Allocator Controller and
+      CRDs to a Kubernetes Cluster
+    digest: 3aa8ba9845694c3dae84d59fb7252e67485c69b766d3014f6dc23a5f7352d7ed
+    home: https://statcan.gc.ca
+    keywords:
+    - Kubernetes
+    - Networking
+    - Node
+    kubeVersion: '>= 1.16.0-0'
+    name: cidr-allocator
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/cidr-allocator-1.0.2/cidr-allocator-1.0.2.tgz
+    version: 1.0.2
   ckan:
   - apiVersion: v2
     appVersion: 2.9.5
@@ -9946,4 +9964,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-14T14:12:55.86862255Z"
+generated: "2023-11-17T15:23:28.032103018Z"
