@@ -26,13 +26,9 @@ A Helm chart that deploys ArgoCD Operator. The ArgoCD Operator manages ArgoCD in
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| operator | object | `{"affinity":{},"extraEnv":[],"image":{"pullPolicy":"IfNotPresent","repository":"quay.io/argoprojlabs/argocd-operator","tag":"v0.4.0"},"imagePullSecrets":[],"nodeSelector":{},"nsClusterConfig":"","nsToWatch":"argo-cd-system","podAnnotations":{},"podLabels":{},"replicaCount":1,"resources":{"requests":{"cpu":"200m","ephemeral-storage":"500Mi","memory":"256Mi"}},"securityContext":{"fsGroup":1000,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000},"tolerations":[]}` | Configuration options for the operator component of this chart |
 | operator.affinity | object | `{}` | A more expressive way to constrain ArgoCD controller Pods to specific nodes |
 | operator.extraEnv | list | `[]` | A list of environment objects used to inject additional environment variables into the controller pod |
 | operator.image | object | `{"pullPolicy":"IfNotPresent","repository":"quay.io/argoprojlabs/argocd-operator","tag":"v0.4.0"}` | Configures the image to use for the argocd-operator pod(s) |
-| operator.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| operator.image.repository | string | `"quay.io/argoprojlabs/argocd-operator"` | Source image repository |
-| operator.image.tag | string | `"v0.4.0"` | Source image version/reference tag |
 | operator.imagePullSecrets | list | `[]` | One or many secret(s), that store Docker credentials that are used for accessing a private image registry |
 | operator.nodeSelector | object | `{}` | Constrain ArgoCD controller Pods to be scheduled to nodes with specific labels |
 | operator.nsClusterConfig | string | `""` | List of namespaces of cluster-scoped Argo CD instances |
