@@ -1,7 +1,7 @@
 apiVersion: v2
-description: A Helm chart for ArgoCD Operator
+description: A Helm chart that deploys ArgoCD Operator. The ArgoCD Operator manages ArgoCD installation and components
 name: argocd-operator
-version: 0.4.1
+version: 0.5.0
 appVersion: v0.4.0
 type: application
 keywords:
@@ -17,4 +17,3 @@ maintainers:
   email: william.hearn@canada.ca
 - name: zachomedia
   email: zachary.seguin@canada.ca
-engine: gotpl
