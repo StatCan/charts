@@ -282,6 +282,30 @@ entries:
   argocd-operator:
   - apiVersion: v2
     appVersion: v0.4.0
+    created: "2023-11-28T20:04:26.687785906Z"
+    description: A Helm chart that deploys ArgoCD Operator. The ArgoCD Operator manages
+      ArgoCD installation and components
+    digest: 9b6166c1f5825899859e5380b8402102838987959852b9d872f07b6287ee42dd
+    home: https://argocd-operator.readthedocs.io/
+    icon: https://raw.githubusercontent.com/argoproj-labs/argocd-operator/master/deploy/argo-cd/icon.png
+    keywords:
+    - argocd
+    - cd
+    - gitops
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: zachomedia
+    name: argocd-operator
+    sources:
+    - https://github.com/argoproj-labs/argocd-operator
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/argocd-operator-0.5.0/argocd-operator-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: v0.4.0
     created: "2022-09-27T18:22:11.070551667Z"
     description: A Helm chart for ArgoCD Operator
     digest: fa77b85caaef007b3d6c5f12e82f634ce47529cded082ce80397391f20f9c90f
@@ -9989,4 +10013,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-27T13:45:24.612807528Z"
+generated: "2023-11-28T20:04:26.834724329Z"
