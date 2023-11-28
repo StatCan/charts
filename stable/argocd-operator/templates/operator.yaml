@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "argocd-operator"
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "argocd-operator.labels" . | nindent 4 }}
@@ -43,8 +43,8 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "argocd-operator"
-            {{- if .Values.operator.extraEnv }}
-            {{- toYaml .Values.operator.extraEnv | nindent 12 }}
+            {{- with .Values.operator.extraEnv }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
           resources:
             {{- toYaml .Values.operator.resources | nindent 12 }}
