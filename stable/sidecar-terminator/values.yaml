@@ -15,6 +15,9 @@ imagePullSecrets: {}
 nameOverride: ""
 fullnameOverride: ""
 
+## PriorityClassName indicates the Pod priority and hence importance of a Pod relative to other Pods.
+priorityClassName: ""
+
 serviceAccount:
   # Annotations to add to the service account
   annotations: {}
