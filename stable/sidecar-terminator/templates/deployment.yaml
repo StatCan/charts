@@ -2,15 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "sidecar-terminator.fullname" . }}
-  {{- with .Values.podAnnotations }}
-  annotations:
-    {{- toYaml . | nindent 8 }}
-  {{- end }}
   labels:
-    {{- include "sidecar-terminator.labels" . | nindent 8 }}
-    {{- with .Values.podLabels }}
-      {{- toYaml . | nindent 8 }}
-    {{- end }}
+    {{- include "sidecar-terminator.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -19,8 +12,15 @@ spec:
   strategy: {}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        app.kubernetes.io/name: {{ include "sidecar-terminator.fullname" . }}
+        {{- include "sidecar-terminator.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
