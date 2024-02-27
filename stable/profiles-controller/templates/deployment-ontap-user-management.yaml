@@ -34,6 +34,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: k8scc01covidacr.azurecr.io/profiles-controller-ontap:test
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - ontap-cvo
           env:
           {{- range $env := .Values.extraEnv }}
             - name: {{ $env.name }}
