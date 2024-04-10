@@ -36,6 +36,8 @@ spec:
         args:
           - '--lock-namespace'
           - {{ .Release.Namespace }}
+          - '--terminator-image'
+          - {{ .Values.terminator.image }}
         resources:
           requests:
             cpu: {{ .Values.resources.requests.cpu }}
