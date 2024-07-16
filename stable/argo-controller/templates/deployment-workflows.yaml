@@ -36,6 +36,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - workflows
+            - -- namespace-admins-role-binding-name={{ required "workflows.args.namespaceAdminsRoleBindingName is required" .Values.workflows.args.namespaceAdminsRoleBindingName }}
+            - -- user-interface-cluster-role-name={{ required "workflows.args.userInterfaceClusterRoleName is required" .Values.workflows.args.userInterfaceClusterRoleName }}
+            - -- argo-workflows-cluster-role-name={{ required "workflows.args.argoWorkflowsClusterRoleName is required" .Values.workflows.args.argoWorkflowsClusterRoleName }}
           env:
             {{- if .Values.storageAccount.existingSecret }}
             - name: ARGO_SECRET_NAME
