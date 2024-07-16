@@ -1,30 +1,40 @@
 # Default values for argocd-operator.
 
 operator:
-  clusterDomain: ""
+  # -- Defines which namespace for the operator to watch for deployment of related argocd components
   nsToWatch: "argo-cd-system"
+  # -- List of namespaces of cluster-scoped Argo CD instances
   nsClusterConfig: ""
+  # -- Configures the image to use for the argocd-operator pod(s)
   image:
     repository: quay.io/argoprojlabs/argocd-operator
     tag: v0.4.0
     pullPolicy: IfNotPresent
+  # -- One or many secret(s), that store Docker credentials that are used for accessing a private image registry
   imagePullSecrets: []
+  # -- Annotations to apply to the argocd controller pods that are deployed as part of this release
   podAnnotations: {}
+  # -- Labels to apply to the argocd controller pods that are deployed as part of this release
   podLabels: {}
-  # extraEnv: []
+  # -- A list of environment objects used to inject additional environment variables into the controller pod
+  extraEnv: []
+  # -- The number of replicas of the ArgoCD controller
   replicaCount: 1
+  # -- Defines privilege and access control settings for the ArgoCD controller Pod or Container
   securityContext:
-    capabilities:
-      drop:
-      - ALL
     runAsUser: 1000
     runAsGroup: 1000
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
     runAsNonRoot: true
     fsGroup: 1000
+  # -- Resource requests and limits to define the allowed compute and storage for each deployment
   resources:
     requests:
       cpu: 200m
       memory: 256Mi
       ephemeral-storage: 500Mi
+  # -- Constrain ArgoCD controller Pods to be scheduled to nodes with specific labels
+  nodeSelector: {}
+  # -- A list of node taints that this deployment should tolerate
+  tolerations: []
+  # -- A more expressive way to constrain ArgoCD controller Pods to specific nodes
+  affinity: {}

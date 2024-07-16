@@ -1,0 +1,16 @@
+{{- if .Values.telemetry.accessLogging.enabled }}
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: {{ include "istio-ingress-gateway.fullname" . }}-access-logging
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "istio-ingress-gateway.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "istio-ingress-gateway.selectorLabels" . | nindent 6 }}
+  accessLogging:
+  - providers:
+    - name: envoy
+{{- end }}

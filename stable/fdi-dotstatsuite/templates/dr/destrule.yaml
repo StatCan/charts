@@ -1,5 +1,5 @@
 {{- if .Values.destinationRule.enabled }}
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: {{ template "dotstatsuite.fullname" . }}

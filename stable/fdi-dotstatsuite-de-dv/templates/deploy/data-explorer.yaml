@@ -1,0 +1,53 @@
+{{- if .Values.dexplorer.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-dexplorer
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-dexplorer
+spec:
+{{- if not .Values.dexplorer.autoscaling.enabled }}
+  replicas: {{ .Values.dexplorer.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-dexplorer
+  template:
+    metadata:
+    {{- with .Values.dexplorer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-dexplorer
+    spec:
+      {{- with .Values.dexplorer.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.dexplorer.serviceAccountName" . }}-dexplorer
+      securityContext:
+        {{- toYaml .Values.dexplorer.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-dexplorer
+          securityContext:
+            {{- toYaml .Values.dexplorer.securityContext | nindent 12 }}
+          image: "{{ .Values.dexplorer.image.repository }}:{{ .Values.dexplorer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.dexplorer.image.pullPolicy }}
+          env:
+          - name: SERVER_PORT
+            value: "80"
+          - name: CONFIG_URL
+            value: "http://{{ .Values.nameOverride }}-config"
+          - name: AUTH_SERVER_URL
+            # value: https://fdi-authz-ccei.dev.cloud.statcan.ca
+            value: "{{ .Values.dexplorer.AuthzServerUrl }}"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/healthcheck
+              port: http
+{{- end -}}

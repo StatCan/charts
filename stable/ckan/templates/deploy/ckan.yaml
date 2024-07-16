@@ -20,6 +20,10 @@ spec:
         app.kubernetes.io/name: {{ include "ckan.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         tier: ckan
+      annotations:
+    {{- with .Values.ckan.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -29,24 +33,24 @@ spec:
       securityContext:
         {{- toYaml .Values.ckan.podSecurityContext | nindent 8 }}
       volumes:
-        - name: ckan-ini-overlay-configmap
+        - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
           configMap:
-            name: ckan-ini-overlay-configmap
-        - name: ckan-prerun-configmap
+            name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
+        - name: {{ include "ckan.fullname" . }}-prerun-configmap
           configMap:
-            name: ckan-prerun-configmap
+            name: {{ include "ckan.fullname" . }}-prerun-configmap
       {{ if .Values.solr.initialize.enabled }}
-        - name: solr-init-configmap
+        - name: solr-{{ include "ckan.fullname" . }}-init-configmap
           configMap:
-            name: solr-init-configmap
-        - name: solr-configset-configmap
+            name: solr-{{ include "ckan.fullname" . }}-init-configmap
+        - name: solr-{{ include "ckan.fullname" . }}-configset-configmap
           configMap:
-            name: solr-configset-configmap
+            name: solr-{{ include "ckan.fullname" . }}-configset-configmap
       {{ end }}
       {{ if .Values.ckan.psql.initialize }}
-        - name: psql-init-configmap
+        - name: psql-{{ include "ckan.fullname" . }}-init-configmap
           configMap:
-            name: psql-init-configmap
+            name: psql-{{ include "ckan.fullname" . }}-init-configmap
       {{ end }}
       {{ if .Values.pgbouncer.enabled }}
         - name: configfiles
@@ -121,7 +125,7 @@ spec:
           env:
 {{- if .Values.solr.enabled }}
           - name: CKAN_SOLR_URL
-            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+            value: http://{{ include "ckan.fullname" . }}-solr-headless:8983/solr/ckancollection
 {{- end }}
           - name: CKAN_SOLR_INIT_NUMSHARDS
             value: "{{ .Values.solr.initialize.numShards }}"
@@ -131,6 +135,7 @@ spec:
             value: "{{ .Values.solr.initialize.maxShardsPerNode }}"
           - name: CKAN_SOLR_INIT_CONFIGSETNAME
             value: "{{ .Values.solr.initialize.configsetName }}"
+  
           command:
           - /bin/bash
           - -c
@@ -143,10 +148,10 @@ spec:
             echo "Solr Initialized"
             sleep infinity
           volumeMounts:
-          - name: solr-init-configmap
+          - name: solr-{{ include "ckan.fullname" . }}-init-configmap
             mountPath: /srv/solr-init
             readOnly: false
-          - name: solr-configset-configmap
+          - name: solr-{{ include "ckan.fullname" . }}-configset-configmap
             mountPath: /srv/solr-configset
             readOnly: false
           - name: ckan-config
@@ -181,7 +186,7 @@ spec:
                 key: psqlMasterPassword
 {{- if .Values.solr.enabled }}
           - name: CKAN_SOLR_URL
-            value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+            value: http://{{ include "ckan.fullname" . }}-solr-headless:8983/solr/ckancollection
 {{- end }}
           - name: CKAN_SQLALCHEMY_URL
             valueFrom:
@@ -222,10 +227,10 @@ spec:
           - name: ckan-config
             mountPath: /srv/app
             readOnly: false
-          - name: psql-init-configmap
+          - name: psql-{{ include "ckan.fullname" . }}-init-configmap
             mountPath: /tmp/psql-init
       {{ end }}
-        - name: {{ .Chart.Name }}
+        - name: {{ include "ckan.name" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -309,7 +314,17 @@ spec:
             - name: CKAN_SITE_URL
               value: {{ .Values.ckan.siteUrl }}
             - name: CKAN_PLUGINS
-              value: {{ .Values.ckan.ckanPlugins }}
+              value: {{ .Values.ckan.ckanPlugins | quote }}
+            - name: CKAN_SCHEMING_DATASETS_SCHEMAS
+              value: {{ .Values.ckan.scheming.dataset_schemas | quote }}
+            - name: CKAN_SCHEMING_PRESETS
+              value: {{ .Values.ckan.scheming.presets | quote }}
+            - name: CKAN_SCHEMING_GROUP_SCHEMAS
+              value: {{ .Values.ckan.scheming.group_schemas | quote }}
+            - name: CKAN_SCHEMING_ORGANIZATION_SCHEMAS
+              value: {{ .Values.ckan.scheming.organization_schemas | quote }}
+            - name: CKAN_SCHEMING_DATASET_FALLBACK
+              value: "{{ .Values.ckan.scheming.dataset_fallback }}"
             - name: CKAN_STORAGE_PATH
               value: {{ .Values.ckan.storagePath }}
             {{- if .Values.external.enabled }}
@@ -345,11 +360,11 @@ spec:
                   key: ckanDatastoreReadUrl
 {{- if .Values.solr.enabled }}
             - name: CKAN_SOLR_URL
-              value: http://{{ .Release.Name }}-solr-headless:8983/solr/ckancollection
+              value: http://{{ include "ckan.fullname" . }}-solr-headless:8983/solr/ckancollection
 {{- end }}
 {{- if .Values.redis.enabled }}
             - name: CKAN_REDIS_URL
-              value: redis://{{ .Release.Name }}-redis-headless:6379/0
+              value: redis://ckan-redis-headless:6379/0
 {{- end }}
             - name: CKANEXT_SPATIAL_SEARCH_BACKEND
               value: {{ .Values.ckan.spatialBackend }}
@@ -376,7 +391,7 @@ spec:
               value: {{ .Values.ckan.smtp.tls }}
             - name: CKAN_SMTP_STARTTLS
               value: {{ .Values.ckan.smtp.starttls | quote }}
-            - name: CKAN__ACTIVITY_STREAMS_EMAIL_NOTIFICATIONS
+            - name: CKAN_ACTIVITY_STREAMS_EMAIL_NOTIFICATIONS
               value: {{ .Values.ckan.activityStreamsEmailNotifications | quote }}
             - name: CKANEXT_ISSUES_SEND_EMAIL_NOTIFICATIONS
               value: {{ .Values.ckan.issues.sendEmailNotifications | quote }}
@@ -395,9 +410,9 @@ spec:
             failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
             timeoutSeconds: {{ .Values.ckan.liveness.timeoutSeconds }}
           volumeMounts:
-          - name: ckan-prerun-configmap
+          - name: {{ include "ckan.fullname" . }}-prerun-configmap
             mountPath: /srv/prerun
-          - name: ckan-ini-overlay-configmap
+          - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
             mountPath: /config/
           - name: ckan-config
             mountPath: /srv/app

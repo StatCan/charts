@@ -1,0 +1,68 @@
+{{- if .Values.config.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-config
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-config
+spec:
+{{- if not .Values.config.autoscaling.enabled }}
+  replicas: {{ .Values.config.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.config.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.config.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.config.serviceAccountName" . }}-config
+      securityContext:
+        {{- toYaml .Values.config.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "dotstatsuite.fullname" . }}-config
+          securityContext:
+            {{- toYaml .Values.config.securityContext | nindent 12 }}
+          image: "{{ .Values.config.image.repository }}:{{ .Values.config.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.config.image.pullPolicy }}
+          env:
+          - name: BUCKET_PROVIDER
+            value: {{ .Values.managed.bucket.provider }}
+          - name: ACCOUNT_NAME
+            valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-account-name
+                  key: accountname
+          - name: ACCOUNT_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.fullnameOverride }}-account-key
+                  key: accountkey
+          - name: CONTAINER_NAME
+            value: {{ .Values.managed.bucket.containername }}
+          - name: I18N_BUCKET
+            value: {{ .Values.managed.bucket.i18n }}
+          - name: ASSETS_BUCKET
+            value: {{ .Values.managed.bucket.assets }}
+          - name: CONFIGS_BUCKET
+            value: {{ .Values.managed.bucket.configs }}
+          - name: DATA_DIR
+            value: {{ .Values.managed.bucket.data_dir }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP          
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: http
+{{- end -}}

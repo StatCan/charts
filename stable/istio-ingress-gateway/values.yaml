@@ -51,6 +51,7 @@ https:
   # Configures a cert-manager Certificate for automated certificate generation.
   certificate:
     # Defines the name of the secret that will contain the certificates.
+    # Will automatically be generated if left blank.
     secretName:
     # Defines list of DNS names for the certificate.
     # Note: The first entry is set as the common name.
@@ -70,3 +71,9 @@ https:
     # Extra labels to add to the ClusterRole
     # Can be used for ClusterRole Aggregation
     labels: {}
+
+# Configures Telemetry on the ingress gateway.
+telemetry:
+  # Enable access logging for the entire mesh
+  accessLogging:
+    enabled: true

@@ -1,0 +1,51 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ .Values.ci_slug }}
+spec:
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  version: {{ .Values.elastic.version }}
+  nodeSets:
+  - config:
+      node.roles: 
+        - master
+        - data
+        - ingest
+      node.store.allow_mmap: false
+    count: 1
+    name: node
+    podTemplate:
+      metadata:
+        annotations:
+          traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
+          traffic.sidecar.istio.io/excludeInboundPorts: "9300"
+      spec:
+        automountServiceAccountToken: true
+        containers:
+          - name: elasticsearch
+            env:
+              - name: ES_JAVA_OPTS
+                value: -Xms4g -Xmx4g
+              # - name: ELASTIC_PASSWORD
+              #   value: "password"
+              
+            resources:
+              limits:
+                cpu: 200m
+                memory: 16Gi
+              requests:
+                cpu: 100m
+                memory: 8Gi
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        storageClassName: default
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.elastic.store }}

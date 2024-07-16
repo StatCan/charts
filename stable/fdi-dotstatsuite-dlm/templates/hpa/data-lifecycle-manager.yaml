@@ -1,0 +1,30 @@
+{{- if .Values.dlm.enabled -}}
+{{- if .Values.dlm.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-dlm
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-dlm
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-dlm
+  minReplicas: {{ .Values.dlm.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.dlm.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.dlm.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.dlm.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.dlm.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.dlm.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end }}
