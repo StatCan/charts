@@ -40,6 +40,11 @@ appImage:
   tag: 0.1.1
   pullPolicy: Always
 
+appImageStaticError:
+  repository: statcan/disclosure-vetting-app
+  tag: 0.1.1
+  pullPolicy: Always
+
 imagePullSecrets:
   name: artifactory-prod
 
@@ -77,8 +82,6 @@ configmodulePy:
   clientSecret: ""
   clientID: ""
   tenantID: ""
-  appReleaseDate: ""
-  appReleaseHash: ""
   appReleaseVersion: ""
   storageAnalystName: ""
   storageResearcherName: ""
@@ -91,7 +94,11 @@ configmodulePy:
   elasticSearchErrorsIndex: ""
   smtpServer: ""
   senderEmail: ""
+  scope: ""
 
+fluentd:
+  elasticSearchVettingErrorIndex: ""
+  elasticSearchVettingLogIndex: ""
 
 entrypointSh:
   name: entrypointsh
@@ -105,6 +112,16 @@ managedIdentityName: "disclosure-vetting"
 service:
   type: ClusterIP
   port: 5000
+
+manifest:
+  host: ""
+  metadataNamespace: ""
+  metadataName: ""
+  gateway: ""
+  destinationRuleHost: ""
+  serviceDestinationStaticError: ""
+  serviceDestinationVetting: ""
+
 
 ingress:
   enabled: true

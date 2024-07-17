@@ -1,0 +1,51 @@
+{{- if .Values.dlm.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-dlm
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-dlm
+spec:
+{{- if not .Values.dlm.autoscaling.enabled }}
+  replicas: {{ .Values.dlm.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-dlm
+  template:
+    metadata:
+    {{- with .Values.dlm.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-dlm
+    spec:
+      {{- with .Values.dlm.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.dlm.serviceAccountName" . }}-dlm
+      securityContext:
+        {{- toYaml .Values.dlm.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-dlm
+          securityContext:
+            {{- toYaml .Values.dlm.securityContext | nindent 12 }}
+          image: "{{ .Values.dlm.image.repository }}:{{ .Values.dlm.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.dlm.image.pullPolicy }}
+          env:
+          - name: SERVER_PORT
+            value: "80"
+          - name: CONFIG_URL
+            value: "http://{{ .Values.nameOverride }}-config"
+          - name: AUTHZ_SERVER_URL
+            #value: "https://fdi-authz-ccei.dev.cloud.statcan.ca/1.1"
+            value: "{{ .Values.dlm.AuthzServerUrl }}"
+          - name: ROBOTS_POLICY
+            value: "no index, no follow"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+{{- end -}}

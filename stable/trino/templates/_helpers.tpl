@@ -62,6 +62,7 @@ Create chart name and version as used by the chart label.
 {{ template "trino.fullname" . }}-catalog
 {{- end -}}
 
+
 {{/*
 Common labels
 */}}
@@ -79,7 +80,6 @@ Selector labels
 */}}
 {{- define "trino.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "trino.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*

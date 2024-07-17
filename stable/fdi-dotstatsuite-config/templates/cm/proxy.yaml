@@ -1,0 +1,16 @@
+{{- if .Values.proxy.enabled -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-proxy-routes
+data:  
+  routes.json: | 
+    [
+        {"host": "keycloak.siscc.org", "target": "http://keycloak-http"},
+        {"host": "sfs-demo.siscc.org", "target": "http://sfs" },
+        {"host": "share-demo.siscc.org", "target": "http://share" },
+        
+        {"host": "sdmx-dlm.dev.cloud.statcan.ca", "target": "http://fdi-dotstatsuite-dlm", "tenant": "default:dlm" },
+        {"host": "sdmx-dexplorer.dev.cloud.statcan.ca", "target": "http://fdi-dotstatsuite-dexplorer", "tenant": "default:de"}
+    ]
+{{- end -}}

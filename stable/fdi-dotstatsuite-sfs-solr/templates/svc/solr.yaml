@@ -1,0 +1,17 @@
+{{- if .Values.solr.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-solr
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-solr
+spec:
+  type: {{ .Values.solr.service.type }}
+  ports:
+    - port: {{ .Values.solr.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http-solr
+  selector:
+    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-solr
+{{- end }}

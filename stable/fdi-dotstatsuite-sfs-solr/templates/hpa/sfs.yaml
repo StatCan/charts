@@ -1,0 +1,30 @@
+{{- if .Values.sfs.enabled -}}
+  {{- if .Values.sfs.autoscaling.enabled }}
+  apiVersion: autoscaling/v2beta1
+  kind: HorizontalPodAutoscaler
+  metadata:
+    name: {{ include "dotstatsuite.fullname" . }}-sfs
+    labels:
+      {{- include "dotstatsuite.labels" . | nindent 4 }}-sfs
+  spec:
+    scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: {{ include "dotstatsuite.fullname" . }}-sfs
+    minReplicas: {{ .Values.sfs.autoscaling.minReplicas }}
+    maxReplicas: {{ .Values.sfs.autoscaling.maxReplicas }}
+    metrics:
+    {{- if .Values.sfs.autoscaling.targetCPUUtilizationPercentage }}
+      - type: Resource
+        resource:
+          name: cpu
+          targetAverageUtilization: {{ .Values.sfs.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.sfs.autoscaling.targetMemoryUtilizationPercentage }}
+      - type: Resource
+        resource:
+          name: memory
+          targetAverageUtilization: {{ .Values.sfs.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+  {{- end }}
+{{- end }}

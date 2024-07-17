@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "profiles-controller.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount.blobcsi }}
   selector:
     matchLabels:
       {{- include "profiles-controller.selectorLabels" . | nindent 6 }}
@@ -28,9 +28,9 @@ spec:
       serviceAccountName: {{ include "profiles-controller.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      volumes:                                 
+      volumes:
         - name: blob-csi-config
-          configMap: 
+          configMap:
             name: {{ include "profiles-controller.fullname" . }}-blob-csi-config
       containers:
         - name: {{ .Chart.Name }}

@@ -30,7 +30,7 @@ spec:
       securityContext:
         {{- toYaml .Values.nsiDesign.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-design
+        - name: {{ include "dotstatsuite.fullname" . }}-design
           securityContext:
             {{- toYaml .Values.nsiDesign.securityContext | nindent 12 }}
           image: "{{ .Values.nsiDesign.image.repository }}:{{ .Values.nsiDesign.image.tag | default .Chart.AppVersion }}"
@@ -40,7 +40,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end }} 
-            {{- if .Values.nsiDesignLog4netConfig.enableConfig }}
+            {{- if .Values.nsiDesign.log4net_config.enabled }}
             - mountPath: "/app/config/log4net.config"
               name: "nsidesign-log4net"
               subPath: "log4net.config"
@@ -116,11 +116,12 @@ spec:
             shareName: {{ .Values.nsiDesign.sdmx_logs.logShareName }}
           name: "sdmx-logs"
         {{- end }}
-        {{- if .Values.nsiDesignLog4netConfig.enableConfig }}
+        {{- if .Values.nsiDesign.log4net_config.enabled }}
         - name: "nsidesign-log4net"
           configMap:
-            name: {{ .Values.nsiDesignLog4netConfig.name }}
+            name: {{ .Values.nsiDesign.log4net_config.name }}
         {{- end }}
+      {{- if .Values.nsiDesign.init_database }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-design-structure
           image: "{{ .Values.nsiDesign.dbup.image.repository }}:{{ .Values.nsiDesign.dbup.image.tag }}"
@@ -129,6 +130,8 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+          - name: NO_DBA_SCRIPTS
+            value: {{ .Values.managed.no_dba_scripts }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -144,9 +147,10 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-read-only
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(DESIGN_STRUCTURE_USER) --loginPwd $(DESIGN_STRUCTURE_PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_STRUCTURE_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --mappingStoreDb --loginName $(DESIGN_STRUCTURE_USER) --loginPwd $(DESIGN_STRUCTURE_PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD} $(NO_DBA_SCRIPTS)
+      {{- end }}
       {{- with .Values.nsiDesign.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

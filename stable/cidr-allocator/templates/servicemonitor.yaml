@@ -1,0 +1,17 @@
+{{- if .Values.prometheus.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "cidr-allocator.labels" . | nindent 4 }}
+  name: {{ include "cidr-allocator.fullname" . }}-servicemonitor
+spec:
+  endpoints:
+    - interval: {{ .Values.prometheus.interval }}
+      path: {{ .Values.prometheus.path }}
+      scrapeTimeout: {{ .Values.prometheus.scrapeTimeout }}
+      targetPort: {{ .Values.prometheus.port }}
+  selector:
+    matchLabels:
+      {{- include "cidr-allocator.selectorLabels" . | nindent 6 }}
+{{- end }}
