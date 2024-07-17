@@ -40,7 +40,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.authzLog4netConfig.enableConfig }}
+            {{- if .Values.authz.log4net_config.enabled }}
             - mountPath: /app/config/log4net.config
               name: authz-log4net
               subPath: log4net.config
@@ -79,11 +79,12 @@ spec:
             shareName: {{ .Values.authz.sdmx_logs.logShareName }}
           name: "sdmx-logs"
         {{- end }}
-        {{- if .Values.authzLog4netConfig.enableConfig }}
+        {{- if .Values.authz.log4net_config.enabled }}
         - name: authz-log4net
           configMap:
-            name: {{ .Values.authzLog4netConfig.name }}
+            name: {{ .Values.authz.log4net_config.name }}
         {{- end }}
+      {{- if .Values.authz.init_database }}
       initContainers:
         - name: {{ .Chart.Name }}-dbup-common
           image: "{{ .Values.authz.dbup.image.repository }}:{{ .Values.authz.dbup.image.tag }}"
@@ -92,6 +93,8 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+          - name: NO_DBA_SCRIPTS
+            value: {{ .Values.managed.no_dba_scripts }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -102,9 +105,10 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-common
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --commonDb --loginName $(COMMON_USER) --loginPwd $(COMMON_PASSWORD) --force $(NO_DBA_SCRIPTS)
+      {{- end }}
       {{- with .Values.authz.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

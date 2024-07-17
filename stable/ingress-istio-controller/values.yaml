@@ -73,13 +73,13 @@ gateway:
           privateKey: sds
           serverCertificate: sds
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: statcan/ingress-istio-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: "v1.0.0"
+  # tag: "1.4.0"
 
 imagePullSecrets: {}
 
@@ -96,6 +96,9 @@ podAnnotations: {}
 
 podSecurityContext: {}
   # fsGroup: 2000
+
+## PriorityClassName indicates the Pod priority and hence importance of a Pod relative to other Pods.
+priorityClassName: ""
 
 securityContext: {}
   # capabilities:

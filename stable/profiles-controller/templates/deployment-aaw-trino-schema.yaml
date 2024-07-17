@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "profiles-controller.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount.trinoschema }}
   selector:
     matchLabels:
       {{- include "profiles-controller.selectorLabels" . | nindent 6 }}
@@ -38,6 +38,10 @@ spec:
             - trino-schema
           env:
             {{- range $env := .Values.extraEnv }}
+            - name: {{ $env.name }}
+              value: "{{ $env.value }}"
+            {{- end }}
+            {{- range $env := .Values.components.trinoschema.env }}
             - name: {{ $env.name }}
               value: "{{ $env.value }}"
             {{- end }}

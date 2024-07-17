@@ -1,0 +1,17 @@
+# Default values for virtual service.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Globals
+nameOverride: "fdi-dotstatsuite-tenants-vs"
+fullnameOverride: "fdi-dotstatsuite-tenants-vs"
+
+
+#virutal service
+vs:
+  name: ""
+  tenant: ""
+  host: ""
+  destination: ""
+  prefix: "/"
+  rewrite: "/"

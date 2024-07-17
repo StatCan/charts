@@ -1,4 +1,8 @@
+{{- if semverCompare "<1.21" .Capabilities.KubeVersion.GitVersion }}
 apiVersion: batch/v1beta1
+{{- else }}
+apiVersion: batch/v1
+{{- end }}
 kind: CronJob
 metadata:
   name: aaw-financial-data-reconciliation-job
@@ -13,6 +17,7 @@ spec:
             app.kubernetes.io/name: aaw-app.name
             app.kubernetes.io/instance: {{ .Release.Name }}
         spec:
+          serviceAccountName: aaw-financial-data-reconciliation
           containers:
           - name: aaw-financial-data-reconciliation-job
             image: "{{ .Values.appImage.repository }}:{{ .Values.appImage.tag }}"
@@ -92,7 +97,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: cronjob-secret
-                  key: storageContainerName                  
-                        
+                  key: storageContainerName
+
           restartPolicy: OnFailure
-         
+

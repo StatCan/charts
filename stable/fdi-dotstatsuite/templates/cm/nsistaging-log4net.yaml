@@ -1,6 +1,101 @@
+{{- if .Values.nsiStaging.log4net_config.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.nsiStagingLog4netConfig.name }}
+  name: {{ .Values.nsiStaging.log4net_config.name }}
 data:
-  log4net.config: {{ .Values.nsiStagingLog4netConfig.data | indent 4 }}
+  log4net.config: |
+    <?xml version="1.0" encoding="utf-8"?>
+    
+    <log4net>
+      <appender name="SystemActivityAppender" type="log4net.Appender.RollingFileAppender">
+        <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-%processid.log"/>
+        <rollingStyle value="Date"/>
+        <datePattern value="yyyyMMdd"/>
+        <maxSizeRollBackups value="10" />
+        <maximumFileSize value="100MB" />
+        <staticLogFileName value="true" />
+        <appendToFile value="true"/>
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%logger|%message|%exception%newline" />
+        </layout>
+        <!--Filter system activity-->
+        <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware">
+        </filter>
+      </appender>
+      <appender name="UserActivityAppender" type="log4net.Appender.RollingFileAppender">
+        <!--Output file -->
+        <file type="log4net.Util.PatternString" value="/app/logs/nsi-ws-user-%processid.log"/>
+        <rollingStyle value="Date"/>
+        <datePattern value="yyyyMMdd"/>
+        <maxSizeRollBackups value="10" />
+        <maximumFileSize value="100MB" />
+        <staticLogFileName value="true" />
+        <appendToFile value="true"/>
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%date|[%thread]|%-5level|%property{log4net:HostName}|%property{Application}|%logger|%property{User}|%message|%exception%newline" />
+        </layout>
+        <!--Log level WARNNING -->
+        <!--Threshold value="INFO" -->
+        <!--Filter user activity-->
+        <!-- <filter type="log4net.Filter.PropertyFilter">
+          <key value="User" />
+          <StringToMatch value="null" />
+          <acceptOnMatch value="false" />
+        </filter> -->
+          <!--<filter type="log4net.Filter.LevelMatchFilter">
+          <LevelToMatch value="INFO" />
+          <acceptOnMatch value="false" />
+        </filter>-->
+      </appender>
+      <appender name="HTTPRequestLogs" type="log4net.Appender.RollingFileAppender">
+        <file type="log4net.Util.PatternString" value="/app/logs/httpRequestLogs.csv"/>
+        <rollingStyle value="Date"/>
+        <maximumFileSize value="100MB" />
+        <maxSizeRollBackups value="10" />
+        <datePattern value="yyyyMMdd"/>
+        <appendToFile value="true"/>
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%d{yyyy-MM-dd HH:mm:ss,fff};|%logger|%property{User}|%property{MemberName}|%P{sourceMember}|%m%n"/>
+        </layout>
+        <filter type="Estat.Sri.Ws.NSIWebServiceCore.LoggingMiddleware">
+        </filter>
+        <Threshold value="INFO"/>
+        <filter type="log4net.Filter.PropertyFilter">
+            <key value="HttpMethod" />
+            <StringToMatch value="GET" />
+            <acceptOnMatch value="false" />
+          </filter>
+          <filter type="log4net.Filter.PropertyFilter">
+            <key value="HttpMethod" />
+            <StringToMatch value="POST" />
+            <acceptOnMatch value="false" />
+          </filter>
+      </appender>
+      <appender name="SQLQueryLoger" type="log4net.Appender.RollingFileAppender">
+        <file value="/app/logs/sql_statement_logging.csv"/>
+        <appendToFile value="false"/>
+        <!-- <lockingModel type="log4net.Appender.FileAppender+MinimalLock" /> -->
+        <rollingStyle value="Size"/>
+        <maximumFileSize value="100MB" />
+        <maxSizeRollBackups value="10" />
+        <datePattern value="yyyyMMdd"/>-->
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%d{ISO8601};%P{elapsed};&quot;%m&quot;;%P{dbparams};%P{sourceMember};%P{sourceFile};%P{sourceLine};%n"/>
+        </layout>
+      </appender>
+      <logger name="org.estat.sri.sqlquerylogger" additivity="false">
+        <!-- Change calue to "INFO" from "OFF" to enable -->
+        <level value="{{ .Values.nsiStaging.log4net_config.log4net_sqlquerylogger_level }}"/>
+        <!-- Uncomment to enable -->
+        <!-- <appender-ref ref="SQLQueryLoger" /> -->
+      </logger>
+      <root>
+        <!-- Options are "ALL", "DEBUG", "INFO", "WARN", "ERROR", "FATAL" and "OFF". -->
+        <level value="{{ .Values.nsiStaging.log4net_config.log4net_root_level }}"/>
+        <appender-ref ref="SystemActivityAppender"/>
+        <appender-ref ref="UserActivityAppender"/>
+        <appender-ref ref="HTTPRequestLogs"/>
+      </root>
+    </log4net>
+{{- end -}}

@@ -1,0 +1,21 @@
+The CIDRAllocation Operator has been installed!
+
+From here, we can configure behaviour using CRs.
+
+An example might look like:
+
+apiVersion: networking.statcan.gc.ca/v1alpha1
+kind: NodeCIDRAllocation
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    app.kubernetes.io/managed-by: helm
+  name: example-allocation
+spec:
+  addressPools:
+    - X.X.X.X/XX
+  nodeSelector:
+    app.kubernetes.io/name: XXXXXXX
+
+Enjoy! :)

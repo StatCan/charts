@@ -1,0 +1,30 @@
+{{- if .Values.solr.enabled -}}
+{{- if .Values.solr.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-solr
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-solr
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-solr
+  minReplicas: {{ .Values.solr.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.solr.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.solr.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.solr.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.solr.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.solr.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end }}

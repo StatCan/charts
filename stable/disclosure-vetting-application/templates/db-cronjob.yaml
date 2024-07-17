@@ -1,4 +1,8 @@
+{{- if semverCompare "<1.21" .Capabilities.KubeVersion.GitVersion }}
 apiVersion: batch/v1beta1
+{{- else }}
+apiVersion: batch/v1
+{{- end }}
 kind: CronJob
 metadata:
   name: db-vetting-job
@@ -48,6 +52,6 @@ spec:
             - name:  {{ include "vetting-app.fullname" . }}-{{ .Values.entrypointSh.name }}
               secret:
                 secretName: {{ include "vetting-app.fullname" . }}-db-cronjob-{{ .Values.entrypointSh.name }}-secret
-                defaultMode: 0755         
+                defaultMode: 0755
           restartPolicy: OnFailure
-         
+

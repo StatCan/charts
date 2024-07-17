@@ -1,0 +1,31 @@
+{{- if and .Values.solr.persistence.enabled (not .Values.solr.persistence.existingClaim) -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+{{- if .Values.solr.persistence.annotations }}
+  annotations:
+{{ toYaml .Values.solr.persistence.annotations | indent 4 }}
+{{- end }}
+  name: {{ include "dotstatsuite.fullname" . }}-solr-pv-claim
+  labels:
+    app.kubernetes.io/name: {{ include "dotstatsuite.name" . }}
+    helm.sh/chart: {{ include "dotstatsuite.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  accessModes:
+    - {{ .Values.solr.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.solr.persistence.size | quote }}
+      {{- if .Values.solr.persistence.iops }}
+      iops: {{ .Values.solr.persistence.iops | quote }}
+      {{- end }}
+{{- if .Values.solr.persistence.storageClass }}
+{{- if (eq "-" .Values.solr.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.solr.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}

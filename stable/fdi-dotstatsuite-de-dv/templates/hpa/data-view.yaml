@@ -1,0 +1,30 @@
+{{- if .Values.dataview.enabled -}}
+{{- if .Values.dataview.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-dataview
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-dataview
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dotstatsuite.fullname" . }}-dataview
+  minReplicas: {{ .Values.dataview.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.dataview.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.dataview.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.dataview.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.dataview.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.dataview.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end }}
