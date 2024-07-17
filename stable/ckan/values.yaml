@@ -11,7 +11,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "ckan"
+fullnameOverride: "ckan-scheming"
 
 ## Configure Ingress resource that allow you to access the Drupal installation
 ## Set up the URL
@@ -44,37 +44,45 @@ extensions:
 
 ## Configuration values for CKAN
 ckan:
-  sysadminName: "ckan_admin"
+  sysadminName: ""
   sysadminPassword: "PasswordHere"
   sysadminApiToken: "replace_this_with_generated_api_token_for_sysadmin"
   sysadminEmail: "admin@domain.com"
   siteTitle: "Site Title here"
   siteId: "site-id-here"
   siteUrl: "http://localhost:5000"
-  ckanPlugins: "stats text_view image_view recline_view harvest ckan_harvester ccei"
+  ckanPlugins: ""
+  scheming:
+    organization_schemas:
+    group_schemas:
+    dataset_schemas:
+    presets:
+    dataset_fallback: false
+    resource_proxy_timeouts: 5
   storagePath: "/var/lib/ckan/default"
   activityStreamsEmailNotifications: "true"
+  activityStreamsEmailNotifications_jobs: "false"
   debug: "false"
   maintenanceMode: "false"
   psql:
     initialize: true
   db:
-    ckanDbName: ckan_default
-    ckanDbUser: ckan_default
-    ckanDbPassword: pass
+    ckanDbName: ""
+    ckanDbUser: ""
+    ckanDbPassword: ""
   datastore:
     RwDbName: datastore_default
     RwDbUser: datastorerw
-    RwDbPassword: pass
+    RwDbPassword: ""
     RoDbName: datastore_default
     RoDbUser: datastorero
-    RoDbPassword: pass
+    RoDbPassword: ""
   spatialBackend: "solr"
   locale:
     offered: "en"
     default: "en"
   datapusherUrl: "http://datapusher-headless:8000"
-  datapusherCallbackUrlBase: http://ckan
+  datapusherCallbackUrlBase: http://ckan-scheming
   smtp:
     server: "smtpServerURLorIP:port"
     user: "smtpUser"
@@ -83,7 +91,7 @@ ckan:
     tls: "enabled"
     starttls: "true"
   issues:
-    sendEmailNotifications: "true"
+    sendEmailNotifications: 'false'
   # ckan.extraEnv -- An array to add extra environment variables
   # For example:
   # extraEnv:
@@ -108,6 +116,9 @@ ckan:
   podSecurityContext: {}
     # fsGroup: 2000
   securityContext: {}
+  podAnnotations: {
+    traffic.sidecar.istio.io/excludeOutboundPorts: '5432'
+  }
     # capabilities:
     #   drop:
     #   - ALL
@@ -141,17 +152,6 @@ ckan:
     name:
 
 ## Configuration values for DataPusher
-datapusher:
-  enabled: true
-  fullnameOverride: datapusher
-  datapusher:
-    maxContentLength: "102400000"
-    chunkSize: "10240000"
-    insertRows: "50000"
-    downloadTimeout: "300"
-    datapusherSslVerify: "False"
-    datapusherRewriteResources: "True"
-    datapusherRewriteUrl: http://ckan
 
 ## Configuration values for Solr
 ## ToDo: Switch to Solr Operator sub-chart
@@ -188,7 +188,7 @@ redis:
     # clientInterface: PhpRedis
   cluster:
     enabled: true
-    slaveCount: 2
+    slaveCount: 1
   sentinel:
     enabled: false
   master:
@@ -240,7 +240,7 @@ postgresql:
 ## Configuration values for PGBouncer
 pgbouncer:
   enabled: false
-  host: pgserver.postgres.database.azure.com
+  host: postgres
   user: username@hostname
   password: password
   poolSize: 50
@@ -253,8 +253,8 @@ external:
   # CKAN DB driver
   driver: pgsql
   port: 5432
-  host: pgserver.postgres.database.azure.com
+  host: ""
   # Credentials
-  database: ckan
+  database: ""
   user: username@hostname
   password: password

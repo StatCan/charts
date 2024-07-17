@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  labels:
+    app: fluentd
+    kubernetes.io/cluster-service: "true"
+data:
+  fluent.conf: |
+    #we send the logs to Elasticsearch
+    <filter **>
+      @type record_transformer
+      <record>
+        cluster {{ .Values.configMap.cluster }}
+        #kuber_namespace ${record["kubernetes"]["namespace_name"]} 
+      </record>
+      
+    </filter>
+    <filter **>
+      @type grep
+      <regexp>
+        key  $.kubernetes.container_name
+        pattern  (^.*dotstatsuite.*$|^.*istio-proxy.*$)
+      </regexp>
+
+      <exclude>
+        key log
+        pattern (^.*xdsproxy.*$|^.*Microsoft.*$|^.*cached.*$|^.*\/health.*$|^.*\/live.*$|^.*Request finished in.*$|^.*Health check.*$|^.*NSIWebServiceCore.*$)
+      </exclude>
+    </filter>
+
+    <match **>
+      @type elasticsearch
+      hosts {{ .Values.elastic.host }}
+      ssl_version TLSv1_2
+      user elastic
+      password password
+      logstash_prefix k8slogsfilter-${$.kubernetes.namespace_name}-${$.kubernetes.container_name} 
+      logstash_format true
+      logstash_dateformat %Y
+      
+      #must have spae after comma
+      <buffer tag, $.kubernetes.namespace_name, $.kubernetes.container_name>
+          @type file
+          path /var/log/fluentd-buffers/kubernetes.system.buffer
+          flush_mode interval
+          retry_type exponential_backoff
+          flush_thread_count 2
+          flush_interval 5s
+          retry_forever
+          retry_max_interval 30
+          overflow_action block
+      </buffer>
+    </match>

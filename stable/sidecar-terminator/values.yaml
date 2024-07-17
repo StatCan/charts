@@ -4,16 +4,27 @@
 
 replicaCount: 1
 
+# Annotations to add to the Pod
+podAnnotations: {}
+# Labels to add to the Pod
+podLabels: {}
+
 image:
-  repository: zachomedia/kubernetes-sidecar-terminator
+  repository: statcan/kubernetes-sidecar-terminator
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets: {}
 
+terminator:
+  image: 'alpine:latest'
+
 nameOverride: ""
 fullnameOverride: ""
+
+## PriorityClassName indicates the Pod priority and hence importance of a Pod relative to other Pods.
+priorityClassName: ""
 
 serviceAccount:
   # Annotations to add to the service account

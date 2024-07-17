@@ -1,8 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  {{- if .Values.server.protb }}
+  name: nginx-conf-protb
+  {{- else }}
   name: nginx-conf
-  namespace: trino-system
+  {{ end }}
 data:
   nginx.conf.tmpl: |
     worker_processes auto;

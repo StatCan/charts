@@ -72,7 +72,7 @@
 # Garbage collection logging is enabled by default. Set the following
 # parameter to "no" to disable garbage collection logging.
 #
-DREMIO_GC_LOGS_ENABLED="no"
+#DREMIO_GC_LOGS_ENABLED="yes"
 
 #
 # The scheduling priority for the server
@@ -97,6 +97,5 @@ DREMIO_GC_LOGS_ENABLED="no"
 #
 #DREMIO_JAVA_CLIENT_EXTRA_OPTS=
 
-# Extra Java options - server only (dremio command)
-#
-#DREMIO_JAVA_SERVER_EXTRA_OPTS=
+# Warning: Do not set DREMIO_JAVA_SERVER_EXTRA_OPTS in dremio-env.
+# Please see the values.yaml extraStartParams for setting additional options for Dremio process startup.

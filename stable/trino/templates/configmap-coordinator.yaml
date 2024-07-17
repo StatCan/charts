@@ -1,7 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  {{- if .Values.server.protb }}
+  name: trino-protb-coordinator
+  {{- else }}
   name: {{ template "trino.coordinator" . }}
+  {{ end }}
   labels:
     app: {{ template "trino.name" . }}
     chart: {{ template "trino.chart" . }}
@@ -31,7 +35,15 @@ data:
     -XX:ReservedCodeCacheSize=512M
     -XX:PerMethodRecompilationCutoff=10000
     -XX:PerBytecodeRecompilationCutoff=10000
+    -XX:+UnlockDiagnosticVMOptions
+    -XX:+UseAESCTRIntrinsics
     -Djdk.nio.maxCachedBufferSize=2000000
+  {{- if not .Values.server.protb }}
+    -Dcom.sun.management.jmxremote=true
+    -Dcom.sun.management.jmxremote.rmi.port=9081
+    -Dcom.sun.management.jmxremote.ssl=false
+    -Dcom.sun.management.jmxremote.authenticate=false
+  {{ end }}
   {{- range $configValue := .Values.additionalJVMConfig }}
     {{ $configValue }}
   {{- end }}
@@ -48,6 +60,10 @@ data:
     query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
     memory.heap-headroom-per-node={{ .Values.server.config.memory.heapHeadroomPerNode }}
     discovery.uri=http://localhost:{{ .Values.service.port }}
+  {{- if not .Values.server.protb }}
+    jmx.rmiregistry.port=9080
+    jmx.rmiserver.port=9081
+  {{ end }}
   {{- range $configValue := .Values.additionalConfigProperties }}
     {{ $configValue }}
   {{- end }}
@@ -64,7 +80,7 @@ data:
   {{- end }}
   exchange-manager.properties: |
     exchange-manager.name={{ .Values.server.exchangeManager.name }}
-    exchange.base-directory={{ .Values.server.exchangeManager.baseDir }}
+    exchange.base-directories={{ .Values.server.exchangeManager.baseDir }}
   {{- range $configValue := .Values.additionalExchangeManagerProperties }}
     {{ $configValue }}
   {{- end }}

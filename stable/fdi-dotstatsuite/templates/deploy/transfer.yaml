@@ -40,7 +40,7 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
-            {{- if .Values.transferLog4netConfig.enableConfig }}
+            {{- if .Values.transfer.log4net_config.enabled }}
             - mountPath: /app/config/log4net.config
               name: transfer-log4net
               subPath: log4net.config
@@ -122,6 +122,8 @@ spec:
               value: "10"
             - name: "DefaultLanguageCode"
               value: "en"
+            - name: "ShowAdvanceDbHealthInfo"
+              value: "false"
             - name: "SmtpHost"
               value: "{{ .Values.managed.smtp.host }}"
             - name: "SmtpPort"
@@ -208,10 +210,6 @@ spec:
             httpGet:
               path: /live
               port: http
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: http
           resources:
             {{- toYaml .Values.transfer.resources | nindent 12 }}
       volumes: 
@@ -221,13 +219,15 @@ spec:
             shareName: {{ .Values.transfer.sdmx_logs.logShareName }}
           name: "sdmx-logs"
         {{- end }}
-        {{- if .Values.transferLog4netConfig.enableConfig }}
+        {{- if .Values.transfer.log4net_config.enabled }}
         - name: transfer-log4net
           configMap:
-            name: {{ .Values.transferLog4netConfig.name }}
+            name: {{ .Values.transfer.log4net_config.name }}
         {{- end }}
+      {{- if .Values.transfer.init_database }}
       initContainers:
-{{- if index .Values.nsiStable.enabled }}        
+        {{- if index .Values.nsiStable.enabled }}
+        {{- if index .Values.nsiStable.init_database }}   
         - name: dbup-{{ template "dotstatsuite.fullname" . }}-stable-data
           image: "{{ .Values.nsiStable.dbup.image.repository }}:{{ .Values.nsiStable.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiStable.dbup.image.pullPolicy }}
@@ -235,6 +235,8 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+          - name: NO_DBA_SCRIPTS
+            value: {{ .Values.managed.no_dba_scripts }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -250,11 +252,13 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-read-only
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(STABLE_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}       
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(STABLE_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD} $(NO_DBA_SCRIPTS)
 {{- end }}     
-{{- if index .Values.nsiReset.enabled }}          
+{{- end }}
+{{- if index .Values.nsiReset.enabled }}    
+{{- if index .Values.nsiReset.init_database }}         
         - name: dbup-{{ template "dotstatsuite.fullname" .  }}-reset-data
           image: "{{ .Values.nsiReset.dbup.image.repository }}:{{ .Values.nsiReset.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiReset.dbup.image.pullPolicy }}
@@ -262,6 +266,8 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+          - name: NO_DBA_SCRIPTS
+            value: {{ .Values.managed.no_dba_scripts }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -277,11 +283,13 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-read-only
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(RESET_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(RESET_DATA_USER) --loginPwd $(PASSWORD) --force --dropDb --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD} $(NO_DBA_SCRIPTS)
 {{- end }}     
-{{- if index .Values.nsiDesign.enabled }}          
+{{- end }}
+{{- if index .Values.nsiDesign.enabled }}    
+{{- if index .Values.nsiDesign.init_database }}       
         - name: dbup-{{ template "dotstatsuite.fullname" .  }}-design-data
           image: "{{ .Values.nsiDesign.dbup.image.repository }}:{{ .Values.nsiDesign.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiDesign.dbup.image.pullPolicy }}
@@ -289,6 +297,8 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+          - name: NO_DBA_SCRIPTS
+            value: {{ .Values.managed.no_dba_scripts }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -304,11 +314,13 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-read-only
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(DESIGN_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(DESIGN_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD} $(NO_DBA_SCRIPTS)
 {{- end }} 
-{{- if index .Values.nsiStaging.enabled }}          
+{{- end }}
+{{- if index .Values.nsiStaging.enabled }}   
+{{- if index .Values.nsiStaging.init_database }}        
         - name: dbup-{{ template "dotstatsuite.fullname" .  }}-staging-data
           image: "{{ .Values.nsiStaging.dbup.image.repository }}:{{ .Values.nsiStaging.dbup.image.tag }}"
           imagePullPolicy: {{ .Values.nsiStaging.dbup.image.pullPolicy }}
@@ -316,6 +328,8 @@ spec:
           - configMapRef:
               name: {{ .Values.fullnameOverride }}-mssql
           env:
+          - name: NO_DBA_SCRIPTS
+            value: {{ .Values.managed.no_dba_scripts }}
           - name: SA_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -331,10 +345,12 @@ spec:
               secretKeyRef:
                 name: {{ .Values.fullnameOverride }}-mssql-read-only
                 key: password
-          command: ['bash', '-c']
+          command: ['sh', '-c']
           args:
-            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --dataDb --loginName $(STAGING_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD}
-{{- end }} 
+            - dotnet DotStat.DbUp.dll upgrade --connectionString "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(SA_USER);Password=$(SA_PASSWORD);" --executionTimeout 1440 --dataDb --loginName $(STAGING_DATA_USER) --loginPwd $(PASSWORD) --force --alterPassword --ROloginName ${READ_ONLY_USER} --ROloginPwd ${READ_ONLY_PASSWORD} $(NO_DBA_SCRIPTS)
+        {{- end }}
+        {{- end }} 
+      {{- end }}
       {{- with .Values.transfer.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

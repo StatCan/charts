@@ -1,6 +1,6 @@
 {{- if .Values.nsiStable.enabled -}}
 {{- if .Values.nsiStable.autoscaling.enabled }}
-apiVersion: autoscaling/v2beta1
+apiVersion: {{ .Values.autoscaling.appversion }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "dotstatsuite.fullname" . }}-stable
@@ -18,13 +18,17 @@ spec:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.nsiStable.autoscaling.targetCPUUtilizationPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.nsiStable.autoscaling.targetCPUUtilizationPercentage }}
   {{- end }}
   {{- if .Values.nsiStable.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.nsiStable.autoscaling.targetMemoryUtilizationPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.nsiStable.autoscaling.targetMemoryUtilizationPercentage }}
   {{- end }}
 {{- end }}
 {{- end -}}

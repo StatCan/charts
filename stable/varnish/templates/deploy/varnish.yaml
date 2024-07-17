@@ -42,7 +42,7 @@ spec:
           - -f
           - /etc/varnish/default.vcl
           - -a
-          - http=:80,HTTP
+          - http=:{{ .Values.service.port }},HTTP
 {{- if .Values.admin.enabled }}
           - -T
           - 0.0.0.0:{{ .Values.admin.port }}
@@ -53,6 +53,8 @@ spec:
           - feature=+http2
           - -s
           - malloc,{{ .Values.memorySize }}
+          - -n
+          - /tmp/varnish_workdir
           volumeMounts:
             - name: varnish-config
               mountPath: /etc/varnish/default.vcl
@@ -67,7 +69,7 @@ spec:
 {{- end }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
 {{- if .Values.admin.enabled }}
             - name: tcp-admin

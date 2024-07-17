@@ -1,7 +1,7 @@
-## MIT License
+MIT License
 
-Copyright (c) Her Majesty the Queen in Right of Canada, as represented by the
-Minister of Statistics Canada, 2021
+Copyright (c) His Majesty the King in Right of Canada, as represented by the
+Minister responsible for Statistics Canada, 2023
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

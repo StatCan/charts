@@ -1,0 +1,63 @@
+{{- if .Values.proxy.enabled -}}
+{{- $fullName := include "dotstatsuite.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-proxy
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-proxy
+spec:
+{{- if not .Values.proxy.autoscaling.enabled }}
+  replicas: {{ .Values.proxy.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.proxy.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.proxy.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.proxy.serviceAccountName" . }}-proxy
+      securityContext:
+        {{- toYaml .Values.proxy.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "dotstatsuite.fullname" . }}-proxy
+          securityContext:
+            {{- toYaml .Values.proxy.securityContext | nindent 12 }}
+          image: "{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.proxy.image.pullPolicy }}
+          volumeMounts:
+            - name: {{ include "dotstatsuite.fullname" . }}-proxy-routes
+              mountPath: /opt/data
+          env:
+          - name: LOGGING_DRIVER
+            value: ""
+          - name: LOGGING_PROJECT_ID
+            value: ""
+          - name: LOGGING_LOGNAME
+            value: ""
+          - name: CONFIG_URL
+            value: "http://{{ $fullName }}-config.daaas.svc.cluster.local"
+          - name: PORT
+            value: "80"
+          ports:
+          - name: readiness-port
+            containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /_healthcheck_
+              port: readiness-port
+      volumes:
+      - name: {{ include "dotstatsuite.fullname" . }}-proxy-routes
+        configMap:
+          name: {{ include "dotstatsuite.fullname" . }}-proxy-routes
+{{- end -}}

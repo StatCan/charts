@@ -1,0 +1,17 @@
+{{- if .Values.destinationrule.enable -}}
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: es
+  namespace: {{.Values.namespace}}
+spec:
+  host: {{.Values.ci_slug}}-es-http.{{.Values.namespace}}.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: DISABLE
+{{- end}}

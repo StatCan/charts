@@ -1,7 +1,7 @@
 name: ckan
 apiVersion: v2
 type: application
-version: 0.0.23
+version: 0.0.26
 appVersion: 2.9.5
 description: CKAN Helm Chart for Kubernetes.
 keywords:
@@ -15,10 +15,8 @@ icon: https://ckan.org/static/img/logo.svg
 sources:
 - https://github.com/drupalwxt/wxt
 maintainers:
-- name: sylus
-  email: william.hearn@canada.ca
-- name: zachomedia
-  email: zachary.seguin@canada.ca
+- name: Jianlong
+  email: jianlong.qian@canada.ca
 engine: gotpl
 dependencies:
   - name: redis

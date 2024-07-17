@@ -1,0 +1,37 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: {{ include "custom-istio-responses.fullname" . }}-503
+  labels:
+    {{- include "custom-istio-responses.labels" . | nindent 4 }}
+spec:
+  configPatches:
+  - applyTo: NETWORK_FILTER
+    match:
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.http_connection_manager
+    patch:
+      operation: MERGE
+      value:
+        name: "envoy.filters.network.http_connection_manager"
+        typed_config:
+          '@type': type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+
+          # https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-msg-extensions-filters-network-http-connection-manager-v3-localreplyconfig
+          local_reply_config:
+            mappers:
+              - filter:
+                  status_code_filter:
+                    comparison:
+                      op: EQ
+                      value:
+                        default_value: 503
+                        runtime_key: key_b
+                status_code: 503
+                body_format_override:
+                  content_type: 'text/html; charset=UTF-8'
+                  text_format: |
+                    {{ .Files.Get "conf/503.html" | nindent 20 }}
+  workloadSelector: {{ toYaml .Values.workloadSelector | nindent 4 }}

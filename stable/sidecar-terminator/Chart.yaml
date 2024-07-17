@@ -5,10 +5,13 @@ description: |-
 name: sidecar-terminator
 version: 1.3.4
 keywords:
-- sidecar-terminator
+- sidecar terminator
+- ephemeral containers
+- sidecars
 sources:
-- https://gitlab.k8s.cloud.statcan.ca/cloudnative/terraform/modules/terraform-kubernetes-sidecar-terminator
+- https://github.com/statcan/kubernetes-sidecar-terminator
 maintainers:
 - name: Mohamed Dahrouj
   email: mohamed.dahrouj@statcan.gc.ca
 home: https://www.statcan.gc.ca
+kubeVersion: ">= 1.23"

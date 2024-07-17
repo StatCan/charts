@@ -1,0 +1,46 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Values.manifest.metadataName }}
+  namespace: {{ .Values.manifest.namespaceName }}
+spec:
+  gateways:
+  - {{ .Values.manifest.gateway }}
+  hosts:
+  - {{ .Values.manifest.host }}
+  http:
+    - match:
+      - uri:
+          prefix: /error
+      route:
+        - destination:
+            host: {{ .Values.manifest.serviceDestinationStaticError }}.svc.cluster.local
+            port:
+              number: 5000
+    - route:
+      - destination:
+          host: {{ .Values.manifest.serviceDestinationVetting }}.svc.cluster.local
+          port:
+            number: 5000
+        weight: 100
+      - destination:
+          host: {{ .Values.manifest.serviceDestinationStaticError }}.svc.cluster.local
+          port:
+            number: 5000
+        weight: 0
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ .Values.manifest.metadataName }}
+  namespace: {{ .Values.manifest.namespaceName }}
+spec:
+  host: {{ .Values.manifest.destinationRuleHost -}}.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: DISABLE

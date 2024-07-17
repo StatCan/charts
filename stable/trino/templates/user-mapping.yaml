@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  {{- if .Values.server.protb }}
+  name: user-mapping-protb-cm
+  {{- else }}
+  name: user-mapping-cm
+  {{ end }}
+data:
+  user-mapping.json: |
+    {
+        "rules": [
+            {
+                "pattern": "^system:serviceaccount:([^:]+):default$",
+                "user": "rohan.katkar@cloud.statcan.ca"
+            }
+        ]
+    }
