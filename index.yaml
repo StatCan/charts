@@ -5159,6 +5159,27 @@ entries:
     version: 0.0.1
   sidecar-terminator:
   - apiVersion: v2
+    appVersion: v2.0.2
+    created: "2024-07-17T18:51:56.165458089Z"
+    description: A chart used for easily configuring kubernetes-sidecar-terminator
+      in a cluster.
+    digest: 0b563ac777d8ddb16322bbf3b1bf4aa9bb0ae7469f6ae009f9153f3de6f00d41
+    home: https://www.statcan.gc.ca
+    keywords:
+    - sidecar terminator
+    - ephemeral containers
+    - sidecars
+    kubeVersion: '>= 1.23'
+    maintainers:
+    - email: mohamed.dahrouj@statcan.gc.ca
+      name: Mohamed Dahrouj
+    name: sidecar-terminator
+    sources:
+    - https://github.com/statcan/kubernetes-sidecar-terminator
+    urls:
+    - https://github.com/StatCan/charts/releases/download/sidecar-terminator-1.3.4/sidecar-terminator-1.3.4.tgz
+    version: 1.3.4
+  - apiVersion: v2
     appVersion: 2.0.0
     created: "2024-04-10T17:18:29.210685305Z"
     description: A chart used for easily configuring kubernetes-sidecar-terminator
@@ -10143,4 +10164,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-18T14:29:53.258919481Z"
+generated: "2024-07-17T18:51:56.167449963Z"
