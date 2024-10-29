@@ -9,6 +9,11 @@ image:
   tag: 2.9
   pullPolicy: IfNotPresent
 
+initContainer:
+  image:
+    repository: busybox
+    tag: latest
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: "ckan-scheming"
@@ -169,10 +174,17 @@ solr:
   image:
     repository: solr
     tag: 8.11.1
+  initContainer:
+    image:
+      repository: busybox
+      tag: latest
   zookeeper:
     replicaCount: 1
     persistence:
       size: 1Gi
+    image:
+      repository: zookeeper
+      tag: 3.5.5
 
 ## Configuration values for the Redis dependency sub-chart
 ## ref: https://github.com/bitnami/charts/blob/master/bitnami/redis/README.md
@@ -245,7 +257,9 @@ pgbouncer:
   password: password
   poolSize: 50
   maxClientConnections: 400
-
+  image:
+    repository: mcr.microsoft.com/azure-oss-db-tools/pgbouncer-sidecar
+    tag: latest
 # Specify an external database
 # Useful for managed offerings from your Cloud Provider
 external:

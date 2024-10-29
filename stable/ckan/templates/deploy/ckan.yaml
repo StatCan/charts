@@ -66,7 +66,7 @@ spec:
       {{ end }}
       initContainers:
       - name: create-production-ini
-        image: busybox
+        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
         command:
         - "sh"
         - "-c"
@@ -82,7 +82,7 @@ spec:
           readOnly: false
       {{- if .Values.ckan.persistence.enabled }}
       - name: set-volume-ownership
-        image: busybox
+        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
         command:
         - "sh"
         - "-c"
@@ -97,7 +97,7 @@ spec:
       containers:
       {{ if .Values.pgbouncer.enabled }}
         - name: pgbouncer
-          image: mcr.microsoft.com/azure-oss-db-tools/pgbouncer-sidecar:latest
+          image: "{{ .Values.pgbouncer.image.repository }}:{{ .Values.pgbouncer.image.tag }}"
           imagePullPolicy: Always
           ports:
             - containerPort: 5432
@@ -135,7 +135,7 @@ spec:
             value: "{{ .Values.solr.initialize.maxShardsPerNode }}"
           - name: CKAN_SOLR_INIT_CONFIGSETNAME
             value: "{{ .Values.solr.initialize.configsetName }}"
-  
+
           command:
           - /bin/bash
           - -c
