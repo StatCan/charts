@@ -5416,6 +5416,24 @@ entries:
   solr:
   - apiVersion: v2
     appVersion: 8.11.1
+    created: "2024-10-29T14:12:40.617647999Z"
+    dependencies:
+    - name: zookeeper
+      repository: ""
+      version: 2.1.4
+    description: A helm chart to install Apache Solr
+    digest: c177f14335e06c9f0dec42330aa6e87282ced278851fc66696f54efbfab8d97c
+    home: http://lucene.apache.org/solr/
+    keywords:
+    - solr
+    name: solr
+    sources:
+    - https://gitbox.apache.org/repos/asf?p=lucene-solr.git
+    urls:
+    - https://github.com/StatCan/charts/releases/download/solr-1.5.9/solr-1.5.9.tgz
+    version: 1.5.9
+  - apiVersion: v2
+    appVersion: 8.11.1
     created: "2022-09-27T18:22:11.89012436Z"
     dependencies:
     - name: zookeeper
@@ -10205,4 +10223,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-18T19:23:00.175104273Z"
+generated: "2024-10-29T14:12:40.620043082Z"
