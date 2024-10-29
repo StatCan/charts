@@ -1,0 +1,15 @@
+dependencies:
+- name: redis
+  repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+  version: 12.10.1
+- name: postgresql
+  repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+  version: 10.2.0
+- name: solr
+  repository: https://statcan.github.io/charts
+  version: 1.5.9
+- name: datapusher
+  repository: https://statcan.github.io/charts
+  version: 1.0.0
+digest: sha256:d569101cc3c6e87e7835523de864f20b61b3a277f3532882b5329874f55bcfec
+generated: "2024-10-29T10:13:51.342967104-04:00"

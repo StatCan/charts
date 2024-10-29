@@ -1,7 +1,7 @@
 name: ckan
 apiVersion: v2
 type: application
-version: 0.0.26
+version: 0.0.27
 appVersion: 2.9.5
 description: CKAN Helm Chart for Kubernetes.
 keywords:
@@ -28,7 +28,7 @@ dependencies:
     repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
     condition: postgresql.enabled
   - name: solr
-    version: 1.5.8
+    version: 1.5.9
     repository: https://statcan.github.io/charts
     condition: solr.enabled
   - name: datapusher
