@@ -41,6 +41,12 @@ image:
   # pullSecrets:
   #   - myRegistryKeySecretName
 
+# Solr initContainer image settings
+initContainer:
+  image:
+    repository: busybox
+    tag: latest
+    pullPolicy: IfNotPresent
 
 # Solr pod liveness
 livenessProbe:
