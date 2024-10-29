@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "ckan.name" . }}-prerun-configmap
+  name: {{ include "ckan.fullname" . }}-prerun-configmap
 data:
   prerun.py: |
 {{ .Files.Get "conf/ckan/prerun.py" | indent 4 }}

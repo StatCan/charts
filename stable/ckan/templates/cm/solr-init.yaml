@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: solr-{{ include "ckan.name" . }}-init-configmap
+  name: solr-{{ include "ckan.fullname" . }}-init-configmap
 data:
   solr-init.py: |
 {{ .Files.Get "conf/solr-init/solr-init.py" | indent 4 }}
