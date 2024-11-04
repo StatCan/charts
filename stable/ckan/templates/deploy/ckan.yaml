@@ -364,7 +364,7 @@ spec:
 {{- end }}
 {{- if .Values.redis.enabled }}
             - name: CKAN_REDIS_URL
-              value: redis://ckan-redis-headless:6379/0
+              value: redis://{{ include "ckan.fullname" . }}-redis-headless:6379/0
 {{- end }}
             - name: CKANEXT_SPATIAL_SEARCH_BACKEND
               value: {{ .Values.ckan.spatialBackend }}
