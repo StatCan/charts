@@ -694,6 +694,46 @@ entries:
   ckan:
   - apiVersion: v2
     appVersion: 2.9.5
+    created: "2024-11-04T22:16:13.790637557Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 12.10.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 10.2.0
+    - condition: solr.enabled
+      name: solr
+      repository: https://statcan.github.io/charts
+      version: 1.5.10
+    - condition: datapusher.enabled
+      name: datapusher
+      repository: https://statcan.github.io/charts
+      version: 1.0.0
+    description: CKAN Helm Chart for Kubernetes.
+    digest: 7de23c2fca3daf4603e72be91b96d6e828251fdbc38d4b3b441ac3080a0b4620
+    home: https://ckan.org/
+    icon: https://ckan.org/static/img/logo.svg
+    keywords:
+    - ckan
+    - http
+    - web
+    - application
+    - python
+    maintainers:
+    - email: jianlong.qian@canada.ca
+      name: Jianlong
+    name: ckan
+    sources:
+    - https://github.com/drupalwxt/wxt
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/ckan-0.0.31/ckan-0.0.31.tgz
+    version: 0.0.31
+  - apiVersion: v2
+    appVersion: 2.9.5
     created: "2024-11-04T21:15:33.003233294Z"
     dependencies:
     - condition: redis.enabled
@@ -10401,4 +10441,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-04T21:15:33.005018125Z"
+generated: "2024-11-04T22:16:13.79250409Z"
