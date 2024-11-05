@@ -266,6 +266,8 @@ pgbouncer:
   image:
     repository: mcr.microsoft.com/azure-oss-db-tools/pgbouncer-sidecar
     tag: latest
+  sslmode: prefer
+
 # Specify an external database
 # Useful for managed offerings from your Cloud Provider
 external:
