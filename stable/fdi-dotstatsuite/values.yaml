@@ -12,14 +12,16 @@ managed:
     authority: ""
     authorizationUrl: ""
     clientId: ""
+    claimsMapping__email: ""
+    claimsMapping__groups: ""
   database:
     server: ""
-    sapassword: ""
-    password: ""
-    sa_user: ""
+    sapassword: "test"
+    password: "test"
+    sa_user: "sdmxadm"
   smtp:
     username: ""
-    password: ""
+    password: "test"
     host: ""
     port: "587"
     enableSsl: "true"
@@ -575,8 +577,8 @@ transfer:
 
   init_database: false
 
-  dataImportTimeOutInMinutes: 30
-  databaseCommandTimeoutInSec: 1800
+  dataImportTimeOutInMinutes: 4800
+  databaseCommandTimeoutInSec: 14400
 
   autoLog2DB: "true"
   autoLog2DBLogLevel: "Notice"
@@ -586,7 +588,8 @@ transfer:
     name: "transfer-log4net"
     log4net_sqlquerylogger_level: "OFF"
     log4net_root_level: INFO
-
+  data_loading_on_server:
+    enabled:
   sdmx_logs:
     enabled: false
     logShareName: "sdmx-logs"

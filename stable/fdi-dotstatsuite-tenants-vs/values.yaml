@@ -3,15 +3,13 @@
 # Declare variables to be passed into your templates.
 
 # Globals
-nameOverride: "fdi-dotstatsuite-tenants-vs"
-fullnameOverride: "fdi-dotstatsuite-tenants-vs"
+nameOverride: "fdi-dotstatsuite-tenants-vss"
+fullnameOverride: "fdi-dotstatsuite-tenants-vss"
 
 
 #virutal service
 vs:
-  name: ""
-  tenant: ""
-  host: ""
-  destination: ""
-  prefix: "/"
-  rewrite: "/"
+  hosts:
+    - ""
+  paths:
+

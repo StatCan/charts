@@ -15,13 +15,13 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.2.21
+version: 0.3.1
 
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 7.2.0
+appVersion: 16.2.0
 # .StatSuite Release version
 # https://gitlab.com/groups/sis-cc/.stat-suite/-/milestones/47#tab-issues
 
@@ -29,10 +29,6 @@ home: https://statcan.gc.ca
 sources:
 - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
 maintainers:
-- name: sylus
-  email: william.hearn@canada.ca
-- name: Zachary Seguin
-  email: zachary.seguin@canada.ca
 - name: Jianlong.qian
   email: jianlong.qian@statcan.gc.ca
 engine: gotpl

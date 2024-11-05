@@ -11,7 +11,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "ckan-scheming"
+fullnameOverride: ""
 
 ## Configure Ingress resource that allow you to access the Drupal installation
 ## Set up the URL
@@ -44,7 +44,7 @@ extensions:
 
 ## Configuration values for CKAN
 ckan:
-  sysadminName: ""
+  sysadminName: "ckan_admin"
   sysadminPassword: "PasswordHere"
   sysadminApiToken: "replace_this_with_generated_api_token_for_sysadmin"
   sysadminEmail: "admin@domain.com"
@@ -56,7 +56,7 @@ ckan:
     organization_schemas:
     group_schemas:
     dataset_schemas:
-    presets:
+    presets: 
     dataset_fallback: false
     resource_proxy_timeouts: 5
   storagePath: "/var/lib/ckan/default"
@@ -64,19 +64,26 @@ ckan:
   activityStreamsEmailNotifications_jobs: "false"
   debug: "false"
   maintenanceMode: "false"
+  backup:
+    adminuser: ""
+    enabled: true
+    shareName: ""
+    azurestorageaccountname: ""
+    azurestorageaccountkey: ""
+
   psql:
     initialize: true
   db:
-    ckanDbName: ""
-    ckanDbUser: ""
-    ckanDbPassword: ""
+    ckanDbName: ckan
+    ckanDbUser: ckan
+    ckanDbPassword: password
   datastore:
     RwDbName: datastore_default
     RwDbUser: datastorerw
-    RwDbPassword: ""
+    RwDbPassword: password
     RoDbName: datastore_default
     RoDbUser: datastorero
-    RoDbPassword: ""
+    RoDbPassword: password
   spatialBackend: "solr"
   locale:
     offered: "en"
@@ -145,7 +152,7 @@ ckan:
     # storageClass: "-"
     annotations: {}
     accessMode: ReadWriteOnce
-    size: 8Gi
+    size: 4Gi
   serviceAccount:
     create: false
     annotations: {}
@@ -165,14 +172,20 @@ solr:
     configsetName: ckanConfigSet
   replicaCount: 1
   volumeClaimTemplates:
-    storageSize: 5Gi
+    storageSize: 8Gi
   image:
     repository: solr
-    tag: 8.11.1
+    tag: 9.3.0
   zookeeper:
     replicaCount: 1
     persistence:
       size: 1Gi
+datapusher:
+  image:
+    repository: artifactory.cloud.statcan.ca/docker/keitaro/ckan-datapusher
+    tag: 0.0.17
+  imagePullSecrets:
+    - name: artifactory-prod
 
 ## Configuration values for the Redis dependency sub-chart
 ## ref: https://github.com/bitnami/charts/blob/master/bitnami/redis/README.md
@@ -195,10 +208,14 @@ redis:
     service:
       type: ClusterIP
     disableCommands: []
+    persistence:
+      size: 2Gi
   slave:
     service:
       type: ClusterIP
     disableCommands: []
+    persistence:
+      size: 2Gi
 
 ## Configuration values for the PostgreSQL dependency sub-chart
 ## ref: https://github.com/kubernetes/charts/blob/master/stable/postgresql/README.md
@@ -253,8 +270,8 @@ external:
   # CKAN DB driver
   driver: pgsql
   port: 5432
-  host: ""
+  host: pgserver.postgres.database.azure.com
   # Credentials
-  database: ""
+  database: ckan
   user: username@hostname
   password: password

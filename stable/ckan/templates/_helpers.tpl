@@ -3,7 +3,7 @@
 Expand the name of the chart.
 */}}
 {{- define "ckan.name" -}}
-{{- default .Values.nameOverride .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- default .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
