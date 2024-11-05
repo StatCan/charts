@@ -1,0 +1,13 @@
+{{- if .Values.ckan.backup.enabled }}
+{{- $fullName := include "ckan.fullname" . -}}
+{{- $adminuser := .Values.ckan.backup.adminuser -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "ckan.fullname" . }}-crontabs
+data:
+{{- range $key, $value := .Values.ckan.cronjobs }}
+  {{ $key }}.sh: |
+    {{ $value.command }} -c /srv/app/production.ini -O /app/backup/{{ $fullName }}-{{ $key }}-$(date +%Y-%m-%d).json1.gz -z -u {{ $adminuser }} >> /app/backup/{{ $fullName }}-{{ $key }}-$(date +%Y-%m-%d)-log.txt ;
+{{- end }}
+{{- end }}
