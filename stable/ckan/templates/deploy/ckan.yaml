@@ -33,6 +33,16 @@ spec:
       securityContext:
         {{- toYaml .Values.ckan.podSecurityContext | nindent 8 }}
       volumes:
+        {{- if .Values.ckan.backup.enabled }}
+        - name: "ckan-backup"
+          azureFile:
+            secretName: {{ include "ckan.fullname" . }}-ckan-backup-secret
+            shareName: {{ .Values.ckan.backup.shareName }}
+        - name: {{ include "ckan.fullname" . }}-crontabs
+          configMap:
+            name: {{ include "ckan.fullname" . }}-crontabs
+            defaultMode: 0755
+        {{- end }}
         - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
           configMap:
             name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
@@ -66,7 +76,7 @@ spec:
       {{ end }}
       initContainers:
       - name: create-production-ini
-        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+        image: busybox
         command:
         - "sh"
         - "-c"
@@ -82,7 +92,7 @@ spec:
           readOnly: false
       {{- if .Values.ckan.persistence.enabled }}
       - name: set-volume-ownership
-        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+        image: busybox
         command:
         - "sh"
         - "-c"
@@ -97,7 +107,7 @@ spec:
       containers:
       {{ if .Values.pgbouncer.enabled }}
         - name: pgbouncer
-          image: "{{ .Values.pgbouncer.image.repository }}:{{ .Values.pgbouncer.image.tag }}"
+          image: mcr.microsoft.com/azure-oss-db-tools/pgbouncer-sidecar:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5432
@@ -241,6 +251,14 @@ spec:
           - |
             set -e
             source $CKAN_VENV/bin/activate
+            sudo service cron start
+        {{- if .Values.ckan.backup.enabled }}
+            echo "#!/usr/bin/bash" | crontab -
+            (crontab -l ; echo "PATH=/usr/lib/ckan/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin") | crontab -
+        {{- range $key, $value := .Values.ckan.cronjobs }}
+            (crontab -l ; echo {{ $value.crontab | quote }}) | crontab -
+        {{- end }}
+        {{- end }}
             ckan generate config /srv/app/production.ini
             python3 <<EOF | xargs -I{} ckan config-tool /srv/app/production.ini "{}"
             from ckan.config.environment import CONFIG_FROM_ENV_VARS
@@ -255,6 +273,8 @@ spec:
             ckan config-tool /srv/app/production.ini -f /config/production.ini
             ckan -c /srv/app/production.ini db init
             python3 /srv/prerun/prerun.py
+            printenv > /tmp/enviroment
+            sudo bash -c "cat /tmp/enviroment > /etc/environment"
             ckan -c /srv/app/production.ini run --host 0.0.0.0
           ports:
             - name: http
@@ -305,6 +325,8 @@ spec:
                 secretKeyRef:
                   name: {{ include "ckan.fullname" . }}
                   key: sysadminPassword
+            - name: BEAKER_SESSION_SECRET
+              value: {{ .Values.ckan.beaker_session_secret }}
             - name: CKAN_SYSADMIN_EMAIL
               value: {{ .Values.ckan.sysadminEmail }}
             - name: CKAN_SITE_TITLE
@@ -364,7 +386,7 @@ spec:
 {{- end }}
 {{- if .Values.redis.enabled }}
             - name: CKAN_REDIS_URL
-              value: redis://ckan-redis-headless:6379/0
+              value: redis://{{ include "ckan.fullname" . }}-redis-headless:6379/0
 {{- end }}
             - name: CKANEXT_SPATIAL_SEARCH_BACKEND
               value: {{ .Values.ckan.spatialBackend }}
@@ -410,6 +432,12 @@ spec:
             failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
             timeoutSeconds: {{ .Values.ckan.liveness.timeoutSeconds }}
           volumeMounts:
+            {{- if .Values.ckan.backup.enabled}}
+          - mountPath: "/app/backup"
+            name: "ckan-backup"
+          - name: {{ include "ckan.fullname" . }}-crontabs
+            mountPath: /app/
+            {{- end }}
           - name: {{ include "ckan.fullname" . }}-prerun-configmap
             mountPath: /srv/prerun
           - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap

@@ -69,6 +69,12 @@ ckan:
   activityStreamsEmailNotifications_jobs: "false"
   debug: "false"
   maintenanceMode: "false"
+  backup:
+    adminuser: ""
+    enabled: true
+    shareName: ""
+    azurestorageaccountname: ""
+    azurestorageaccountkey: ""
   psql:
     initialize: true
   db:
