@@ -8,8 +8,8 @@ data:
   auth__allowAnonymous: 'true'
   auth__authority: "{{ .Values.managed.azuread.authority }}"
   auth__authorizationUrl: "{{ .Values.managed.azuread.authorizationUrl }}"
-  auth__claimsMapping__email: upn
-  auth__claimsMapping__groups: roles
+  auth__claimsMapping__email: {{ default "upn" .Values.managed.azuread.claimsMapping__email | quote  }}
+  auth__claimsMapping__groups: {{ default "roles" .Values.managed.azuread.claimsMapping__groups | quote  }}
   auth__clientId: "{{ .Values.managed.azuread.clientId }}"
   auth__enabled: 'true'
   auth__requireHttps: 'false'

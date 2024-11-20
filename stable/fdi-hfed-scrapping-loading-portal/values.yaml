@@ -1,0 +1,65 @@
+# Default values for hfed-scrapping-loading.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+## Optionally specify an array of imagePullSecrets.
+## Secrets must be manually created in the namespace.
+## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+##
+nameOverride: "hfed-scrapping-loading-portal"
+fullnameOverride: "hfed-scrapping-loading-portal"
+
+hfed:
+  application_id: ""
+  replicaCount: 1
+  image:
+    repository: artifactory.cloud.statcan.ca/docker/analytics-platform/hfed-scrapping-loading-tools-portal
+    tag: v1.0.0
+    pullPolicy: Always
+  imagePullSecrets:
+    - name: artifactory-prod
+  fdi_azure_account_name_prod: stnmmfdidcm01sa
+  fdi_azure_account_key_prod: ''
+  fdi_azure_filesystems_hfed_name: hfed-hfed
+  client_id: e3ba6109-592b-426a-9cc8-b7b6580501b3
+  client_secret: ''
+  authority_url: https://login.microsoftonline.com/258f1f99-ee3d-42c7-bfc5-7af1b2343e02
+  api_scope: api://fdi-sdmx-prod/.default
+  file_path_root: '/hfed/data'
+  local_file_path_root: '/app/hfed/data'
+  sdmx_transfer_url: https://fdi-transfer-dev.dev.cloud.statcan.ca/2/import/sdmxFile
+  dataspace: 'dev:design-dev'
+  smtp:
+    server: 'email-smtp.ca-central-1.amazonaws.com:587'
+    user: ''
+    password: ''
+    mailFrom: ""
+    mailTo: 'jianlong.qian@statcan.gc.ca'
+    tls: "enabled"
+    starttls: "true"
+  
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}

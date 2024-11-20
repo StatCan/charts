@@ -1,0 +1,80 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "fusionsuite.fullname" . }}-security
+data:
+  fusion-security.properties: | 
+    ######################################################################
+    #     DATABASE CONNECTION                                            #
+    ######################################################################
+    database.security.dialect={{ .Values.managed.security.db_dialect }}
+    database.security.driver={{ .Values.managed.security.db_driver }}
+    database.security.username={{ .Values.managed.security.db_username }}
+    database.security.password={{ .Values.managed.security.db_password }}
+    #database.security.url=jdbc:{{ .Values.managed.security.db_jdbc_type }}://{{ .Values.managed.security.mssql_host }}:{{ .Values.managed.security.mssql_port }};databaseName\={{ .Values.managed.security.db_name }};
+    database.security.url=jdbc:sqlserver://dotstatsuite.database.windows.net:1433;databaseName\={{ .Values.managed.security.db_name }}
+    ######################################################################
+    #     SECURITY (HTTPS PORT REDIRECTION)                              #
+    ######################################################################
+    #Auto Redirect to http:
+    # any - do not auto redirect 
+    # https - auto redirect traffic coming in on http to https, requires port mapping information to be correct
+    requires.channel=any
+
+    #Only required if requires.channel=https
+    port.http=8080
+    port.https=8444
+
+    ######################################################################
+    #     CERTIFICATE AUTHENTICATION                                     #
+    ######################################################################
+    security.p12File=
+    security.p12Pass=
+
+    ######################################################################
+    #     EMAIL SERVER                                                   #
+    ######################################################################
+    mail.smtp={{ .Values.managed.smtp.host }}
+    mail.port={{ .Values.managed.smtp.port }}
+    mail.username={{ .Values.managed.smtp.username }}
+    mail.password={{ .Values.managed.smtp.password }}
+    mail.security=TLS
+    #mail.starttls.enable={{ .Values.managed.smtp.enableSsl }}
+    mail.from={{ .Values.managed.smtp.mailFrom }}
+
+    ######################################################################
+    #     PASSWORD RULES                                                 #
+    ######################################################################
+    security.password.timeouthours=2
+    security.password.disallowed=
+    security.password.minlength=1
+    security.password.minnum=-1
+    security.password.minchar=-1
+    security.password.minlower=-1
+    security.password.minupper=-1
+    security.password.illegalchars=
+    max.login.attempt=3
+    {{- if .Values.fusionapps.ingress.enabled -}}
+     {{- range .Values.fusionapps.ingress.hosts }}
+    ######################################################################
+    #     STRUCTURE WEB SERVICE (ORGANISATION RETRIEVAL)                 #
+    ######################################################################
+    structure.ws=CloudRegistry@https://{{ .host }}/FusionRegistry
+
+    ######################################################################
+    #     GENERAL SETTINGS                                               #
+    ######################################################################
+    server.url=https://{{ .host }}/FusionSecurity
+    {{- end }}
+    {{ else }}
+    ######################################################################
+    #     STRUCTURE WEB SERVICE (ORGANISATION RETRIEVAL)                 #
+    ######################################################################
+    structure.ws=CloudRegistry@https://{{ .Values.managed.host }}:{{ .Values.managed.port }}/FusionRegistry
+
+    ######################################################################
+    #     GENERAL SETTINGS                                               #
+    ######################################################################
+    server.url=https://{{ .Values.managed.host }}:{{ .Values.managed.port }}/FusionSecurity
+
+    {{- end }}
