@@ -50,7 +50,7 @@ autoscaling: &autoscaling
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
-  appversion: "autoscaling/v2" #prod uses autoscaling/v2beta1
+  appversion: "autoscaling/v2"
 
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
@@ -593,7 +593,7 @@ transfer:
     log4net_root_level: INFO
   data_loading_on_server:
     enabled: false
-    path: 
+    path:
   sdmx_logs:
     enabled: false
     logShareName: "sdmx-logs"
