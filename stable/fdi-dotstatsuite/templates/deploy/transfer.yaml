@@ -40,6 +40,10 @@ spec:
             - mountPath: "/app/logs"
               name: "sdmx-logs"
             {{- end}}
+        {{- if .Values.transfer.data_loading_on_server.enabled }}
+            - mountPath: "/app/data"
+              name: "sdmx-loading-path"
+            {{- end}}
             {{- if .Values.transfer.log4net_config.enabled }}
             - mountPath: /app/config/log4net.config
               name: transfer-log4net
@@ -115,15 +119,15 @@ spec:
                   key: password    
             {{- end }} 
             - name: "MaxTransferErrorAmount"
-              value: "0"
+              value: {{ default "10" .Values.transfer.MaxTransferErrorAmount | quote }}
             - name: "MaxTextAttributeLength"
-              value: "150"
+              value: {{ default "150" .Values.transfer.MaxTextAttributeLength | quote }}
             - name: "MinPercentageDiskSpace"
-              value: "10"
+              value: {{ default "10" .Values.transfer.MinPercentageDiskSpace | quote }}
             - name: "DefaultLanguageCode"
-              value: "en"
+              value: {{ default "en" .Values.transfer.DefaultLanguageCode | quote }}
             - name: "ShowAdvanceDbHealthInfo"
-              value: "false"
+              value: {{ default "false" .Values.transfer.ShowAdvanceDbHealthInfo | quote }}
             - name: "SmtpHost"
               value: "{{ .Values.managed.smtp.host }}"
             - name: "SmtpPort"
@@ -146,9 +150,11 @@ spec:
             - name: "SpacesInternal__0__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(STABLE_DATA_USER);Password=$(STABLE_DATA_PASSWORD);"
             - name: "SpacesInternal__0__DataImportTimeOutInMinutes"
-              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
+              value: "{{ default 1440 .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__0__DatabaseCommandTimeoutInSec"
-              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
+              value: "{{ default 18000 .Values.transfer.databaseCommandTimeoutInSec }}"
+            - name: "SpacesInternal__0__NotifyImportBatchSize"
+              value: "{{ default 1000000 .Values.transfer.NotifyImportBatchSize  }}"
             - name: "SpacesInternal__0__AutoLog2DB"
               value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__0__AutoLog2DBLogLevel"
@@ -162,9 +168,11 @@ spec:
             - name: "SpacesInternal__1__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_DATA_DB);User=$(RESET_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
             - name: "SpacesInternal__1__DataImportTimeOutInMinutes"
-              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
+              value: "{{ default 1440 .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__1__DatabaseCommandTimeoutInSec"
-              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
+              value: "{{ default 18000 .Values.transfer.databaseCommandTimeoutInSec }}"
+            - name: "SpacesInternal__1__NotifyImportBatchSize"
+              value: "{{ default 1000000 .Values.transfer.NotifyImportBatchSize  }}"
             - name: "SpacesInternal__1__AutoLog2DB"
               value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__1__AutoLog2DBLogLevel"
@@ -178,9 +186,11 @@ spec:
             - name: "SpacesInternal__2__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(DESIGN_DATA_USER);Password=$(DESIGN_DATA_PASSWORD);"
             - name: "SpacesInternal__2__DataImportTimeOutInMinutes"
-              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
+              value: "{{ default 1440 .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__2__DatabaseCommandTimeoutInSec"
-              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
+              value: "{{ default 18000 .Values.transfer.databaseCommandTimeoutInSec }}"
+            - name: "SpacesInternal__2__NotifyImportBatchSize"
+              value: "{{ default 1000000 .Values.transfer.NotifyImportBatchSize  }}"
             - name: "SpacesInternal__2__AutoLog2DB"
               value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__2__AutoLog2DBLogLevel"
@@ -194,9 +204,11 @@ spec:
             - name: "SpacesInternal__3__DotStatSuiteCoreDataDbConnectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(STAGING_DATA_USER);Password=$(STAGING_DATA_PASSWORD);"
             - name: "SpacesInternal__3__DataImportTimeOutInMinutes"
-              value: "{{ .Values.transfer.dataImportTimeOutInMinutes }}"
+              value: "{{ default 1440 .Values.transfer.dataImportTimeOutInMinutes }}"
             - name: "SpacesInternal__3__DatabaseCommandTimeoutInSec"
-              value: "{{ .Values.transfer.databaseCommandTimeoutInSec }}"
+              value: "{{ default 18000 .Values.transfer.databaseCommandTimeoutInSec }}"
+            - name: "SpacesInternal__3__NotifyImportBatchSize"
+              value: "{{ default 1000000 .Values.transfer.NotifyImportBatchSize  }}"
             - name: "SpacesInternal__3__AutoLog2DB"
               value: "{{ .Values.transfer.autoLog2DB }}"
             - name: "SpacesInternal__3__AutoLog2DBLogLevel"
@@ -218,6 +230,12 @@ spec:
             secretName: {{ .Values.fullnameOverride }}-sdmx-logs-secret
             shareName: {{ .Values.transfer.sdmx_logs.logShareName }}
           name: "sdmx-logs"
+        {{- end }}
+        {{- if .Values.transfer.data_loading_on_server.enabled }}
+        - azureFile: 
+            secretName: {{ .Values.fullnameOverride }}-sdmx-data-loading-secret
+            shareName: {{ .Values.transfer.data_loading_on_server.path }}
+          name: "sdmx-loading-path"
         {{- end }}
         {{- if .Values.transfer.log4net_config.enabled }}
         - name: transfer-log4net

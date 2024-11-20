@@ -1,0 +1,30 @@
+{{- if .Values.fusionapps.enabled -}}
+{{- if .Values.fusionapps.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "fusionsuite.fullname" . }}-fusionapps
+  labels:
+    {{- include "fusionsuite.labels" . | nindent 4 }}-fusionapps
+spec:
+  scaleTargetRef:
+    apiVersion: fusionapps/v1
+    kind: Deployment
+    name: {{ include "fusionsuite.fullname" . }}-fusionapps
+  minReplicas: {{ .Values.fusionapps.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.fusionapps.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.fusionapps.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.fusionapps.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.fusionapps.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.fusionapps.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end -}}

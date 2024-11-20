@@ -1,0 +1,118 @@
+# Default values for sdmxfrontend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Globals
+nameOverride: "fdi-dotstatsuite-keycloak"
+fullnameOverride: "fdi-dotstatsuite-keycloak"
+managed:
+  postgresdb:
+    db_url: "fdickandev.postgres.database.azure.com:5432"
+    db_password: "keycloak"
+    db_username: "keycloak"
+    db_name: "keycloak"
+    db_vendor: "postgres"
+    schema: "postgres"
+
+# Config
+# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
+keycloak:
+  enabled: true
+  replicaCount: 1
+  keycloak_user: "keycloak"
+  keycloak_password: "keycloak"
+  export:
+    enabled: true
+    shareName: "keycloak-keycloak/dev/export"
+    azurestorageaccountname: "tt"
+    azurestorageaccountkey: "tt"
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: sdmx-keycloak.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+  image:
+    #repository: siscc/dotstatsuite-proxy
+    repository: artifactory.cloud.statcan.ca/docker/siscc/dotstatsuite-keycloak
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart version.
+    tag: "yay"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {
+    traffic.sidecar.istio.io/excludeOutboundPorts: '5432'
+  }
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: artifactory-prod
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 4g
+    requests:
+      cpu: 100m
+      memory: 2g
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+destinationRule:
+  enabled: false
+  mode: DISABLE

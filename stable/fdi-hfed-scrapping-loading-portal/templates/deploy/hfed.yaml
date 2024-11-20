@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hfed.fullname" . }}
+  labels:
+    {{- include "hfed.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.hfed.autoscaling.enabled }}
+  replicas: {{ .Values.hfed.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "hfed.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.hfed.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "hfed.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.hfed.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.hfed.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-hfed
+          securityContext:
+            {{- toYaml .Values.hfed.securityContext | nindent 12 }}
+          image: "{{ .Values.hfed.image.repository }}:{{ .Values.hfed.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.hfed.image.pullPolicy }}
+          env:
+          - name: CLIENT_ID
+            value: {{ .Values.hfed.client_id }}
+          - name: CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "hfed.fullname" .}}-client-secret
+                key: password
+          - name: APPLICATION_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "hfed.fullname" . }}-application-id
+                key: application_id
+          - name: AUTHORITY_URL
+            value: {{ .Values.hfed.authority_url }}
+          - name: API_SCOPE
+            value: {{ .Values.hfed.api_scope }}
+          - name: FILE_PATH_ROOT
+            value: {{ .Values.hfed.file_path_root }}
+          - name: LOCAL_FILE_PATH_ROOT
+            value: {{ .Values.hfed.local_file_path_root }}
+          - name: DATASPACE
+            value: {{ .Values.hfed.dataspace }}
+          - name: SDMX_TRANSFER_URL
+            value: {{ .Values.hfed.sdmx_transfer_url }}
+          - name: SMTP_SERVER
+            value: {{ .Values.hfed.smtp.server | quote }}
+          - name: SMTP_USER
+            value: {{ .Values.hfed.smtp.user }}
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "hfed.fullname" . }}-smtp-password
+                key: password
+          - name: SMTP_MAIL_FROM
+            value: {{ .Values.hfed.smtp.mailFrom }}
+          - name: SMTP_MAIL_TO
+            value: {{ .Values.hfed.smtp.mailTo }}
+          - name: SMTP_TLS
+            value: {{ .Values.hfed.smtp.tls }}
+          - name: SMTP_STARTTLS
+            value: {{ .Values.hfed.smtp.starttls | quote }}
+          volumeMounts:
+            - mountPath: "/hfed"
+              name: "hfed-fileshare-volume"
+      volumes:
+        - azureFile:
+            secretName: {{ include "hfed.fullname" . }}-filesystem-secret
+            shareName: {{ .Values.hfed.fdi_azure_filesystems_hfed_name }}
+          name: hfed-fileshare-volume

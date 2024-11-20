@@ -1,0 +1,138 @@
+{{- if .Values.keycloak.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}
+  labels:
+    {{- include "fdi-dotstatsuite-keycloak.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.keycloak.autoscaling.enabled }}
+  replicas: {{ .Values.keycloak.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "fdi-dotstatsuite-keycloak.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.keycloak.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "fdi-dotstatsuite-keycloak.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.keycloak.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "fdi-dotstatsuite-keycloak.keycloak.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.keycloak.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}
+          securityContext:
+            {{- toYaml .Values.keycloak.securityContext | nindent 12 }}
+          image: "{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.keycloak.image.pullPolicy }}
+          # command:
+          # - "sh"
+          # - "-c"
+          # - |
+          #   # 900 is the uid and gid of ckan user/group
+          #   cd /opt/jboss/keycloak/bin/ && \
+          #   ./kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user \$KEYCLOAK_USER --password \$KEYCLOAK_PASSWORD && \
+          #   ./kcadm.sh update realms/master -s sslRequired=NONE
+          volumeMounts:
+      {{- if .Values.keycloak.export.enabled }}
+            - mountPath: "/opt/jboss/export/"
+              name: "keycloak-export"
+      {{- end }}
+            - name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}-import-realm
+              mountPath: /opt/jboss/import/
+          command:
+          - /bin/bash
+          - -c
+          - /opt/keycloak/bin/kc.sh start --spi-connections-jpa-legacy-initialize-empty=false --transaction-xa-enabled=false --log-level=ALL
+          env:
+    {{- range .Values.keycloak.ingress.hosts }}
+          - name: KC_HOSTNAME
+            value: "{{ .host }}"
+        {{- end }}
+          - name: KC_PROXY_ADDRESS_FORWARDING
+            value: "true"
+          - name: KEYCLOAK_LOGLEVEL
+            value: DEBUG
+          - name: KC_PROXY
+            value: "edge"
+          - name: KC_HOSTNAME_STRICT
+            value: "false"
+          - name: KC_HTTP_RELATIVE_PATH
+            value: "/"
+          - name: KC_HOSTNAME_STRICT_HTTPS
+            value: "true"
+          - name: KC_DB
+            value: {{ .Values.managed.postgresdb.db_vendor }}
+          - name: KC_DB_URL
+        {{- if eq .Values.managed.postgresdb.db_vendor "mssql" }}
+            value: "jdbc:sqlserver://{{ .Values.managed.postgresdb.db_url }};database={{ .Values.managed.postgresdb.db_name }};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+        {{- end }}
+          - name: KC_DB_DATABASE
+            value: {{ .Values.managed.postgresdb.db_name }}
+          - name: KC_DB_SCHEMA
+            value: {{ .Values.managed.postgresdb.schema }}
+          - name: KC_DB_USERNAME
+            value: {{ .Values.managed.postgresdb.db_username }}
+          - name: KC_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}-passwords
+                key: db_password     
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}-passwords
+                key: keycloak_password
+          - name: KEYCLOAK_ADMIN
+            value: {{ .Values.keycloak.keycloak_user }}
+          - name: DB_ADDR
+            value: {{ .Values.managed.postgresdb.db_url }}
+          - name: DB_DATABASE
+            value: {{ .Values.managed.postgresdb.db_name }}
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}-passwords
+                key: db_password            
+          - name: DB_SCHEMA
+            value: {{ .Values.managed.postgresdb.schema }}
+          - name: DB_USER
+            value: {{ .Values.managed.postgresdb.db_username }}
+          - name: DB_VENDOR
+            value: {{ .Values.managed.postgresdb.db_vendor }}
+          - name: JDBC_PARAMS
+            value: trustServerCertificate=false;encrypt=false
+          - name: KEYCLOAK_IMPORT
+            value: /opt/jboss/import/realm.json
+          - name: KEYCLOAK_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}-passwords
+                key: keycloak_password
+          - name: KEYCLOAK_USER
+            value: {{ .Values.keycloak.keycloak_user }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP          
+      volumes:
+    {{- if .Values.keycloak.export.enabled }}
+      - name: "keycloak-export"
+        azureFile: 
+          secretName: {{ .Values.fullnameOverride }}-keycloak-export-secret
+          shareName: {{ .Values.keycloak.export.shareName }}
+    {{- end }}
+      - name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}-import-realm
+        configMap:
+          name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}-realm-json
+
+{{- end -}}
