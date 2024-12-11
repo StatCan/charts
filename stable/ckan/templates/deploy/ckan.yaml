@@ -272,6 +272,8 @@ spec:
             echo "Applying the production.ini overlay..."
             ckan config-tool /srv/app/production.ini -f /config/production.ini
             ckan -c /srv/app/production.ini db init
+            printenv > /tmp/enviroment
+            sudo bash -c "cat /tmp/enviroment > /etc/environment"
             python3 /srv/prerun/prerun.py
             ckan -c /srv/app/production.ini run --host 0.0.0.0
           ports:
