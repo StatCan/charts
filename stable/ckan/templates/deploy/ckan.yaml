@@ -33,6 +33,16 @@ spec:
       securityContext:
         {{- toYaml .Values.ckan.podSecurityContext | nindent 8 }}
       volumes:
+        {{- if .Values.ckan.backup.enabled }}
+        - name: "ckan-backup"
+          azureFile:
+            secretName: {{ include "ckan.fullname" . }}-ckan-backup-secret
+            shareName: {{ .Values.ckan.backup.shareName }}
+        - name: {{ include "ckan.fullname" . }}-crontabs
+          configMap:
+            name: {{ include "ckan.fullname" . }}-crontabs
+            defaultMode: 0755
+        {{- end }}
         - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
           configMap:
             name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
@@ -241,6 +251,14 @@ spec:
           - |
             set -e
             source $CKAN_VENV/bin/activate
+            sudo service cron start
+        {{- if .Values.ckan.backup.enabled }}
+            echo "#!/usr/bin/bash" | crontab -
+            (crontab -l ; echo "PATH=/usr/lib/ckan/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin") | crontab -
+        {{- range $key, $value := .Values.ckan.cronjobs }}
+            (crontab -l ; echo {{ $value.crontab | quote }}) | crontab -
+        {{- end }}
+        {{- end }}
             ckan generate config /srv/app/production.ini
             python3 <<EOF | xargs -I{} ckan config-tool /srv/app/production.ini "{}"
             from ckan.config.environment import CONFIG_FROM_ENV_VARS
@@ -254,6 +272,8 @@ spec:
             echo "Applying the production.ini overlay..."
             ckan config-tool /srv/app/production.ini -f /config/production.ini
             ckan -c /srv/app/production.ini db init
+            printenv > /tmp/enviroment
+            sudo bash -c "cat /tmp/enviroment > /etc/environment"
             python3 /srv/prerun/prerun.py
             ckan -c /srv/app/production.ini run --host 0.0.0.0
           ports:
@@ -296,6 +316,8 @@ spec:
             - name: TRANSFER_API_VERSION
               value: {{ .Values.extensions.sdmx.transferApiVersion }}
             {{- end }}
+            - name: BEAKER_SESSION_SECRET
+              value: {{ .Values.ckan.beaker_session_secret }}
             - name: CKAN_CONFIG
               value: /srv/app/
             - name: CKAN_SYSADMIN_NAME
@@ -410,6 +432,12 @@ spec:
             failureThreshold: {{ .Values.ckan.liveness.failureThreshold }}
             timeoutSeconds: {{ .Values.ckan.liveness.timeoutSeconds }}
           volumeMounts:
+            {{- if .Values.ckan.backup.enabled}}
+          - mountPath: "/app/backup"
+            name: "ckan-backup"
+          - name: {{ include "ckan.fullname" . }}-crontabs
+            mountPath: /app/
+            {{- end }}
           - name: {{ include "ckan.fullname" . }}-prerun-configmap
             mountPath: /srv/prerun
           - name: {{ include "ckan.fullname" . }}-ini-overlay-configmap
