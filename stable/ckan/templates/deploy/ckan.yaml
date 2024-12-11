@@ -314,6 +314,8 @@ spec:
             - name: TRANSFER_API_VERSION
               value: {{ .Values.extensions.sdmx.transferApiVersion }}
             {{- end }}
+            - name: BEAKER_SESSION_SECRET
+              value: {{ .Values.ckan.beaker_session_secret }}
             - name: CKAN_CONFIG
               value: /srv/app/
             - name: CKAN_SYSADMIN_NAME
