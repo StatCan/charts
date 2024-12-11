@@ -163,6 +163,10 @@ ckan:
     name:
 
 ## Configuration values for DataPusher
+datapusher:
+  image:
+    repository: artifactory.cloud.statcan.ca/docker/keitaro/ckan-datapusher
+    tag: 0.0.17
 
 ## Configuration values for Solr
 ## ToDo: Switch to Solr Operator sub-chart
