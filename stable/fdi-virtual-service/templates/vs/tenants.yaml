@@ -1,0 +1,40 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "virtualservice.fullname" . }}-virtual-service
+spec:
+  gateways:
+    - ingress-general-system/general-istio-ingress-gateway-https
+  hosts:
+    {{- range .Values.vs.hosts }}
+    - {{ . | quote }}
+    {{- end }}
+  http:
+{{- range $key, $value := .Values.vs.paths }}
+  {{- if or $value.prefix $value.rewrite }}
+    - match:
+    {{- if $value.prefix }}
+        - uri:
+            prefix: {{ $value.prefix | quote }}
+    {{- end }}
+    {{- if $value.rewrite }}
+      rewrite:
+        uri: {{ $value.rewrite | quote }}
+    {{- end }}
+  {{- end }}
+      route:
+        - destination:
+            host: {{ $value.destination | quote }}
+            port:
+{{- if $value.port }}
+              number: {{ $value.port }}
+{{- else }}
+              number: 80
+{{- end }}
+{{- range $header_key, $header_value := $value.headers }}
+          headers:
+            request:
+              set:
+                {{ $header_key }}: {{ $header_value | quote }} 
+{{- end }}
+{{- end }}
