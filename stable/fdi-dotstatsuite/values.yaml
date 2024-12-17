@@ -12,19 +12,24 @@ managed:
     authority: ""
     authorizationUrl: ""
     clientId: ""
+    claimsMapping__email: ""
+    claimsMapping__groups: ""
   database:
     server: ""
-    sapassword: ""
-    password: ""
-    sa_user: ""
+    sapassword: "test"
+    password: "test"
+    sa_user: "sdmxadm"
   smtp:
     username: ""
-    password: ""
+    password: "test"
     host: ""
     port: "587"
     enableSsl: "true"
     mailFrom: ""
   sdmx_log:
+    azurestorageaccountname: ""
+    azurestorageaccountkey: ""
+  sdmx_data:
     azurestorageaccountname: ""
     azurestorageaccountkey: ""
   no_dba_scripts: "--withoutDbaScripts"
@@ -45,7 +50,7 @@ autoscaling: &autoscaling
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
-  appversion: "autoscaling/v2" #prod uses autoscaling/v2beta1
+  appversion: "autoscaling/v2"
 
 # Authz
 # https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/blob/master/staging/authz.yaml
@@ -575,8 +580,8 @@ transfer:
 
   init_database: false
 
-  dataImportTimeOutInMinutes: 30
-  databaseCommandTimeoutInSec: 1800
+  dataImportTimeOutInMinutes: 4800
+  databaseCommandTimeoutInSec: 14400
 
   autoLog2DB: "true"
   autoLog2DBLogLevel: "Notice"
@@ -586,7 +591,9 @@ transfer:
     name: "transfer-log4net"
     log4net_sqlquerylogger_level: "OFF"
     log4net_root_level: INFO
-
+  data_loading_on_server:
+    enabled: false
+    path:
   sdmx_logs:
     enabled: false
     logShareName: "sdmx-logs"

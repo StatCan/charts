@@ -3,18 +3,16 @@
 # Declare variables to be passed into your templates.
 
 # Globals
-nameOverride: "fdi-dotstatsuite-sfs-solr"
-fullnameOverride: "fdi-dotstatsuite-sfs-solr"
+nameOverride:  #{NAME}
+fullnameOverride: #{FULLLNAME}
+
 
 # sfs
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
 sfs:
   enabled: true
-  replicaCount: 1
+  replicaCount: #{REPLICACOUNT}
 
-  solr:
-    host: fdi-dotstatsuite-sfs-solr-solr
-    port: 8983
   ingress:
     enabled: true
     annotations:
@@ -22,7 +20,7 @@ sfs:
       # kubernetes.io/tls-acme: "true"
       kubernetes.io/ingress.class: istio
     hosts:
-      - host: sdmx-sfs.dev.cloud.statcan.ca
+      - host: #{SFS_HOST}
         paths:
           - '/*'
     tls: []
@@ -32,13 +30,13 @@ sfs:
 
   image:
     # repository: siscc/dotstatsuite-data-explorer
-    repository: siscc/dotstatsuite-sdmx-faceted-search
+    repository: #{SFS_RESPOSITORY}
     pullPolicy: Always
     # Overrides the image tag whose default is the chart version.
-    tag: "master"
+    tag: #{SFS_TAG}
   config:
-    host: http://fdi-dotstatsuite-config.dev.cloud.statcan.ca
-  api_key_secret: ""
+    host: #{CONFIG_HOST}
+  api_key_secret: #{API_KEY}
   serviceAccount:
     # Specifies whether a service account should be created
     create: true
@@ -75,7 +73,7 @@ sfs:
   ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   ##
   imagePullSecrets:
-    - name: artifactory-prod
+    - name: #{IMAGE_PULL_SECRET}
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -115,7 +113,7 @@ solr:
       # kubernetes.io/tls-acme: "true"
       kubernetes.io/ingress.class: istio
     hosts:
-      - host: sdmx-solr.dev.cloud.statcan.ca
+      - host: ""
         paths:
           - '/*'
     tls: []
@@ -124,10 +122,10 @@ solr:
     #      - chart-example.local
 
   image:
-    repository: solr
+    repository: #{SOLR_RESPOSITORY}
     pullPolicy: Always
     # Overrides the image tag whose default is the chart version.
-    tag: "8.11.1"
+    tag: #{SOLR_TAG}
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -172,13 +170,13 @@ solr:
     # storageClass: "-"
     annotations: {}
     accessMode: ReadWriteOnce
-    size: 2Gi
+    size: #{SOLR_STORAGE_SZIE}
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
   ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   ##
   imagePullSecrets:
-    - name: registry-pull-secret
+    - name: #{IMAGE_PULL_SECRET}
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -218,7 +216,7 @@ mongo:
       # kubernetes.io/tls-acme: "true"
       kubernetes.io/ingress.class: istio
     hosts:
-      - host: sdmx-mongo.dev.cloud.statcan.ca
+      - host: ""
         paths:
           - '/*'
     tls: []
@@ -227,10 +225,10 @@ mongo:
     #      - chart-example.local
 
   image:
-    repository: artifactory.cloud.statcan.ca/docker/mongo
+    repository: repository: #{MONGO_RESPOSITORY}
     pullPolicy: Always
     # Overrides the image tag whose default is the chart version.
-    tag: "5.0.6"
+    tag: repository: #{MONGO_TAG}
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -242,8 +240,9 @@ mongo:
     name: ""
 
   podAnnotations: {
-    sidecar.istio.io/inject: 'false'
+     sidecar.istio.io/inject: 'false'
   }
+
   podSecurityContext: {}
     # fsGroup: 2000
 
@@ -275,13 +274,13 @@ mongo:
     # storageClass: "-"
     annotations: {}
     accessMode: ReadWriteOnce
-    size: 2Gi
+    size: #{MONGO_STORAGE_SZIE}
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
   ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   ##
   imagePullSecrets:
-    - name: artifactory-prod
+    - name: #{IMAGE_PULL_SECRET}
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -307,8 +306,4 @@ mongo:
   tolerations: []
 
   affinity: {}
-# Destination Rule
-# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
-destinationRule:
-  enabled: false
-  mode: DISABLE
+

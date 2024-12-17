@@ -1,0 +1,18 @@
+
+{{- if .Values.vs.external }}
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ include "virtualservice.fullname" . }}-external-svc
+spec:
+  hosts:
+{{- range .Values.vs.external.hosts }}
+  - {{ .host | quote }}
+  location: MESH_EXTERNAL
+  ports:
+  - number: {{ .port }}
+    name: {{ .name }}
+    protocol: HTTPS
+{{- end }}
+  resolution: DNS
+{{- end }}

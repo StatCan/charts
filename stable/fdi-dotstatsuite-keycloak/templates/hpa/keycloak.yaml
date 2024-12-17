@@ -1,0 +1,30 @@
+{{- if .Values.keycloak.enabled -}}
+{{- if .Values.keycloak.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}
+  labels:
+    {{- include "fdi-dotstatsuite-keycloak.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "fdi-dotstatsuite-keycloak.fullname" . }}
+  minReplicas: {{ .Values.keycloak.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.keycloak.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.keycloak.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.keycloak.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.keycloak.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.keycloak.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}
+{{- end }}

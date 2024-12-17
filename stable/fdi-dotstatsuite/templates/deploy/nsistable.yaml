@@ -82,17 +82,17 @@ spec:
             - name: SQL_PASSWORD
               value: $(STABLE_STRUCTURE_PASSWORD)
             - name: SENDER_ID
-              value: "Stable - DotStat v8"
+              value: {{ default "Stable - DotStat v8" .Values.nsiStable.sender_id | quote }}
             - name: MA_SQL_USER
               value: $(SA_USER)
             - name: MA_SQL_PASSWORD
               value: $(SA_PASSWORD)
             - name: MA_ALWAYS_RESET
-              value: "N"            
+              value: {{ default "N" .Values.nsiStable.reset | quote  }}           
             - name: INSERT_NEW_ITEM_SCHEME_VALUES
-              value: "false"              
+              value: {{ default "false" .Values.nsiStable.allow_insert_new_value | quote }}             
             - name: enableReleaseManagement
-              value: "true"              
+              value: {{ default "true" .Values.nsiStable.enableReleaseManagement | quote }}                
             - name: "mappingStore__Id__Default"
               value: "{{ .Values.nsiStable.dataspace }}"
             - name: disseminationDbConnection__dbType
