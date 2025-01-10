@@ -10,29 +10,27 @@ managed:
     tomcat_password: ""
     tomcat_username: "admin"
   registry:
-    mssql_host: "172.23.224.96"
+    mssql_host: ""
     mssql_port: 1433
     db_dialect: org.hibernate.dialect.SQLServerDialect
     db_driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
     db_jdbc_type: "sqlserver"
     db_username: "sa"
-    #"fusion_register"
-    db_name: "fusion_registry"
+    db_name: ""
     db_password: ""
     encrypt_password: ""
     encrypt_salt: ""
     security_password: ""
     security_username: ""
-  # security:
-  #   mssql_host: "172.23.224.96"
-  #   mssql_port: 1433
-  #   db_dialect: org.hibernate.dialect.SQLServerDialect
-  #   db_driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
-  #   db_jdbc_type: "sqlserver"
-  #   db_username: "sa"
-  #   #"fusion_securitor"
-  #   db_password: ""
-  #   db_name: "fusion_security"
+  security:
+    mssql_host: ""
+    mssql_port: 1433
+    db_dialect: org.hibernate.dialect.SQLServerDialect
+    db_driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    db_jdbc_type: "sqlserver"
+    db_username: "sa"
+    db_password: ""
+    db_name: ""
   host: ""
   port: 8080
   smtp:
