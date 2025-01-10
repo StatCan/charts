@@ -1,0 +1,56 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "fusionsuite.fullname" . }}-registry
+data:
+  fmr.properties: | 
+    database.dialect={{ .Values.managed.registry.db_dialect }}
+    database.driver={{ .Values.managed.registry.db_driver }}
+    database.password={{ .Values.managed.registry.db_password }}
+    database.url=jdbc\:{{ .Values.managed.registry.db_jdbc_type }}\://{{ .Values.managed.registry.mssql_host }}\:{{ .Values.managed.registry.mssql_port }};databaseName\={{ .Values.managed.registry.db_name }}
+    database.useCustomString=false
+    database.username={{ .Values.managed.registry.db_username }}
+    encrypt.password ={{ .Values.managed.registry.encrypt_password }}
+    encrypt.salt ={{ .Values.managed.registry.encrypt_salt }}
+    security.password ={{ .Values.managed.registry.security_password }}
+    security.username ={{ .Values.managed.registry.security_username }}
+  fwb_config.json: |
+        {
+          "Properties": {
+              "server.url": "https://{{ .Values.managed.host }}/fwb"
+          },
+          "Environments": [
+    {{- range $key, $value := .Values.fwb }}
+              {
+                  "id": {{ $key | quote }},
+                  "name": {{ $value.name | quote }},
+                  "api": {
+                      "query": {{ $value.api.query | quote }},
+                      {{- if $value.api.delete }}
+                      "delete": {{ $value.api.delete | quote }},
+                      {{- end }}
+                      {{- if $value.api.persist | quote }}
+                      "persist": {{ $value.api.persist | quote }},
+                      {{- end }}
+                      "version": {{ $value.api.version | quote }}
+                  },
+                  "auth": {{ $value.auth | quote }},
+              {{- if $value.oidc }}
+                  "oidc": {
+                    "config": {{ $value.oidc.config | quote }},
+                    "clientId": {{ $value.oidc.clientId | quote }}
+                    {{- if $value.oidc.scope }}
+                    "scope": {{ $value.oidc.scope | quote }}
+                    {{- end }}                 
+                },
+              {{- end }}  
+                  "locale": [{{ $value.locale }}],
+              {{- if $value.agencies }}
+                  "agencies": [{{ $value.agencies }}],
+              {{- end }} 
+                  "format": {{ $value.format | quote }}
+              },
+    {{- end }}  
+            ]
+        }
+

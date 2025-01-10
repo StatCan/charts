@@ -1,0 +1,76 @@
+{{- if .Values.fusionapps.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fusionsuite.fullname" . }}-fusionapps
+  labels:
+    {{- include "fusionsuite.labels" . | nindent 4 }}-fusionapps
+spec:
+{{- if not .Values.fusionapps.autoscaling.enabled }}
+  replicas: {{ .Values.fusionapps.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "fusionsuite.selectorLabels" . | nindent 6 }}-fusionapps
+  template:
+    metadata:
+      annotations:
+        traffic.sidecar.istio.io/excludeOutboundPorts: '1433'
+    {{- with .Values.fusionapps.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "fusionsuite.selectorLabels" . | nindent 8 }}-fusionapps
+    spec:
+      {{- with .Values.fusionapps.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "fusionsuite.fusionapps.serviceAccountName" . }}-fusionapps
+      securityContext:
+        {{- toYaml .Values.fusionapps.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "fusionsuite.fullname" . }}-fusionapps
+          securityContext:
+            {{- toYaml .Values.fusionapps.securityContext | nindent 12 }}
+          image: "{{ .Values.fusionapps.image.repository }}:{{ .Values.fusionapps.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.fusionapps.image.pullPolicy }}
+          env:
+            - name: TOMCAT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "fusionsuite.fullname" . }}-tomcat-password
+                  key: password
+            - name: TOMCAT_USERNAME
+              value: {{ .Values.managed.tomcat.tomcat_username }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: {{ include "fusionsuite.fullname" . }}-registry
+              mountPath: /opt/bitnami/tomcat/MetadataTechnology/FusionRegistry
+            - name: {{ include "fusionsuite.fullname" . }}-security
+              mountPath: /opt/bitnami/tomcat/FusionSecurity
+          resources:
+            {{- toYaml .Values.fusionapps.resources | nindent 12 }}
+      {{- with .Values.fusionapps.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fusionapps.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fusionapps.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: {{ include "fusionsuite.fullname" . }}-security
+        configMap:
+          name: {{ include "fusionsuite.fullname" . }}-security  
+      - name: {{ include "fusionsuite.fullname" . }}-registry
+        configMap:
+          name: {{ include "fusionsuite.fullname" . }}-registry  
+{{- end -}}
