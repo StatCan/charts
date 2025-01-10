@@ -3295,6 +3295,25 @@ entries:
     urls:
     - https://statcan.github.io/charts/fdi-eck-configmap-0.1.0.tgz
     version: 0.1.0
+  fdi-fmr-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-01-10T20:23:00.609697389Z"
+    description: fusionsuite
+    digest: 80177c0239fcca02497791551ee03d19bc9362eb18ccac1ae25289b02937ef41
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: william.hearn@canada.ca
+      name: sylus
+    - email: zachary.seguin@canada.ca
+      name: Zachary Seguin
+    name: fdi-fmr-chart
+    sources:
+    - https://repo.private.example.ca/analytics-platform/discovery/fusionsuite-docker-compose
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-fmr-chart-1.0.0/fdi-fmr-chart-1.0.0.tgz
+    version: 1.0.0
   fdi-hfed-scrapping-loading-portal:
   - apiVersion: v1
     appVersion: 0.0.1
@@ -10637,4 +10656,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-17T19:24:05.164645844Z"
+generated: "2025-01-10T20:23:00.612504876Z"
