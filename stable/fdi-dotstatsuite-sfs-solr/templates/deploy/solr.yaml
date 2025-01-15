@@ -27,7 +27,7 @@ spec:
            claimName: {{ include "dotstatsuite.fullname" . }}-solr-pv-claim
       initContainers:
       - name: init-solr
-        image: alpine
+        image: {{ .Values.repository_base }}/alpine
         command: ["chown", "-R", "8983:8983", "/var/solr"]
         volumeMounts:
         - name: {{ include "dotstatsuite.fullname" . }}-solr-pv-storage
