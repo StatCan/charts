@@ -50,7 +50,7 @@ spec:
           - name: OOM
             value: "exit"
           - name: SOLR_JAVA_MEM
-            value: "-Xms4g -Xmx6g -Dsolr.max.booleanClauses=50000"
+            value: "-Xms4g -Xmx6g -Dsolr.max.booleanClauses=50000 -Dsolr.modules=analysis-extras"
           volumeMounts:
           - mountPath: /var/solr
             name: {{ include "dotstatsuite.fullname" . }}-solr-pv-storage

@@ -120,7 +120,7 @@ spec:
             {{- end }} 
             - name: "MaxTransferErrorAmount"
               value: {{ default "10" .Values.transfer.MaxTransferErrorAmount | quote }}
-            - name: "MaxTextAttributeLength"
+            - name: "maxLength"
               value: {{ default "150" .Values.transfer.MaxTextAttributeLength | quote }}
             - name: "MinPercentageDiskSpace"
               value: {{ default "10" .Values.transfer.MinPercentageDiskSpace | quote }}
