@@ -1,0 +1,320 @@
+# Default values for sdmxfrontend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Globals
+nameOverride: "fdi-dotstatsuite-sfs-solr"
+fullnameOverride: "fdi-dotstatsuite-sfs-solr"
+
+repository_base: artifactory.cloud.statcan.ca/docker
+
+# sfs
+# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
+sfs:
+  enabled: true
+  replicaCount: 1
+
+  solr:
+    host: fdi-dotstatsuite-sfs-solr-solr
+    port: 8983
+  ingress:
+    enabled: true
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: sdmx-sfs
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    # repository: siscc/dotstatsuite-data-explorer
+    repository: siscc/dotstatsuite-sdmx-faceted-search
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart version.
+    tag: "master"
+  config:
+    host: http://config
+  api_key_secret: ""
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  # podAnnotations: {
+  #   sidecar.istio.io/inject: 'false'
+  # }
+  podAnnotations: {
+    traffic.sidecar.istio.io/excludeOutboundPorts: '27017'
+  }
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: artifactory
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# solr
+# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
+solr:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: false
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: sdmx-solr
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: solr
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart version.
+    tag: "8.11.1"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {}
+  # podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 8983
+  persistence:
+    enabled: true
+    ## A manually managed Persistent Volume and Claim
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    # existingClaim:
+
+    ## CKAN data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    annotations: {}
+    accessMode: ReadWriteOnce
+    size: 2Gi
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: registry-pull-secret
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# mongo
+# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
+mongo:
+  enabled: true
+  replicaCount: 1
+
+  ingress:
+    enabled: false
+    annotations:
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      kubernetes.io/ingress.class: istio
+    hosts:
+      - host: sdmx-mongo.dev.cloud.statcan.ca
+        paths:
+          - '/*'
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  image:
+    repository: artifactory.cloud.statcan.ca/docker/mongo
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart version.
+    tag: "5.0.6"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  podAnnotations: {
+     sidecar.istio.io/inject: 'false'
+  }
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 27017
+  persistence:
+    enabled: true
+    ## A manually managed Persistent Volume and Claim
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    # existingClaim:
+
+    ## CKAN data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    annotations: {}
+    accessMode: ReadWriteOnce
+    size: 2Gi
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  ##
+  imagePullSecrets:
+    - name: artifactory
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+
+
+# Destination Rule
+# https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
+destinationRule:
+  enabled: false
+  mode: DISABLE

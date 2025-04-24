@@ -1,0 +1,75 @@
+{{- if .Values.solr.enabled -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-solr
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-solr
+spec:
+{{- if not .Values.solr.autoscaling.enabled }}
+  replicas: {{ .Values.solr.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-solr
+  updateStrategy:
+    {{ toYaml .Values.updateStrategy | indent 4}}
+  template:
+    metadata:
+    {{- with .Values.solr.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-solr
+    spec:
+      schedulerName: "{{ .Values.schedulerName }}"
+      securityContext:
+        fsGroup: 8983
+        runAsUser: 8983
+      affinity:
+{{ tpl (toYaml .Values.affinity) .  | indent 8 }}
+      tolerations:
+{{ tpl (toYaml .Values.tolerations) .  | indent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      volumes:
+      - name: {{ include "dotstatsuite.fullname" . }}-solr-pv-storage
+        persistentVolumeClaim:
+           claimName: {{ include "dotstatsuite.fullname" . }}-solr-pv-claim
+      initContainers:
+      - name: init-solr
+        image: {{ .Values.repository_base }}/alpine
+        command: ["chown", "-R", "8983:8983", "/var/solr"]
+        volumeMounts:
+        - name: {{ include "dotstatsuite.fullname" . }}-solr-pv-storage
+          mountPath: /var/solr
+      {{- with .Values.solr.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.solr.serviceAccountName" . }}-solr
+      securityContext:
+        {{- toYaml .Values.solr.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-solr
+          securityContext:
+            {{- toYaml .Values.solr.securityContext | nindent 12 }}
+          image: "{{ .Values.solr.image.repository }}:{{ .Values.solr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.solr.image.pullPolicy }}
+          args: ["-c"]
+          env:
+          - name: OOM
+            value: "exit"
+          - name: SOLR_JAVA_MEM
+            value: "-Xms4g -Xmx6g -Dsolr.max.booleanClauses=50000 -Dsolr.modules=analysis-extras"
+          volumeMounts:
+          - mountPath: /var/solr
+            name: {{ include "dotstatsuite.fullname" . }}-solr-pv-storage
+          ports:
+            - name: http
+              containerPort: 8983
+              protocol: TCP
+{{- end -}}
+
+
+
