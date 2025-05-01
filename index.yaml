@@ -694,6 +694,46 @@ entries:
   ckan:
   - apiVersion: v2
     appVersion: 2.9.5
+    created: "2025-05-01T19:34:22.264166722Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 12.10.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
+      version: 10.2.0
+    - condition: solr.enabled
+      name: solr
+      repository: https://statcan.github.io/charts
+      version: 1.5.10
+    - condition: datapusher.enabled
+      name: datapusher
+      repository: https://statcan.github.io/charts
+      version: 1.0.0
+    description: CKAN Helm Chart for Kubernetes.
+    digest: ef271d9cfd727f7ed8f9b8d5e8a2cee444fb980a181f1ee9a0048e5373326269
+    home: https://ckan.org/
+    icon: https://ckan.org/static/img/logo.svg
+    keywords:
+    - ckan
+    - http
+    - web
+    - application
+    - python
+    maintainers:
+    - email: jianlong.qian@canada.ca
+      name: Jianlong
+    name: ckan
+    sources:
+    - https://github.com/drupalwxt/wxt
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/ckan-0.0.35/ckan-0.0.35.tgz
+    version: 0.0.35
+  - apiVersion: v2
+    appVersion: 2.9.5
     created: "2024-12-17T19:24:04.333529989Z"
     dependencies:
     - condition: redis.enabled
@@ -2689,6 +2729,27 @@ entries:
   fdi-dotstatsuite:
   - apiVersion: v2
     appVersion: 16.2.0
+    created: "2025-05-01T19:34:22.440348606Z"
+    dependencies:
+    - condition: mssql-linux.enabled
+      name: mssql-linux
+      repository: https://charts.helm.sh/stable
+      version: 0.11.4
+    description: fdi-dotstatsuite kube core services
+    digest: f59095686e29fc4fd9f70d92820559d0e7d1270aa52a9c96db42ad207846681b
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: jianlong.qian@statcan.gc.ca
+      name: Jianlong.qian
+    name: fdi-dotstatsuite
+    sources:
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-core-rp/-/tree/master/staging
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-0.3.4/fdi-dotstatsuite-0.3.4.tgz
+    version: 0.3.4
+  - apiVersion: v2
+    appVersion: 16.2.0
     created: "2024-12-17T19:24:04.581919517Z"
     dependencies:
     - condition: mssql-linux.enabled
@@ -3163,6 +3224,22 @@ entries:
   fdi-dotstatsuite-keycloak:
   - apiVersion: v2
     appVersion: 16.1.0
+    created: "2025-05-01T19:34:22.647426319Z"
+    description: fdi-dotstatsuite-keycloak
+    digest: 899b24bc01d0b85c71c01dc6276574ec7a1e2d55049659df365aface9613ceb9
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: Jianlong.qian@statcan.gc.ca
+      name: Jianlong.qian
+    name: fdi-dotstatsuite-keycloak
+    sources:
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-keycloak-1.0.1/fdi-dotstatsuite-keycloak-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 16.1.0
     created: "2024-12-17T19:24:04.744752549Z"
     description: fdi-dotstatsuite-keycloak
     digest: 666fcb304e230e5b51308049fa8e4ef17b64feca61fc19ae43cd68c5916d7635
@@ -3178,6 +3255,23 @@ entries:
     - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-keycloak-1.0.0/fdi-dotstatsuite-keycloak-1.0.0.tgz
     version: 1.0.0
   fdi-dotstatsuite-sfs-solr:
+  - apiVersion: v2
+    appVersion: v14.0.0
+    created: "2025-05-01T19:34:22.830955385Z"
+    description: fdi-dotstatsuite helm chart for the search service and solr
+    digest: ab4107d41223933703486ea76a4e9970dc2ba7c45e9f63c96e75ce6703c4eb86
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: Jianlong.qian@statcan.gc.ca
+      name: Jianlong Qian
+    name: fdi-dotstatsuite-sfs-solr
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-sfs-solr-1.0.2/fdi-dotstatsuite-sfs-solr-1.0.2.tgz
+    version: 1.0.2
   - apiVersion: v2
     appVersion: v14.0.0
     created: "2023-05-16T20:11:23.15596724Z"
@@ -3212,6 +3306,24 @@ entries:
     urls:
     - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-sfs-solr-1.0.0/fdi-dotstatsuite-sfs-solr-1.0.0.tgz
     version: 1.0.0
+  fdi-dotstatsuite-sfs-solr-stateful:
+  - apiVersion: v2
+    appVersion: v14.0.0
+    created: "2025-05-01T19:34:23.003329244Z"
+    description: fdi-dotstatsuite helm chart for the search service and solr
+    digest: 4a69413b46c761b936e485bbe650b3f7464f2180f97472a5947a9de3376afb05
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: Jianlong.qian@statcan.gc.ca
+      name: Jianlong Qian
+    name: fdi-dotstatsuite-sfs-solr-stateful
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-sfs-solr-stateful-1.0.2/fdi-dotstatsuite-sfs-solr-stateful-1.0.2.tgz
+    version: 1.0.2
   fdi-dotstatsuite-tenants-vs:
   - apiVersion: v2
     appVersion: v14.0.0
@@ -10656,4 +10768,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-10T20:23:00.612504876Z"
+generated: "2025-05-01T19:34:23.005421891Z"
