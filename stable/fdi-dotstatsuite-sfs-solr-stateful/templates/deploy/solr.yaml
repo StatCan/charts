@@ -1,6 +1,6 @@
 {{- if .Values.solr.enabled -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "dotstatsuite.fullname" . }}-solr
   labels:
@@ -12,6 +12,8 @@ spec:
   selector:
     matchLabels:
       {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-solr
+  updateStrategy:
+    {{ toYaml .Values.updateStrategy | indent 4}}
   template:
     metadata:
     {{- with .Values.solr.podAnnotations }}
@@ -21,6 +23,15 @@ spec:
       labels:
         {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-solr
     spec:
+      schedulerName: "{{ .Values.schedulerName }}"
+      securityContext:
+        fsGroup: 8983
+        runAsUser: 8983
+      affinity:
+{{ tpl (toYaml .Values.affinity) .  | indent 8 }}
+      tolerations:
+{{ tpl (toYaml .Values.tolerations) .  | indent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       volumes:
       - name: {{ include "dotstatsuite.fullname" . }}-solr-pv-storage
         persistentVolumeClaim:

@@ -1,0 +1,51 @@
+{{- if .Values.mongo.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-mongo
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-mongo
+spec:
+{{- if not .Values.mongo.autoscaling.enabled }}
+  replicas: {{ .Values.mongo.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dotstatsuite.selectorLabels" . | nindent 6 }}-mongo
+  template:
+    metadata:
+    {{- with .Values.mongo.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dotstatsuite.selectorLabels" . | nindent 8 }}-mongo
+    spec:
+      volumes:
+      - name: {{ include "dotstatsuite.fullname" . }}-mongo-pv-storage
+        persistentVolumeClaim:
+           claimName: {{ include "dotstatsuite.fullname" . }}-mongo-pv-claim
+      {{- with .Values.mongo.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dotstatsuite.mongo.serviceAccountName" . }}-mongo
+      terminationGracePeriodSeconds: 10 
+      securityContext:
+        {{- toYaml .Values.mongo.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-mongo
+          securityContext:
+            {{- toYaml .Values.mongo.securityContext | nindent 12 }}
+          image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.mongo.image.pullPolicy }}
+          volumeMounts:
+          - mountPath: /data/db
+            name: {{ include "dotstatsuite.fullname" . }}-mongo-pv-storage
+          ports:
+          - name: mongodb
+            containerPort: {{ .Values.mongo.service.port }}
+{{- end -}}
+
+
+

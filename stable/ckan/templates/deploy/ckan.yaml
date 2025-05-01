@@ -283,6 +283,10 @@ spec:
           env:
             - name: DEBUG
               value: {{ .Values.ckan.debug | quote }}
+            - name: DATASET_PREFIX
+              value: {{ default "" .Values.ckan.dataset_prefix }}
+            - name: ORG_PREFIX
+              value: {{ default "" .Values.ckan.organization_prefix }}
             - name: MAINTENANCE_MODE
               value: {{ .Values.ckan.maintenanceMode | quote }}
             - name: CKAN_DEBUG

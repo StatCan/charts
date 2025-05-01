@@ -1,0 +1,15 @@
+{{- if .Values.mongo.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dotstatsuite.fullname" . }}-mongo
+  labels:
+    {{- include "dotstatsuite.labels" . | nindent 4 }}-mongo
+spec:
+  ports:
+  - name: mongodb
+    port: {{ .Values.mongo.service.port }}
+    targetPort: mongodb
+  selector:
+    {{- include "dotstatsuite.selectorLabels" . | nindent 4 }}-mongo
+{{- end }}

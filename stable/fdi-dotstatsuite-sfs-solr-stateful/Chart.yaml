@@ -1,6 +1,7 @@
 apiVersion: v2
-name: fdi-dotstatsuite-keycloak
-description: fdi-dotstatsuite-keycloak
+name: fdi-dotstatsuite-sfs-solr-stateful
+description: fdi-dotstatsuite helm chart for the search service and solr
+
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,17 +16,18 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.1
+version: 1.0.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 16.1.0
+appVersion: v14.0.0
 
 home: https://statcan.gc.ca
 sources:
+- https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
 - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
 maintainers:
-- name: Jianlong.qian
+- name: Jianlong Qian
   email: Jianlong.qian@statcan.gc.ca
 engine: gotpl
