@@ -160,13 +160,13 @@ spec:
             - name: "SpacesInternal__0__AutoLog2DBLogLevel"
               value: "{{ .Values.transfer.autoLog2DBLogLevel }}"
             - name: "SpacesInternal__0__OptimizedForHighPerformanceReads"
-              value: {{ default false .Values.transfer.OptimizedForHighPerformanceReads }}
+              value: {{ default "false" .Values.transfer.OptimizedForHighPerformanceReads | quote }}
             - name: "SpacesInternal__0__DefaultPartitioningScheme"
-              value: {{ default "" .Values.transfer.DefaultPartitioningScheme }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningScheme | quote }}
             - name: "SpacesInternal__0__DefaultPartitioningColumn"
-              value: {{ default "" .Values.transfer.DefaultPartitioningColumn }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningColumn | quote }}
             - name: "SpacesInternal__0__MAXDOPForDsdOptimization"
-              value: {{ default 0 .Values.transfer.MAXDOPForDsdOptimization }}
+              value: {{ default "0" .Values.transfer.MAXDOPForDsdOptimization | quote }}
 
 {{- end }}
 {{- if index .Values.nsiReset.enabled }}  
@@ -187,13 +187,13 @@ spec:
             - name: "SpacesInternal__1__AutoLog2DBLogLevel"
               value: "{{ .Values.transfer.autoLog2DBLogLevel }}" 
             - name: "SpacesInternal__1__OptimizedForHighPerformanceReads"
-              value: {{ default false .Values.transfer.OptimizedForHighPerformanceReads }}
+              value: {{ default "false" .Values.transfer.OptimizedForHighPerformanceReads | quote }}
             - name: "SpacesInternal__1__DefaultPartitioningScheme"
-              value: {{ default "" .Values.transfer.DefaultPartitioningScheme }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningScheme | quote }}
             - name: "SpacesInternal__1__DefaultPartitioningColumn"
-              value: {{ default "" .Values.transfer.DefaultPartitioningColumn }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningColumn | quote }}
             - name: "SpacesInternal__1__MAXDOPForDsdOptimization"
-              value: {{ default 0 .Values.transfer.MAXDOPForDsdOptimization }}  
+              value: {{ default "0" .Values.transfer.MAXDOPForDsdOptimization | quote }}
 {{- end }}      
 {{- if index .Values.nsiDesign.enabled }}  
             - name: "SpacesInternal__2__Id"
@@ -213,13 +213,13 @@ spec:
             - name: "SpacesInternal__2__AutoLog2DBLogLevel"
               value: "{{ .Values.transfer.autoLog2DBLogLevel }}"
             - name: "SpacesInternal__2__OptimizedForHighPerformanceReads"
-              value: {{ default false .Values.transfer.OptimizedForHighPerformanceReads }}
+              value: {{ default "false" .Values.transfer.OptimizedForHighPerformanceReads | quote }}
             - name: "SpacesInternal__2__DefaultPartitioningScheme"
-              value: {{ default "" .Values.transfer.DefaultPartitioningScheme }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningScheme | quote }}
             - name: "SpacesInternal__2__DefaultPartitioningColumn"
-              value: {{ default "" .Values.transfer.DefaultPartitioningColumn }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningColumn | quote }}
             - name: "SpacesInternal__2__MAXDOPForDsdOptimization"
-              value: {{ default 0 .Values.transfer.MAXDOPForDsdOptimization }}
+              value: {{ default "0" .Values.transfer.MAXDOPForDsdOptimization | quote }}
 {{- end }}  
 {{- if index .Values.nsiStaging.enabled }}  
             - name: "SpacesInternal__3__Id"
@@ -239,13 +239,13 @@ spec:
             - name: "SpacesInternal__3__AutoLog2DBLogLevel"
               value: "{{ .Values.transfer.autoLog2DBLogLevel }}"
             - name: "SpacesInternal__3__OptimizedForHighPerformanceReads"
-              value: {{ default false .Values.transfer.OptimizedForHighPerformanceReads }}
+              value: {{ default "false" .Values.transfer.OptimizedForHighPerformanceReads | quote }}
             - name: "SpacesInternal__3__DefaultPartitioningScheme"
-              value: {{ default "" .Values.transfer.DefaultPartitioningScheme }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningScheme | quote }}
             - name: "SpacesInternal__3__DefaultPartitioningColumn"
-              value: {{ default "" .Values.transfer.DefaultPartitioningColumn }}
+              value: {{ default "" .Values.transfer.DefaultPartitioningColumn | quote }}
             - name: "SpacesInternal__3__MAXDOPForDsdOptimization"
-              value: {{ default 0 .Values.transfer.MAXDOPForDsdOptimization }}
+              value: {{ default "0" .Values.transfer.MAXDOPForDsdOptimization | quote }}
 {{- end }}                
           ports:
             - name: http
