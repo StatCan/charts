@@ -38,15 +38,9 @@ spec:
           - name: BUCKET_PROVIDER
             value: {{ .Values.managed.bucket.provider }}
           - name: ACCOUNT_NAME
-            valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.fullnameOverride }}-account-name
-                  key: accountname
+            value: {{ .Values.managed.bucket.accountname }}
           - name: ACCOUNT_KEY
-            valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.fullnameOverride }}-account-key
-                  key: accountkey
+            value: {{ .Values.managed.bucket.accountkey }}
           - name: CONTAINER_NAME
             value: {{ .Values.managed.bucket.containername }}
           - name: I18N_BUCKET
@@ -55,8 +49,6 @@ spec:
             value: {{ .Values.managed.bucket.assets }}
           - name: CONFIGS_BUCKET
             value: {{ .Values.managed.bucket.configs }}
-          - name: DATA_DIR
-            value: {{ .Values.managed.bucket.data_dir }}
           ports:
             - name: http
               containerPort: 80

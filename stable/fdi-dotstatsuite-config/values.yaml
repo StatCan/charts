@@ -8,13 +8,13 @@ fullnameOverride: "fdi-dotstatsuite"
 
 managed:
   bucket:
-    accountname: "fdiexternaldev"
-    accountkey: "5eL9ByGZlseUjEdfO5gnHZVwgcA7VogGyHckS273qCVdvfULuP/4klOpTIdfW86FaUUr7/oliNt1cKKtD4HQEQ=="
-    containername: "sdmx-config"
-    provider: "azure"
-    i18n: "dev/i18n"
-    assets: "dev/assets"
-    configs: "dev/configs"
+    accountname: ""
+    accountkey: ""
+    containername: ""
+    provider: ""
+    i18n: ""
+    assets: ""
+    configs: ""
 
 # Config
 # https://gitlab.k8s.cloud.statcan.ca/analytics-platform/discovery/dotstatsuite-docker-compose
@@ -24,10 +24,7 @@ config:
 
   ingress:
     enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      kubernetes.io/ingress.class: istio
+    annotations: {}
     hosts:
       - host: sdmx-config.dev.cloud.statcan.ca
         paths:
@@ -38,11 +35,11 @@ config:
     #      - chart-example.local
 
   image:
-    #repository: siscc/dotstatsuite-proxy
+    # repository: siscc/dotstatsuite-proxy
     repository: artifactory.cloud.statcan.ca/docker/analytics-platform/dotstatsuite-config
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart version.
-    tag: "statcan-spin"
+    tag: "v12.1.0-8-gb5aeffa"
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -77,13 +74,7 @@ config:
   imagePullSecrets:
     - name: artifactory-prod
 
-  resources:
-    limits:
-      cpu: 100m
-      memory: 2g
-    requests:
-      cpu: 100m
-      memory: 1g
+  resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -121,7 +112,7 @@ proxy:
       # kubernetes.io/tls-acme: "true"
       kubernetes.io/ingress.class: istio
     hosts:
-      - host: tim-sdmx-proxy.dev.cloud.statcan.ca
+      - host: sdmx-proxy.dev.cloud.statcan.ca
         paths:
           - '/*'
     tls: []
