@@ -49,6 +49,10 @@ spec:
             value: {{ .Values.managed.bucket.assets }}
           - name: CONFIGS_BUCKET
             value: {{ .Values.managed.bucket.configs }}
+          - name: SERVER_KEEP_ALIVE_TIMEOUT
+            value: {{ .Values.managed.server.keepalivetimeout }}
+          - name: SERVER_HEADERS_TIMEOUT
+            value: {{ .Values.managed.server.headerstimeout }}
           ports:
             - name: http
               containerPort: 80
