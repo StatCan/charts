@@ -2,16 +2,16 @@
 {{- if .Values.config.ingress.enabled -}}
 {{- $fullName := include "dotstatsuite.fullname" . -}}
 {{- $svcPort := .Values.config.service.port -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else -}}
-apiVersion: extensions/v1
+apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-config
+  name: {{ $fullName }}
   labels:
-    {{- include "dotstatsuite.labels" . | nindent 4 }}-config
+    {{- include "dotstatsuite.labels" . | nindent 4 }}
   {{- with .Values.config.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -37,8 +37,8 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ $fullName }}-config
-                port:
+                name: {{ $fullName }}
+                port: 
                   number: {{ $svcPort }}
           {{- end }}
     {{- end }}
