@@ -3122,6 +3122,23 @@ entries:
   fdi-dotstatsuite-config:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-12-03T15:35:21.62999044Z"
+    description: fdi-dotstatsuite-config
+    digest: 6444fc3b7afb9e4cf8e7a420e24a4bdc0c62f853fd5a4275f1486138176397e6
+    home: https://statcan.gc.ca
+    maintainers:
+    - email: tim.raizenne@statcan.gc.ca
+      name: Timothy Raizenne
+    name: fdi-dotstatsuite-config
+    sources:
+    - https://gitlab.k8s.cloud.statcan.ca/analytics-platform/fdi-idf/metadata
+    - https://gitlab.com/sis-cc/.stat-suite/dotstatsuite-kube-rp/
+    type: application
+    urls:
+    - https://github.com/StatCan/charts/releases/download/fdi-dotstatsuite-config-0.6.0/fdi-dotstatsuite-config-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-03-02T14:57:00.965340777Z"
     description: fdi-dotstatsuite-config
     digest: 6f1cb96b8f1e51d63f5aa9006acd7d35168563b386d550103fd50c6a1d25a58d
@@ -10789,4 +10806,4 @@ entries:
     urls:
     - https://statcan.github.io/charts/vetting-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-17T19:14:49.015944555Z"
+generated: "2025-12-03T15:35:21.632163903Z"
