@@ -102,7 +102,7 @@ spec:
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(RESET_DATA_DB);User=$(RESET_DATA_USER);Password=$(RESET_DATA_PASSWORD);"
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           readinessProbe:
             httpGet:

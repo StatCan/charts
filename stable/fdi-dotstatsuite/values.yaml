@@ -123,7 +123,7 @@ authz:
   service:
     name: ""
     type: ClusterIP
-    port: 80
+    port: 8080
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -226,7 +226,7 @@ nsiReset:
 
   service:
     type: ClusterIP
-    port: 80
+    port: 8080
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -330,7 +330,7 @@ nsiStable:
 
   service:
     type: ClusterIP
-    port: 80
+    port: 8080
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -431,7 +431,7 @@ nsiDesign:
 
   service:
     type: ClusterIP
-    port: 80
+    port: 8080
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -534,7 +534,7 @@ nsiStaging:
 
   service:
     type: ClusterIP
-    port: 80
+    port: 8080
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -645,7 +645,7 @@ transfer:
 
   service:
     type: ClusterIP
-    port: 80
+    port: 8080
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
