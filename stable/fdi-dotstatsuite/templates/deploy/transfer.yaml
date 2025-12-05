@@ -141,7 +141,9 @@ spec:
             - name: "MailFrom"
               value: "{{ .Values.managed.smtp.mailFrom }}"
             - name: "DotStatSuiteCoreCommonDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"                                
+              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
+            - name: "ExcelFeaturesEnabled"
+              value: {{ default "true" .Values.transfer.excel_config.excelFeaturesEnabled | quote }}
 {{- if index .Values.nsiStable.enabled }}            
             - name: "SpacesInternal__0__Id"
               value: "{{ .Values.nsiStable.dataspace }}"

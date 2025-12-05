@@ -71,8 +71,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.fullnameOverride }}-mssql-common
                   key: password
-            - name: "DotStatSuiteCoreCommonDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
             - name: SQL_SERVER
               value: {{ template "dotstatsuite.databaseHost" . }}
             - name: SQL_DATABASE
@@ -88,9 +86,9 @@ spec:
             - name: MA_SQL_PASSWORD
               value: $(SA_PASSWORD)
             - name: MA_ALWAYS_RESET
-              value: {{ default "N" .Values.nsiStaging.reset | quote }}           
+              value: {{ default "N" .Values.nsiStaging.reset | quote }}
             - name: INSERT_NEW_ITEM_SCHEME_VALUES
-              value: {{ default "false" .Values.nsiStaging.allow_insert_new_value | quote }}             
+              value: {{ default "false" .Values.nsiStaging.allow_insert_new_value | quote }}
             - name: enableReleaseManagement
               value: {{ default "true" .Values.nsiStaging.enableReleaseManagement | quote }}              
             - name: "mappingStore__Id__Default"
@@ -99,6 +97,10 @@ spec:
               value: SqlServer
             - name: "disseminationDbConnection__connectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STAGING_DATA_DB);User=$(STAGING_DATA_USER);Password=$(STAGING_DATA_PASSWORD);"
+            - name: authorization__baseUrl
+              value: {{ default "" .Values.nsiStaging.authorization.baseUrl | quote }}
+            - name: FETCH_ANNOTATIONS_IN_BATCH
+              value: {{ default "false" .Values.nsiStaging.fetch_annotations_in_batch | quote }}
           ports:
             - name: http
               containerPort: 8080

@@ -71,8 +71,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.fullnameOverride }}-mssql-common
                   key: password
-            - name: "DotStatSuiteCoreCommonDbConnectionString"
-              value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(COMMON_DB);User=$(COMMON_USER);Password=$(COMMON_PASSWORD);"
             - name: SQL_SERVER
               value: {{ template "dotstatsuite.databaseHost" . }}
             - name: SQL_DATABASE
@@ -88,17 +86,21 @@ spec:
             - name: MA_SQL_PASSWORD
               value: $(SA_PASSWORD)
             - name: MA_ALWAYS_RESET
-              value: {{ default "N" .Values.nsiDesign.reset | quote  }}           
+              value: {{ default "N" .Values.nsiDesign.reset | quote  }}
             - name: INSERT_NEW_ITEM_SCHEME_VALUES
-              value: {{ default "true" .Values.nsiDesign.allow_insert_new_value | quote }}             
+              value: {{ default "true" .Values.nsiDesign.allow_insert_new_value | quote }}
             - name: enableReleaseManagement
-              value: {{ default "true" .Values.nsiDesign.enableReleaseManagement | quote }}                 
+              value: {{ default "true" .Values.nsiDesign.enableReleaseManagement | quote }}
             - name: "mappingStore__Id__Default"
               value: "{{ .Values.nsiDesign.dataspace }}"
             - name: disseminationDbConnection__dbType
               value: SqlServer
             - name: "disseminationDbConnection__connectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(DESIGN_DATA_DB);User=$(DESIGN_DATA_USER);Password=$(DESIGN_DATA_PASSWORD);"
+            - name: authorization__baseUrl
+              value: {{ default "" .Values.nsiDesign.authorization.baseUrl | quote }}
+            - name: FETCH_ANNOTATIONS_IN_BATCH
+              value: {{ default "false" .Values.nsiDesign.fetch_annotations_in_batch | quote }}
           ports:
             - name: http
               containerPort: 8080

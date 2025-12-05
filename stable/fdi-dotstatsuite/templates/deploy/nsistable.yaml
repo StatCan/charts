@@ -99,6 +99,10 @@ spec:
               value: SqlServer
             - name: "disseminationDbConnection__connectionString"
               value: "Server={{ template "dotstatsuite.databaseHost" . }};Database=$(STABLE_DATA_DB);User=$(STABLE_DATA_USER);Password=$(STABLE_DATA_PASSWORD);"
+            - name: authorization__baseUrl
+              value: {{ default "" .Values.nsiStable.authorization.baseUrl | quote }}
+            - name: FETCH_ANNOTATIONS_IN_BATCH
+              value: {{ default "false" .Values.nsiStable.fetch_annotations_in_batch | quote }}  
           ports:
             - name: http
               containerPort: 8080

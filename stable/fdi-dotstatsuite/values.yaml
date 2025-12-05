@@ -174,6 +174,11 @@ nsiReset:
   reset_structure_db: sdmxResetStructureDb
   reset_structure_user: sdmxResetStructureUser
 
+  authorization:
+    baseUrl: "fdi-authz-dev.dev.cloud.statcan.ca"
+
+  fetch_annotations_in_batch: "false"
+
   log4net_config:
     enabled: false
     name: "nsireset-log4net"
@@ -277,6 +282,11 @@ nsiStable:
   stable_structure_db: sdmxStableStructureDb
   stable_structure_user: sdmxStableStructureUser
 
+  authorization:
+    baseUrl: "fdi-authz-dev.dev.cloud.statcan.ca"
+
+  fetch_annotations_in_batch: "false"
+
   log4net_config:
     enabled: false
     name: "nsistable-log4net"
@@ -378,6 +388,11 @@ nsiDesign:
   design_data_user: sdmxDesignDataUser
   design_structure_db: sdmxDesignStructureDb
   design_structure_user: sdmxDesignStructureUser
+
+  authorization:
+    baseUrl: "fdi-authz-dev.dev.cloud.statcan.ca"
+
+  fetch_annotations_in_batch: "false"
 
   log4net_config:
     enabled: false
@@ -482,6 +497,11 @@ nsiStaging:
   staging_structure_db: sdmxStagingStructureDb
   staging_structure_user: sdmxStagingStructureUser
 
+  authorization:
+    baseUrl: "fdi-authz-dev.dev.cloud.statcan.ca"
+
+  fetch_annotations_in_batch: "false"
+
   log4net_config:
     enabled: false
     name: "nsistaging-log4net"
@@ -582,9 +602,11 @@ transfer:
 
   dataImportTimeOutInMinutes: 4800
   databaseCommandTimeoutInSec: 14400
-
   autoLog2DB: "true"
   autoLog2DBLogLevel: "Notice"
+ 
+  excel_config:
+    excelFeaturesEnabled: "true" ##Its enabled by default in transfer service code json config, along with licens. in case to disable
 
   log4net_config:
     enabled: false
