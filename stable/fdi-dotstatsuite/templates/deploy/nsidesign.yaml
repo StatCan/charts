@@ -101,6 +101,8 @@ spec:
               value: {{ default "" .Values.nsiDesign.authorization.baseUrl | quote }}
             - name: FETCH_ANNOTATIONS_IN_BATCH
               value: {{ default "false" .Values.nsiDesign.fetch_annotations_in_batch | quote }}
+            - name: REQUEST_LIMIT
+              value: "{{ default 0 .Values.nsiDesign.request_limit }}"
           ports:
             - name: http
               containerPort: 8080

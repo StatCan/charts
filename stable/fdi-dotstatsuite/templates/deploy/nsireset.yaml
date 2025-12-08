@@ -101,7 +101,9 @@ spec:
             - name: authorization__baseUrl
               value: {{ default "" .Values.nsiReset.authorization.baseUrl | quote }}
             - name: FETCH_ANNOTATIONS_IN_BATCH
-              value: {{ default "false" .Values.nsiReset.fetch_annotations_in_batch | quote }}  
+              value: {{ default "false" .Values.nsiReset.fetch_annotations_in_batch | quote }}
+            - name: REQUEST_LIMIT
+              value: "{{ default 0 .Values.nsiReset.request_limit }}"
           ports:
             - name: http
               containerPort: 8080

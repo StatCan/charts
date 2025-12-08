@@ -101,6 +101,8 @@ spec:
               value: {{ default "" .Values.nsiStaging.authorization.baseUrl | quote }}
             - name: FETCH_ANNOTATIONS_IN_BATCH
               value: {{ default "false" .Values.nsiStaging.fetch_annotations_in_batch | quote }}
+            - name: REQUEST_LIMIT
+              value: "{{ default 0 .Values.nsiStaging.request_limit }}"
           ports:
             - name: http
               containerPort: 8080
